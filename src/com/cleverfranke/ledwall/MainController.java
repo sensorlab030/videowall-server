@@ -1,4 +1,4 @@
-package com.cleverfranke.LedWall;
+package com.cleverfranke.ledwall;
 
 import processing.core.PApplet;
 
