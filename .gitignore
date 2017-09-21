@@ -1,0 +1,12 @@
+bin
+tmp
+output
+data
+*.tmp
+*.bak
+*.swp
+*.~nib
+.metadata
+.settings
+.loadpath
+.recommenders
