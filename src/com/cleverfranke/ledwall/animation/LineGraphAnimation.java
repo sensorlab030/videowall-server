@@ -34,8 +34,7 @@ public class LineGraphAnimation extends Animation {
 	protected void drawAnimationFrame(PGraphics g) {
 		g.background(255);
 		g.noFill();
-		g.strokeWeight(80);
-		g.blendMode(PConstants.MULTIPLY);
+		g.strokeWeight(100);
 		
 		for (int i = 0; i < LINE_COUNT; i++) {
 			

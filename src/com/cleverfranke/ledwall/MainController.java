@@ -36,13 +36,15 @@ public class MainController extends PApplet {
 	
 	public void draw() {
 		
-		background(240);
-		
-		// Draw animation
+		// Update animation frame
 		currentAnimation.draw();
 		PImage animationFrame = currentAnimation.getImage(); 
+		
+		// Create preview
+		PImage previewImage = Preview.createPreview(this, animationFrame);
 
-		image(animationFrame, 0, 0);
+		// Draw preview
+		image(previewImage, 0, 0);
 		
 	}
 
