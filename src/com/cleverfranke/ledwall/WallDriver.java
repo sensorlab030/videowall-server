@@ -27,7 +27,7 @@ public class WallDriver {
 	public WallDriver(PApplet applet) {
 		this.applet = applet;
 		
-		// Setup gamma table
+		// Initialize gamma table
 		for (int i=0; i < 256; i++) {
 			gammaTable[i] = (int)(Math.pow((float)i / 255.0, GAMMA) * 255.0 + 0.5);
 		}

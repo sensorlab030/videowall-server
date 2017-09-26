@@ -1,0 +1,23 @@
+package com.cleverfranke.ledwall;
+
+import java.util.Arrays;
+
+/**
+ * Class that stores the configuration of the wall
+ */
+public class WallConfiguration {
+	
+	// Physical dimensions in centimeters
+	public static final int[] PHYSICAL_PANEL_WIDTH_CM = {63, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 74}; 	// Width for each panel (index 0 is leftmost panel)
+	public static final int PHYSICAL_WALL_WIDTH_CM = Arrays.stream(PHYSICAL_PANEL_WIDTH_CM).sum();				// Width of  complete wall width in cm (sum of all panel widths)
+	public static final int PHYSICAL_WALL_HEIGHT_CM = 280;														// Height of complete wall in cm
+	public static final int PHYSICAL_BEAM_WIDTH_CM = 4;															// Width of the beams between two panels
+	
+	public static final int PANEL_COUNT = PHYSICAL_PANEL_WIDTH_CM.length;										// Number of panels
+	
+	// Source/preview image dimensions (pixels)
+	public static final int SOURCE_CM_TO_PIXEL_RATIO = 2;														// Conversion ratio from cm to pixels
+	public static final int SOURCE_IMG_WIDTH = PHYSICAL_WALL_WIDTH_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image width for the wall configuration
+	public static final int SOURCE_IMG_HEIGHT = PHYSICAL_WALL_HEIGHT_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image height for the wall configuration
+	
+}
