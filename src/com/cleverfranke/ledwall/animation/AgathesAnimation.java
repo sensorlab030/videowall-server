@@ -1,18 +1,18 @@
 package com.cleverfranke.ledwall.animation;
 
-import java.util.Arrays;
-
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 
 public class AgathesAnimation extends Animation {
+	// PARAMETERS
+	int NBVALUES = 13; // Total number of bars
+	int step = 40; // Bar loading speed (load 10 levels at once)
 	
-	int NBVALUES = 13;
+	// VARIABLES
 	private float[] VALUES = new float[NBVALUES];
 	private final float RESOLUTION_X = (float) WallConfiguration.SOURCE_IMG_WIDTH / (NBVALUES + 1);
 	float max = Integer.MIN_VALUE;
@@ -29,10 +29,7 @@ public class AgathesAnimation extends Animation {
 			VALUES[i] = (float)(Math.random());
 			
 			// Generate random color
-			int r = (int) (Math.random() * 255);
-			int g = (int) (Math.random() * 255);
-			int b = (int) (Math.random() * 255);
-			colors[i] = PColor.color(r, g, b);
+			colors[i] = generateRandomRGBColor();
 			
 			// Find min and max in VALUES
 		    if (VALUES[i] < min) { min = VALUES[i]; }
@@ -41,10 +38,13 @@ public class AgathesAnimation extends Animation {
 		
 	}
 	
-	private float xScale(float value, float width) {
-		return PApplet.map(value, 0, NBVALUES, 0, width/RESOLUTION_X);
+	private int generateRandomRGBColor() {
+		int r = (int) (Math.random() * 255);
+		int g = (int) (Math.random() * 255);
+		int b = (int) (Math.random() * 255);
+		return PColor.color(r, g, b);
 	}
-	
+		
 	private float yScale(float value, float height) {
 		return PApplet.map(value, 0, max, 0, height);
 	}
@@ -54,7 +54,7 @@ public class AgathesAnimation extends Animation {
 	protected void drawAnimationFrame(PGraphics g) {		
 		g.background(255);
 		g.noFill();
-		
+
  		for (int i = 0; i < NBVALUES; i++) {	
 			// Get y coordinates and height
 			finalHeight[i] = yScale(VALUES[i], g.height);
@@ -78,8 +78,8 @@ public class AgathesAnimation extends Animation {
 			
 			
 			// If bar has not reached its final height, add a level for next draw
-			if (currentHeight[i] < finalHeight[i]) {
-				currentHeight[i]++;
+			if (currentHeight[i] + step < finalHeight[i]) {
+				currentHeight[i] = currentHeight[i] + step;
 			} 
  		}
  		
