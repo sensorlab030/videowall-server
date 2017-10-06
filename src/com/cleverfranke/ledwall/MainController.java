@@ -1,5 +1,6 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.animation.AgathesAnimation;
 import com.cleverfranke.ledwall.animation.Animation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 
@@ -29,7 +30,7 @@ public class MainController extends PApplet {
 //		driver.initialize(SERIAL_PORTS);
 		
 		// Initialize animations
-		currentAnimation = new LineGraphAnimation(this);
+		currentAnimation = new AgathesAnimation(this);
 		currentAnimation.prepare();
 		
 	}
