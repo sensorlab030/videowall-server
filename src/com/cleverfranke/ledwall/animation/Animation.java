@@ -1,6 +1,7 @@
 package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.ledwall.WallConfiguration;
+import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -63,5 +64,16 @@ public abstract class Animation {
 	 * @param g
 	 */
 	abstract protected void drawAnimationFrame(PGraphics g);
+	
+	/**
+	 * Generate a random RGB color
+	 * @return PColor
+	 */
+	protected static int generateRandomRGBColor() {
+		int r = (int) (Math.random() * 255);
+		int g = (int) (Math.random() * 255);
+		int b = (int) (Math.random() * 255);
+		return PColor.color(r, g, b);
+	}
 	
 }
