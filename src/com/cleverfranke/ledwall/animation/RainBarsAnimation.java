@@ -19,14 +19,17 @@ public class RainBarsAnimation extends Animation {
 	// PARAMETERS
 	int NBVALUES = 0; // Total number of bars
 	int step = 40; // Bar loading speed (load 10 levels at once)
+	int rainStackStep = 10 * WallConfiguration.PHYSICAL_PIXEL_PITCH_CM; // Bar loading speed (load 10 levels at once)
 	int rainColor = PColor.color(19, 172, 206);
 	
 	// VARIABLES
 	float maxRain = Integer.MIN_VALUE;
 	float minRain = Integer.MAX_VALUE;
-	float[] currentHeight =  null;
+	float[] barCurrentHeight =  null;
+	float[] lineCurrentHeight =  null;
 	float[] finalHeight =  null;
 	float[] xPos = null;
+
 	
 	// Data structure
 	Map<String, String> rainDataSorted = new TreeMap<String, String>();
@@ -76,9 +79,14 @@ public class RainBarsAnimation extends Animation {
 	 */
 	private void setVariables() {
 		NBVALUES = rainDataSorted.size();
-		currentHeight = new float[NBVALUES];
+		barCurrentHeight = new float[NBVALUES];
+		lineCurrentHeight = new float[NBVALUES];
 		finalHeight = new float[NBVALUES];
 		xPos = new float[NBVALUES + 1];
+		
+		for (int i = 0; i < NBVALUES; i++) {
+			barCurrentHeight[i] = (float)WallConfiguration.SOURCE_IMG_HEIGHT;
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -106,39 +114,62 @@ public class RainBarsAnimation extends Animation {
 	
 	protected void drawAnimationFrame(PGraphics g) {		
 		g.background(255);
-		g.noFill();
+		// Get color
+		g.stroke(rainColor);
+		g.fill(rainColor);
+		
 		int i = 0;
 		
 		for (String year : rainDataSorted.keySet()) {
  			float rain = Float.parseFloat(rainDataSorted.get(year));
  			
 			// Get y coordinates and height
-			finalHeight[i] = PApplet.map(rain, 0, maxRain, 0, g.height);
+			finalHeight[i] = PApplet.map(rain, 0, maxRain, g.height, 0);
 			
-			// Get color
-			g.fill(rainColor);
+			// If bars are not fully drawn yet
+			if (barCurrentHeight[i] != finalHeight[i]) {
+				// Rain drops
+				PShape line = g.createShape();
+				line.beginShape();
+				
+				line.vertex(xPos[i], lineCurrentHeight[i]);
+				line.vertex(xPos[i + 1], lineCurrentHeight[i]);
+
+				line.endShape();
+				g.shape(line);
+				
+				// If line has not reached the bar yet, move the line one step further
+				if (lineCurrentHeight[i] + step < barCurrentHeight[i]) {
+					lineCurrentHeight[i] = lineCurrentHeight[i] + step;
+				} else {
+					// Reset line height
+					lineCurrentHeight[i] = 0;
+					
+					// Set new bar current height
+					barCurrentHeight[i] = barCurrentHeight[i] - rainStackStep;
+				}
+								
+				// If bar has reached the finalHeight, do not add another level to the bar
+				if (barCurrentHeight[i] - rainStackStep < finalHeight[i]) {
+					barCurrentHeight[i] = finalHeight[i];
+				}
+			}
 			
+			
+			// Rain bars
 			// Create shape
 			PShape rect = g.createShape();
 			rect.beginShape();
-						
+			
 			// Add the 4 points to form a rectangle
-			rect.vertex(xPos[i], g.height - currentHeight[i]);
-			rect.vertex(xPos[i + 1], g.height - currentHeight[i]);
+			rect.vertex(xPos[i], barCurrentHeight[i]);
+			rect.vertex(xPos[i + 1], barCurrentHeight[i]);
 			rect.vertex(xPos[i + 1], g.height);
 			rect.vertex(xPos[i], g.height);
-			
+		
 			// Draw shape
 			rect.endShape();
 			g.shape(rect);
-			
-			
-			// If bar has not reached its final height, add a level for next draw
-			if (currentHeight[i] + step < finalHeight[i]) {
-				currentHeight[i] = currentHeight[i] + step;
-			} else {
-				currentHeight[i] = finalHeight[i];
-			}
 			
 			i++;
 		}
