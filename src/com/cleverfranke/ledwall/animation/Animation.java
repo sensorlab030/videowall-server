@@ -76,4 +76,29 @@ public abstract class Animation {
 		return PColor.color(r, g, b);
 	}
 	
+	/**
+	 * Return an array that contains the X coordinates of the panel boundaries.
+	 * @return xPos
+	 */
+	protected static float[] getXCoordOfPanels() {
+		// Number of panels
+		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
+		
+		// Array the will contain the x coordinates of all the panels
+		float xPos[] = new float[PANEL_COUNT + 1];
+		
+		// Initial left x position
+		xPos[0] = 0;
+			
+		for(int i = 1; i < PANEL_COUNT; i++) {
+			// Get x right position of each panel
+		    xPos[i] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[i-1];
+		}
+
+		// Initial right end position
+		xPos[PANEL_COUNT] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[PANEL_COUNT-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[PANEL_COUNT-1];
+		
+		return xPos;
+	}
+	
 }
