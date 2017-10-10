@@ -6,6 +6,7 @@ import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import processing.core.PShape;
 
 public abstract class Animation {
 	
@@ -99,6 +100,95 @@ public abstract class Animation {
 		xPos[PANEL_COUNT] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[PANEL_COUNT-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[PANEL_COUNT-1];
 		
 		return xPos;
+	}
+	
+	/**
+	 * Return an array that contains the width in pixels of the panels
+	 * @return xWidth
+	 */
+	protected static float[] getPixelWidthsOfPanels() {
+		// Number of panels
+		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
+		
+		// Array the will contain the x coordinates of all the panels
+		float xWidth[] = new float[PANEL_COUNT];
+			
+		for(int i = 0; i < PANEL_COUNT; i++) {
+			// Get x width
+			xWidth[i] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
+		}
+
+		return xWidth;
+	}
+	
+	/**
+	 * Draws a square, the width of panel
+	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
+	 * @param yOffset The y coordinate of the top left corner of the square
+	 */
+	protected void drawSquare(int panelId, float yOffset) {
+		float[] xPos = getXCoordOfPanels();
+		float[] xWidth = getPixelWidthsOfPanels();
+
+		// Create shape
+		PShape square = graphicsContext.createShape();
+		square.beginShape();
+		
+		// Add the 4 points to form a rectangle
+		square.vertex(xPos[panelId], yOffset);
+		square.vertex(xPos[panelId+1], yOffset);
+		square.vertex(xPos[panelId+1], yOffset + xWidth[panelId]);
+		square.vertex(xPos[panelId], yOffset + xWidth[panelId]);
+	
+		// Draw shape
+		square.endShape();
+		graphicsContext.shape(square);
+	}
+	
+	/**
+	 * Draws a bar that starts from the bottom, the width of panel
+	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
+	 * @param yOffset The y coordinate of the top left corner of the bar
+	 */
+	protected void drawBottomBar(int panelId, float yOffset) {
+		float[] xPos = getXCoordOfPanels();
+
+		// Create shape
+		PShape rect = graphicsContext.createShape();
+		rect.beginShape();
+		
+		// Add the 4 points to form a rectangle
+		rect.vertex(xPos[panelId], yOffset);
+		rect.vertex(xPos[panelId+1], yOffset);
+		rect.vertex(xPos[panelId+1], graphicsContext.height);
+		rect.vertex(xPos[panelId], graphicsContext.height);
+	
+		// Draw shape
+		rect.endShape();
+		graphicsContext.shape(rect);
+	}
+	
+	/**
+	 * Draws a bar that starts from the top, the width of panel
+	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
+	 * @param yOffset The y coordinate of the bottom left corner of the bar
+	 */
+	protected void drawTopBar(int panelId, float yOffset) {
+		float[] xPos = getXCoordOfPanels();
+
+		// Create shape
+		PShape rect = graphicsContext.createShape();
+		rect.beginShape();
+		
+		// Add the 4 points to form a rectangle
+		rect.vertex(xPos[panelId], 0);
+		rect.vertex(xPos[panelId+1], 0);
+		rect.vertex(xPos[panelId+1], yOffset);
+		rect.vertex(xPos[panelId], yOffset);
+	
+		// Draw shape
+		rect.endShape();
+		graphicsContext.shape(rect);
 	}
 	
 }

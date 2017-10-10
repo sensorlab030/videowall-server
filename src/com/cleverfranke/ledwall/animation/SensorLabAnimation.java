@@ -9,14 +9,36 @@ import processing.core.PGraphics;
 import processing.core.PShape;
 
 public class SensorLabAnimation extends Animation {
-	
+	float[] xWidth = null;
+	boolean isTop = false;
+	int layoutChangeStep = 7;
 	
 	public SensorLabAnimation(PApplet applet) {
 		super(applet);
-		
-		
+		xWidth = getPixelWidthsOfPanels();
 	}
 
+	
+	public void drawStaircase(boolean isTop){
+		float yOffset = 0;
+		
+//		(applet.frameCount % 20 == 0);
+//		System.currentTimeMillis()
+//		applet.millis() 
+		
+		for (int i = 1; i < WallConfiguration.PANEL_COUNT; i++) {
+			if (isTop) {
+				drawTopBar(i, yOffset);
+			} else {
+				drawBottomBar(i, yOffset);
+			}
+			yOffset += xWidth[i];
+			
+			if (yOffset > WallConfiguration.SOURCE_IMG_HEIGHT) {
+				yOffset = 0;
+			}
+		}
+	}
 
 	
 	@Override
@@ -24,24 +46,10 @@ public class SensorLabAnimation extends Animation {
 		g.background(255);
 		g.fill(PColor.color(19, 172, 206));
 		
-		int panelId = 1;
-		float panelWidthCm = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[panelId];
-		float[] xPos = getXCoordOfPanels();
+		drawStaircase(isTop);
 		
-			
-		// Draw square
-		// Create shape
-		PShape rect = g.createShape();
-		rect.beginShape();
-		
-		// Add the 4 points to form a rectangle
-		rect.vertex(0, 150);
-		rect.vertex(0, 300);
-		rect.vertex(150, 300);
-		rect.vertex(150, 150);
-	
-		// Draw shape
-		rect.endShape();
-		g.shape(rect);
+		if (applet.frameCount % layoutChangeStep == 0) {
+			isTop = !isTop;
+		}
 	}
 }
