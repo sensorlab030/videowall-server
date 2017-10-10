@@ -94,7 +94,7 @@ public class RainBarsAnimation extends Animation {
 	
 	private void generateRandomLineSteps(Float maxHeight) {
 		for (int i = 0; i < NBVALUES; i++) {
-			lineStep[i] = (int) PApplet.map((float)Math.random(), 0, 1, 10, maxHeight/2);
+			lineStep[i] = (int) PApplet.map((float)Math.random(), 0, 1, maxHeight/8, maxHeight/2);
 		}
 	}
 	
