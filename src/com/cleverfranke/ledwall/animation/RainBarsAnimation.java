@@ -18,7 +18,6 @@ import processing.core.PShape;
 public class RainBarsAnimation extends Animation {
 	// PARAMETERS
 	int NBVALUES = 0; // Total number of bars
-	int step = 40; // Bar loading speed (load 10 levels at once)
 	int rainStackStep = 10 * WallConfiguration.PHYSICAL_PIXEL_PITCH_CM; // Bar loading speed (load 10 levels at once)
 	int rainColor = PColor.color(19, 172, 206);
 	
@@ -29,6 +28,7 @@ public class RainBarsAnimation extends Animation {
 	float[] lineCurrentHeight =  null;
 	float[] finalHeight =  null;
 	float[] xPos = null;
+	int[] lineStep = null;
 
 	
 	// Data structure
@@ -83,9 +83,18 @@ public class RainBarsAnimation extends Animation {
 		lineCurrentHeight = new float[NBVALUES];
 		finalHeight = new float[NBVALUES];
 		xPos = new float[NBVALUES + 1];
+		lineStep = new int[NBVALUES];
 		
 		for (int i = 0; i < NBVALUES; i++) {
 			barCurrentHeight[i] = (float)WallConfiguration.SOURCE_IMG_HEIGHT;
+		}
+		
+		generateRandomLineSteps((float)WallConfiguration.SOURCE_IMG_HEIGHT);
+	}
+	
+	private void generateRandomLineSteps(Float maxHeight) {
+		for (int i = 0; i < NBVALUES; i++) {
+			lineStep[i] = (int) PApplet.map((float)Math.random(), 0, 1, 10, maxHeight/2);
 		}
 	}
 	
@@ -139,14 +148,17 @@ public class RainBarsAnimation extends Animation {
 				g.shape(line);
 				
 				// If line has not reached the bar yet, move the line one step further
-				if (lineCurrentHeight[i] + step < barCurrentHeight[i]) {
-					lineCurrentHeight[i] = lineCurrentHeight[i] + step;
+				if (lineCurrentHeight[i] + lineStep[i] < barCurrentHeight[i]) {
+					lineCurrentHeight[i] = lineCurrentHeight[i] + lineStep[i];
 				} else {
 					// Reset line height
 					lineCurrentHeight[i] = 0;
 					
 					// Set new bar current height
 					barCurrentHeight[i] = barCurrentHeight[i] - rainStackStep;
+					
+					// Generate a new random line step
+					generateRandomLineSteps(g.height - barCurrentHeight[i]);
 				}
 								
 				// If bar has reached the finalHeight, do not add another level to the bar
