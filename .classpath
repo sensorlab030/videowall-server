@@ -9,11 +9,6 @@
 	<classpathentry kind="lib" path="lib/processing/pdf.jar"/>
 	<classpathentry kind="lib" path="lib/processing/serial/jssc.jar"/>
 	<classpathentry kind="lib" path="lib/processing/serial/serial.jar"/>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="lib/Ani.jar"/>
-=======
-	<classpathentry kind="lib" path="lib/commons-lang3-3.6/commons-lang3-3.6.jar"/>
-	<classpathentry kind="lib" path="lib/opencsv-4.0.jar"/>
->>>>>>> sensorlab-identity
 	<classpathentry kind="output" path="bin"/>
 </classpath>
