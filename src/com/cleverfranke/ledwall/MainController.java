@@ -2,6 +2,7 @@ package com.cleverfranke.ledwall;
 
 import com.cleverfranke.ledwall.animation.Animation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
+import com.cleverfranke.ledwall.animation.TransitionsTest;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -29,7 +30,7 @@ public class MainController extends PApplet {
 //		driver.initialize(SERIAL_PORTS);
 		
 		// Initialize animations
-		currentAnimation = new LineGraphAnimation(this);
+		currentAnimation = new TransitionsTest(this);
 		currentAnimation.prepare();
 		
 	}

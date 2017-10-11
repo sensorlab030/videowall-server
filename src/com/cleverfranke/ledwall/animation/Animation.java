@@ -2,6 +2,7 @@ package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.ledwall.WallConfiguration;
 
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -11,13 +12,15 @@ public abstract class Animation {
 	protected PApplet applet;
 	private PGraphics graphicsContext;
 	private PImage image;
+	public static Animation self;
 	
 	public Animation(PApplet applet) {
 		this.applet = applet;
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		
-		
+		self = this;
+		applet.registerMethod("keyEvent", this);
+
 	}
 	
 	/**
