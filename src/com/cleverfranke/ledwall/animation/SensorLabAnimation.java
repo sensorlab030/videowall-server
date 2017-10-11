@@ -11,45 +11,54 @@ import processing.core.PShape;
 public class SensorLabAnimation extends Animation {
 	float[] xWidth = null;
 	boolean isTop = false;
+	boolean isMoving = true;
 	int layoutChangeStep = 7;
+	float[] yOffset = null;
 	
 	public SensorLabAnimation(PApplet applet) {
 		super(applet);
 		xWidth = getPixelWidthsOfPanels();
+		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
 	}
+	
+//	(applet.frameCount % 20 == 0);
+//	System.currentTimeMillis()
+//	applet.millis() 
 
 	
-	public void drawStaircase(boolean isTop){
-		float yOffset = 0;
-		
-//		(applet.frameCount % 20 == 0);
-//		System.currentTimeMillis()
-//		applet.millis() 
-		
-		for (int i = 1; i < WallConfiguration.PANEL_COUNT; i++) {
+	public void drawStaircase(boolean isTop, float[] yOffset){
+
+		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
 			if (isTop) {
-				drawTopBar(i, yOffset);
+				drawTopBar(i, yOffset[i]);
 			} else {
-				drawBottomBar(i, yOffset);
+				drawBottomBar(i, yOffset[i]);
 			}
-			yOffset += xWidth[i];
 			
-			if (yOffset > WallConfiguration.SOURCE_IMG_HEIGHT) {
-				yOffset = 0;
+			yOffset[i + 1] = yOffset[i] + xWidth[i];
+			
+			if (yOffset[i + 1] > WallConfiguration.SOURCE_IMG_HEIGHT) {
+				yOffset[i + 1] = 0;
 			}
 		}
 	}
-
 	
 	@Override
 	protected void drawAnimationFrame(PGraphics g) {
 		g.background(255);
 		g.fill(PColor.color(19, 172, 206));
 		
-		drawStaircase(isTop);
+		drawStaircase(isTop, yOffset);
 		
 		if (applet.frameCount % layoutChangeStep == 0) {
 			isTop = !isTop;
+			isMoving = !isMoving;
 		}
+		
+		if (isMoving) {
+			yOffset =  movePatternRight(yOffset);
+		}
+		
+
 	}
 }

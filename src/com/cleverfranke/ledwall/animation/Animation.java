@@ -124,9 +124,9 @@ public abstract class Animation {
 	/**
 	 * Draws a square, the width of panel
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
-	 * @param yOffset The y coordinate of the top left corner of the square
+	 * @param panelCoord The y coordinate of the top left corner of the square
 	 */
-	protected void drawSquare(int panelId, float yOffset) {
+	protected void drawSquare(int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 		float[] xWidth = getPixelWidthsOfPanels();
 
@@ -135,10 +135,10 @@ public abstract class Animation {
 		square.beginShape();
 		
 		// Add the 4 points to form a rectangle
-		square.vertex(xPos[panelId], yOffset);
-		square.vertex(xPos[panelId+1], yOffset);
-		square.vertex(xPos[panelId+1], yOffset + xWidth[panelId]);
-		square.vertex(xPos[panelId], yOffset + xWidth[panelId]);
+		square.vertex(xPos[panelId], panelCoord);
+		square.vertex(xPos[panelId+1], panelCoord);
+		square.vertex(xPos[panelId+1], panelCoord + xWidth[panelId]);
+		square.vertex(xPos[panelId], panelCoord + xWidth[panelId]);
 	
 		// Draw shape
 		square.endShape();
@@ -148,9 +148,9 @@ public abstract class Animation {
 	/**
 	 * Draws a bar that starts from the bottom, the width of panel
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
-	 * @param yOffset The y coordinate of the top left corner of the bar
+	 * @param panelCoord The y coordinate of the top left corner of the bar
 	 */
-	protected void drawBottomBar(int panelId, float yOffset) {
+	protected void drawBottomBar(int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape
@@ -158,8 +158,8 @@ public abstract class Animation {
 		rect.beginShape();
 		
 		// Add the 4 points to form a rectangle
-		rect.vertex(xPos[panelId], yOffset);
-		rect.vertex(xPos[panelId+1], yOffset);
+		rect.vertex(xPos[panelId], panelCoord);
+		rect.vertex(xPos[panelId+1], panelCoord);
 		rect.vertex(xPos[panelId+1], graphicsContext.height);
 		rect.vertex(xPos[panelId], graphicsContext.height);
 	
@@ -171,9 +171,9 @@ public abstract class Animation {
 	/**
 	 * Draws a bar that starts from the top, the width of panel
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
-	 * @param yOffset The y coordinate of the bottom left corner of the bar
+	 * @param panelCoord The y coordinate of the bottom left corner of the bar
 	 */
-	protected void drawTopBar(int panelId, float yOffset) {
+	protected void drawTopBar(int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape
@@ -183,12 +183,39 @@ public abstract class Animation {
 		// Add the 4 points to form a rectangle
 		rect.vertex(xPos[panelId], 0);
 		rect.vertex(xPos[panelId+1], 0);
-		rect.vertex(xPos[panelId+1], yOffset);
-		rect.vertex(xPos[panelId], yOffset);
+		rect.vertex(xPos[panelId+1], panelCoord);
+		rect.vertex(xPos[panelId], panelCoord);
 	
 		// Draw shape
 		rect.endShape();
 		graphicsContext.shape(rect);
 	}
 	
+	/**
+	 * Moves the coordinates of the drawing, per panel, one panel to the right
+	 * @param panelCoord : An array containing the coordinates per panel. Index of the array is index of the panel
+	 * @return : An array containing the same coordinates but offset of one to the right.
+	 */
+	public float[] movePatternRight(float[] panelCoord){
+		float[] movedpanelCoord = new float[WallConfiguration.PANEL_COUNT + 1];
+		
+		movedpanelCoord[0] = panelCoord[WallConfiguration.PANEL_COUNT];
+		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
+			movedpanelCoord[i + 1] = panelCoord[i];
+		}
+		
+		return movedpanelCoord;
+	}
+	
+	
+	public float[] movePatternLeft(float[] panelCoord){
+		float[] movedpanelCoord = new float[WallConfiguration.PANEL_COUNT + 1];
+		
+		movedpanelCoord[WallConfiguration.PANEL_COUNT] = panelCoord[0];
+		for (int i = 1; i < WallConfiguration.PANEL_COUNT; i++) {
+			movedpanelCoord[i - 1] = panelCoord[i];
+		}
+		
+		return movedpanelCoord;
+	}
 }
