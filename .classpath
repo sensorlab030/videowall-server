@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/processing/pdf.jar"/>
 	<classpathentry kind="lib" path="lib/processing/serial/jssc.jar"/>
 	<classpathentry kind="lib" path="lib/processing/serial/serial.jar"/>
+	<classpathentry kind="lib" path="lib/Ani.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
