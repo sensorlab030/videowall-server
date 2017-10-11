@@ -14,7 +14,7 @@ import de.looksgood.ani.*;
 public class TransitionsTest extends Animation{
 	float x, y, diameter;
 	AniSequence seq;
-	PColor color = generateRandomRGBColor();
+	int color = generateRandomRGBColor();
 	
 	public TransitionsTest(PApplet applet) {
 		super(applet);

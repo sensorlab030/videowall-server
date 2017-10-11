@@ -3,12 +3,9 @@ package com.cleverfranke.ledwall;
 import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.Animation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
-<<<<<<< HEAD
 import com.cleverfranke.ledwall.animation.TransitionsTest;
-=======
 import com.cleverfranke.ledwall.animation.RainBarsAnimation;
 import com.cleverfranke.ledwall.animation.SensorLabAnimation;
->>>>>>> sensorlab-identity
 
 import processing.core.PApplet;
 import processing.core.PImage;
