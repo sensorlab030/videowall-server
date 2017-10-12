@@ -21,7 +21,7 @@ public abstract class Animation {
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		self = this;
-		applet.registerMethod("keyEvent", this);
+//		applet.registerMethod("keyEvent", this);
 
 	}
 	
