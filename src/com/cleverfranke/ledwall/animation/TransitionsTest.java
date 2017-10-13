@@ -13,7 +13,8 @@ import de.looksgood.ani.*;
 
 public class TransitionsTest extends Animation{
 	int nbSquares;
-	AniSequence seq;
+	AniSequence seq1;
+	AniSequence seq2;
 	float xWidth[] = new float[WallConfiguration.PANEL_COUNT];
 	float yPos[][] = new float[WallConfiguration.PANEL_COUNT][WallConfiguration.PANEL_COUNT];
 	int stateManager;
@@ -45,32 +46,65 @@ public class TransitionsTest extends Animation{
 		
 		Ani.init(applet);
 		
-		seq = new AniSequence(applet);
-		seq.beginSequence();
+		/**
+		 * SEQ 1 
+		 */
+		seq1 = new AniSequence(applet);
+		seq1.beginSequence();
 		
 		// step 0
-		seq.add(Ani.to(this, (float) 1, "stateManager:4"));
+		seq1.add(Ani.to(this, (float) 1, "stateManager:4"));
 		
 		// step 1
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:1"));
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:1"));
 		  
 		// step 2
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:5"));
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:5"));
 	
 		// step 3
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:3"));
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:3"));
 		
 		// step 4 
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:0"));
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:0"));
 		
 		// step 4 
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:4"));	
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:4"));	
 
-		seq.add(Ani.to(this, (float) 0.5, "stateManager:2"));	
+		seq1.add(Ani.to(this, (float) 0.5, "stateManager:2"));	
 		
-		seq.endSequence();
-		seq.start();
+		seq1.endSequence();
+		// seq1.start();
+		
+		
+		
+		/**
+		 * SEQ 2
+		 */
+		seq2 = new AniSequence(applet);
+		seq2.beginSequence();
+		
+		// step 0
+		seq2.add(Ani.to(this, (float) 1, "stateManager:4"));
+		
+		// step 1
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:1"));
 		  
+		// step 2
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:5"));
+	
+		// step 3
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:3"));
+		
+		// step 4 
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:0"));
+		
+		// step 4 
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:4"));	
+
+		seq2.add(Ani.to(this, (float) 0.5, "stateManager:2"));	
+		
+		seq2.endSequence();
+		seq2.start();
 	}
 	
 
@@ -78,8 +112,8 @@ public class TransitionsTest extends Animation{
 		char key = event.getKey();
 		if (key == 's' || key == 'S') {
 			System.out.println("pressed");
-			// start the whole sequence
-			  seq.start();
+			// start the whole seq1uence
+			  seq1.start();
 		}
 	}
 	
@@ -134,15 +168,15 @@ public class TransitionsTest extends Animation{
 		            	}
                      	break;
 		            default:
-		            	System.out.println("COUCOU");
+		            	System.out.println("In switch default");
 		            	break;
 		        }
 				
 			}
 		}
 		
-		if (seq.isEnded()) {
-			seq.start();
+		if (seq1.isEnded()) {
+			seq1.start();
 		}
 	}
 
