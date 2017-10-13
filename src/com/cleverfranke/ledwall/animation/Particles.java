@@ -17,41 +17,87 @@ public class Particles extends Animation{
 	
 	public class ParticleLine {
 		// Fields
+		private int index;
 		private float x1;
 		private float x2;
 		private float y1;
 		private int color[] = new int[3];
 		private int alpha;
-		Ani diameterAni;
+		Ani aniX1;
+		Ani aniX2;
 		
 		// Constructor
-		public ParticleLine(float x1, float x2, float y1) {
-			this.x1 = x1;
-			this.x2 = x2;
+		public ParticleLine(float y1, int index) {
+			this.index = index;
 			this.y1 = y1;
 			this.color = this.setColor();
 			this.alpha = 255;
-			
-			// diameter animation
-		    diameterAni = new Ani(this, (float) 1, "x2", 500, Ani.EXPO_IN_OUT);
-		    Ani.to(this, (float) 1.5, "x2", 700, Ani.EXPO_IN_OUT);
-		    // repeat yoyo style (go up and down)
-		    diameterAni.setPlayMode(Ani.YOYO);
-		    // repeat 3 times
-		    diameterAni.repeat(3);
+			this.aniX1 = this.setAniX1();	
+			this.aniX2 = this.setAniX2();
+			this.setCoordinates();
 		}
 		
 		public int[] setColor() {
 			int[] color = new int[3];
-			color[0] = (int) (Math.random() * 255);
-			color[1] = (int) (Math.random() * 255);
-			color[2] = (int) (Math.random() * 255);
+			switch (this.index % 3) {
+			case 0:
+				color[0] = 255;
+				color[1] = 255;
+				color[2] = 0;
+				break;
+			case 1:
+				color[0] = 0;
+				color[1] = 255;
+				color[2] = 255;
+				break;
+			case 2:
+				color[0] = 255;
+				color[1] = 0;
+				color[2] = 255;
+				break;
+									
+			}
 			return color;
 		}
 		
+		public void setCoordinates() {
+			double coin = Math.random();
+
+			if (coin > 0.5) {
+				this.x1 = (float) Math.random() * (WallConfiguration.SOURCE_IMG_WIDTH) - WallConfiguration.SOURCE_IMG_WIDTH;
+				this.x2 = (float) (this.x1 + Math.random() * (WallConfiguration.SOURCE_IMG_WIDTH-this.x1) - WallConfiguration.SOURCE_IMG_WIDTH);
+			} else {
+				this.x1 = 0;
+				this.x2 = 0;
+			}
+		}
+		
+		public Ani setAniX1(){
+			float finalx1 = this.x1 + 3*WallConfiguration.SOURCE_IMG_WIDTH;
+			float duration = (float) (this.index * Math.random());
+			Ani animation = new Ani(this, (float) duration, (float) 0.1, "x1", finalx1, Ani.LINEAR);
+			Ani.to(this, (float) 0, duration, "x1", this.x1, Ani.LINEAR);
+			animation.repeat(3);
+			animation.start();
+			return animation;
+		}
+		
+		public Ani setAniX2(){
+			float finalx2 = this.x2 + 3*WallConfiguration.SOURCE_IMG_WIDTH;
+			Ani animation = new Ani(this, (float) 2, (float) 0.1, "x2", finalx2, Ani.LINEAR);
+			Ani.to(this, (float) 0, 2, "x2", this.x2, Ani.LINEAR);
+			animation.repeat(3);
+			animation.start();
+			return animation;
+		}
+
 		public void drawLine(PGraphics g) {
 			g.stroke(PColor.color(color[0], color[1], color[2], alpha));
 			g.line(x1, y1, x2, y1);
+		}
+		
+		public void randomize(){
+			System.out.println("Coucou");
 		}
 	}
 		
@@ -69,11 +115,11 @@ public class Particles extends Animation{
 		Ani.init(applet);
 		
 		// Initialize particles list
-		particles = new ParticleLine[nbRows];
+		particles = new ParticleLine[nbRows]; 
 		
 		// Create one line per row
 		for (int i=0; i<nbRows; i++){
-			ParticleLine line = new ParticleLine(0, xWidth[0], i*rowHeight);
+			ParticleLine line = new ParticleLine(i*rowHeight, i);
 			particles[i] = line;
 		}
 
