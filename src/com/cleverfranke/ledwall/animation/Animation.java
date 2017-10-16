@@ -12,7 +12,7 @@ import processing.core.PShape;
 public abstract class Animation {
 	
 	protected PApplet applet;
-	private PGraphics graphicsContext;
+	private static PGraphics graphicsContext;
 	private PImage image;
 	public static Animation self;
 	
@@ -129,10 +129,12 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the square
 	 */
-	protected void drawSquare(int panelId, float panelCoord) {
+	protected static void drawSquare(int panelId, float panelCoord, int color) {
 		float[] xPos = getXCoordOfPanels();
 		float[] xWidth = getPixelWidthsOfPanels();
-
+		
+		graphicsContext.fill(color);
+		
 		// Create shape
 		PShape square = graphicsContext.createShape();
 		square.beginShape();

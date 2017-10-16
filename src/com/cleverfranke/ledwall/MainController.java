@@ -4,7 +4,7 @@ import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.Animation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 import com.cleverfranke.ledwall.animation.Particles;
-import com.cleverfranke.ledwall.animation.TransitionsTest;
+import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 import com.cleverfranke.ledwall.animation.RainBarsAnimation;
 import com.cleverfranke.ledwall.animation.SensorLabAnimation;
 
@@ -34,7 +34,7 @@ public class MainController extends PApplet {
 //		driver.initialize(SERIAL_PORTS);
 		
 		// Initialize animations
-		currentAnimation = new Particles(this);
+		currentAnimation = new ChestBoardAnimation(this);
 		currentAnimation.prepare();
 		
 	}
