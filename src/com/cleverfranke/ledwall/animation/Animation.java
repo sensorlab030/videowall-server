@@ -20,9 +20,6 @@ public abstract class Animation {
 		this.applet = applet;
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		self = this;
-//		applet.registerMethod("keyEvent", this);
-
 	}
 	
 	/**
@@ -79,6 +76,18 @@ public abstract class Animation {
 		int b = (int) (Math.random() * 255);
 		return PColor.color(r, g, b);
 	}
+	
+	/**
+	 * Generate a random RGBA color
+	 * @return PColor
+	 */
+	protected static int generateRandomRGBAColor(int alpha) {
+		int r = (int) (Math.random() * 255);
+		int g = (int) (Math.random() * 255);
+		int b = (int) (Math.random() * 255);
+		return PColor.color(r, g, b, alpha);
+	}
+	
 	
 	/**
 	 * Return an array that contains the X coordinates of the panel boundaries.

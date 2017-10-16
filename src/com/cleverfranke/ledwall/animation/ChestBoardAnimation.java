@@ -12,58 +12,66 @@ import processing.event.KeyEvent;
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
-	int nbSquares;
-	AniSequence seq1;
-	AniSequence seq2;
-	float xWidth[] = getPixelWidthsOfPanels();;
-	float yPos[][] = new float[WallConfiguration.PANEL_COUNT][WallConfiguration.PANEL_COUNT];
-	int stateManager;
+	public static final int TOTAL_DURATION = 15;
+	public static final float PANEL_WIDTH[] = getPixelWidthsOfPanels(); // Width of each panel
 	ChestBoard chestboard;
 	
+	
+	/**
+	 * A Square is a class  that represents one square on the chestboard
+	 */
 	public class Square {
-		private int i;
-		private float yPos;
-		private int color;
+		private int i;		// Panel ID
+		private float yPos; // Top left corner position of the square
+		private int color;	// Square color
+		private int alpha;
 		
-		// Constructor
-		public Square(int i, float yPos) {
+		public Square(int i, float yPos, int alpha) {
 			this.i = i;
 			this.yPos = yPos;
-			this.color = generateRandomRGBColor();
+			this.alpha = alpha;
+			this.color = generateRandomRGBAColor(this.alpha);
 		}
 		
-		public void drawSquare(){
+		public void setColor(int alpha){
+			this.color = generateRandomRGBAColor(alpha);
+		}
+		
+		public void drawSquare(int alpha){
+			this.setColor(alpha);
 			ChestBoardAnimation.drawSquare(this.i, this.yPos, this.color);
 		}
 	}
 	
+	/**
+	 * A ChestBoard is a collection of squares drawn on several panels of the wall
+	 */
 	public class ChestBoard {
-		private int leftPanelIndex;
-		private int rightPanelIndex;
-		private int stateManager;
-		private Square[][] squares; // [Panel ID][Y coordinates of top left corner]
-		private int nbSquares;
-		Ani aniChestBoard;
+		private int leftPanelIndex;		// Index of the extreme left panel
+		private int rightPanelIndex;	// Index of the extreme right panel
+		private int stateManager;		// Change animation depending on its value
+		private Square[][] squares; 	// Square collection [Panel ID][Row ID]
+		private int nbSquares;			// Total number of squares on the board
+		AniSequence aniChestBoard;		// Animation
 		
-		// Constructor
 		public ChestBoard(int nbSquares, int leftPanelIndex, int rightPanelIndex, int stateManager) {
 			this.nbSquares = nbSquares;
 			this.leftPanelIndex = leftPanelIndex;
 			this.rightPanelIndex = rightPanelIndex;
-			this.setSquares();
 			this.stateManager = stateManager;
+			this.setSquares();
 		}
 		
 		/**
 		 * Stores the y position of each squares for each panel (except the two extreme panels)
-		 * @param xWidth: An array containing the width of each panel
+		 * @param PANEL_WIDTH: An array containing the width of each panel
 		 */
 		public void setSquares(){
 			this.squares = new Square[WallConfiguration.PANEL_COUNT][this.nbSquares];
 			
 			for (int i = leftPanelIndex; i < rightPanelIndex; i++) {
 				for (int j = 0; j < this.nbSquares; j++) {
-					this.squares[i][j] = new Square(i, xWidth[i] * j);
+					this.squares[i][j] = new Square(i, PANEL_WIDTH[i] * j, 0);
 				}
 			}
 			
@@ -71,15 +79,24 @@ public class ChestBoardAnimation extends Animation{
 		
 		public void drawSquare(int i, int j){
 			Square square = this.squares[i][j];
-			square.drawSquare();
+			square.drawSquare(255);
 		}
 		
 		public void setAniChestBoard(){
-			//** ANIMATION NOT WORKING ! **//
-			this.aniChestBoard = new Ani(this, (float) 2, "stateManager", 5, Ani.LINEAR); 
-			Ani.to(this, (float) 2, "stateManager", 1, Ani.LINEAR);
-			Ani.to(this, (float) 2, "stateManager", 5, Ani.LINEAR);
+			this.aniChestBoard.beginSequence();
 			
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 0, "stateManager", 6));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 4));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 1));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 5));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 2));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 4));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 3));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 5));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 0));
+			this.aniChestBoard.add(Ani.to(this, (float) 0, (float) 1, "stateManager", 6));
+			
+			this.aniChestBoard.endSequence();
 			this.aniChestBoard.start();
 		}
 		
@@ -91,33 +108,29 @@ public class ChestBoardAnimation extends Animation{
 		this.applet = applet;
 		
 		// Calculate number of squares per panel
-		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / xWidth[1]);
+		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
+		
+		// Start animation library
+		Ani.init(applet);
 		
 		// Create ChestBoard
-		chestboard = new ChestBoard(nbSquares, 1, WallConfiguration.PANEL_COUNT-1, 1);
-		
-		Ani.init(applet);
+		chestboard = new ChestBoard(nbSquares, 1, WallConfiguration.PANEL_COUNT-1, 0);
+		chestboard.aniChestBoard = new AniSequence(applet);
+		chestboard.setAniChestBoard();
 	}
 	
 
-	public void keyEvent(KeyEvent event) {
-		char key = event.getKey();
-		if (key == 's' || key == 'S') {
-			System.out.println("pressed");
-			// start the whole seq1uence
-			  seq1.start();
-		}
-	}
-	
 	@Override
 	protected void drawAnimationFrame(PGraphics g) {
 		g.smooth();
 		g.background(255);
-
-		// Draw all squares chest board
+		g.noStroke();
+		
+		System.out.println(chestboard.stateManager);
+		
+		// Draw animation depending on stateManager value
 		for (int i = chestboard.leftPanelIndex; i < chestboard.rightPanelIndex; i++) {
 			for (int j = 0; j < chestboard.nbSquares; j++) {	
-				//chestboard.drawSquare(i, j);
 				 switch (chestboard.stateManager) {
 		            case 0:
 		            	if (i%2 == 0 && j%2 ==0) {
@@ -157,17 +170,20 @@ public class ChestBoardAnimation extends Animation{
 		            		chestboard.drawSquare(i, j);
 		            	}
                      	break;
+		            case 6:
+		            	chestboard.drawSquare(i, j);
+                     	break;
 		            default:
-		            	System.out.println("In switch default");
+		            	chestboard.drawSquare(i, j);
 		            	break;
 		        }
 				
 			}
 		}
 		
-//		if (seq1.isEnded()) {
-//			seq1.start();
-//		}
+		if (chestboard.aniChestBoard.isEnded()) {
+			chestboard.aniChestBoard.start();
+		}
 	}
 
 }
