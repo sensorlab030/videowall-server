@@ -20,9 +20,10 @@ public class LineGraphAnimation extends Animation {
 			PColor.color(255, 255, 0)
 			};
 	
-	public LineGraphAnimation(PApplet applet) {
+	public LineGraphAnimation() {
 		super(applet);
 		
+		TOTAL_DURATION = 5;
 		// Initialize noise seed
 		for (int i = 0; i < LINE_COUNT; i++) {
 			yOffset[i] = (float) i / (float) LINE_COUNT;

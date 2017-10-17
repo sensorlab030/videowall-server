@@ -15,8 +15,9 @@ public class SensorLabAnimation extends Animation {
 	int layoutChangeStep = 7;
 	float[] yOffset = null;
 	
-	public SensorLabAnimation(PApplet applet) {
+	public SensorLabAnimation() {
 		super(applet);
+		TOTAL_DURATION = 5;
 		xWidth = getPixelWidthsOfPanels();
 		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
 	}

@@ -1,12 +1,7 @@
 package com.cleverfranke.ledwall;
 
-import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.Animation;
-import com.cleverfranke.ledwall.animation.LineGraphAnimation;
-import com.cleverfranke.ledwall.animation.Particles;
-import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
-import com.cleverfranke.ledwall.animation.RainBarsAnimation;
-import com.cleverfranke.ledwall.animation.SensorLabAnimation;
+import com.cleverfranke.ledwall.animation.AnimationController;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -34,8 +29,9 @@ public class MainController extends PApplet {
 //		driver.initialize(SERIAL_PORTS);
 		
 		// Initialize animations
-		currentAnimation = new ChestBoardAnimation(this);
-		currentAnimation.prepare();
+		// currentAnimation = new ChestBoardAnimation(this);
+		currentAnimation = new AnimationController(this);
+		// currentAnimation.prepare();
 		
 	}
 	

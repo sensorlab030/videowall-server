@@ -2,19 +2,18 @@ package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
-
-import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PShape;
 
+
 public abstract class Animation {
 	
-	protected PApplet applet;
+	protected static PApplet applet;
 	private static PGraphics graphicsContext;
 	private PImage image;
-	public static Animation self;
+	public static int TOTAL_DURATION = 5;
 	
 	public Animation(PApplet applet) {
 		this.applet = applet;
@@ -231,5 +230,9 @@ public abstract class Animation {
 		}
 		
 		return movedpanelCoord;
+	}
+	
+	public float getTotalDuration(){
+		return TOTAL_DURATION;
 	}
 }

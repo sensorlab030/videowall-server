@@ -2,17 +2,12 @@
 package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.ledwall.WallConfiguration;
-import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.core.PShape;
-import processing.event.KeyEvent;
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
-	public static final int TOTAL_DURATION = 15;
 	public static final float PANEL_WIDTH[] = getPixelWidthsOfPanels(); // Width of each panel
 	ChestBoard chestboard;
 	
@@ -102,10 +97,11 @@ public class ChestBoardAnimation extends Animation{
 		
 	}
 	
+
 	
-	public ChestBoardAnimation(PApplet applet) {
+	public ChestBoardAnimation() {
 		super(applet);
-		this.applet = applet;
+		TOTAL_DURATION = 15;
 		
 		// Calculate number of squares per panel
 		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
@@ -125,8 +121,6 @@ public class ChestBoardAnimation extends Animation{
 		g.smooth();
 		g.background(255);
 		g.noStroke();
-		
-		System.out.println(chestboard.stateManager);
 		
 		// Draw animation depending on stateManager value
 		for (int i = chestboard.leftPanelIndex; i < chestboard.rightPanelIndex; i++) {
@@ -180,10 +174,11 @@ public class ChestBoardAnimation extends Animation{
 				
 			}
 		}
-		
-		if (chestboard.aniChestBoard.isEnded()) {
-			chestboard.aniChestBoard.start();
-		}
+
+		// LOOP
+//		if (chestboard.aniChestBoard.isEnded()) {
+//			chestboard.aniChestBoard.start();
+//		}
 	}
 
 }
