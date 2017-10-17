@@ -10,12 +10,15 @@ import processing.core.PShape;
 
 public abstract class Animation {
 	
-	protected static PApplet applet;
+	protected PApplet applet;
 	private static PGraphics graphicsContext;
 	private PImage image;
-	public static int TOTAL_DURATION = 5;
+	private int duration; // Duration of the visualization in frames
+	private boolean inDefaultRotation;		// Whether visual should be in default rotation
 	
-	public Animation(PApplet applet) {
+	public Animation(int duration, boolean inDefaultRotation, PApplet applet) {
+		this.duration = duration;
+		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
@@ -28,7 +31,7 @@ public abstract class Animation {
 	 *
 	 */
 	public final PImage draw() {
-		
+		System.out.println("COUCOU");
 		// Draw animation frame to image
 		graphicsContext.beginDraw();
 		drawAnimationFrame(graphicsContext);
@@ -63,7 +66,54 @@ public abstract class Animation {
 	 * Draw animation frame on the given PGraphics context
 	 * @param g
 	 */
-	abstract protected void drawAnimationFrame(PGraphics g);
+	public abstract void drawAnimationFrame(PGraphics g);
+	
+	/**
+	 * Get duration of visualization in frames
+	 * @return
+	 */
+	public int getDuration() {
+		return duration;
+	}
+	
+	public boolean isDone() {
+		return false;
+	}
+	
+	/**
+	 * Get if visualization is in default rotation
+	 * 
+	 * @return
+	 */
+	public boolean isInDefaultRotation() {
+		return inDefaultRotation;
+	}
+	
+	/**
+	 * Method that is called by the VisualizationManager just
+	 * before the Visualization is shown, can be used to
+	 * switch from subject, or change palette.
+	 */
+	public void prepareForQueueRotation() {}
+	
+	/**
+	 * Method that is called by the VisualizationManager just
+	 * before the Visualization is shown, to check if the
+	 * visualization can be put into rotation. If false is
+	 * returned, the visualization is skipped
+	 * 
+	 * @return
+	 */
+	public boolean isAvailableForQueueRotation() {
+		return true;
+	}
+
+	/**
+	 * Method that is called by the VisualizationManager just
+	 * after the Visualization transition is done.
+	 */
+	public void inAnimationDone() {}
+	
 	
 	/**
 	 * Generate a random RGB color
@@ -137,14 +187,14 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the square
 	 */
-	protected static void drawSquare(int panelId, float panelCoord, int color) {
+	protected static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
 		float[] xPos = getXCoordOfPanels();
 		float[] xWidth = getPixelWidthsOfPanels();
 		
-		graphicsContext.fill(color);
-		
+		g.fill(color);
+
 		// Create shape
-		PShape square = graphicsContext.createShape();
+		PShape square = g.createShape();
 		square.beginShape();
 		
 		// Add the 4 points to form a rectangle
@@ -155,7 +205,7 @@ public abstract class Animation {
 	
 		// Draw shape
 		square.endShape();
-		graphicsContext.shape(square);
+		g.shape(square);
 	}
 	
 	/**
@@ -230,9 +280,5 @@ public abstract class Animation {
 		}
 		
 		return movedpanelCoord;
-	}
-	
-	public float getTotalDuration(){
-		return TOTAL_DURATION;
 	}
 }

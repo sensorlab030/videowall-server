@@ -15,9 +15,8 @@ public class SensorLabAnimation extends Animation {
 	int layoutChangeStep = 7;
 	float[] yOffset = null;
 	
-	public SensorLabAnimation() {
-		super(applet);
-		TOTAL_DURATION = 5;
+	public SensorLabAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(15, inDefaultRotation, applet);
 		xWidth = getPixelWidthsOfPanels();
 		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
 	}
@@ -45,7 +44,7 @@ public class SensorLabAnimation extends Animation {
 	}
 	
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	public void drawAnimationFrame(PGraphics g) {
 		g.background(255);
 		g.fill(PColor.color(19, 172, 206));
 		

@@ -5,6 +5,7 @@ import com.cleverfranke.ledwall.WallConfiguration;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PShape;
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
@@ -32,9 +33,9 @@ public class ChestBoardAnimation extends Animation{
 			this.color = generateRandomRGBAColor(alpha);
 		}
 		
-		public void drawSquare(int alpha){
+		public void drawSquare(PGraphics g, int alpha){
 			this.setColor(alpha);
-			ChestBoardAnimation.drawSquare(this.i, this.yPos, this.color);
+			ChestBoardAnimation.drawSquare(g, this.i, this.yPos, this.color);
 		}
 	}
 	
@@ -72,9 +73,9 @@ public class ChestBoardAnimation extends Animation{
 			
 		}
 		
-		public void drawSquare(int i, int j){
+		public void drawSquare(PGraphics g, int i, int j){
 			Square square = this.squares[i][j];
-			square.drawSquare(255);
+			square.drawSquare(g, 255);
 		}
 		
 		public void setAniChestBoard(){
@@ -99,9 +100,8 @@ public class ChestBoardAnimation extends Animation{
 	
 
 	
-	public ChestBoardAnimation() {
-		super(applet);
-		TOTAL_DURATION = 15;
+	public ChestBoardAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(15, inDefaultRotation, applet);
 		
 		// Calculate number of squares per panel
 		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
@@ -117,7 +117,7 @@ public class ChestBoardAnimation extends Animation{
 	
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	public void drawAnimationFrame(PGraphics g) {
 		g.smooth();
 		g.background(255);
 		g.noStroke();
@@ -128,57 +128,53 @@ public class ChestBoardAnimation extends Animation{
 				 switch (chestboard.stateManager) {
 		            case 0:
 		            	if (i%2 == 0 && j%2 ==0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 1:
 		            	if (i%2 == 0 && j%2 != 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 2:
 		            	if (i%2 != 0 && j%2 != 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 3:
 		            	if (i%2 != 0 && j%2 == 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 4:
 		            	if (i%2 != 0 && j%2 == 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
 		            	
 		            	if (i%2 == 0 && j%2 != 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 5:
 		            	if (i%2 == 0 && j%2 == 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
 		            	
 		            	if (i%2 != 0 && j%2 != 0) {
-		            		chestboard.drawSquare(i, j);
+		            		chestboard.drawSquare(g, i, j);
 		            	}
                      	break;
 		            case 6:
-		            	chestboard.drawSquare(i, j);
+		            	chestboard.drawSquare(g, i, j);
                      	break;
 		            default:
-		            	chestboard.drawSquare(i, j);
+		            	chestboard.drawSquare(g, i, j);
 		            	break;
 		        }
 				
 			}
 		}
 
-		// LOOP
-//		if (chestboard.aniChestBoard.isEnded()) {
-//			chestboard.aniChestBoard.start();
-//		}
 	}
 
 }

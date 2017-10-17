@@ -101,8 +101,8 @@ public class Particles extends Animation{
 		}
 	}
 		
-	public Particles(PApplet applet) {
-		super(applet);
+	public Particles(boolean inDefaultRotation, PApplet applet) {
+		super(15, inDefaultRotation, applet);
 		this.applet = applet;
 		
 		// Get width of each panels
@@ -127,7 +127,7 @@ public class Particles extends Animation{
 	
 	
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	public void drawAnimationFrame(PGraphics g) {
 		g.background(255);
 		g.strokeWeight(4);
 		

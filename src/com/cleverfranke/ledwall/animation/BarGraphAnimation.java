@@ -22,9 +22,9 @@ public class BarGraphAnimation extends Animation {
 	float[] xPos = new float[NBVALUES + 1];
 	
 	
-	public BarGraphAnimation(PApplet applet) {
-		super(applet);
-	   
+	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(15, inDefaultRotation, applet);
+		
 		// Initial left x position
 		xPos[0] = 0;
 			
@@ -55,7 +55,7 @@ public class BarGraphAnimation extends Animation {
 	}
 		
 	
-	protected void drawAnimationFrame(PGraphics g) {		
+	public void drawAnimationFrame(PGraphics g) {		
 		g.background(255);
 		g.noFill();
 		

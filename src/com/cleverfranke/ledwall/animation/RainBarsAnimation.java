@@ -99,8 +99,8 @@ public class RainBarsAnimation extends Animation {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public RainBarsAnimation(PApplet applet) {
-		super(applet);
+	public RainBarsAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(15, inDefaultRotation, applet);
 		
 		// Load data
 		loadRainData("/Users/agathelenclen/Projects/led-wall/src/data/NL_Cumulative_Rain_04-17.csv");
@@ -121,7 +121,7 @@ public class RainBarsAnimation extends Animation {
 	}
 	
 	
-	protected void drawAnimationFrame(PGraphics g) {		
+	public void drawAnimationFrame(PGraphics g) {		
 		g.background(255);
 		// Get color
 		g.stroke(rainColor);
