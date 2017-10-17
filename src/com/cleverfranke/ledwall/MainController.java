@@ -1,6 +1,5 @@
 package com.cleverfranke.ledwall;
 
-import com.cleverfranke.ledwall.animation.Animation;
 import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 import com.cleverfranke.ledwall.animation.Particles;
@@ -12,34 +11,37 @@ import processing.core.PImage;
 
 public class MainController extends PApplet {
 	
+	// Animation manager 
+	AnimationManager animationManager;
+	
 	// Configuration
 	private final static String[] SERIAL_PORTS = {"/dev/tty1", "/dev/tty2"};
 	
 	// Runtime members
 	private WallDriver driver;
-	private Animation currentAnimation;
-	AnimationManager animationManager;
+	
 	
 	public void settings() {
 		size(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	}
 	
-	public void setup() {
-		
+	public void setup() {		
 		// Setup frame rate
 		frameRate(30);
 
 		// Add setup code here
 		driver = new WallDriver(this);
 //		driver.initialize(SERIAL_PORTS);
-		
-		Ani.init(this);
 
 		// Initialize animations
+		Ani.init(this);
+
 		animationManager = new AnimationManager();
 		animationManager.queueVisualization(new LineGraphAnimation(true, this));
 		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-//		currentAnimation = new AnimationController(this);
+		animationManager.queueVisualization(new SensorLabAnimation(true, this));
+		animationManager.queueVisualization(new Particles(true, this));
+
 		// currentAnimation.prepare();
 		
 	}
@@ -47,9 +49,10 @@ public class MainController extends PApplet {
 	public void draw() {
 		
 		// Update animation frame
-		// currentAnimation.draw();
 		animationManager.draw(g);
-		PImage animationFrame = animationManager.getImage();
+		
+		// Get image from animation
+		PImage animationFrame = animationManager.currentVisualization.getImage();
 		
 		// Create preview
 		PImage previewImage = Preview.createPreview(this, animationFrame);

@@ -26,13 +26,13 @@ public class SensorLabAnimation extends Animation {
 //	applet.millis() 
 
 	
-	public void drawStaircase(boolean isTop, float[] yOffset){
+	public void drawStaircase(PGraphics g, boolean isTop, float[] yOffset){
 
 		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
 			if (isTop) {
-				drawTopBar(i, yOffset[i]);
+				drawTopBar(g, i, yOffset[i]);
 			} else {
-				drawBottomBar(i, yOffset[i]);
+				drawBottomBar(g, i, yOffset[i]);
 			}
 			
 			yOffset[i + 1] = yOffset[i] + xWidth[i];
@@ -48,7 +48,7 @@ public class SensorLabAnimation extends Animation {
 		g.background(255);
 		g.fill(PColor.color(19, 172, 206));
 		
-		drawStaircase(isTop, yOffset);
+		drawStaircase(g, isTop, yOffset);
 		
 		if (applet.frameCount % layoutChangeStep == 0) {
 			isTop = !isTop;

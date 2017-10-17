@@ -1,20 +1,18 @@
 package com.cleverfranke.ledwall;
 
 import processing.core.PGraphics;
-import processing.core.PImage;
 
 import java.util.LinkedList;
 
 import com.cleverfranke.ledwall.animation.Animation;
 
-import de.looksgood.ani.*;
+import de.looksgood.ani.Ani;
 import de.looksgood.ani.easing.Easing;
 
 public class AnimationManager {
 	
 	LinkedList<Animation> queue = new LinkedList<Animation>();
 	AnimationTransition transition;
-	private PImage image;
 	
 	// Current visualization member
 	Animation currentVisualization;
@@ -22,19 +20,8 @@ public class AnimationManager {
 	
 	public AnimationManager() {
 		this.transition = new AnimationTransition();
-		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	
 	}
-	
-	/**
-	 * Fetch the latest animation frame
-	 * 
-	 * @return latest animation frame
-	 */
-	public final PImage getImage() {
-		return image;
-	}
-	
 	
 	/**
 	 * Route the drawing call from the given renderer 
@@ -42,7 +29,7 @@ public class AnimationManager {
 	 * 
 	 * @param g
 	 */
-	public PImage draw(PGraphics g) {
+	public void draw(PGraphics g) {
 		
 		// Update the manager
 		update();
@@ -52,12 +39,8 @@ public class AnimationManager {
 			transition.draw(g);
 		} else {
 			// Draw animation frame to image
-			g.beginDraw();
-			currentVisualization.drawAnimationFrame(g);
-			g.endDraw();
-			image = g.get();
+			currentVisualization.draw();
 		}
-		return getImage();
 	}
 	
 	/**
@@ -211,24 +194,17 @@ public class AnimationManager {
 		 * @param g
 		 */
 		public void draw(PGraphics g) {
-			
-			// Draw animation frame to image
-			g.beginDraw();
-						
 			// Draw underlying animation
 			if (outAnimation != null) {
-				fromVisualization.drawAnimationFrame(g);
+				fromVisualization.draw();
 			} else if (inAnimation != null) {
-				toVisualization.drawAnimationFrame(g);
+				toVisualization.draw();
 			}
 			
 			// Draw black fade
 			g.noStroke();
 			g.fill(26, 27, 33, (int) (fadeValue * 255f));
-			g.rect(0, 0, g.width, g.height);
-			
-			g.endDraw();
-			image = g.get();			
+			g.rect(0, 0, g.width, g.height);		
 		}
 		
 	}

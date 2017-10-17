@@ -10,63 +10,22 @@ import processing.core.PShape;
 
 public abstract class Animation {
 	
+	private int duration; // Duration of the visualization in frames
+	private boolean inDefaultRotation;		// Whether visual should be in default rotation
 	protected PApplet applet;
 	private static PGraphics graphicsContext;
 	private PImage image;
-	private int duration; // Duration of the visualization in frames
-	private boolean inDefaultRotation;		// Whether visual should be in default rotation
+	
 	
 	public Animation(int duration, boolean inDefaultRotation, PApplet applet) {
 		this.duration = duration;
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
+		
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	}
 	
-	/**
-	 * Draw new frame of the animation
-	 * 
-	 * @return the new frame
-	 *
-	 */
-	public final PImage draw() {
-		System.out.println("COUCOU");
-		// Draw animation frame to image
-		graphicsContext.beginDraw();
-		drawAnimationFrame(graphicsContext);
-		graphicsContext.endDraw();
-		image = graphicsContext.get();
-		
-		//Return image
-		return getImage();
-		
-	}
-	
-	/**
-	 * Fetch the latest animation frame
-	 * 
-	 * @return latest animation frame
-	 */
-	public final PImage getImage() {
-		return image;
-	}
-	
-	/**
-	 * Prepare animation class
-	 */
-	public void prepare() {}
-	
-	/**
-	 * Cleanup animation class
-	 */
-	public void cleanUp() {}
-	
-	/**
-	 * Draw animation frame on the given PGraphics context
-	 * @param g
-	 */
-	public abstract void drawAnimationFrame(PGraphics g);
 	
 	/**
 	 * Get duration of visualization in frames
@@ -88,6 +47,51 @@ public abstract class Animation {
 	public boolean isInDefaultRotation() {
 		return inDefaultRotation;
 	}
+	
+	/**
+	 * Draw new frame of the animation
+	 * 
+	 * @return the new frame
+	 *
+	 */
+	public final PImage draw() {
+		// Draw animation frame to image
+		graphicsContext.beginDraw();
+		drawAnimationFrame(graphicsContext);
+		graphicsContext.endDraw();
+		image = graphicsContext.get();
+		
+		//Return image
+		return getImage();
+		
+	}
+	
+	/**
+	 * Draw animation frame on the given PGraphics context
+	 * @param g
+	 */
+	public abstract void drawAnimationFrame(PGraphics g);
+
+
+	/**
+	 * Fetch the latest animation frame
+	 * 
+	 * @return latest animation frame
+	 */
+	public final PImage getImage() {
+		return image;
+	}
+	
+	/**
+	 * Prepare animation class
+	 */
+	public void prepare() {}
+	
+	/**
+	 * Cleanup animation class
+	 */
+	public void cleanUp() {}
+	
 	
 	/**
 	 * Method that is called by the VisualizationManager just
@@ -213,22 +217,22 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the bar
 	 */
-	protected void drawBottomBar(int panelId, float panelCoord) {
+	protected void drawBottomBar(PGraphics g, int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape
-		PShape rect = graphicsContext.createShape();
+		PShape rect = g.createShape();
 		rect.beginShape();
 		
 		// Add the 4 points to form a rectangle
 		rect.vertex(xPos[panelId], panelCoord);
 		rect.vertex(xPos[panelId+1], panelCoord);
-		rect.vertex(xPos[panelId+1], graphicsContext.height);
-		rect.vertex(xPos[panelId], graphicsContext.height);
+		rect.vertex(xPos[panelId+1], g.height);
+		rect.vertex(xPos[panelId], g.height);
 	
 		// Draw shape
 		rect.endShape();
-		graphicsContext.shape(rect);
+		g.shape(rect);
 	}
 	
 	/**
@@ -236,11 +240,11 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the bottom left corner of the bar
 	 */
-	protected void drawTopBar(int panelId, float panelCoord) {
+	protected void drawTopBar(PGraphics g, int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape
-		PShape rect = graphicsContext.createShape();
+		PShape rect = g.createShape();
 		rect.beginShape();
 		
 		// Add the 4 points to form a rectangle
@@ -251,7 +255,7 @@ public abstract class Animation {
 	
 		// Draw shape
 		rect.endShape();
-		graphicsContext.shape(rect);
+		g.shape(rect);
 	}
 	
 	/**
