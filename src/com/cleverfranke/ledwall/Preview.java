@@ -43,7 +43,7 @@ public class Preview {
 				
 				// Right pixels
 				float xOffsetRight = x + panelWidth - BEAM_WIDTH / 2 - 1;
-				g.stroke(sourceImage.get((int) xOffsetLeft, pixelY));
+				g.stroke(sourceImage.get((int) xOffsetRight, pixelY));
 				for (int xDiff = 0; xDiff < LED_PASSTHROUGH; xDiff += LED_BAFFLE_DIFF) {
 					g.point(xOffsetRight - xDiff, pixelY);
 				}
