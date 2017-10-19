@@ -8,7 +8,6 @@ import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
-	public static final float PANEL_WIDTH[] = getPixelWidthsOfPanels(); // Width of each panel
 	ChestBoard chestboard;
 
 	/**
@@ -18,22 +17,16 @@ public class ChestBoardAnimation extends Animation{
 		private int i;		// Panel ID
 		private float yPos; // Top left corner position of the square
 		private int color;	// Square color
-		private int alpha;
+
 		
-		public Square(int i, float yPos, int alpha) {
+		private Square(int i, float yPos) {
 			this.i = i;
 			this.yPos = yPos;
-			this.alpha = alpha;
-			this.color = generateRandomRGBAColor(this.alpha);
+			this.color = generateRandomRGBColor();
 		}
 		
-		public void setColor(int alpha){
-			this.color = generateRandomRGBAColor(alpha);
-		}
-		
-		public void drawSquare(PGraphics g, int alpha){
-			this.setColor(alpha);
-			ChestBoardAnimation.drawSquare(g, this.i, this.yPos, this.color);
+		private void draw(PGraphics g){
+			drawSquare(g, i, yPos, color);
 		}
 	}
 	
@@ -54,6 +47,8 @@ public class ChestBoardAnimation extends Animation{
 			this.rightPanelIndex = rightPanelIndex;
 			this.stateManager = stateManager;
 			this.setSquares();
+			this.aniChestBoard = new AniSequence(applet);
+			this.setAniChestBoard();
 		}
 		
 		/**
@@ -65,7 +60,7 @@ public class ChestBoardAnimation extends Animation{
 			
 			for (int i = leftPanelIndex; i < rightPanelIndex; i++) {
 				for (int j = 0; j < this.nbSquares; j++) {
-					this.squares[i][j] = new Square(i, PANEL_WIDTH[i] * j, 0);
+					this.squares[i][j] = new Square(i, PANEL_WIDTH[i] * j);
 				}
 			}
 			
@@ -73,7 +68,7 @@ public class ChestBoardAnimation extends Animation{
 		
 		public void drawSquare(PGraphics g, int i, int j){
 			Square square = this.squares[i][j];
-			square.drawSquare(g, 255);
+			square.draw(g);
 		}
 		
 		public void setAniChestBoard(){
@@ -104,13 +99,8 @@ public class ChestBoardAnimation extends Animation{
 		// Calculate number of squares per panel
 		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
 		
-		// Start animation library
-		Ani.init(applet);
-		
 		// Create ChestBoard
 		chestboard = new ChestBoard(nbSquares, 1, WallConfiguration.PANEL_COUNT-1, 0);
-		chestboard.aniChestBoard = new AniSequence(applet);
-		chestboard.setAniChestBoard();
 	}
 	
 
@@ -177,7 +167,6 @@ public class ChestBoardAnimation extends Animation{
 	
 	@Override
 	public boolean isDone() {
-		System.out.println("Chestboardanimation: " + chestboard.aniChestBoard.isEnded());
 		return chestboard.aniChestBoard.isEnded();
 	}
 

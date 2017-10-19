@@ -17,8 +17,9 @@ public abstract class Animation {
 	private static PGraphics graphicsContext;
 	private PImage image;
 	
-	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();
-	public float XPANELCOORD[] = getXCoordOfPanels();
+	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();	// X coordinates of each sides of the panels
+	public float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
+	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
 	
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
@@ -221,7 +222,7 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the square
 	 */
-	protected static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
+	public static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
 		float[] xPos = getXCoordOfPanels();
 		float[] xWidth = getPixelWidthsOfPanels();
 		
@@ -247,7 +248,7 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the bar
 	 */
-	protected void drawBottomBar(PGraphics g, int panelId, float panelCoord) {
+	public void drawBottomBar(PGraphics g, int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape
@@ -270,7 +271,7 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the bottom left corner of the bar
 	 */
-	protected void drawTopBar(PGraphics g, int panelId, float panelCoord) {
+	public void drawTopBar(PGraphics g, int panelId, float panelCoord) {
 		float[] xPos = getXCoordOfPanels();
 
 		// Create shape

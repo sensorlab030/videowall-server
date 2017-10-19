@@ -54,7 +54,7 @@ public class BarGraphAnimation extends Animation {
 		}
 		
 		
-		private void drawBar(PGraphics g) {
+		private void draw(PGraphics g) {
 			drawBottomBar(g, panelIndex, g.height - currentHeight);
 		}
 	}
@@ -87,7 +87,7 @@ public class BarGraphAnimation extends Animation {
 		
 		// Draw each bar
 		for (Bar bar: bars){
-			bar.drawBar(g);
+			bar.draw(g);
 		} 		
 		
 		// Flag end of animation
