@@ -9,16 +9,20 @@ import processing.core.PGraphics;
 import processing.core.PShape;
 
 public class SensorLabAnimation extends Animation {
+	private final int F_DURATION = 20; // Nb of frames
 	float[] xWidth = null;
 	boolean isTop = false;
 	boolean isMoving = true;
 	int layoutChangeStep = 7;
 	float[] yOffset = null;
+	int frameCount;
+	boolean isDone = false;
 	
 	public SensorLabAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(15, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
 		xWidth = getPixelWidthsOfPanels();
 		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
+		frameCount = applet.frameCount;
 	}
 	
 //	(applet.frameCount % 20 == 0);
@@ -60,5 +64,19 @@ public class SensorLabAnimation extends Animation {
 		}
 		
 
+		if (applet.frameCount > frameCount + F_DURATION) {
+			isDone = true;
+		}
+	}
+	
+	public boolean isDone() {
+		System.out.println("Sensor lab animation: " + isDone);
+		return isDone;
+	}
+	
+	@Override
+	public void prepareForQueueRotation() {
+		isDone = false;
+		frameCount = applet.frameCount;
 	}
 }

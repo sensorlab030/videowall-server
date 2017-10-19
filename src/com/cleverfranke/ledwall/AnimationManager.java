@@ -83,7 +83,7 @@ public class AnimationManager {
 		if (!transition.isInProgress()) {
 			// Update frame counter and switch if needed
 			currentVisualizationFrameCount++;
-			if (currentVisualizationFrameCount >= currentVisualization.getDuration() || currentVisualization.isDone()) {
+			if (currentVisualization.isDone()) {
 				gotoNextVisualization();
 			}
 			

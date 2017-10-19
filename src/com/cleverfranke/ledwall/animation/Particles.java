@@ -13,10 +13,10 @@ import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
 public class Particles extends Animation{
-	private  float DURATION = 5;
-	private  List<ParticleLine> particles = new ArrayList<>();
-	private  List<Boolean> LinesDoneDrawing = new ArrayList<>();
-	
+	private float DURATION = 5;
+	private List<ParticleLine> particles = new ArrayList<>();
+	private List<Boolean> LinesDoneDrawing = new ArrayList<>();
+	private int repeatCount = 3;
 	
 	public class ParticleLine {
 		// Coordinates
@@ -110,7 +110,7 @@ public class Particles extends Animation{
 		
 	
 	public Particles(boolean inDefaultRotation, PApplet applet) {
-		super(105, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
 		this.applet = applet;
 				
 		// Generate particle lines
@@ -165,6 +165,7 @@ public class Particles extends Animation{
 	 * When all the line animations are done, generate new lines and renew the animation
 	 */
 	public void isDoneDrawing() {
+		this.repeatCount--;
 		this.particles.clear();
 		this.LinesDoneDrawing.clear();
 		this.generateParticle();
@@ -181,6 +182,21 @@ public class Particles extends Animation{
 		}
 		
 		if (areAllTrue(LinesDoneDrawing)) { isDoneDrawing(); }
+	}
+	
+	
+	public boolean isDone() {
+		if (this.repeatCount == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void prepareForQueueRotation() {
+		isDoneDrawing();
+		this.repeatCount = 3;
 	}
 
 }

@@ -37,13 +37,10 @@ public class MainController extends PApplet {
 		Ani.init(this);
 
 		animationManager = new AnimationManager();
-//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-//		animationManager.queueVisualization(new SensorLabAnimation(true, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+		animationManager.queueVisualization(new SensorLabAnimation(true, this));
 		animationManager.queueVisualization(new Particles(true, this));
-
-		// currentAnimation.prepare();
-		
 	}
 	
 	public void draw() {

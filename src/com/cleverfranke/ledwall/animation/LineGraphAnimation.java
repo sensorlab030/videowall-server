@@ -10,10 +10,13 @@ import processing.core.PShape;
 
 public class LineGraphAnimation extends Animation {
 	
+	private final int F_DURATION = 20; // Nb of frames
 	private final int LINE_COUNT = 3;
 	private final float RESOLUTION_X = (float) WallConfiguration.SOURCE_IMG_WIDTH / 100f;
-	
+	private boolean isDone;
 	private float[] yOffset = new float[LINE_COUNT];
+	int frameCount;
+	
 	private int[] colors = {
 			PColor.color(0, 255, 255), 
 			PColor.color(255, 0, 255),
@@ -21,13 +24,14 @@ public class LineGraphAnimation extends Animation {
 			};
 	
 	public LineGraphAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(15, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
+		frameCount = applet.frameCount;
 		
+		this.isDone = false;
 		// Initialize noise seed
 		for (int i = 0; i < LINE_COUNT; i++) {
 			yOffset[i] = (float) i / (float) LINE_COUNT;
 		}
-
 	}
 
 	@Override
@@ -57,10 +61,21 @@ public class LineGraphAnimation extends Animation {
 			// Update Y offset
 			yOffset[i] += 0.01f;
 			
-			
+		}	
+		
+		if (applet.frameCount > frameCount + F_DURATION) {
+			isDone = true;
 		}
-		
-		
+	}
+	
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	@Override
+	public void prepareForQueueRotation() {
+		isDone = false;
+		frameCount = applet.frameCount;
 	}
 
 }

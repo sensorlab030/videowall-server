@@ -12,7 +12,6 @@ import processing.core.PShape;
 
 public abstract class Animation {
 	
-	private int duration; 				// Duration of the visualization in frames
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
 	private static PGraphics graphicsContext;
@@ -20,8 +19,7 @@ public abstract class Animation {
 	
 	public float XPANELCOORD[] = getXCoordOfPanelSides();
 	
-	public Animation(int duration, boolean inDefaultRotation, PApplet applet) {
-		this.duration = duration;
+	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
 
@@ -31,16 +29,10 @@ public abstract class Animation {
 	
 	
 	/**
-	 * Get duration of visualization in frames
+	 * Flags when animation is finished
 	 * @return
 	 */
-	public int getDuration() {
-		return duration;
-	}
-	
-	public boolean isDone() {
-		return false;
-	}
+	public abstract boolean isDone();
 	
 	/**
 	 * Get if visualization is in default rotation
@@ -101,7 +93,7 @@ public abstract class Animation {
 	 * before the Visualization is shown, can be used to
 	 * switch from subject, or change palette.
 	 */
-	public void prepareForQueueRotation() {}
+	public abstract void prepareForQueueRotation();
 	
 	/**
 	 * Method that is called by the VisualizationManager just

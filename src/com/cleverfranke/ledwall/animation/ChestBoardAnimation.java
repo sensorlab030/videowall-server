@@ -11,7 +11,7 @@ import de.looksgood.ani.*;
 public class ChestBoardAnimation extends Animation{
 	public static final float PANEL_WIDTH[] = getPixelWidthsOfPanels(); // Width of each panel
 	ChestBoard chestboard;
-	
+
 	/**
 	 * A Square is a class  that represents one square on the chestboard
 	 */
@@ -100,20 +100,18 @@ public class ChestBoardAnimation extends Animation{
 
 	
 	public ChestBoardAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(105, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
 		
 		// Calculate number of squares per panel
 		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
 		
 		// Start animation library
 		Ani.init(applet);
-		Ani.setDefaultTimeMode(Ani.FRAMES); //** TO CHECK **//
 		
 		// Create ChestBoard
 		chestboard = new ChestBoard(nbSquares, 1, WallConfiguration.PANEL_COUNT-1, 0);
 		chestboard.aniChestBoard = new AniSequence(applet);
 		chestboard.setAniChestBoard();
-		System.out.println(chestboard.aniChestBoard.getDuration());
 	}
 	
 
@@ -176,6 +174,18 @@ public class ChestBoardAnimation extends Animation{
 			}
 		}
 
+	}
+	
+	@Override
+	public boolean isDone() {
+		System.out.println("Chestboardanimation: " + chestboard.aniChestBoard.isEnded());
+		return chestboard.aniChestBoard.isEnded();
+	}
+
+
+	@Override
+	public void prepareForQueueRotation() {
+		chestboard.aniChestBoard.start();
 	}
 
 }

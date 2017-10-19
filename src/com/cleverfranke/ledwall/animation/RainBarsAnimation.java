@@ -29,7 +29,7 @@ public class RainBarsAnimation extends Animation {
 	float[] finalHeight =  null;
 	float[] xPos = null;
 	int[] lineStep = null;
-
+	boolean isDone = false;
 	
 	// Data structure
 	Map<String, String> rainDataSorted = new TreeMap<String, String>();
@@ -38,6 +38,7 @@ public class RainBarsAnimation extends Animation {
 	 * Load CSV containing rain data and stores it in a Hashmap
 	 * Hashmap key is the year column in the CSV
 	 */
+	@SuppressWarnings("deprecation")
 	private void loadRainData(String url) {
 		// Initialize reader
 		CSVReader reader = null;	
@@ -98,9 +99,8 @@ public class RainBarsAnimation extends Animation {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public RainBarsAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(15, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
 		
 		// Load data
 		loadRainData("/Users/agathelenclen/Projects/led-wall/src/data/NL_Cumulative_Rain_04-17.csv");
@@ -164,6 +164,9 @@ public class RainBarsAnimation extends Animation {
 				// If bar has reached the finalHeight, do not add another level to the bar
 				if (barCurrentHeight[i] - rainStackStep < finalHeight[i]) {
 					barCurrentHeight[i] = finalHeight[i];
+					isDone = true;
+				} else {
+					isDone = false;
 				}
 			}
 			
@@ -186,6 +189,16 @@ public class RainBarsAnimation extends Animation {
 			i++;
 		}
 
+	}
+
+	@Override
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	@Override
+	public void prepareForQueueRotation() {
+		isDone = false;
 	}
 
 }

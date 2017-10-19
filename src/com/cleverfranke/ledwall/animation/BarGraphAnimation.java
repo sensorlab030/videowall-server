@@ -20,10 +20,10 @@ public class BarGraphAnimation extends Animation {
 	float[] finalHeight = new float[NBVALUES];
 	int [] colors = new int[NBVALUES];
 	float[] xPos = new float[NBVALUES + 1];
-	
+	boolean isDone = false;
 	
 	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(15, inDefaultRotation, applet);
+		super(inDefaultRotation, applet);
 		
 		// Initial left x position
 		xPos[0] = 0;
@@ -86,9 +86,21 @@ public class BarGraphAnimation extends Animation {
 				currentHeight[i] = currentHeight[i] + step;
 			} else {
 				currentHeight[i] = finalHeight[i];
+				isDone = true;
 			}
  		}
  		
+	}
+
+
+	@Override
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	@Override
+	public void prepareForQueueRotation() {
+		isDone = false;
 	}
 
 }
