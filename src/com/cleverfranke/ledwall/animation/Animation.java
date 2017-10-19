@@ -327,12 +327,42 @@ public abstract class Animation {
 	}
 	
 	/**
-	 * Test if a boolean arrayList is all true
+	 * Test if a boolean array is all true
 	 * @param array
 	 * @return boolean
 	 */
 	public static boolean areAllTrue(boolean[] array) {
 	    for(boolean b : array) if(!b) return false;
 	    return true;
+	}
+	
+	/**
+	 * Generate an array of random values
+	 * @param length: the number of random values wanted
+	 * @return an array of random values, of length 'length'
+	 */
+	public float[] generateRandomValues(int length){
+		float[] VALUES = new float[length];
+		for(int i = 0; i < length; i++) {
+			VALUES[i] = (float)(Math.random());
+		}	
+		
+		return VALUES;
+	}
+	
+	/**
+	 * Find min and max in VALUES.
+	 * Here we also use this function to generate random values at first, but the animation could be provided with real VALUES.
+	 */
+	public float[] findMinMaxValues(float[] VALUES) {
+		float max = Integer.MIN_VALUE;	// Maximum of bar values
+		float min = Integer.MAX_VALUE;	// Minimum of bar values
+		
+		for(int i = 0; i < VALUES.length; i++) {
+		    if (VALUES[i] < min) { min = VALUES[i]; }
+		    if (VALUES[i] > max) { max = VALUES[i]; }
+		}	
+		
+		return new float[]{min, max};
 	}
 }
