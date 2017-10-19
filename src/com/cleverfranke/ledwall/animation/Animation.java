@@ -227,10 +227,6 @@ public abstract class Animation {
 			xPos[i] = xPos[i-1] + xWidth[i-1];
 		}
 		
-		for(int i = 0; i < PANEL_COUNT * 2 + 1; i++) {
-			System.out.println(i + "  " + xPos[i]);
-		}
-		
 		return xPos;
 	}
 	/**

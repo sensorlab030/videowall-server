@@ -17,7 +17,7 @@ public class Particles extends Animation{
 	List<ParticleLine> particles = new ArrayList<>();
 	float xPanelCoord[] = getXCoordOfPanelSides();
 	float DURATION = 5;
-	private boolean isDoneDrawing = false;
+	List<Boolean> isDoneDrawing = new ArrayList<>();
 	
 	public class ParticleLine {
 		// Fields
@@ -30,15 +30,17 @@ public class Particles extends Animation{
 		private float delay;
 		private float y1;
 		private int color;
+		private int index;
 		Ani aniX1;
 		Ani aniX2;
 				
 		// Constructor
-		public ParticleLine(float y1, int start, int end, float delay) {
+		public ParticleLine(float y1, int start, int end, float delay, int index) {
 			this.start = start;
 			this.end = end;
 			this.y1 = y1;
 			this.delay = delay;
+			this.index = index;
 			
 			this.color = this.setColor();
 			this.setCoordinates();
@@ -80,12 +82,10 @@ public class Particles extends Animation{
 			g.stroke(PColor.color(color));
 			g.line(this.startx1, y1, this.startx2, y1);
 			
-			while (this.aniX2.isPlaying()) {
-				isDoneDrawing = false;
+			if (this.aniX1.isEnded() && this.aniX2.isEnded()) {
+				isDoneDrawing.set(this.index, true);
 //				this.aniX1.start();
 //				this.aniX2.start();
-			} else {
-				isDoneDrawing = true;
 			}
 		}
 	}
@@ -107,6 +107,7 @@ public class Particles extends Animation{
 		// Get width of each panels sides
 		int nbColumns = xPanelCoord.length;
 		int minSpace = 1;
+		int index = 0;
 		
 		// Create one line per row
 		for (int i = 3; i < this.nbRows; i++){
@@ -118,18 +119,18 @@ public class Particles extends Animation{
 				int minSize = 1;
 				int maxSize = nbColumns - (nbLines - 1) * minSpace - (nbLines - 1) * minSize; // Maximum possible size of a line, counting the spaces between the lines and the minimum size of a line
 				int start = 0;
-				System.out.println("nbLines: " + nbLines + " start:" + start + " maxSize:" + maxSize);
 				
 				for (int j = nbLines - 1; j >= 0; j--) {
 					int end = ThreadLocalRandom.current().nextInt(minSize, maxSize);
 					float delay = (float) Math.random() * DURATION;
-					ParticleLine line = new ParticleLine(i*rowHeight, start, start + end, delay);
+					ParticleLine line = new ParticleLine(i*rowHeight, start, start + end, delay, index);
 					particles.add(line);
+					isDoneDrawing.add(false);
 					
 					// Update for next particle
 					start = start + end + 1;
+					index++;
 					maxSize = nbColumns - start - (j - 1) * minSpace - (j - 1) * minSize;
-					//System.out.println(i + "  " + j + "  start:" + start + " end:" + end + " maxSize:" + maxSize);
 				}
 			}
 			
@@ -138,6 +139,10 @@ public class Particles extends Animation{
 		
 	}
 
+	public static boolean areAllTrue(List<Boolean> array) {
+	    for(Boolean b : array) if(!b) return false;
+	    return true;
+	}
 	
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
@@ -148,7 +153,11 @@ public class Particles extends Animation{
 			particleLine.drawLine(g);
 		}
 		
-		System.out.println(isDoneDrawing);
+		if (areAllTrue(isDoneDrawing)) {
+			this.particles.clear();
+			this.isDoneDrawing.clear();
+			this.generateParticle();
+		}
 	}
 
 }
