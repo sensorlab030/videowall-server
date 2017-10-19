@@ -17,7 +17,8 @@ public abstract class Animation {
 	private static PGraphics graphicsContext;
 	private PImage image;
 	
-	public float XPANELCOORD[] = getXCoordOfPanelSides();
+	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();
+	public float XPANELCOORD[] = getXCoordOfPanels();
 	
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
@@ -78,17 +79,6 @@ public abstract class Animation {
 	}
 	
 	/**
-	 * Prepare animation class
-	 */
-	public void prepare() {}
-	
-	/**
-	 * Cleanup animation class
-	 */
-	public void cleanUp() {}
-	
-	
-	/**
 	 * Method that is called by the VisualizationManager just
 	 * before the Visualization is shown, can be used to
 	 * switch from subject, or change palette.
@@ -113,6 +103,8 @@ public abstract class Animation {
 	 */
 	public void inAnimationDone() {}
 	
+	
+	/*** UTILS ***/
 	
 	/**
 	 * Generate a random RGB color
@@ -331,6 +323,16 @@ public abstract class Animation {
 	 */
 	public static boolean areAllTrue(List<Boolean> array) {
 	    for(Boolean b : array) if(!b) return false;
+	    return true;
+	}
+	
+	/**
+	 * Test if a boolean arrayList is all true
+	 * @param array
+	 * @return boolean
+	 */
+	public static boolean areAllTrue(boolean[] array) {
+	    for(boolean b : array) if(!b) return false;
 	    return true;
 	}
 }

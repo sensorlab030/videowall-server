@@ -1,95 +1,103 @@
 package com.cleverfranke.ledwall.animation;
 
-import com.cleverfranke.ledwall.WallConfiguration;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.cleverfranke.ledwall.WallConfiguration;
+import com.cleverfranke.util.PColor;
+
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PShape;
 
 public class BarGraphAnimation extends Animation {
-	// PARAMETERS
-	int NBVALUES = 10; // Total number of bars
-	int step = 40; // Bar loading speed (load 10 levels at once)
-	boolean useAllWidth = true; // If true then the last bar use the width left over. If false then one bar use one panel.
+	// Parameters
+	private int NBVALUES = 13; 						// Total number of bars
+	private float DURATION = 5;						// Animation duration
+	private int color = PColor.color(0, 180, 180); 	// Bars color
 	
-	// VARIABLES
+	// Variables
 	private float[] VALUES = new float[NBVALUES];
-	float max = Integer.MIN_VALUE;
-	float min = Integer.MAX_VALUE;
-	float[] currentHeight = new float[NBVALUES];
-	float[] finalHeight = new float[NBVALUES];
-	int [] colors = new int[NBVALUES];
-	float[] xPos = new float[NBVALUES + 1];
-	boolean isDone = false;
+	private float max = Integer.MIN_VALUE;
+	private float min = Integer.MAX_VALUE;
+	private boolean isDone = false;					// Flags the end of the animation
+	private Bar[] bars = new Bar[NBVALUES];
+	private boolean[] barsDoneDrawing = new boolean[NBVALUES];
+	
+	public class Bar {
+		private float currentHeight;
+		private float finalHeight;
+		private int panelIndex;
+		private Ani aniBar;
+		
+		private Bar(float finalHeight, int panelIndex) {
+			this.finalHeight = finalHeight;
+			this.currentHeight = 0;
+			this.panelIndex = panelIndex;
+			this.setAniBars();
+		}
+		
+		private void setAniBars(){
+			aniBar = new Ani(this, DURATION, (float) 0, "currentHeight", finalHeight, Ani.LINEAR, "onEnd:isDoneDrawing");
+			aniBar.start();
+		}
+		
+		@SuppressWarnings("unused")
+		private void isDoneDrawing(){
+			barsDoneDrawing[panelIndex] = true;
+		}
+		
+		private void drawBar(PGraphics g) {
+			drawBottomBar(g, panelIndex, g.height - currentHeight);
+		}
+	}
+	
 	
 	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
+		findMinMaxValues();	
+		generateBars();
+	}
 		
-		// Initial left x position
-		xPos[0] = 0;
-			
+	/**
+	 * Find min and max in VALUES.
+	 * Here we also use this function to generate random values at first, but the animation could be provided with real VALUES.
+	 */
+	private void findMinMaxValues() {
 		for(int i = 0; i < NBVALUES; i++) {
 			// Generate random value
-			VALUES[i] = (float)(Math.random() + 0.1);
-			
-			// Generate random color
-			colors[i] = generateRandomRGBColor();
-			
+			VALUES[i] = (float)(Math.random());
+
 			// Find min and max in VALUES
 		    if (VALUES[i] < min) { min = VALUES[i]; }
 		    if (VALUES[i] > max) { max = VALUES[i]; }
-
-			// Get x right position of each panel
-		    if (i != 0) {
-		    	xPos[i] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[i-1];
-		    }
-		}
-		
-		// Initial right end position
-		if (useAllWidth) {
-			xPos[NBVALUES] = WallConfiguration.SOURCE_IMG_WIDTH;
-		} else {
-			xPos[NBVALUES] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[NBVALUES-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[NBVALUES-1];
-		}
-		
+		}	
 	}
-		
 	
+	/**
+	 * Get y coordinates and height
+	 */
+	private void generateBars(){
+		for(int i = 0; i < NBVALUES; i++) {
+			float finalHeight = PApplet.map(VALUES[i], 0, max, 0, WallConfiguration.SOURCE_IMG_HEIGHT);
+			bars[i] = new Bar(finalHeight, i);
+			barsDoneDrawing[i] = false;
+		}	
+	}
+	
+
 	public void drawAnimationFrame(PGraphics g) {		
 		g.background(255);
-		g.noFill();
+		g.fill(color);
+		g.noStroke();
 		
- 		for (int i = 0; i < NBVALUES; i++) {	
-			// Get y coordinates and height
-			finalHeight[i] = PApplet.map(VALUES[i], 0, max, 0, g.height);
-			
-			// Get color
-			g.fill(colors[i]);
-			
-			// Create shape
-			PShape rect = g.createShape();
-			rect.beginShape();
-						
-			// Add the 4 points to form a rectangle
-			rect.vertex(xPos[i], g.height - currentHeight[i]);
-			rect.vertex(xPos[i + 1], g.height - currentHeight[i]);
-			rect.vertex(xPos[i + 1], g.height);
-			rect.vertex(xPos[i], g.height);
-			
-			// Draw shape
-			rect.endShape();
-			g.shape(rect);
-			
-			
-			// If bar has not reached its final height, add a level for next draw
-			if (currentHeight[i] + step < finalHeight[i]) {
-				currentHeight[i] = currentHeight[i] + step;
-			} else {
-				currentHeight[i] = finalHeight[i];
-				isDone = true;
-			}
- 		}
- 		
+		// Draw each bar
+		for (Bar bar: bars){
+			bar.drawBar(g);
+		} 		
+		
+		// Flag end of animation
+		if (areAllTrue(barsDoneDrawing)) { isDone = true; }
 	}
 
 

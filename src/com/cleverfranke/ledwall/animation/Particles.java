@@ -66,12 +66,12 @@ public class Particles extends Animation{
 		public void setCoordinates() {
 			double coin = Math.random();
 			// X coordinates are offset of at least the size of the canvas to the left, at most twice the size of the canvas to the left
-			this.startx1 = (float) (XPANELCOORD[this.start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.startx2 = (float) (XPANELCOORD[this.end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.startx1 = (float) (XPANELSIDESCOORD[this.start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.startx2 = (float) (XPANELSIDESCOORD[this.end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 			
 			// Final X coordinates are offset of at least the size of the canvas to the right, at most twice the size of the canvas to the right
-			this.finalx1 = (float) (XPANELCOORD[this.start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.finalx2 = (float) (XPANELCOORD[this.end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.finalx1 = (float) (XPANELSIDESCOORD[this.start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.finalx2 = (float) (XPANELSIDESCOORD[this.end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 		}
 		
 		
@@ -126,7 +126,7 @@ public class Particles extends Animation{
 	 */
 	private void generateParticle() {
 		// Get width of each panels sides
-		int nbColumns = XPANELCOORD.length;
+		int nbColumns = XPANELSIDESCOORD.length;
 		int minSpace = 1;
 		int index = 0;
 		

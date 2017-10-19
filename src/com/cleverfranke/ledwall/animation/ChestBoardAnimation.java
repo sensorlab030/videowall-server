@@ -5,7 +5,6 @@ import com.cleverfranke.ledwall.WallConfiguration;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PShape;
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
