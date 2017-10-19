@@ -10,8 +10,8 @@ import processing.core.PShape;
 
 public abstract class Animation {
 	
-	private int duration; // Duration of the visualization in frames
-	private boolean inDefaultRotation;		// Whether visual should be in default rotation
+	private int duration; 				// Duration of the visualization in frames
+	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
 	private static PGraphics graphicsContext;
 	private PImage image;
@@ -21,7 +21,7 @@ public abstract class Animation {
 		this.duration = duration;
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
-		
+
 		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	}
@@ -185,7 +185,54 @@ public abstract class Animation {
 
 		return xWidth;
 	}
+
+	/**
+	 * Return an array that contains the width in pixels of the panels
+	 * @return xWidth
+	 */
+	protected static float[] getPixelWidthsOfPanelSides() {
+		// Number of panels
+		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
+		
+		// Array the will contain the x coordinates of all the panels
+		float xWidth[] = new float[PANEL_COUNT * 2];
+			
+		for(int i = 0; i < PANEL_COUNT * 2; i++) {
+			int panelIndex = (int) Math.floor(i/2);
+			// Get x width			
+			xWidth[i] = (WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[panelIndex] / 2) * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
+		}
+
+		return xWidth;
+	}
 	
+	/**
+	 * Return an array that contains the width in pixels of the panels
+	 * @return xWidth
+	 */
+	protected static float[] getXCoordOfPanelSides() {
+		// Number of panels
+		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
+		
+		// Array the will contain the x coordinates of all the panels
+		float xPos[] = new float[PANEL_COUNT * 2 + 1];
+		
+		// Array that contains the width of each panel sides
+		float[] xWidth = getPixelWidthsOfPanelSides();
+		
+		xPos[0] = 0;
+		
+		for(int i = 1; i < PANEL_COUNT * 2 + 1; i++) {
+			// Get x width			
+			xPos[i] = xPos[i-1] + xWidth[i-1];
+		}
+		
+		for(int i = 0; i < PANEL_COUNT * 2 + 1; i++) {
+			System.out.println(i + "  " + xPos[i]);
+		}
+		
+		return xPos;
+	}
 	/**
 	 * Draws a square, the width of panel
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
