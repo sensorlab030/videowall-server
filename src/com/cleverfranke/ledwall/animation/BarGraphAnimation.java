@@ -10,11 +10,11 @@ import processing.core.PGraphics;
 public class BarGraphAnimation extends Animation {
 	// Parameters
 	private int NBVALUES = 13; 						// Total number of bars
-	private float DURATION = 3;						// Animation duration
+	private float DURATION = 1;						// Animation duration
 	private int color = PColor.color(0, 180, 180); 	// Bars color
 	
 
-	private float[] VALUES = generateRandomValues(NBVALUES);	// Bar values
+	private float[] VALUES = new float[NBVALUES];				// Bar values
 	private boolean isDone = false;								// Flags the end of the animation
 	private Bar[] bars = new Bar[NBVALUES];						// Bars array
 	private boolean[] barsDoneDrawing = new boolean[NBVALUES];  // Bars animations done flags
@@ -31,20 +31,20 @@ public class BarGraphAnimation extends Animation {
 			this.finalHeight = finalHeight;
 			this.currentHeight = 0;
 			this.panelIndex = panelIndex;
+			this.aniBar = new AniSequence(applet);
 			this.setAniBar();
 		}
 		
 		
 		private void setAniBar(){
-			float delay = panelIndex * DURATION / VALUES.length;
+			float delay = panelIndex * DURATION / NBVALUES;
 			
-			this.aniBar = new AniSequence(applet);
-			this.aniBar.beginSequence();
-			this.aniBar.add(Ani.to(this, DURATION, delay, "currentHeight", finalHeight, Ani.QUAD_IN));
-			this.aniBar.add(Ani.to(this, DURATION / 2, delay, "currentHeight", 0, Ani.QUAD_OUT, "onEnd:isDoneDrawing"));
-			this.aniBar.endSequence();
+			aniBar.beginSequence();
+			aniBar.add(Ani.to(this, DURATION, delay, "currentHeight", finalHeight, Ani.QUAD_IN));
+			aniBar.add(Ani.to(this, DURATION / 2, delay, "currentHeight", 0, Ani.QUAD_OUT, "onEnd:isDoneDrawing"));
+			aniBar.endSequence();
 			
-			this.aniBar.start();
+			aniBar.start();
 		}
 
 		
@@ -62,7 +62,6 @@ public class BarGraphAnimation extends Animation {
 	
 	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
-		generateBars();
 	}
 
 	
@@ -70,6 +69,7 @@ public class BarGraphAnimation extends Animation {
 	 * Get y coordinates and height
 	 */
 	private void generateBars(){
+		VALUES = generateRandomValues(NBVALUES);
 		float[] minMax = findMinMaxValues(VALUES);	
 		
 		for(int i = 0; i < NBVALUES; i++) {
@@ -103,6 +103,7 @@ public class BarGraphAnimation extends Animation {
 	@Override
 	public void prepareForQueueRotation() {
 		isDone = false;
+		generateBars();
 	}
 
 }

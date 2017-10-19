@@ -16,7 +16,7 @@ public class Particles extends Animation{
 	private float DURATION = 5;
 	private List<ParticleLine> particles = new ArrayList<>();
 	private List<Boolean> LinesDoneDrawing = new ArrayList<>();
-	private int repeatCount = 3;
+	private int repeatCount = 2;
 	
 	public class ParticleLine {
 		// Coordinates
@@ -66,12 +66,12 @@ public class Particles extends Animation{
 		public void setCoordinates() {
 			double coin = Math.random();
 			// X coordinates are offset of at least the size of the canvas to the left, at most twice the size of the canvas to the left
-			this.startx1 = (float) (XPANELSIDESCOORD[this.start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.startx2 = (float) (XPANELSIDESCOORD[this.end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			startx1 = (float) (XPANELSIDESCOORD[start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			startx2 = (float) (XPANELSIDESCOORD[end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 			
 			// Final X coordinates are offset of at least the size of the canvas to the right, at most twice the size of the canvas to the right
-			this.finalx1 = (float) (XPANELSIDESCOORD[this.start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.finalx2 = (float) (XPANELSIDESCOORD[this.end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			finalx1 = (float) (XPANELSIDESCOORD[start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			finalx2 = (float) (XPANELSIDESCOORD[end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 		}
 		
 		
@@ -99,11 +99,11 @@ public class Particles extends Animation{
 		
 		public void drawLine(PGraphics g) {
 			g.stroke(PColor.color(color));
-			g.line(this.startx1, y1, this.startx2, y1);
+			g.line(startx1, y1, startx2, y1);
 			
 			// If both animation ended, change done flag to true
-			if (this.aniX1.isEnded() && this.aniX2.isEnded()) {
-				LinesDoneDrawing.set(this.index, true);
+			if (aniX1.isEnded() && aniX2.isEnded()) {
+				LinesDoneDrawing.set(index, true);
 			}
 		}
 	}
@@ -114,10 +114,7 @@ public class Particles extends Animation{
 		this.applet = applet;
 				
 		// Generate particle lines
-		this.generateParticle();
-		
-		// Initialize ani
-		Ani.init(applet);
+		generateParticle();
 	}
 	
 	
@@ -165,10 +162,10 @@ public class Particles extends Animation{
 	 * When all the line animations are done, generate new lines and renew the animation
 	 */
 	public void isDoneDrawing() {
-		this.repeatCount--;
-		this.particles.clear();
-		this.LinesDoneDrawing.clear();
-		this.generateParticle();
+		repeatCount--;
+		particles.clear();
+		LinesDoneDrawing.clear();
+		generateParticle();
 	}
 	
 	
@@ -186,17 +183,13 @@ public class Particles extends Animation{
 	
 	
 	public boolean isDone() {
-		if (this.repeatCount == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (repeatCount == 0);
 	}
 	
 	@Override
 	public void prepareForQueueRotation() {
 		isDoneDrawing();
-		this.repeatCount = 3;
+		repeatCount = 2;
 	}
 
 }

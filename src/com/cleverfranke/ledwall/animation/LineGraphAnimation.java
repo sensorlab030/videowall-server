@@ -10,7 +10,7 @@ import processing.core.PShape;
 
 public class LineGraphAnimation extends Animation {
 	
-	private final int F_DURATION = 20; // Nb of frames
+	private final int F_DURATION = 40; // Nb of frames
 	private final int LINE_COUNT = 3;
 	private final float RESOLUTION_X = (float) WallConfiguration.SOURCE_IMG_WIDTH / 100f;
 	private boolean isDone;
