@@ -13,27 +13,31 @@ import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
 public class Particles extends Animation{
-	int nbRows;
-	List<ParticleLine> particles = new ArrayList<>();
-	float xPanelCoord[] = getXCoordOfPanelSides();
-	float DURATION = 5;
-	List<Boolean> isDoneDrawing = new ArrayList<>();
+	private  float DURATION = 5;
+	private  List<ParticleLine> particles = new ArrayList<>();
+	private  List<Boolean> LinesDoneDrawing = new ArrayList<>();
+	
 	
 	public class ParticleLine {
-		// Fields
+		// Coordinates
 		private int start;
 		private int end;
 		private float startx1;
 		private float startx2;
 		private float finalx1;
 		private float finalx2;
-		private float delay;
 		private float y1;
+		
+		// Attributes
 		private int color;
 		private int index;
+		private float delay;
+		
+		// Animations
 		Ani aniX1;
 		Ani aniX2;
 				
+		
 		// Constructor
 		public ParticleLine(float y1, int start, int end, float delay, int index) {
 			this.start = start;
@@ -48,86 +52,103 @@ public class Particles extends Animation{
 			this.aniX2 = this.setAniX2();
 		}
 		
+		
 		public int setColor() {
 			int color = generateRandomRGBColor();
 			return color;
 		}
 		
+		
+		/**
+		 *  Calculate start and final x coordinates 
+		 *  Start X coordinates are offset to the left of the canvas so that they are hidden before the animation
+		 */
 		public void setCoordinates() {
 			double coin = Math.random();
+			// X coordinates are offset of at least the size of the canvas to the left, at most twice the size of the canvas to the left
+			this.startx1 = (float) (XPANELCOORD[this.start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.startx2 = (float) (XPANELCOORD[this.end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 			
-			this.startx1 = (float) (xPanelCoord[this.start] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.startx2 = (float) (xPanelCoord[this.end - 1] - (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			
-			this.finalx1 = (float) (xPanelCoord[this.start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			this.finalx2 = (float) (xPanelCoord[this.end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
-			
-			// System.out.println("start: " + this.start + " x1: " + this.x1 + "  x2: " + this.x2 + " y1: " + this.y1);	
-//			System.out.println("start: " + this.start + " end: " + this.end);	
+			// Final X coordinates are offset of at least the size of the canvas to the right, at most twice the size of the canvas to the right
+			this.finalx1 = (float) (XPANELCOORD[this.start] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
+			this.finalx2 = (float) (XPANELCOORD[this.end - 1] + (coin + 1) * WallConfiguration.SOURCE_IMG_WIDTH);
 		}
 		
+		
+		/**
+		 * Animation of the x1 coordinates of the lines
+		 * @return animation
+		 */
 		public Ani setAniX1(){
 			Ani animation = new Ani(this, DURATION, this.delay, "startx1", finalx1, Ani.LINEAR);
 			animation.start();
 			return animation;
 		}
 		
+		
+		/**
+		 * Animation of the x2 coordinates of the lines
+		 * @return animation
+		 */
 		public Ani setAniX2(){
 			Ani animation = new Ani(this, DURATION, this.delay, "startx2", finalx2, Ani.LINEAR);
 			animation.start();
 			return animation;
 		}
-
+		
+		
 		public void drawLine(PGraphics g) {
 			g.stroke(PColor.color(color));
 			g.line(this.startx1, y1, this.startx2, y1);
 			
+			// If both animation ended, change done flag to true
 			if (this.aniX1.isEnded() && this.aniX2.isEnded()) {
-				isDoneDrawing.set(this.index, true);
-//				this.aniX1.start();
-//				this.aniX2.start();
+				LinesDoneDrawing.set(this.index, true);
 			}
 		}
 	}
 		
+	
 	public Particles(boolean inDefaultRotation, PApplet applet) {
 		super(105, inDefaultRotation, applet);
 		this.applet = applet;
 				
-		// Get total number of rows and their height
-		nbRows = (int) Math.floor(WallConfiguration.PHYSICAL_WALL_HEIGHT_CM / WallConfiguration.PHYSICAL_PIXEL_PITCH_CM);
+		// Generate particle lines
 		this.generateParticle();
 		
+		// Initialize ani
 		Ani.init(applet);
 	}
 	
-	public void generateParticle() {
-		int rowHeight = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / this.nbRows);
-		
+	
+	/**
+	 * Generate a random number of lines on a random number of rows
+	 */
+	private void generateParticle() {
 		// Get width of each panels sides
-		int nbColumns = xPanelCoord.length;
+		int nbColumns = XPANELCOORD.length;
 		int minSpace = 1;
 		int index = 0;
 		
-		// Create one line per row
-		for (int i = 3; i < this.nbRows; i++){
-			double coin = Math.random();
-			
-			if (coin > 0.6) {
-				// Get a random number of lines between 0 and 3
-				int nbLines = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-				int minSize = 1;
-				int maxSize = nbColumns - (nbLines - 1) * minSpace - (nbLines - 1) * minSize; // Maximum possible size of a line, counting the spaces between the lines and the minimum size of a line
-				int start = 0;
+		// For each row, randomly decide to draw or not lines on the row
+		for (int i = 3; i < WallConfiguration.ROWS_COUNT; i++){	
+			if (Math.random() > 0.6) {
+				int start = 0;																	// Start panel index
+				int nbLines = ThreadLocalRandom.current().nextInt(1, 3 + 1); 					// Get a random number of lines between 0 and 3
+				int minSize = 1; 																// Minimum possible size of a line			
+				int maxSize = nbColumns - (nbLines - 1) * minSpace - (nbLines - 1) * minSize;  	// Maximum possible size of a line, counting the spaces between the lines and the minimum size of a line
+				float delay = (float) Math.random() * DURATION;									// Delay of the lines on the row
 				
+				// For each line, get the panel index where it starts and where it ends
 				for (int j = nbLines - 1; j >= 0; j--) {
-					int end = ThreadLocalRandom.current().nextInt(minSize, maxSize);
-					float delay = (float) Math.random() * DURATION;
-					ParticleLine line = new ParticleLine(i*rowHeight, start, start + end, delay, index);
-					particles.add(line);
-					isDoneDrawing.add(false);
+					int end = ThreadLocalRandom.current().nextInt(minSize, maxSize); 			// Get random end index in the range of the available line sizes
 					
-					// Update for next particle
+					// Add the line the list of lines
+					this.particles.add(new ParticleLine(i*WallConfiguration.ROW_HEIGHT, start, start + end, delay, index));
+					// Set the animation done flag to false
+					this.LinesDoneDrawing.add(false);
+					
+					// Update the values for next line in the row
 					start = start + end + 1;
 					index++;
 					maxSize = nbColumns - start - (j - 1) * minSpace - (j - 1) * minSize;
@@ -139,10 +160,16 @@ public class Particles extends Animation{
 		
 	}
 
-	public static boolean areAllTrue(List<Boolean> array) {
-	    for(Boolean b : array) if(!b) return false;
-	    return true;
+	
+	/**
+	 * When all the line animations are done, generate new lines and renew the animation
+	 */
+	public void isDoneDrawing() {
+		this.particles.clear();
+		this.LinesDoneDrawing.clear();
+		this.generateParticle();
 	}
+	
 	
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
@@ -153,11 +180,7 @@ public class Particles extends Animation{
 			particleLine.drawLine(g);
 		}
 		
-		if (areAllTrue(isDoneDrawing)) {
-			this.particles.clear();
-			this.isDoneDrawing.clear();
-			this.generateParticle();
-		}
+		if (areAllTrue(LinesDoneDrawing)) { isDoneDrawing(); }
 	}
 
 }

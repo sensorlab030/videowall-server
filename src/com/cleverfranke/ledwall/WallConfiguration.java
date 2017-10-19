@@ -16,10 +16,11 @@ public class WallConfiguration {
 	public static final int PHYSICAL_PIXEL_PITCH_CM = 3;														// Distance between two pixels in cm
 	
 	public static final int PANEL_COUNT = PHYSICAL_PANEL_WIDTH_CM.length;										// Number of panels
+	public static final int ROWS_COUNT = (int) Math.floor(PHYSICAL_WALL_HEIGHT_CM / PHYSICAL_PIXEL_PITCH_CM); 	// Number of led rows
 	
 	// Source/preview image dimensions (pixels)
 	public static final int SOURCE_CM_TO_PIXEL_RATIO = 2;														// Conversion ratio from cm to pixels
 	public static final int SOURCE_IMG_WIDTH = PHYSICAL_WALL_WIDTH_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image width for the wall configuration
 	public static final int SOURCE_IMG_HEIGHT = PHYSICAL_WALL_HEIGHT_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image height for the wall configuration
-	
+	public static final int ROW_HEIGHT = (int) Math.floor(SOURCE_IMG_HEIGHT / ROWS_COUNT);						// Row height
 }

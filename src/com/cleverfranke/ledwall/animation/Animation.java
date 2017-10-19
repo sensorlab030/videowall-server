@@ -1,5 +1,7 @@
 package com.cleverfranke.ledwall.animation;
 
+import java.util.List;
+
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
@@ -16,6 +18,7 @@ public abstract class Animation {
 	private static PGraphics graphicsContext;
 	private PImage image;
 	
+	public float XPANELCOORD[] = getXCoordOfPanelSides();
 	
 	public Animation(int duration, boolean inDefaultRotation, PApplet applet) {
 		this.duration = duration;
@@ -327,5 +330,15 @@ public abstract class Animation {
 		}
 		
 		return movedpanelCoord;
+	}
+	
+	/**
+	 * Test if a boolean arrayList is all true
+	 * @param array
+	 * @return boolean
+	 */
+	public static boolean areAllTrue(List<Boolean> array) {
+	    for(Boolean b : array) if(!b) return false;
+	    return true;
 	}
 }
