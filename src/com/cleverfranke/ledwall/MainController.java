@@ -61,7 +61,7 @@ public class MainController extends PApplet {
 		PImage previewImage = Preview.createPreview(this, animationFrame);
 
 		// Draw preview
-		image(animationFrame, 0, 0);
+		image(previewImage, 0, 0);
 		
 	}
 

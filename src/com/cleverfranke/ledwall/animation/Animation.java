@@ -29,7 +29,7 @@ public abstract class Animation {
 		
 		if (this.isDrawnOnGrid) {
 			graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-			image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
+			image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
 		} else {
 			graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 			image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
@@ -65,10 +65,36 @@ public abstract class Animation {
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
 		
-		System.out.println(image.get(150, 150));
+		if (isDrawnOnGrid) {
+			image = projectGridToWall(image);
+		}
+		
 		//Return image
 		return getImage();
 		
+	}
+	
+	public PImage projectGridToWall(PImage grid){
+		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
+		
+		for (int i = 0; i< grid.width; i++){
+			int x = 0;
+			int panelIndex = (int) Math.ceil((float)i/2);
+			
+			for (int j = 0; j < grid.height; j++){
+				int pixel = grid.get(i, j);
+				
+				if (i%2 == 0) {
+					x = (int) (XPANELCOORD[panelIndex] + BEAM_WIDTH / 2);
+				} else {
+					x = (int) (XPANELCOORD[panelIndex]) - BEAM_WIDTH / 2 - 1;
+				}
+				
+				wall.set(x, j*WallConfiguration.ROW_HEIGHT + 2, pixel);			
+			}
+		}
+		return wall;
 	}
 	
 	/**
