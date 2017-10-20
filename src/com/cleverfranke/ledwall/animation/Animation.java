@@ -57,7 +57,7 @@ public abstract class Animation {
 		drawAnimationFrame(graphicsContext);
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
-		
+
 		//Return image
 		return getImage();
 		
