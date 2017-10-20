@@ -8,8 +8,8 @@ import processing.core.PGraphics;
 public class GridTest extends Animation {
 	int colors[] = new int[WallConfiguration.ROWS_COUNT];
 	
-	public GridTest(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, true, applet);
+	public GridTest(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
+		super(inDefaultRotation, isDrawnOnGrid, applet);
 		
 		for (int i = 0; i < WallConfiguration.ROWS_COUNT; i++) {
 			int color = generateRandomRGBColor();

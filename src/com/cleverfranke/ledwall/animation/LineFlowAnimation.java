@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cleverfranke.ledwall.WallConfiguration;
-import com.cleverfranke.util.PColor;
 import java.util.concurrent.ThreadLocalRandom;
 
 import processing.core.PApplet;
@@ -109,8 +108,8 @@ public class LineFlowAnimation extends Animation{
 	}
 		
 	
-	public LineFlowAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, true, applet);
+	public LineFlowAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
+		super(inDefaultRotation, isDrawnOnGrid, applet);
 		this.applet = applet;
 				
 		// Generate particle lines

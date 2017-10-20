@@ -15,8 +15,8 @@ public class SensorLabAnimation extends Animation {
 	private float[] yOffset = null;
 	private boolean isDone = false;
 	
-	public SensorLabAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, false, applet);
+	public SensorLabAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
+		super(inDefaultRotation, isDrawnOnGrid, applet);
 		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
 		frameCount = applet.frameCount;
 	}

@@ -60,8 +60,8 @@ public class BarGraphAnimation extends Animation {
 	}
 	
 	
-	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, false, applet);
+	public BarGraphAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
+		super(inDefaultRotation, isDrawnOnGrid, applet);
 	}
 
 	

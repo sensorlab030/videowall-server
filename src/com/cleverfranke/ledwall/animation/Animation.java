@@ -14,7 +14,7 @@ public abstract class Animation {
 	
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
-	private static PGraphics graphicsContext;
+	private PGraphics graphicsContext;
 	private PImage image;
 	private boolean isDrawnOnGrid;
 	
@@ -26,13 +26,15 @@ public abstract class Animation {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
 		this.isDrawnOnGrid = isDrawnOnGrid;
-		
+
+
 		if (this.isDrawnOnGrid) {
-			graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-			image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
+			this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
+			this.image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
 		} else {
-			graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-			image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+			System.out.println("Normal size");	
+			this.graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+			this.image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		}
 	}
 	
@@ -59,6 +61,7 @@ public abstract class Animation {
 	 *
 	 */
 	public final PImage draw() {
+		
 		// Draw animation frame to image
 		graphicsContext.beginDraw();
 		drawAnimationFrame(graphicsContext);
@@ -70,11 +73,12 @@ public abstract class Animation {
 		}
 		
 		//Return image
-		return getImage();
+		return image;
 		
 	}
 	
 	public PImage projectGridToWall(PImage grid){
+		
 		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
 		
