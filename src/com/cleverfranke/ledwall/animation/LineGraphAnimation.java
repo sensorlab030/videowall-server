@@ -24,7 +24,7 @@ public class LineGraphAnimation extends Animation {
 			};
 	
 	public LineGraphAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, applet);
+		super(inDefaultRotation, false, applet);
 		frameCount = applet.frameCount;
 		
 		this.isDone = false;

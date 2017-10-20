@@ -110,7 +110,7 @@ public class Particles extends Animation{
 		
 	
 	public Particles(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, applet);
+		super(inDefaultRotation, false, applet);
 		this.applet = applet;
 				
 		// Generate particle lines

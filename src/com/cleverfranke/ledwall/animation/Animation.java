@@ -16,17 +16,24 @@ public abstract class Animation {
 	protected PApplet applet;
 	private static PGraphics graphicsContext;
 	private PImage image;
+	private boolean isDrawnOnGrid;
 	
 	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();	// X coordinates of each sides of the panels
 	public float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
 	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
 	
-	public Animation(boolean inDefaultRotation, PApplet applet) {
+	public Animation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
-
-		graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		this.isDrawnOnGrid = isDrawnOnGrid;
+		
+		if (this.isDrawnOnGrid) {
+			graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
+			image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
+		} else {
+			graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+			image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		}
 	}
 	
 	
@@ -57,7 +64,8 @@ public abstract class Animation {
 		drawAnimationFrame(graphicsContext);
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
-
+		
+		System.out.println(image.get(150, 150));
 		//Return image
 		return getImage();
 		

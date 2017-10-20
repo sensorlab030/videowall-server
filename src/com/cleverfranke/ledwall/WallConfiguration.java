@@ -17,6 +17,7 @@ public class WallConfiguration {
 	
 	public static final int PANEL_COUNT = PHYSICAL_PANEL_WIDTH_CM.length;										// Number of panels
 	public static final int ROWS_COUNT = (int) Math.floor(PHYSICAL_WALL_HEIGHT_CM / PHYSICAL_PIXEL_PITCH_CM); 	// Number of led rows
+	public static final int COLUMNS_COUNT = PANEL_COUNT * 2; 													// Number of led columns
 	
 	// Source/preview image dimensions (pixels)
 	public static final int SOURCE_CM_TO_PIXEL_RATIO = 2;														// Conversion ratio from cm to pixels
