@@ -9,7 +9,7 @@ import processing.core.PGraphics;
 
 public class BarGraphAnimation extends Animation {
 	// Parameters
-	private int NBVALUES = 13; 						// Total number of bars
+	private int NBVALUES = 26; 						// Total number of bars
 	private float DURATION = 1;						// Animation duration
 	private int color = PColor.color(0, 180, 180); 	// Bars color
 	
@@ -21,13 +21,13 @@ public class BarGraphAnimation extends Animation {
 	
 	
 	public class Bar {
-		private float currentHeight;
-		private float finalHeight;
+		private int currentHeight;
+		private int finalHeight;
 		private int panelIndex;
 		private AniSequence aniBar;
 		
 		
-		private Bar(float finalHeight, int panelIndex) {
+		private Bar(int finalHeight, int panelIndex) {
 			this.finalHeight = finalHeight;
 			this.currentHeight = 0;
 			this.panelIndex = panelIndex;
@@ -55,7 +55,7 @@ public class BarGraphAnimation extends Animation {
 		
 		
 		private void draw(PGraphics g) {
-			drawBottomBar(g, panelIndex, g.height - currentHeight);
+			g.rect(panelIndex, WallConfiguration.ROWS_COUNT - currentHeight, 1, currentHeight);
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class BarGraphAnimation extends Animation {
 		float[] minMax = findMinMaxValues(VALUES);	
 		
 		for(int i = 0; i < NBVALUES; i++) {
-			float finalHeight = PApplet.map(VALUES[i], 0, minMax[1], 0, WallConfiguration.SOURCE_IMG_HEIGHT);
+			int finalHeight = (int) PApplet.map(VALUES[i], 0, minMax[1], 0, WallConfiguration.ROWS_COUNT);
 			bars[i] = new Bar(finalHeight, i);
 			barsDoneDrawing[i] = false;
 		}	

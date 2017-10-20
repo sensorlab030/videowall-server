@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class SensorLabAnimation extends Animation {
-	private final int F_DURATION = 20; 	// Animation frames duration
+	private final int F_DURATION = 20; 			// Animation frames duration
 	private int frameCount;						// Number of frames at the start of the animation
 	private boolean isTop = false;
 	private boolean isMoving = true;
