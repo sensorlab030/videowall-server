@@ -6,12 +6,12 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class GridTest extends Animation {
-	int colors[] = new int[WallConfiguration.COLUMNS_COUNT];
+	int colors[] = new int[WallConfiguration.ROWS_COUNT];
 	
 	public GridTest(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, true, applet);
 		
-		for (int i = 0; i < WallConfiguration.COLUMNS_COUNT; i++) {
+		for (int i = 0; i < WallConfiguration.ROWS_COUNT; i++) {
 			int color = generateRandomRGBColor();
 			colors[i] = color;
 		}
@@ -29,9 +29,9 @@ public class GridTest extends Animation {
 		g.noFill();
 		g.strokeWeight(1);
 		
-		for (int i = 0; i < WallConfiguration.COLUMNS_COUNT; i++) {
+		for (int i = 0; i < WallConfiguration.ROWS_COUNT; i++) {
 			g.stroke(colors[i]);
-			g.line(i, 0, i, WallConfiguration.ROWS_COUNT);
+			g.line(0, i, WallConfiguration.SOURCE_IMG_WIDTH , i);
 		}
 		
 	}

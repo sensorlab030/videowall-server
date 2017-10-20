@@ -145,7 +145,7 @@ public abstract class Animation {
 	 * Generate a random RGB color
 	 * @return PColor
 	 */
-	protected static int generateRandomRGBColor() {
+	public int generateRandomRGBColor() {
 		int r = (int) (Math.random() * 255);
 		int g = (int) (Math.random() * 255);
 		int b = (int) (Math.random() * 255);
@@ -156,7 +156,7 @@ public abstract class Animation {
 	 * Generate a random RGBA color
 	 * @return PColor
 	 */
-	protected static int generateRandomRGBAColor(int alpha) {
+	public int generateRandomRGBAColor(int alpha) {
 		int r = (int) (Math.random() * 255);
 		int g = (int) (Math.random() * 255);
 		int b = (int) (Math.random() * 255);
@@ -168,7 +168,7 @@ public abstract class Animation {
 	 * Return an array that contains the X coordinates of the panel boundaries.
 	 * @return xPos
 	 */
-	protected static float[] getXCoordOfPanels() {
+	public static float[] getXCoordOfPanels() {
 		// Number of panels
 		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
 		
