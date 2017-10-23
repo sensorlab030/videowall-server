@@ -1,5 +1,6 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.animation.BarFlowAnimation;
 import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 import com.cleverfranke.ledwall.animation.GridTest;
@@ -41,9 +42,10 @@ public class MainController extends PApplet {
 
 		animationManager = new AnimationManager();
 //		animationManager.queueVisualization(new GridTest(true, this));
-		animationManager.queueVisualization(new BarGraphAnimation(true, true, this));
+		animationManager.queueVisualization(new BarFlowAnimation(true, true, this));
 //		animationManager.queueVisualization(new RainBarsAnimation(true, this));
-//		animationManager.queueVisualization(new LineGraphAnimation(true, false, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, false, this));
+		animationManager.queueVisualization(new BarGraphAnimation(true, true, this));
 //		animationManager.queueVisualization(new ChestBoardAnimation(true, false, this));
 //		animationManager.queueVisualization(new SensorLabAnimation(true, false, this));
 //		animationManager.queueVisualization(new LineFlowAnimation(true, true, this));
