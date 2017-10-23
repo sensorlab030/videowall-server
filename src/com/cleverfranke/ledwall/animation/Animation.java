@@ -14,29 +14,21 @@ public abstract class Animation {
 	
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
-	private PGraphics graphicsContext;
-	private PImage image;
-	private boolean isDrawnOnGrid;
+	protected PGraphics graphicsContext;
+	protected PImage image;
 	
+	// Wall parameters
 	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();	// X coordinates of each sides of the panels
 	public float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
 	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
 	
-	public Animation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
+	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
-		this.isDrawnOnGrid = isDrawnOnGrid;
 
-
-		if (this.isDrawnOnGrid) {
-			this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-			this.image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
-		} else {
-			this.graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-			this.image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		}
+		this.graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		this.image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	}
-	
 	
 	/**
 	 * Flags when animation is finished
@@ -59,7 +51,7 @@ public abstract class Animation {
 	 * @return the new frame
 	 *
 	 */
-	public final PImage draw() {
+	public PImage draw() {
 		
 		// Draw animation frame to image
 		graphicsContext.beginDraw();
@@ -67,37 +59,9 @@ public abstract class Animation {
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
 		
-		if (isDrawnOnGrid) {
-			image = projectGridToWall(image);
-		}
-		
 		//Return image
-		return image;
+		return getImage();
 		
-	}
-	
-	public PImage projectGridToWall(PImage grid){
-		
-		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
-		
-		for (int i = 0; i< grid.width; i++){
-			int x = 0;
-			int panelIndex = (int) Math.ceil((float)i/2);
-			
-			for (int j = 0; j < grid.height; j++){
-				int pixel = grid.get(i, j);
-				
-				if (i%2 == 0) {
-					x = (int) (XPANELCOORD[panelIndex] + BEAM_WIDTH / 2);
-				} else {
-					x = (int) (XPANELCOORD[panelIndex]) - BEAM_WIDTH / 2 - 1;
-				}
-				
-				wall.set(x, j*WallConfiguration.ROW_HEIGHT + 2, pixel);			
-			}
-		}
-		return wall;
 	}
 	
 	/**
@@ -112,7 +76,7 @@ public abstract class Animation {
 	 * 
 	 * @return latest animation frame
 	 */
-	public final PImage getImage() {
+	public PImage getImage() {
 		return image;
 	}
 	
@@ -140,6 +104,9 @@ public abstract class Animation {
 	 * after the Visualization transition is done.
 	 */
 	public void inAnimationDone() {}
+	
+	
+	
 	
 	
 	/*** UTILS ***/
@@ -171,7 +138,7 @@ public abstract class Animation {
 	 * Return an array that contains the X coordinates of the panel boundaries.
 	 * @return xPos
 	 */
-	public static float[] getXCoordOfPanels() {
+	protected static float[] getXCoordOfPanels() {
 		// Number of panels
 		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
 		
@@ -192,6 +159,9 @@ public abstract class Animation {
 		return xPos;
 	}
 	
+	
+	
+	
 	/**
 	 * Return an array that contains the width in pixels of the panels
 	 * @return xWidth
@@ -211,6 +181,9 @@ public abstract class Animation {
 		return xWidth;
 	}
 
+	
+	
+	
 	/**
 	 * Return an array that contains the width in pixels of the panels
 	 * @return xWidth
@@ -230,6 +203,8 @@ public abstract class Animation {
 
 		return xWidth;
 	}
+	
+	
 	
 	/**
 	 * Return an array that contains the width in pixels of the panels
@@ -259,7 +234,7 @@ public abstract class Animation {
 	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
 	 * @param panelCoord The y coordinate of the top left corner of the square
 	 */
-	public static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
+	protected static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
 		float[] xPos = getXCoordOfPanels();
 		float[] xWidth = getPixelWidthsOfPanels();
 		

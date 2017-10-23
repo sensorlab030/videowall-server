@@ -7,11 +7,11 @@ import de.looksgood.ani.AniSequence;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-public class BarGraphAnimation extends Animation {
+public class BarGraphAnimation extends LedAnimation {
 	// Parameters
 	private int NBVALUES = 26; 						// Total number of bars
 	private float DURATION = 1;						// Animation duration
-	private int color = PColor.color(0, 180, 180); 	// Bars color
+	private int color = PColor.color(255, 200, 0); 	// Bars color
 	
 
 	private float[] VALUES = new float[NBVALUES];				// Bar values
@@ -60,8 +60,8 @@ public class BarGraphAnimation extends Animation {
 	}
 	
 	
-	public BarGraphAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public BarGraphAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 	}
 
 	

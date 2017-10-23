@@ -93,8 +93,8 @@ public class ChestBoardAnimation extends Animation{
 	
 
 	
-	public ChestBoardAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public ChestBoardAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 		
 		// Calculate number of squares per panel
 		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);

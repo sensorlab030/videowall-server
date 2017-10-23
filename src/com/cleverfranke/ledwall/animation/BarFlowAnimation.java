@@ -10,7 +10,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
-public class BarFlowAnimation extends Animation{
+public class BarFlowAnimation extends LedAnimation{
 	// Parameters
 	private int NBVALUES = 26; 									// Total number of bars
 	private float DURATION = 3;									// Animation duration
@@ -83,8 +83,8 @@ public class BarFlowAnimation extends Animation{
 		
 	}
 	
-	public BarFlowAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public BarFlowAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 		generateBars();
 	}
 

@@ -100,7 +100,7 @@ public class RainBarsAnimation extends Animation {
 	}
 	
 	public RainBarsAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, false, applet);
+		super(inDefaultRotation, applet);
 		
 		// Load data
 		loadRainData("/Users/agathelenclen/Projects/led-wall/src/data/NL_Cumulative_Rain_04-17.csv");

@@ -23,8 +23,8 @@ public class LineGraphAnimation extends Animation {
 			PColor.color(255, 255, 0)
 			};
 	
-	public LineGraphAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public LineGraphAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 		frameCount = applet.frameCount;
 		
 		this.isDone = false;

@@ -5,11 +5,11 @@ import com.cleverfranke.ledwall.WallConfiguration;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-public class GridTest extends Animation {
+public class GridTest extends LedAnimation {
 	int colors[] = new int[WallConfiguration.ROWS_COUNT];
 	
-	public GridTest(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public GridTest(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 		
 		for (int i = 0; i < WallConfiguration.ROWS_COUNT; i++) {
 			int color = generateRandomRGBColor();

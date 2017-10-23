@@ -11,7 +11,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
-public class LineFlowAnimation extends Animation{
+public class LineFlowAnimation extends LedAnimation{
 	private float DURATION = 5;
 	private List<Line> lines = new ArrayList<>();
 	private List<Boolean> LinesDoneDrawing = new ArrayList<>();
@@ -108,8 +108,8 @@ public class LineFlowAnimation extends Animation{
 	}
 		
 	
-	public LineFlowAnimation(boolean inDefaultRotation, boolean isDrawnOnGrid, PApplet applet) {
-		super(inDefaultRotation, isDrawnOnGrid, applet);
+	public LineFlowAnimation(boolean inDefaultRotation, PApplet applet) {
+		super(inDefaultRotation, applet);
 		this.applet = applet;
 				
 		// Generate particle lines
