@@ -19,8 +19,9 @@ public abstract class Animation {
 	
 	// Wall parameters
 	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();	// X coordinates of each sides of the panels
-	public float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
+	public static float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
 	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
+	public int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
 	
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;

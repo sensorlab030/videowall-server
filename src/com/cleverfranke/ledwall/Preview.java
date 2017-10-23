@@ -10,7 +10,7 @@ public class Preview {
 	public static float XPANELCOORD[] = Animation.getXCoordOfPanels(); // X coordinates of each panels
 	
 	public static PImage createPreview(PApplet applet, PImage sourceImage) {
-		PImage projectedImage = projectGridToWall(sourceImage);
+		PImage projectedImage = projectGridToPreview(sourceImage);
 		
 		PGraphics g = applet.createGraphics(projectedImage.width, projectedImage.height);
 		g.beginDraw();
@@ -27,11 +27,9 @@ public class Preview {
 	 * @param grid of 26x93 pixels
 	 * @return wall, an image of grid projected on the wall beams
 	 */
-	private static PImage projectGridToWall(PImage grid){
+	private static PImage projectGridToPreview(PImage grid){
 		
 		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
-		
 		for (int i = 0; i< grid.width; i++){
 			int x = 0;
 			int panelIndex = (int) Math.ceil((float)i/2);
@@ -40,9 +38,9 @@ public class Preview {
 				int pixel = grid.get(i, j);
 				
 				if (i%2 == 0) {
-					x = (int) (XPANELCOORD[panelIndex] + BEAM_WIDTH / 2);
+					x = (int) (XPANELCOORD[panelIndex] + WallConfiguration.BEAM_WIDTH / 2);
 				} else {
-					x = (int) (XPANELCOORD[panelIndex]) - BEAM_WIDTH / 2 - 1;
+					x = (int) (XPANELCOORD[panelIndex]) - WallConfiguration.BEAM_WIDTH / 2 - 1;
 				}
 				
 				wall.set(x, j*WallConfiguration.ROW_HEIGHT + 2, pixel);			
@@ -52,8 +50,6 @@ public class Preview {
 	}
 	
 	private static void drawPixels(PGraphics g, PImage sourceImage) {
-		
-		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
 		final int LED_PASSTHROUGH = 70;
 		final int LED_BAFFLE_DIFF = 5;
 		
@@ -68,14 +64,14 @@ public class Preview {
 			for (int pixelY = WallConfiguration.PHYSICAL_PIXEL_OFFSET_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO; pixelY < WallConfiguration.SOURCE_IMG_HEIGHT; pixelY += WallConfiguration.PHYSICAL_PIXEL_PITCH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO) {
 				
 				// Left pixels
-				float xOffsetLeft = x + BEAM_WIDTH / 2;
+				float xOffsetLeft = x + WallConfiguration.BEAM_WIDTH / 2;
 				g.stroke(sourceImage.get((int) xOffsetLeft, pixelY));
 				for (int xDiff = 0; xDiff < LED_PASSTHROUGH; xDiff += LED_BAFFLE_DIFF) {
 					g.point(xOffsetLeft + xDiff, pixelY);
 				}
 				
 				// Right pixels
-				float xOffsetRight = x + panelWidth - BEAM_WIDTH / 2 - 1;
+				float xOffsetRight = x + panelWidth - WallConfiguration.BEAM_WIDTH / 2 - 1;
 				g.stroke(sourceImage.get((int) xOffsetRight, pixelY));
 				for (int xDiff = 0; xDiff < LED_PASSTHROUGH; xDiff += LED_BAFFLE_DIFF) {
 					g.point(xOffsetRight - xDiff, pixelY);
@@ -90,9 +86,6 @@ public class Preview {
 	}
 	
 	private static void drawBeams(PGraphics g) {
-		
-		final int beamWidth = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
-		
 		g.noStroke();
 		g.fill(230);
 		
@@ -102,16 +95,16 @@ public class Preview {
 
 			// Draw left beam
 			if (i == 0) {
-				g.rect(0, 0, beamWidth / 2, WallConfiguration.SOURCE_IMG_HEIGHT);
+				g.rect(0, 0, WallConfiguration.BEAM_WIDTH / 2, WallConfiguration.SOURCE_IMG_HEIGHT);
 			} 
 			
 			// Draw right beam
 			if (i == WallConfiguration.PANEL_COUNT - 1) {
 				// Draw right beam at the end of the wall
-				g.rect(x + panelWidth - beamWidth / 2, 0, beamWidth / 2, WallConfiguration.SOURCE_IMG_HEIGHT);
+				g.rect(x + panelWidth - WallConfiguration.BEAM_WIDTH / 2, 0, WallConfiguration.BEAM_WIDTH / 2, WallConfiguration.SOURCE_IMG_HEIGHT);
 			} else {
 				// Draw right beam extending to next panel
-				g.rect(x + panelWidth - beamWidth / 2, 0, beamWidth, WallConfiguration.SOURCE_IMG_HEIGHT);
+				g.rect(x + panelWidth - WallConfiguration.BEAM_WIDTH / 2, 0, WallConfiguration.BEAM_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 			}
 			
 			x += panelWidth;

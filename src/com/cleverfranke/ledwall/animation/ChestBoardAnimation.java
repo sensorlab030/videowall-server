@@ -1,13 +1,11 @@
 
 package com.cleverfranke.ledwall.animation;
 
-import com.cleverfranke.ledwall.WallConfiguration;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
-public class ChestBoardAnimation extends Animation{
+public class ChestBoardAnimation extends CanvasAnimation{
 	ChestBoard chestboard;
 
 	/**
@@ -56,7 +54,7 @@ public class ChestBoardAnimation extends Animation{
 		 * @param PANEL_WIDTH: An array containing the width of each panel
 		 */
 		public void setSquares(){
-			this.squares = new Square[WallConfiguration.PANEL_COUNT][this.nbSquares];
+			this.squares = new Square[PANEL_COUNT][this.nbSquares];
 			
 			for (int i = leftPanelIndex; i < rightPanelIndex; i++) {
 				for (int j = 0; j < this.nbSquares; j++) {
@@ -97,10 +95,10 @@ public class ChestBoardAnimation extends Animation{
 		super(inDefaultRotation, applet);
 		
 		// Calculate number of squares per panel
-		int nbSquares = (int) Math.floor(WallConfiguration.SOURCE_IMG_HEIGHT / PANEL_WIDTH[1]);
+		int nbSquares = (int) Math.floor(graphicsContext.height / PANEL_WIDTH[1]);
 		
 		// Create ChestBoard
-		chestboard = new ChestBoard(nbSquares, 1, WallConfiguration.PANEL_COUNT-1, 0);
+		chestboard = new ChestBoard(nbSquares, 1, PANEL_COUNT-1, 0);
 	}
 	
 

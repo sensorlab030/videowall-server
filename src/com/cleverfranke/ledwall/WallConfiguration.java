@@ -24,4 +24,7 @@ public class WallConfiguration {
 	public static final int SOURCE_IMG_WIDTH = PHYSICAL_WALL_WIDTH_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image width for the wall configuration
 	public static final int SOURCE_IMG_HEIGHT = PHYSICAL_WALL_HEIGHT_CM * SOURCE_CM_TO_PIXEL_RATIO;				// Source image height for the wall configuration
 	public static final int ROW_HEIGHT = (int) Math.floor(SOURCE_IMG_HEIGHT / ROWS_COUNT);						// Row height
+	public static final int BEAM_WIDTH = PHYSICAL_BEAM_WIDTH_CM * SOURCE_CM_TO_PIXEL_RATIO;						// Beam width in pixel
+	
+	public static final int RATIO = SOURCE_IMG_WIDTH / SOURCE_IMG_HEIGHT;										// Width / height ratio
 }

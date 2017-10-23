@@ -1,6 +1,5 @@
 package com.cleverfranke.ledwall.animation;
 
-import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
@@ -8,14 +7,15 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 
-public class LineGraphAnimation extends Animation {
+public class LineGraphAnimation extends CanvasAnimation {
 	
 	private final int F_DURATION = 40; // Nb of frames
 	private final int LINE_COUNT = 3;
-	private final float RESOLUTION_X = (float) WallConfiguration.SOURCE_IMG_WIDTH / 100f;
+	private final float RESOLUTION_X = (float) graphicsContext.width / 100f;
 	private boolean isDone;
 	private float[] yOffset = new float[LINE_COUNT];
 	int frameCount;
+	
 	
 	private int[] colors = {
 			PColor.color(0, 255, 255), 
@@ -39,7 +39,7 @@ public class LineGraphAnimation extends Animation {
 		
 		g.background(255);
 		g.noFill();
-		g.strokeWeight(100);
+		g.strokeWeight((float) (0.25*g.height));
 		
 		for (int i = 0; i < LINE_COUNT; i++) {
 			
