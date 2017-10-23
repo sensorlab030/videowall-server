@@ -1,11 +1,7 @@
-
 package com.cleverfranke.ledwall.animation;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-
-import com.cleverfranke.ledwall.WallConfiguration;
-
 import de.looksgood.ani.*;
 
 public class ChestBoardAnimation extends Animation{
@@ -183,14 +179,5 @@ public class ChestBoardAnimation extends Animation{
 	@Override
 	public void prepareForQueueRotation() {
 		chestboard.aniChestBoard.start();
-	}
-	
-	
-	public int[] mapPanelWidth() {
-		int[] mapped = new int[PANEL_COUNT];
-		for (int i=0; i < PANEL_COUNT; i++) {
-			mapped[i] = (int) PApplet.map(PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
-		}
-		return mapped;
 	}
 }

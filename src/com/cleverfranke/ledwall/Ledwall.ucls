@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="com.cleverfranke.ledwall.MainController" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/MainController.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1116" y="-197"/>    
+    <position height="-1" width="-1" x="1116" y="-165"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="com.cleverfranke.ledwall.AnimationManager" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/AnimationManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1116" y="212"/>    
+    <position height="-1" width="-1" x="1112" y="122"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="com.cleverfranke.ledwall.AnimationManager.AnimationTransition" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/AnimationManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1675" y="258"/>    
+    <position height="-1" width="-1" x="1511" y="227"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,301 +57,269 @@
   </class>  
   <class id="7" language="java" name="com.cleverfranke.ledwall.animation.Animation" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/animation/Animation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1105" y="783"/>    
+    <position height="-1" width="-1" x="1116" y="680"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation" project="CfLedWall" 
+  <class id="8" language="java" name="com.cleverfranke.ledwall.animation.CanvasAnimation" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/CanvasAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1858" y="668"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/animation/ChestBoardAnimation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="613" y="1221"/>    
+    <position height="-1" width="-1" x="-60" y="606"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation.ChestBoard" 
+  <class id="10" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation.ChestBoard" 
     project="CfLedWall" file="/CfLedWall/src/com/cleverfranke/ledwall/animation/ChestBoardAnimation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="238" y="1218"/>    
+    <position height="-1" width="-1" x="-65" y="929"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation.Square" 
+  <class id="11" language="java" name="com.cleverfranke.ledwall.animation.ChestBoardAnimation.Square" 
     project="CfLedWall" file="/CfLedWall/src/com/cleverfranke/ledwall/animation/ChestBoardAnimation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="-73" y="1231"/>    
+    <position height="-1" width="-1" x="-88" y="1253"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="com.cleverfranke.ledwall.animation.LineGraphAnimation" project="CfLedWall" 
+  <class id="12" language="java" name="com.cleverfranke.ledwall.animation.BarGraphAnimation.Bar" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarGraphAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="278" y="1338"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.cleverfranke.ledwall.animation.BarGraphAnimation" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarGraphAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="280" y="1052"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.cleverfranke.ledwall.animation.BarFlowAnimation" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="602" y="1136"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.cleverfranke.ledwall.animation.BarFlowAnimation.Bar" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="610" y="1483"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="com.cleverfranke.ledwall.animation.LineFlowAnimation.Line" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/LineFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1060" y="1682"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="com.cleverfranke.ledwall.animation.LineFlowAnimation" project="CfLedWall" 
+    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/LineFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="227" width="234" x="951" y="1183"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.cleverfranke.ledwall.animation.LineGraphAnimation" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/animation/LineGraphAnimation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="618" y="977"/>    
+    <position height="-1" width="-1" x="2318" y="670"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="com.cleverfranke.ledwall.animation.SensorLabAnimation" project="CfLedWall" 
+  <class id="19" language="java" name="com.cleverfranke.ledwall.animation.SensorLabAnimation" project="CfLedWall" 
     file="/CfLedWall/src/com/cleverfranke/ledwall/animation/SensorLabAnimation.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="601" y="655"/>    
+    <position height="-1" width="-1" x="1458" y="1316"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="com.cleverfranke.ledwall.animation.OLDLedAnimation" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/OLDLedAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1098" y="1640"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="com.cleverfranke.ledwall.animation.LineFlowAnimation.Line" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/LineFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1636" y="2334"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="15" language="java" name="com.cleverfranke.ledwall.animation.LineFlowAnimation" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/LineFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1624" y="1940"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="16" language="java" name="com.cleverfranke.ledwall.animation.BarGraphAnimation.Bar" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarGraphAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1242" y="2230"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="17" language="java" name="com.cleverfranke.ledwall.animation.BarGraphAnimation" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarGraphAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1236" y="1954"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="18" language="java" name="com.cleverfranke.ledwall.animation.BarFlowAnimation" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="754" y="1978"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="19" language="java" name="com.cleverfranke.ledwall.animation.BarFlowAnimation.Bar" project="CfLedWall" 
-    file="/CfLedWall/src/com/cleverfranke/ledwall/animation/BarFlowAnimation.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="750" y="2333"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <association id="20">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="21" name="squares">        
-        <position height="0" width="0" x="-1216" y="-470"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-1216" y="-470"/>      
-      </multiplicity>    
+  <generalization id="20">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
+  </nesting>  
+  <association id="22">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="23" name="currentVisualization"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="23">    
+  <nesting id="25">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="16"/>  
+  </nesting>  
+  <association id="26">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="27" name="bars"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="29">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <association id="30">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="31" name="queue"/>      
+      <multiplicity id="32" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="33">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <association id="35">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="36" name="lines"/>      
+      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="39" name="bars"/>      
+      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <association id="42">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="43" name="fromVisualization"/>      
+      <multiplicity id="44" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="45">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="24" name="animationManager">        
-        <position height="0" width="0" x="356" y="6"/>      
-      </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
-        <position height="0" width="0" x="356" y="6"/>      
-      </multiplicity>    
+      <attribute id="46" name="animationManager"/>      
+      <multiplicity id="47" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="26">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="14"/>  
-  </nesting>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <nesting id="29">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="19"/>  
-  </nesting>  
-  <association id="30">    
+  <association id="48">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="31" name="driver">        
+      <attribute id="49" name="driver">        
         <position height="0" width="0" x="0" y="22"/>      
       </attribute>      
-      <multiplicity id="32" minimum="0" maximum="1">        
+      <multiplicity id="50" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="22"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="33">    
+  <generalization id="51">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <generalization id="52">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <association id="53">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="54" name="toVisualization"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="57" name="chestboard"/>      
+      <multiplicity id="58" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="59">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
+  <association id="60">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="34" name="transition">        
-        <position height="0" width="0" x="448" y="34"/>      
-      </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
-        <position height="0" width="0" x="448" y="34"/>      
-      </multiplicity>    
+      <attribute id="61" name="transition"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <association id="37">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="38" name="queue">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </attribute>      
-      <multiplicity id="39" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="40">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="41" name="currentVisualization">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </attribute>      
-      <multiplicity id="42" minimum="0" maximum="1">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="43">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="16"/>  
-  </nesting>  
-  <association id="44">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="45" name="toVisualization">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </attribute>      
-      <multiplicity id="46" minimum="0" maximum="1">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="47">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="48" name="fromVisualization">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </attribute>      
-      <multiplicity id="49" minimum="0" maximum="1">        
-        <position height="0" width="0" x="356" y="-20"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="50">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <association id="51">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="52" name="bars"/>      
-      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="54">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="55" name="chestboard">        
-        <position height="0" width="0" x="-902" y="-264"/>      
-      </attribute>      
-      <multiplicity id="56" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-902" y="-264"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="57">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <generalization id="58">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <nesting id="59">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="60">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="61" name="lines"/>      
-      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <association id="63">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="64" name="bars"/>      
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="64" name="squares"/>      
       <multiplicity id="65" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="66">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="13"/>  
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="8"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

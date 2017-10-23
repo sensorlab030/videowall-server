@@ -1,10 +1,8 @@
 
 package com.cleverfranke.ledwall.animation;
 
-import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 
-import java.util.concurrent.ThreadLocalRandom;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -47,7 +45,7 @@ public class BarFlowAnimation extends Animation{
 		private void setAniBar(){
 			aniBar.beginSequence();
 			aniBar.add(Ani.to(this, 0, 0, "currentHeight", 0, Ani.QUAD_OUT));
-			aniBar.add(Ani.to(this, DURATION, delay, "currentHeight", finalHeight + WallConfiguration.ROWS_COUNT, Ani.QUAD_IN));	
+			aniBar.add(Ani.to(this, DURATION, delay, "currentHeight", finalHeight + graphicsContext.height, Ani.QUAD_IN));	
 			aniBar.endSequence();
 			
 			aniBar.start();
@@ -64,7 +62,7 @@ public class BarFlowAnimation extends Animation{
 		
 		private void draw(PGraphics g) {
 			
-			int y = WallConfiguration.ROWS_COUNT - currentHeight;
+			int y = graphicsContext.height - currentHeight;
 			
 			for (int i = y; i <= y+y; i++) {
 			      float inter = y == 0 ? 0 : PApplet.map(i, y, y+y, 0, 1);
@@ -96,7 +94,7 @@ public class BarFlowAnimation extends Animation{
 		VALUES = generateRandomValues(NBVALUES);
 		
 		for(int i = 0; i < NBVALUES; i++) {
-			int finalHeight = (int) PApplet.map(VALUES[i], 0, 2, 0, WallConfiguration.ROWS_COUNT);
+			int finalHeight = (int) PApplet.map(VALUES[i], 0, 2, 0, graphicsContext.height);
 			bars[i] = new Bar(finalHeight, i);
 			barsDoneDrawing[i] = false;
 		}	

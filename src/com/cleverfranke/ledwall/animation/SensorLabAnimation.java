@@ -1,6 +1,4 @@
 package com.cleverfranke.ledwall.animation;
-
-import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
@@ -73,13 +71,5 @@ public class SensorLabAnimation extends Animation {
 	public void prepareForQueueRotation() {
 		isDone = false;
 		frameCount = applet.frameCount;
-	}
-	
-	public int[] mapPanelWidth() {
-		int[] mapped = new int[PANEL_COUNT];
-		for (int i=0; i < PANEL_COUNT; i++) {
-			mapped[i] = (int) PApplet.map(PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
-		}
-		return mapped;
 	}
 }

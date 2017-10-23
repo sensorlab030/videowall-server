@@ -42,13 +42,13 @@ public class MainController extends PApplet {
 
 		animationManager = new AnimationManager();
 //		animationManager.queueVisualization(new GridTest(true, this));
-//     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
+     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
 //		animationManager.queueVisualization(new RainBarsAnimation(true, this));
-//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-//		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+		animationManager.queueVisualization(new BarGraphAnimation(true, this));
+		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
 		animationManager.queueVisualization(new SensorLabAnimation(true, this));
-//		animationManager.queueVisualization(new LineFlowAnimation(true, this));
+		animationManager.queueVisualization(new LineFlowAnimation(true, this));
 	}
 	
 	public void draw() {

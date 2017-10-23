@@ -7,8 +7,6 @@ import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import processing.core.PShape;
-
 
 public abstract class Animation {
 	
@@ -308,5 +306,14 @@ public abstract class Animation {
 		}	
 		
 		return new float[]{min, max};
+	}
+	
+	
+	public int[] mapPanelWidth() {
+		int[] mapped = new int[PANEL_COUNT];
+		for (int i=0; i < PANEL_COUNT; i++) {
+			mapped[i] = (int) PApplet.map(PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
+		}
+		return mapped;
 	}
 }

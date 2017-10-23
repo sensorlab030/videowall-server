@@ -3,8 +3,6 @@ package com.cleverfranke.ledwall.animation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.cleverfranke.ledwall.WallConfiguration;
 import java.util.concurrent.ThreadLocalRandom;
 
 import processing.core.PApplet;
@@ -65,12 +63,12 @@ public class LineFlowAnimation extends Animation{
 		public void setCoordinates() {
 			double coin = Math.random();
 			// X coordinates are offset of at least the size of the canvas to the left, at most twice the size of the canvas to the left
-			startx1 = (int) (start - (coin + 1) * WallConfiguration.COLUMNS_COUNT);
-			startx2 = (int) ((end - 1) - (coin + 1) * WallConfiguration.COLUMNS_COUNT);
+			startx1 = (int) (start - (coin + 1) * graphicsContext.width);
+			startx2 = (int) ((end - 1) - (coin + 1) * graphicsContext.width);
 			
 			// Final X coordinates are offset of at least the size of the canvas to the right, at most twice the size of the canvas to the right
-			finalx1 = (int) (start + (coin + 1) * WallConfiguration.COLUMNS_COUNT);
-			finalx2 = (int) ((end - 1) + (coin + 1) * WallConfiguration.COLUMNS_COUNT);
+			finalx1 = (int) (start + (coin + 1) * graphicsContext.width);
+			finalx2 = (int) ((end - 1) + (coin + 1) * graphicsContext.width);
 		}
 		
 		
@@ -122,12 +120,12 @@ public class LineFlowAnimation extends Animation{
 	 */
 	private void generateLine() {
 		// Get width of each panels sides
-		int nbColumns = WallConfiguration.COLUMNS_COUNT;
+		int nbColumns = graphicsContext.width;
 		int minSpace = 1;
 		int index = 0;
 		
 		// For each row, randomly decide to draw or not lines on the row
-		for (int i = 3; i < WallConfiguration.ROWS_COUNT; i++){	
+		for (int i = 3; i < graphicsContext.height; i++){	
 			if (Math.random() > 0.6) {
 				int start = 0;																	// Start panel index
 				int nbLines = ThreadLocalRandom.current().nextInt(1, 3 + 1); 					// Get a random number of lines between 0 and 3
