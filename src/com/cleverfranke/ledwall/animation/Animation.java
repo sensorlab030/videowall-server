@@ -230,78 +230,8 @@ public abstract class Animation {
 		
 		return xPos;
 	}
-	/**
-	 * Draws a square, the width of panel
-	 * @param panelId The id of the panel you want to draw the square in (from 0 to 12)
-	 * @param panelCoord The y coordinate of the top left corner of the square
-	 */
-	protected static void drawSquare(PGraphics g, int panelId, float panelCoord, int color) {
-		float[] xPos = getXCoordOfPanels();
-		float[] xWidth = getPixelWidthsOfPanels();
-		
-		g.fill(color);
 
-		// Create shape
-		PShape square = g.createShape();
-		square.beginShape();
-		
-		// Add the 4 points to form a rectangle
-		square.vertex(xPos[panelId], panelCoord);
-		square.vertex(xPos[panelId+1], panelCoord);
-		square.vertex(xPos[panelId+1], panelCoord + xWidth[panelId]);
-		square.vertex(xPos[panelId], panelCoord + xWidth[panelId]);
-	
-		// Draw shape
-		square.endShape();
-		g.shape(square);
-	}
-	
-	/**
-	 * Draws a bar that starts from the bottom, the width of panel
-	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
-	 * @param panelCoord The y coordinate of the top left corner of the bar
-	 */
-	public void drawBottomBar(PGraphics g, int panelId, float panelCoord) {
-		float[] xPos = getXCoordOfPanels();
 
-		// Create shape
-		PShape rect = g.createShape();
-		rect.beginShape();
-		
-		// Add the 4 points to form a rectangle
-		rect.vertex(xPos[panelId], panelCoord);
-		rect.vertex(xPos[panelId+1], panelCoord);
-		rect.vertex(xPos[panelId+1], g.height);
-		rect.vertex(xPos[panelId], g.height);
-	
-		// Draw shape
-		rect.endShape();
-		g.shape(rect);
-	}
-	
-	/**
-	 * Draws a bar that starts from the top, the width of panel
-	 * @param panelId The id of the panel you want to draw the bar in (from 0 to 12)
-	 * @param panelCoord The y coordinate of the bottom left corner of the bar
-	 */
-	public void drawTopBar(PGraphics g, int panelId, float panelCoord) {
-		float[] xPos = getXCoordOfPanels();
-
-		// Create shape
-		PShape rect = g.createShape();
-		rect.beginShape();
-		
-		// Add the 4 points to form a rectangle
-		rect.vertex(xPos[panelId], 0);
-		rect.vertex(xPos[panelId+1], 0);
-		rect.vertex(xPos[panelId+1], panelCoord);
-		rect.vertex(xPos[panelId], panelCoord);
-	
-		// Draw shape
-		rect.endShape();
-		g.shape(rect);
-	}
-	
 	/**
 	 * Moves the coordinates of the drawing, per panel, one panel to the right
 	 * @param panelCoord : An array containing the coordinates per panel. Index of the array is index of the panel
