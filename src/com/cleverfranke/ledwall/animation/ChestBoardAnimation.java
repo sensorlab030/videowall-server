@@ -3,28 +3,38 @@ package com.cleverfranke.ledwall.animation;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+
+import com.cleverfranke.ledwall.WallConfiguration;
+
 import de.looksgood.ani.*;
 
-public class ChestBoardAnimation extends CanvasAnimation{
+public class ChestBoardAnimation extends Animation{
 	ChestBoard chestboard;
-
+	private int[] mappedPanelWidth = mapPanelWidth();
+	
 	/**
 	 * A Square is a class  that represents one square on the chestboard
 	 */
 	public class Square {
-		private int i;		// Panel ID
-		private float yPos; // Top left corner position of the square
-		private int color;	// Square color
+		private int i;			// Panel ID
+		private float yPos; 	// Top left corner position of the square
+		private float width; 	// Width of square
+		private int color;		// Square color
 
 		
-		private Square(int i, float yPos) {
+		private Square(int i, float yPos, int width) {
 			this.i = i;
 			this.yPos = yPos;
+			this.width = width;
 			this.color = generateRandomRGBColor();
 		}
 		
 		private void draw(PGraphics g){
-			drawSquare(g, i, yPos, color);
+			g.stroke(color);
+			// Draw line for left side of square
+			g.line(2*i, yPos, 2*i, yPos+width);
+			// Draw line for right side of square
+			g.line(2*i + 1, yPos, 2*i + 1, yPos+width);
 		}
 	}
 	
@@ -55,14 +65,15 @@ public class ChestBoardAnimation extends CanvasAnimation{
 		 */
 		public void setSquares(){
 			this.squares = new Square[PANEL_COUNT][this.nbSquares];
-			
+
 			for (int i = leftPanelIndex; i < rightPanelIndex; i++) {
 				for (int j = 0; j < this.nbSquares; j++) {
-					this.squares[i][j] = new Square(i, PANEL_WIDTH[i] * j);
+					this.squares[i][j] = new Square(i, mappedPanelWidth[i] * j, mappedPanelWidth[i]);
 				}
 			}
 			
 		}
+
 		
 		public void drawSquare(PGraphics g, int i, int j){
 			Square square = this.squares[i][j];
@@ -95,8 +106,8 @@ public class ChestBoardAnimation extends CanvasAnimation{
 		super(inDefaultRotation, applet);
 		
 		// Calculate number of squares per panel
-		int nbSquares = (int) Math.floor(graphicsContext.height / PANEL_WIDTH[1]);
-		
+		int nbSquares = (int) Math.floor(graphicsContext.height / mappedPanelWidth[1]);
+
 		// Create ChestBoard
 		chestboard = new ChestBoard(nbSquares, 1, PANEL_COUNT-1, 0);
 	}
@@ -173,5 +184,13 @@ public class ChestBoardAnimation extends CanvasAnimation{
 	public void prepareForQueueRotation() {
 		chestboard.aniChestBoard.start();
 	}
-
+	
+	
+	public int[] mapPanelWidth() {
+		int[] mapped = new int[PANEL_COUNT];
+		for (int i=0; i < PANEL_COUNT; i++) {
+			mapped[i] = (int) PApplet.map(PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
+		}
+		return mapped;
+	}
 }
