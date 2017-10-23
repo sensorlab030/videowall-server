@@ -1,21 +1,54 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.animation.Animation;
+
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class Preview {
+	public static float XPANELCOORD[] = Animation.getXCoordOfPanels(); // X coordinates of each panels
 	
 	public static PImage createPreview(PApplet applet, PImage sourceImage) {
+		PImage projectedImage = projectGridToWall(sourceImage);
 		
-		PGraphics g = applet.createGraphics(sourceImage.width, sourceImage.height);
+		PGraphics g = applet.createGraphics(projectedImage.width, projectedImage.height);
 		g.beginDraw();
 		g.background(255);
-		drawPixels(g, sourceImage);
+		drawPixels(g, projectedImage);
 		drawBeams(g);
 		g.endDraw();
 		
 		return g.get();
+	}
+	
+	/**
+	 * Scale an image of 26x93 (resolution) of the wall to the image preview sizes
+	 * @param grid of 26x93 pixels
+	 * @return wall, an image of grid projected on the wall beams
+	 */
+	private static PImage projectGridToWall(PImage grid){
+		
+		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		final int BEAM_WIDTH = WallConfiguration.PHYSICAL_BEAM_WIDTH_CM * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
+		
+		for (int i = 0; i< grid.width; i++){
+			int x = 0;
+			int panelIndex = (int) Math.ceil((float)i/2);
+			
+			for (int j = 0; j < grid.height; j++){
+				int pixel = grid.get(i, j);
+				
+				if (i%2 == 0) {
+					x = (int) (XPANELCOORD[panelIndex] + BEAM_WIDTH / 2);
+				} else {
+					x = (int) (XPANELCOORD[panelIndex]) - BEAM_WIDTH / 2 - 1;
+				}
+				
+				wall.set(x, j*WallConfiguration.ROW_HEIGHT + 2, pixel);			
+			}
+		}
+		return wall;
 	}
 	
 	private static void drawPixels(PGraphics g, PImage sourceImage) {

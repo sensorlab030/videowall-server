@@ -10,7 +10,7 @@ import processing.core.PImage;
 import processing.core.PShape;
 
 
-public abstract class Animation {
+public abstract class CanvasAnimation {
 	
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
@@ -22,12 +22,12 @@ public abstract class Animation {
 	public float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
 	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
 	
-	public Animation(boolean inDefaultRotation, PApplet applet) {
+	public CanvasAnimation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
 
-		this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-		this.image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
+		this.graphicsContext = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		this.image = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public abstract class Animation {
 	 * Return an array that contains the X coordinates of the panel boundaries.
 	 * @return xPos
 	 */
-	public static float[] getXCoordOfPanels() {
+	protected static float[] getXCoordOfPanels() {
 		// Number of panels
 		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
 		

@@ -7,7 +7,7 @@ import de.looksgood.ani.AniSequence;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-public class BarGraphAnimation extends LedAnimation {
+public class BarGraphAnimation extends Animation {
 	// Parameters
 	private int NBVALUES = 26; 						// Total number of bars
 	private float DURATION = 1;						// Animation duration

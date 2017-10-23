@@ -5,7 +5,7 @@ import com.cleverfranke.ledwall.WallConfiguration;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-public class GridTest extends LedAnimation {
+public class GridTest extends Animation {
 	int colors[] = new int[WallConfiguration.ROWS_COUNT];
 	
 	public GridTest(boolean inDefaultRotation, PApplet applet) {

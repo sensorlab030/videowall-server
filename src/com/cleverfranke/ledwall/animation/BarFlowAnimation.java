@@ -10,7 +10,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
-public class BarFlowAnimation extends LedAnimation{
+public class BarFlowAnimation extends Animation{
 	// Parameters
 	private int NBVALUES = 26; 									// Total number of bars
 	private float DURATION = 3;									// Animation duration

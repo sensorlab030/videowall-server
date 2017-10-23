@@ -11,7 +11,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
-public class LineFlowAnimation extends LedAnimation{
+public class LineFlowAnimation extends Animation{
 	private float DURATION = 5;
 	private List<Line> lines = new ArrayList<>();
 	private List<Boolean> LinesDoneDrawing = new ArrayList<>();
