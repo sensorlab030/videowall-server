@@ -111,7 +111,11 @@ public abstract class CanvasAnimation extends Animation {
 //		canvas.resize(COLUMNS_COUNT, ROWS_COUNT);
 //		return canvas;
 		
-		/*** LOAD PISXELS AND USE PIXELS ARRAY ***/
+		// Get canvas pixels
+		canvas.loadPixels();
+		int[] pixels = canvas.pixels;
+		
+		// Create grid image
 		PImage grid = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
 		
 		for (int i = 0; i < WallConfiguration.COLUMNS_COUNT; i++) {
@@ -119,7 +123,7 @@ public abstract class CanvasAnimation extends Animation {
 				int x = PANEL_COORD_MAPPED_TO_CANVAS[i];
 				int y = ROWS_COORD_MAPPED_TO_CANVAS[j];
 				
-				int pixel = canvas.get(x, y);
+				int pixel = pixels[y*CANVAS_WIDTH + x];
 				grid.set(i, j, pixel);
 			}
 		}
