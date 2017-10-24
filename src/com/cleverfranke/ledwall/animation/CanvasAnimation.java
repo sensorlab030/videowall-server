@@ -108,7 +108,7 @@ public abstract class CanvasAnimation extends Animation {
 	}
 	
 	private static PImage projectCanvasToGrid(PImage canvas) {
-//		canvas.resize(COLUMNS_COUNT, ROWS_COUNT);
+//		canvas.resize(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
 //		return canvas;
 		
 		// Get canvas pixels
