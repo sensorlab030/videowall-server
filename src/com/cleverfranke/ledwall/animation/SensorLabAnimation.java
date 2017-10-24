@@ -1,4 +1,5 @@
 package com.cleverfranke.ledwall.animation;
+import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 
 import processing.core.PApplet;
@@ -16,13 +17,13 @@ public class SensorLabAnimation extends Animation {
 	
 	public SensorLabAnimation(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
-		yOffset = new float[PANEL_COUNT + 1];
+		yOffset = new float[WallConfiguration.PANEL_COUNT + 1];
 		frameCount = applet.frameCount;
 	}
 	
 	private void drawStaircase(PGraphics g, boolean isTop, float[] yOffset){
 
-		for (int i = 0; i < PANEL_COUNT; i++) {
+		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
 			if (isTop) {
 				g.stroke(PColor.color(255, 0, 0));
 				g.line(2*i, 0, 2*i, yOffset[i]);

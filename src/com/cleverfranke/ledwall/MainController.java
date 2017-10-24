@@ -3,7 +3,6 @@ package com.cleverfranke.ledwall;
 import com.cleverfranke.ledwall.animation.BarFlowAnimation;
 import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
-import com.cleverfranke.ledwall.animation.GridTest;
 import com.cleverfranke.ledwall.animation.LineFlowAnimation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 import com.cleverfranke.ledwall.animation.RainBarsAnimation;
@@ -46,9 +45,9 @@ public class MainController extends PApplet {
 //		animationManager.queueVisualization(new RainBarsAnimation(true, this));
 		animationManager.queueVisualization(new LineGraphAnimation(true, this));
 		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-		animationManager.queueVisualization(new SensorLabAnimation(true, this));
-		animationManager.queueVisualization(new LineFlowAnimation(true, this));
+//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+//		animationManager.queueVisualization(new SensorLabAnimation(true, this));
+//		animationManager.queueVisualization(new LineFlowAnimation(true, this));
 	}
 	
 	public void draw() {
@@ -59,12 +58,16 @@ public class MainController extends PApplet {
 		// Get image from animation
 		PImage animationFrame = animationManager.currentVisualization.getImage();
 		
-		// Create preview
-		PImage previewImage = Preview.createPreview(this, animationFrame);
-
-		// Draw preview
-		image(previewImage, 0, 0);
+		// If the animationFrame does have the expected dimension of the preview input
+		if (animationFrame.height == WallConfiguration.ROWS_COUNT && animationFrame.width == WallConfiguration.COLUMNS_COUNT) {
+			// Create and draw preview
+			PImage previewImage = Preview.createPreview(this, animationFrame);
+			image(previewImage, 0, 0);
+		} else {
+			image(animationFrame, 0, 0);
+		}
 		
+		// System.out.println(frameRate);
 	}
 
 	public static void main(String[] args) {

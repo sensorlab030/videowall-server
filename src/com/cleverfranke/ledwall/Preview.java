@@ -1,13 +1,11 @@
 package com.cleverfranke.ledwall;
 
-import com.cleverfranke.ledwall.animation.Animation;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class Preview {
-	public static float XPANELCOORD[] = Animation.getXCoordOfPanels(); // X coordinates of each panels
+	public static float XPANELCOORD[] = WallConfiguration.XPANELCOORD; // X coordinates of each panels
 	
 	public static PImage createPreview(PApplet applet, PImage sourceImage) {
 		PImage projectedImage = projectGridToPreview(sourceImage);
@@ -91,7 +89,7 @@ public class Preview {
 		
 		float x = 0;
 		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
-			final int panelWidth = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
+			final float panelWidth = WallConfiguration.PANEL_WIDTH[i];
 
 			// Draw left beam
 			if (i == 0) {

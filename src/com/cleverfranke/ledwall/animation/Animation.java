@@ -14,12 +14,7 @@ public abstract class Animation {
 	protected PApplet applet;
 	protected PGraphics graphicsContext;
 	protected PImage image;
-	
-	// Wall parameters
-	public float XPANELSIDESCOORD[] = getXCoordOfPanelSides();	// X coordinates of each sides of the panels
-	public static float XPANELCOORD[] = getXCoordOfPanels();			// X coordinates of each panels
-	public float PANEL_WIDTH[] = getPixelWidthsOfPanels();		// Width in pixels of each panels
-	public int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
+
 	
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
@@ -134,103 +129,6 @@ public abstract class Animation {
 	
 	
 	/**
-	 * Return an array that contains the X coordinates of the panel boundaries.
-	 * @return xPos
-	 */
-	public static float[] getXCoordOfPanels() {
-		// Number of panels
-		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
-		
-		// Array the will contain the x coordinates of all the panels
-		float xPos[] = new float[PANEL_COUNT + 1];
-		
-		// Initial left x position
-		xPos[0] = 0;
-			
-		for(int i = 1; i < PANEL_COUNT; i++) {
-			// Get x right position of each panel
-		    xPos[i] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[i-1];
-		}
-
-		// Initial right end position
-		xPos[PANEL_COUNT] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[PANEL_COUNT-1] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO + xPos[PANEL_COUNT-1];
-		
-		return xPos;
-	}
-	
-	
-	
-	
-	/**
-	 * Return an array that contains the width in pixels of the panels
-	 * @return xWidth
-	 */
-	protected static float[] getPixelWidthsOfPanels() {
-		// Number of panels
-		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
-		
-		// Array the will contain the x coordinates of all the panels
-		float xWidth[] = new float[PANEL_COUNT];
-			
-		for(int i = 0; i < PANEL_COUNT; i++) {
-			// Get x width
-			xWidth[i] = WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[i] * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
-		}
-
-		return xWidth;
-	}
-
-	
-	
-	
-	/**
-	 * Return an array that contains the width in pixels of the panels
-	 * @return xWidth
-	 */
-	protected static float[] getPixelWidthsOfPanelSides() {
-		// Number of panels
-		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
-		
-		// Array the will contain the x coordinates of all the panels
-		float xWidth[] = new float[PANEL_COUNT * 2];
-			
-		for(int i = 0; i < PANEL_COUNT * 2; i++) {
-			int panelIndex = (int) Math.floor(i/2);
-			// Get x width			
-			xWidth[i] = (WallConfiguration.PHYSICAL_PANEL_WIDTH_CM[panelIndex] / 2) * WallConfiguration.SOURCE_CM_TO_PIXEL_RATIO;
-		}
-
-		return xWidth;
-	}
-	
-	
-	
-	/**
-	 * Return an array that contains the width in pixels of the panels
-	 * @return xWidth
-	 */
-	protected static float[] getXCoordOfPanelSides() {
-		// Number of panels
-		int PANEL_COUNT = WallConfiguration.PANEL_COUNT;
-		
-		// Array the will contain the x coordinates of all the panels
-		float xPos[] = new float[PANEL_COUNT * 2 + 1];
-		
-		// Array that contains the width of each panel sides
-		float[] xWidth = getPixelWidthsOfPanelSides();
-		
-		xPos[0] = 0;
-		
-		for(int i = 1; i < PANEL_COUNT * 2 + 1; i++) {
-			// Get x width			
-			xPos[i] = xPos[i-1] + xWidth[i-1];
-		}
-		
-		return xPos;
-	}
-
-
-	/**
 	 * Moves the coordinates of the drawing, per panel, one panel to the right
 	 * @param panelCoord : An array containing the coordinates per panel. Index of the array is index of the panel
 	 * @return : An array containing the same coordinates but offset of one to the right.
@@ -310,9 +208,9 @@ public abstract class Animation {
 	
 	
 	public int[] mapPanelWidth() {
-		int[] mapped = new int[PANEL_COUNT];
-		for (int i=0; i < PANEL_COUNT; i++) {
-			mapped[i] = (int) PApplet.map(PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
+		int[] mapped = new int[WallConfiguration.PANEL_COUNT];
+		for (int i=0; i < WallConfiguration.PANEL_COUNT; i++) {
+			mapped[i] = (int) PApplet.map(WallConfiguration.PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
 		}
 		return mapped;
 	}
