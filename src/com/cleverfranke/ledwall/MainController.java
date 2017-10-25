@@ -34,7 +34,7 @@ public class MainController extends PApplet {
 
 		// Add setup code here
 		driver = new WallDriver(this);
-//		driver.initialize(SERIAL_PORTS);
+		// driver.initialize(SERIAL_PORTS);
 
 		// Initialize animations
 		Ani.init(this);
@@ -50,24 +50,19 @@ public class MainController extends PApplet {
 	}
 	
 	public void draw() {
-		
 		// Update animation frame
 		animationManager.draw(g);
 		
 		// Get image from animation
 		PImage animationFrame = animationManager.currentVisualization.getImage();
 		
-		// If the animationFrame does have the expected dimension of the preview input
+		// If the animationFrame does have the expected dimension of the preview input, create preview, else just draw the animation frame
 		if (animationFrame.height == WallConfiguration.ROWS_COUNT && animationFrame.width == WallConfiguration.COLUMNS_COUNT) {
-			// Create and draw preview
 			PImage previewImage = Preview.createPreview(this, animationFrame);
 			image(previewImage, 0, 0);
 		} else {
-			
 			image(animationFrame, 0, 0);
 		}
-		
-		System.out.println(frameRate);
 	}
 
 	public static void main(String[] args) {
