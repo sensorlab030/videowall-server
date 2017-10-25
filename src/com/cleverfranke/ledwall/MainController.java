@@ -5,7 +5,6 @@ import com.cleverfranke.ledwall.animation.BarGraphAnimation;
 import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 import com.cleverfranke.ledwall.animation.LineFlowAnimation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
-import com.cleverfranke.ledwall.animation.SensorLabAnimation;
 import com.cleverfranke.ledwall.animation.VideoStream;
 
 import de.looksgood.ani.Ani;
@@ -40,12 +39,11 @@ public class MainController extends PApplet {
 		Ani.init(this);
 
 		animationManager = new AnimationManager();
-//     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
-//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-//		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-//		animationManager.queueVisualization(new SensorLabAnimation(true, this));
-//		animationManager.queueVisualization(new LineFlowAnimation(true, this));		
+     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+		animationManager.queueVisualization(new BarGraphAnimation(true, this));
+		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+		animationManager.queueVisualization(new LineFlowAnimation(true, this));		
 		animationManager.queueVisualization(new VideoStream(true, this));
 	}
 	
