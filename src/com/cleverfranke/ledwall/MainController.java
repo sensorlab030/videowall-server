@@ -6,6 +6,7 @@ import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 import com.cleverfranke.ledwall.animation.LineFlowAnimation;
 import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 import com.cleverfranke.ledwall.animation.SensorLabAnimation;
+import com.cleverfranke.ledwall.animation.VideoStream;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
@@ -39,12 +40,13 @@ public class MainController extends PApplet {
 		Ani.init(this);
 
 		animationManager = new AnimationManager();
-//     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
+     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
 		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-//		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-//		animationManager.queueVisualization(new SensorLabAnimation(true, this));
-//		animationManager.queueVisualization(new LineFlowAnimation(true, this));
+		animationManager.queueVisualization(new BarGraphAnimation(true, this));
+		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+		animationManager.queueVisualization(new SensorLabAnimation(true, this));
+		animationManager.queueVisualization(new LineFlowAnimation(true, this));		
+		animationManager.queueVisualization(new VideoStream(true, this));
 	}
 	
 	public void draw() {
@@ -61,10 +63,11 @@ public class MainController extends PApplet {
 			PImage previewImage = Preview.createPreview(this, animationFrame);
 			image(previewImage, 0, 0);
 		} else {
+			
 			image(animationFrame, 0, 0);
 		}
 		
-//		System.out.println(frameRate);
+		System.out.println(frameRate);
 	}
 
 	public static void main(String[] args) {

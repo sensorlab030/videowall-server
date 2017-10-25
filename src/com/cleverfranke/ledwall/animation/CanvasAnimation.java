@@ -42,7 +42,7 @@ public abstract class CanvasAnimation extends Animation {
 		 * drawBeamsRowsColumns(graphicsContext);
 		 * 
 		 */	
-		
+
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
 		
@@ -104,6 +104,7 @@ public abstract class CanvasAnimation extends Animation {
 		 * return image;
 		 * 
 		 */	
+//		return image;
 		return projectCanvasToGrid(image);
 	}
 	
