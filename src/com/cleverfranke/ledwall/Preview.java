@@ -4,13 +4,25 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
+/**
+ * Class that build a preview of the led wall, with real panel sizes and beams, based on the leds pixels
+ */
 public class Preview {
 	public static float XPANELCOORD[] = WallConfiguration.XPANELCOORD; // X coordinates of each panels
 	
+	/**
+	 * Creates a projected image of a led pixel grid to the 'real' led wall
+	 * @param applet
+	 * @param sourceImage : Original led pixel grid (measures number of led strips x number of led per strip)
+	 * @return projectedImage: Image the size of the led wall, with each led strip assigned to the left or the right side of a beam
+	 */
 	public static PImage createPreview(PApplet applet, PImage sourceImage) {
+		// Project led pixels grid to the preview canvas
 		PImage projectedImage = projectGridToPreview(sourceImage);
 		
-		PGraphics g = applet.createGraphics(projectedImage.width, projectedImage.height);
+		// Create graphics context the size of the led wall
+		PGraphics g = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		
 		g.beginDraw();
 		g.background(255);
 		drawPixels(g, projectedImage);
@@ -25,28 +37,39 @@ public class Preview {
 	 * @param grid of 26x93 pixels
 	 * @return wall, an image of grid projected on the wall beams
 	 */
-	private static PImage projectGridToPreview(PImage grid){
-		
+	private static PImage projectGridToPreview(PImage grid){		
 		PImage wall = new PImage(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		for (int i = 0; i< grid.width; i++){
-			int x = 0;
+		int width = grid.width;
+		int height = grid.height;
+		
+		/**
+		 *  For all the pixels in grid, we are going to assign that pixel to a led position on the wall.
+		 *  This position is defined by :
+		 *  - The column index in the grid (which defines the x coordinates, or, on which panel the pixel will be projected.)
+		 *  - The row index in the grid (which defines the y coordinates on the given panel)
+		 */
+		for (int i = 0; i < width; i++){
+			// Get panel Index
 			int panelIndex = (int) Math.ceil((float)i/2);
 			
-			for (int j = 0; j < grid.height; j++){
+			// If panelIndex is odd or even, define x coordinates as the left side or the right side of the beam
+			int x = (i%2 == 0) ? (int) (XPANELCOORD[panelIndex] + WallConfiguration.BEAM_WIDTH / 2) : (int) (XPANELCOORD[panelIndex]) - WallConfiguration.BEAM_WIDTH / 2 - 1;
+			
+			// For each row in the grid, get the corresponding pixel, and assign it to it's final position on the projection
+			for (int j = 0; j < height; j++){
 				int pixel = grid.get(i, j);
-				
-				if (i%2 == 0) {
-					x = (int) (XPANELCOORD[panelIndex] + WallConfiguration.BEAM_WIDTH / 2);
-				} else {
-					x = (int) (XPANELCOORD[panelIndex]) - WallConfiguration.BEAM_WIDTH / 2 - 1;
-				}
-				
 				wall.set(x, j*WallConfiguration.ROW_HEIGHT + 2, pixel);			
 			}
 		}
 		return wall;
 	}
 	
+	
+	/**
+	 * Draws the preview image on the canvas
+	 * @param g : Graphics context
+	 * @param sourceImage: The preview image
+	 */
 	private static void drawPixels(PGraphics g, PImage sourceImage) {
 		final int LED_PASSTHROUGH = 70;
 		final int LED_BAFFLE_DIFF = 5;
@@ -83,6 +106,10 @@ public class Preview {
 		
 	}
 	
+	/**
+	 * Draws the beams on the preview image
+	 * @param g : Graphics context
+	 */
 	private static void drawBeams(PGraphics g) {
 		g.noStroke();
 		g.fill(230);
