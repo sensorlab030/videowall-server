@@ -1,26 +1,26 @@
 package com.cleverfranke.ledwall;
 
 import processing.core.PGraphics;
-
 import java.util.LinkedList;
-
 import com.cleverfranke.ledwall.animation.Animation;
-
 import de.looksgood.ani.Ani;
 import de.looksgood.ani.easing.Easing;
 
+/**
+ * Class that handles the animation queue and transitions between them.
+ */
 public class AnimationManager {
 	
-	LinkedList<Animation> queue = new LinkedList<Animation>();
-	AnimationTransition transition;
+	LinkedList<Animation> queue = new LinkedList<Animation>();	// List of the animations to queue
+	AnimationTransition transition;								// Transition instance
+	Animation currentVisualization;								// Current visualization member
+	int currentVisualizationFrameCount;							// Frame counter for current visualization, updated by update()
 	
-	// Current visualization member
-	Animation currentVisualization;
-	int currentVisualizationFrameCount;		// Frame counter for current visualization, updated by update()
-	
+
 	public AnimationManager() {
+		
 		this.transition = new AnimationTransition();
-	
+
 	}
 	
 	/**
@@ -41,6 +41,7 @@ public class AnimationManager {
 			// Draw animation frame to image
 			currentVisualization.draw();
 		}
+		
 	}
 	
 	/**
@@ -49,26 +50,16 @@ public class AnimationManager {
 	 * @param visualization
 	 */
 	public void queueVisualization(Animation visualization) {
+		
 		if (currentVisualization == null) {
 			visualization.prepareForQueueRotation();
 			currentVisualization = visualization;
 		} else {
 			queue.add(visualization);
 		}
+		
 	}
-	
-	public void queueVisualizationPrioritized(Animation vis) {
-		if (currentVisualization == null) {
-			currentVisualization = vis;
-		} else if (!transition.isInProgress()) {
-			// Add as top item and start switching
-			queue.addFirst(vis);
-			gotoNextVisualization();
-		} else {
-			// Add as 2nd item (1st one is in transition to being active)
-			queue.add(1, vis);
-		}
-	}
+
 	
 	/**
 	 * Update to keep the manager keeping track of the queue
@@ -88,7 +79,7 @@ public class AnimationManager {
 			}
 			
 		}
-
+		
 	}
 	
 	private void handleTransitionDone() {
@@ -101,6 +92,7 @@ public class AnimationManager {
 		// Set next vis as current and reset frame counter
 		currentVisualization = transition.toVisualization;
 		currentVisualizationFrameCount = 0;
+		
 	}
 	
 	/**
