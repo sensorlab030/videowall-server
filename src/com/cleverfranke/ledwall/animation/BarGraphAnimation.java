@@ -7,11 +7,15 @@ import de.looksgood.ani.AniSequence;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
+/**
+ * Animation that draws bars in and out
+ *
+ */
 public class BarGraphAnimation extends Animation {
 	// Parameters
 	private int NBVALUES = 26; 						// Total number of bars
 	private float DURATION = 1;						// Animation duration
-	private int color = PColor.color(255, 200, 0); 	// Bars color
+	private int color = PColor.color(255, 100, 50); 	// Bars color
 	
 
 	private float[] VALUES = new float[NBVALUES];				// Bar values
@@ -35,7 +39,9 @@ public class BarGraphAnimation extends Animation {
 			this.setAniBar();
 		}
 		
-		
+		/**
+		 * Animationg height and y position of the bars
+		 */
 		private void setAniBar(){
 			float delay = panelIndex * DURATION / NBVALUES;
 			
