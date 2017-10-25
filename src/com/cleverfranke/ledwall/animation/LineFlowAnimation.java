@@ -4,16 +4,20 @@ package com.cleverfranke.ledwall.animation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
+
+/**
+ * Animation that draws randomly sized horizontal lines flowing from the left to the right
+ *
+ */
 public class LineFlowAnimation extends Animation{
-	private float DURATION = 5;
-	private List<Line> lines = new ArrayList<>();
-	private List<Boolean> LinesDoneDrawing = new ArrayList<>();
-	private int repeatCount = 2;
+	private float DURATION = 5;										// Duration of the animation
+	private List<Line> lines = new ArrayList<>();					// List that will contains the lines to draw
+	private List<Boolean> LinesDoneDrawing = new ArrayList<>();		// List that will contains values that define if the lines are done drawing
+	private int repeatCount = 2;									// Number of loops
 	
 	public class Line {
 		// Coordinates
@@ -110,7 +114,6 @@ public class LineFlowAnimation extends Animation{
 		super(inDefaultRotation, applet);
 		this.applet = applet;
 				
-		// Generate particle lines
 		generateLine();
 	}
 	
