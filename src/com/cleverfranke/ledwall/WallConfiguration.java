@@ -72,6 +72,7 @@ public class WallConfiguration {
 		for(int i = 0; i < PANEL_COUNT; i++) {
 			// Get x width
 			xWidth[i] = PHYSICAL_PANEL_WIDTH_CM[i] * SOURCE_CM_TO_PIXEL_RATIO;
+			System.out.println(BEAM_WIDTH);
 		}
 
 		return xWidth;
