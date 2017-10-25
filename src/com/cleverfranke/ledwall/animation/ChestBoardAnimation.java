@@ -2,11 +2,12 @@ package com.cleverfranke.ledwall.animation;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-
 import com.cleverfranke.ledwall.WallConfiguration;
-
 import de.looksgood.ani.*;
 
+/**
+ * Animation that draws a grid of squares and switch on and off those squares
+ */
 public class ChestBoardAnimation extends Animation{
 	ChestBoard chestboard;
 	private int[] mappedPanelWidth = mapPanelWidth();
@@ -30,10 +31,9 @@ public class ChestBoardAnimation extends Animation{
 		
 		private void draw(PGraphics g){
 			g.stroke(color);
-			// Draw line for left side of square
-			g.line(2*i, yPos, 2*i, yPos+width);
-			// Draw line for right side of square
-			g.line(2*i + 1, yPos, 2*i + 1, yPos+width);
+			
+			g.line(2*i, yPos, 2*i, yPos+width);			// Draw line for left side of square
+			g.line(2*i + 1, yPos, 2*i + 1, yPos+width); // Draw line for right side of square
 		}
 	}
 	
@@ -60,7 +60,6 @@ public class ChestBoardAnimation extends Animation{
 		
 		/**
 		 * Stores the y position of each squares for each panel (except the two extreme panels)
-		 * @param PANEL_WIDTH: An array containing the width of each panel
 		 */
 		public void setSquares(){
 			this.squares = new Square[WallConfiguration.PANEL_COUNT][this.nbSquares];
@@ -79,6 +78,10 @@ public class ChestBoardAnimation extends Animation{
 			square.draw(g);
 		}
 		
+		/**
+		 * Switch the stateManager value.
+		 * stateManager manages which squares are on and off
+		 */
 		public void setAniChestBoard(){
 			this.aniChestBoard.beginSequence();
 			
