@@ -1,13 +1,17 @@
 package com.cleverfranke.ledwall.animation;
 
 import java.util.List;
-
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
+/**
+ * Animation class is the parent class of all the animations.
+ * It draws an image on the graphicsContext which has as many pixels as the number of leds on the wall.
+ * It also contains some generic util methods.
+ */
 public abstract class Animation {
 	
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
@@ -32,7 +36,6 @@ public abstract class Animation {
 	
 	/**
 	 * Get if visualization is in default rotation
-	 * 
 	 * @return
 	 */
 	public boolean isInDefaultRotation() {
@@ -41,7 +44,6 @@ public abstract class Animation {
 	
 	/**
 	 * Draw new frame of the animation
-	 * 
 	 * @return the new frame
 	 *
 	 */
@@ -125,35 +127,6 @@ public abstract class Animation {
 		int g = (int) (Math.random() * 255);
 		int b = (int) (Math.random() * 255);
 		return PColor.color(r, g, b, alpha);
-	}
-	
-	
-	/**
-	 * Moves the coordinates of the drawing, per panel, one panel to the right
-	 * @param panelCoord : An array containing the coordinates per panel. Index of the array is index of the panel
-	 * @return : An array containing the same coordinates but offset of one to the right.
-	 */
-	public float[] movePatternRight(float[] panelCoord){
-		float[] movedpanelCoord = new float[WallConfiguration.PANEL_COUNT + 1];
-		
-		movedpanelCoord[0] = panelCoord[WallConfiguration.PANEL_COUNT];
-		for (int i = 0; i < WallConfiguration.PANEL_COUNT; i++) {
-			movedpanelCoord[i + 1] = panelCoord[i];
-		}
-		
-		return movedpanelCoord;
-	}
-	
-	
-	public float[] movePatternLeft(float[] panelCoord){
-		float[] movedpanelCoord = new float[WallConfiguration.PANEL_COUNT + 1];
-		
-		movedpanelCoord[WallConfiguration.PANEL_COUNT] = panelCoord[0];
-		for (int i = 1; i < WallConfiguration.PANEL_COUNT; i++) {
-			movedpanelCoord[i - 1] = panelCoord[i];
-		}
-		
-		return movedpanelCoord;
 	}
 	
 	/**
