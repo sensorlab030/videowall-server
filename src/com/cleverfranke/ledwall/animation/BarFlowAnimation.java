@@ -1,18 +1,23 @@
 
 package com.cleverfranke.ledwall.animation;
 
+import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
-
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.*;
 
+
+/**
+ * Random sized bars flowing from bottom to top, in a lava lamp feeling.
+ * As the bars go up, their color at the top changes 
+ *
+ */
 public class BarFlowAnimation extends Animation{
 	// Parameters
-	private int NBVALUES = 26; 									// Total number of bars
-	private float DURATION = 3;									// Animation duration
-	private int repeatCount = 3;
+	private int NBVALUES = WallConfiguration.COLUMNS_COUNT; 	// Total number of bars
+	private float DURATION = 4;									// Animation duration
+	private int repeatCount = 3;								// Number of loops
 	
 	private int startColor = PColor.color(0, 180, 180); 		// Bars initial color
 	private int finalr = 255;									// Top end color of bars (red gradient)
@@ -41,7 +46,9 @@ public class BarFlowAnimation extends Animation{
 			this.setAniColor();
 		}
 		
-		
+		/**
+		 * Animating height and y position of the bars
+		 */
 		private void setAniBar(){
 			aniBar.beginSequence();
 			aniBar.add(Ani.to(this, 0, 0, "currentHeight", 0, Ani.QUAD_OUT));
@@ -51,6 +58,9 @@ public class BarFlowAnimation extends Animation{
 			aniBar.start();
 		}
 
+		/**
+		 * Animating color gradients of the bars
+		 */
 		private void setAniColor(){
 			aniColor.beginSequence();
 			aniColor.add(Ani.to(this, 0, 0, "r", 0, Ani.QUAD_OUT));
@@ -65,9 +75,11 @@ public class BarFlowAnimation extends Animation{
 			int y = graphicsContext.height - currentHeight;
 			
 			for (int i = y; i <= y+y; i++) {
+				  // Gradient
 			      float inter = y == 0 ? 0 : PApplet.map(i, y, y+y, 0, 1);
 			      int color = PColor.color(r, 180, 180);
 			      int c = g.lerpColor(color, startColor, inter);
+			      
 			      g.stroke(c);
 			      g.strokeWeight(1);
 			      g.point(panelIndex, i);
@@ -107,6 +119,7 @@ public class BarFlowAnimation extends Animation{
 		repeatCount--;
 		generateBars();
 	}
+	
 	
 	public void drawAnimationFrame(PGraphics g) {
 		g.background(255);
