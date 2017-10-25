@@ -13,7 +13,8 @@ public class VideoStream extends CanvasAnimation {
 	public VideoStream(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
 		// Fetch movie
-		myMovie = new Movie(applet, "./src/data/lionKing.mov");
+		/** Feed with a movie **/
+		myMovie = new Movie(applet, "./src/data/myMovie.mov");
 		
 	}
 	
