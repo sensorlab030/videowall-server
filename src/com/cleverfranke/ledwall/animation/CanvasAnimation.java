@@ -2,23 +2,26 @@ package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-
+/**
+ * CanvasAnimation extends Animation. 
+ * It allows to draw on a canvas of a defined width and height, that is then projected on a pixel grid.
+ * The pixel grid is made of a selection of pixel on the canvas.
+ */
 public abstract class CanvasAnimation extends Animation {
-	// Canvas parameters
+
 	public final static int CANVAS_WIDTH = 600;
 	public final static int CANVAS_HEIGHT = CANVAS_WIDTH / WallConfiguration.RATIO;
-		
 	public final static int[] PANEL_COORD_MAPPED_TO_CANVAS = mapPanelCoordToCanvas();
 	public final static int[] ROWS_COORD_MAPPED_TO_CANVAS = mapRowsCoordToCanvas();
 	
 	
 	public CanvasAnimation(boolean inDefaultRotation, PApplet applet) {
-		super(inDefaultRotation, applet);		
+		super(inDefaultRotation, applet);	
+		
 		super.graphicsContext = applet.createGraphics(CANVAS_WIDTH, CANVAS_HEIGHT);
 		super.image = new PImage(CANVAS_WIDTH, CANVAS_HEIGHT);
 	}
@@ -104,14 +107,19 @@ public abstract class CanvasAnimation extends Animation {
 		 * return image;
 		 * 
 		 */	
-//		return image;
 		return projectCanvasToGrid(image);
 	}
 	
+	/**
+	 * On the canvas image is mapped the position of the beams and led strips. 
+	 * This method extract the pixels from the canvas image that are located at these positions.
+	 * It builds a new image, which width is the number of led strips, which height is the number of led rows
+	 * and assign the pixel to its led equivalent.
+	 * @param canvas A canvas image 
+	 * @return grid An image the size of the led strips x led rows. 
+	 */
 	private static PImage projectCanvasToGrid(PImage canvas) {
-//		canvas.resize(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-//		return canvas;
-		
+
 		// Get canvas pixels
 		canvas.loadPixels();
 		int[] pixels = canvas.pixels;
@@ -120,13 +128,19 @@ public abstract class CanvasAnimation extends Animation {
 		PImage grid = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
 		
 		for (int i = 0; i < WallConfiguration.COLUMNS_COUNT; i++) {
+			
 			for (int j = 0; j < WallConfiguration.ROWS_COUNT; j++) {
+				// Get the x and y coordinates of the led positions projected on the canvas image
 				int x = PANEL_COORD_MAPPED_TO_CANVAS[i];
 				int y = ROWS_COORD_MAPPED_TO_CANVAS[j];
 				
+				// Get the pixel at this position
 				int pixel = pixels[y*CANVAS_WIDTH + x];
+				
+				// Assign the pixel to its grid led position equivalent
 				grid.set(i, j, pixel);
 			}
+			
 		}
 
 		return grid;
@@ -136,7 +150,7 @@ public abstract class CanvasAnimation extends Animation {
 	
 	/**
 	 * Maps the panel coordinates on the wall to the canvas size.
-	 * @return
+	 * @return mapped
 	 */
 	private static int[] mapPanelCoordToCanvas(){
 		int[] mapped = new int[WallConfiguration.XPANELCOORD.length * 2 - 2];
@@ -162,7 +176,7 @@ public abstract class CanvasAnimation extends Animation {
 	
 	/**
 	 * Maps the rows coordinates on the wall to the canvas size.
-	 * @return
+	 * @return mapped
 	 */
 	private static int[] mapRowsCoordToCanvas(){
 		int[] mapped = new int[WallConfiguration.ROWS_COUNT];
@@ -176,8 +190,7 @@ public abstract class CanvasAnimation extends Animation {
 	
 	public abstract boolean isDone();
 	
-	@Override
-	public void prepareForQueueRotation() {}
+	public abstract void prepareForQueueRotation();
 	
 	public abstract void drawAnimationFrame(PGraphics g);
 }
