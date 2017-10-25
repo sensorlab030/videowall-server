@@ -4,22 +4,22 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.video.*;
 
+/**
+ * Projects each frame of the video on a the pixel grid
+ */
 public class VideoStream extends CanvasAnimation {
 	Movie myMovie;
 	
 	public VideoStream(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
+		// Fetch movie
+		myMovie = new Movie(applet, "./src/data/lionKing.mov");
 		
-		// myMovie = new Movie(applet, "/Users/agathelenclen/Projects/led-wall/src/data/CLEVER°FRANKE – Data driven experiences-HD.mp4");
-		// myMovie = new Movie(applet, "/Users/agathelenclen/Projects/led-wall/src/data/transit.mov");
-		myMovie = new Movie(applet, "/Users/agathelenclen/Projects/led-wall/src/data/lionKing.mov");
-//		myMovie.play();
 	}
 	
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return (myMovie.time() == myMovie.duration());
 	}
 
@@ -27,7 +27,8 @@ public class VideoStream extends CanvasAnimation {
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
 		if (myMovie.available()) {
-		    myMovie.read();
+			// Read current frame
+		    myMovie.read(); 										
 		    g.image(myMovie, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);		    
 		}
 	}
@@ -35,8 +36,9 @@ public class VideoStream extends CanvasAnimation {
 
 	@Override
 	public void prepareForQueueRotation() {
-		// TODO Auto-generated method stub
+		// Go to movie beginning and mute sound
 		myMovie.jump(0);
+		myMovie.playbin.setVolume(0);
 		myMovie.play();
 	}
 
