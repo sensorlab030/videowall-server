@@ -16,6 +16,7 @@ There are two different ways of creating an animation.
 1. Draw on a normal Canvas, and extend your animation from `CanvasAnimation`.
 The drawing gets projected on a grid of rows and columns and only a subset of the pixels of your drawing get represented on the LED wall.
 
-2. Draw on a pixel grid, and extend your animation from `Animation`. In that case, the canvas is sized to the number of led strips in width, and the number of led rows in height. Which means that each pixel on your canvas represent an LED on the wall.
+2. Draw on a pixel grid, and extend your animation from `Animation`. In that case, the canvas is sized to the number of led strips in width, and the number of led rows in height. Which means that each pixel on your canvas represent a LED on the wall.
 
+Process graph:
 ![CanvasToLED](https://github.com/sensorlab030/led-wall/blob/master/img/CanvasToAnimationToPreview.png)
