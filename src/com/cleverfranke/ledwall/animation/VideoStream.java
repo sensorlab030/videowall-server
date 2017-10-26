@@ -9,15 +9,15 @@ import processing.video.*;
  */
 public class VideoStream extends CanvasAnimation {
 	Movie myMovie;
-	
+
 	public VideoStream(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
 		// Fetch movie
 		/** Feed with a movie **/
 		myMovie = new Movie(applet, "./src/data/myMovie.mov");
-		
+
 	}
-	
+
 
 	@Override
 	public boolean isDone() {
@@ -29,8 +29,8 @@ public class VideoStream extends CanvasAnimation {
 	public void drawAnimationFrame(PGraphics g) {
 		if (myMovie.available()) {
 			// Read current frame
-		    myMovie.read(); 										
-		    g.image(myMovie, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);		    
+		    myMovie.read();
+		    g.image(myMovie, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		}
 	}
 

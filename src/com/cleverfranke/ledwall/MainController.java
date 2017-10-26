@@ -43,7 +43,7 @@ public class MainController extends PApplet {
 		animationManager.queueVisualization(new LineGraphAnimation(true, this));
 		animationManager.queueVisualization(new BarGraphAnimation(true, this));
 		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-		animationManager.queueVisualization(new LineFlowAnimation(true, this));		
+		animationManager.queueVisualization(new LineFlowAnimation(true, this));
 		animationManager.queueVisualization(new VideoStream(true, this));
 	}
 	
