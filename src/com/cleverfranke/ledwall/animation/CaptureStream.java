@@ -13,10 +13,14 @@ public class CaptureStream extends CanvasAnimation {
 
 	public CaptureStream(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
-		// Fetch movie
-		/** Feed with a movie **/
 		String[] cameras = Capture.list();
-		System.out.println(cameras);
+
+		if (cameras.length == 0) {
+		    System.out.println("There are no cameras available for capture.");
+		  } else {
+			 cam = new Capture(applet, cameras[0]);
+			 cam.start();
+		}
 	}
 
 
@@ -28,7 +32,10 @@ public class CaptureStream extends CanvasAnimation {
 
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
-
+		if (cam.available() == true) {
+		    cam.read();
+		}
+		g.image(cam, 0, 0);
 	}
 
 
