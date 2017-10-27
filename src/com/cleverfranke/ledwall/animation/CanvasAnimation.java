@@ -55,6 +55,22 @@ public abstract class CanvasAnimation extends Animation {
 
 	}
 
+
+	/**
+	 * Fetch the latest animation frame
+	 *
+	 * @return latest animation frame
+	 */
+	@Override
+	public PImage getImage() {
+		/** Uncomment this to show the canvas image and not the projected one
+		 *
+		 * return image;
+		 *
+		 */
+		return projectCanvasToGrid(image);
+	}
+
 	/**
 	 * Draws the beams, the rows and the columns of pixels that are used
 	 * when computing the projection of a canvas to a grid
@@ -97,20 +113,6 @@ public abstract class CanvasAnimation extends Animation {
 	}
 
 
-	/**
-	 * Fetch the latest animation frame
-	 *
-	 * @return latest animation frame
-	 */
-	@Override
-	public PImage getImage() {
-		/** Uncomment this to show the canvas image and not the projected one
-		 *
-		 * return image;
-		 *
-		 */
-		return projectCanvasToGrid(image);
-	}
 
 	/**
 	 * On the canvas image is mapped the position of the beams and led strips.

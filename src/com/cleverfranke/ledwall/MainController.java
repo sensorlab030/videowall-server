@@ -5,7 +5,7 @@ package com.cleverfranke.ledwall;
 //import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
 //import com.cleverfranke.ledwall.animation.LineFlowAnimation;
 //import com.cleverfranke.ledwall.animation.LineGraphAnimation;
-//import com.cleverfranke.ledwall.animation.VideoStream;
+import com.cleverfranke.ledwall.animation.VideoStream;
 import com.cleverfranke.ledwall.animation.CaptureStream;
 
 
