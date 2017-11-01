@@ -1,12 +1,12 @@
 package com.cleverfranke.ledwall;
 
-//import com.cleverfranke.ledwall.animation.BarFlowAnimation;
-//import com.cleverfranke.ledwall.animation.BarGraphAnimation;
-//import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
-//import com.cleverfranke.ledwall.animation.LineFlowAnimation;
-//import com.cleverfranke.ledwall.animation.LineGraphAnimation;
+import com.cleverfranke.ledwall.animation.BarFlowAnimation;
+import com.cleverfranke.ledwall.animation.BarGraphAnimation;
+import com.cleverfranke.ledwall.animation.ChestBoardAnimation;
+import com.cleverfranke.ledwall.animation.LineFlowAnimation;
+import com.cleverfranke.ledwall.animation.LineGraphAnimation;
 import com.cleverfranke.ledwall.animation.VideoStream;
-import com.cleverfranke.ledwall.animation.CaptureStream;
+//import com.cleverfranke.ledwall.animation.CaptureStream;
 
 
 import de.looksgood.ani.Ani;
@@ -43,17 +43,19 @@ public class MainController extends PApplet {
 		Ani.init(this);
 
 		animationManager = new AnimationManager();
-//     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
-//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-//		animationManager.queueVisualization(new BarGraphAnimation(true, this));
+     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+		animationManager.queueVisualization(new BarGraphAnimation(true, this));
 //		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-//		animationManager.queueVisualization(new LineFlowAnimation(true, this));
+		animationManager.queueVisualization(new LineFlowAnimation(true, this));
 //		animationManager.queueVisualization(new VideoStream(true, this));
-		animationManager.queueVisualization(new CaptureStream(true, this));
+//		animationManager.queueVisualization(new CaptureStream(true, this));
 	}
 
 	@Override
 	public void draw() {
+		background(0);
+
 		// Update animation frame
 		animationManager.draw(g);
 
