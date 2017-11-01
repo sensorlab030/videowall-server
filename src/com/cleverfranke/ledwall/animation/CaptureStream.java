@@ -3,7 +3,6 @@ package com.cleverfranke.ledwall.animation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.video.*;
-import ipcapture.*;
 
 
 
