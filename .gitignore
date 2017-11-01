@@ -12,3 +12,4 @@ data
 .recommenders
 *.mov
 *.ucls
+*.jar
