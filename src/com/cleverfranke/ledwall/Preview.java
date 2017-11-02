@@ -1,6 +1,5 @@
 package com.cleverfranke.ledwall;
 
-import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -16,15 +15,11 @@ public class Preview {
 	 * @param sourceImage : Original led pixel grid (measures number of led strips x number of led per strip)
 	 * @return projectedImage: Image the size of the led wall, with each led strip assigned to the left or the right side of a beam
 	 */
-	public PImage createPreview(PApplet applet, PImage sourceImage) {
-		// Create graphics context the size of the led wall
-		PGraphics g = applet.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
-		g.noSmooth();
-
+	public static PImage createPreview(PGraphics g, PImage sourceImage) {
 		g.beginDraw();
-		g.background(255);
-		drawBeams(g);
+		g.background(255); // Clear pixels
 		drawProjectedGridToPreview(g, sourceImage);
+		drawBeams(g);
 		g.endDraw();
 
 		return g.get();
@@ -37,14 +32,13 @@ public class Preview {
 	 * @param grid: grid of 26x93 pixels
 	 */
 	private static void drawProjectedGridToPreview(PGraphics g, PImage grid){
-		int width = grid.width;
-		int height = grid.height;
+		final int width = grid.width;
+		final int height = grid.height;
 		final int LED_PASSTHROUGH = 70;
 		final int LED_BAFFLE_DIFF = 5;
 		final int ledStop = LED_PASSTHROUGH / 2;
 
 		g.strokeWeight(3);
-		g.stroke(255, 0, 0);
 
 		/**
 		 *  For all the pixels in grid, we are going to assign that pixel to a led position on the wall.
