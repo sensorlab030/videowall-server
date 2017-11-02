@@ -10,7 +10,7 @@ public class WallConfiguration {
 	// Physical dimensions in centimeters
 	public static final int[] PHYSICAL_PANEL_WIDTH_CM = {63, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 74}; 	// Width for each panel (index 0 is leftmost panel)
 	public static final int PHYSICAL_WALL_WIDTH_CM = Arrays.stream(PHYSICAL_PANEL_WIDTH_CM).sum();				// Width of  complete wall width in cm (sum of all panel widths)
-	public static final int PHYSICAL_WALL_HEIGHT_CM = 280;														// Height of complete wall in cm
+	public static final int PHYSICAL_WALL_HEIGHT_CM = 81 * 3;														// Height of complete wall in cm
 	public static final int PHYSICAL_BEAM_WIDTH_CM = 4;															// Width of the beams between two panels in cm
 	public static final int PHYSICAL_PIXEL_OFFSET_CM = 10;														// Distance between ceiling and first pixel in cm
 	public static final int PHYSICAL_PIXEL_PITCH_CM = 3;														// Distance between two pixels in cm
