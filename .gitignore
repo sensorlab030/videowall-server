@@ -13,3 +13,5 @@ data
 *.mov
 *.ucls
 *.jar
+*.idea
+*.iml
