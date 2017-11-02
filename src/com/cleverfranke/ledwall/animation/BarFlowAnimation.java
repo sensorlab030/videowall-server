@@ -16,35 +16,42 @@ import de.looksgood.ani.AniSequence;
  */
 public class BarFlowAnimation extends Animation{
 	// Parameters
-	private int NBVALUES = WallConfiguration.COLUMNS_COUNT; 	// Total number of bars
-	private float DURATION = 4;									// Animation duration
-	private int repeatCount = 3;								// Number of loops
+	private final int NBVALUES = WallConfiguration.COLUMNS_COUNT; 		// Total number of bars
+	private final float DURATION = 4;									// Animation duration
+	private final int finalr = 255;										// Top end color of bars (red gradient)
+	private final int startColor = PColor.color(0, 180, 180); 			// Bars initial color
 
-	private int startColor = PColor.color(0, 180, 180); 		// Bars initial color
-	private int finalr = 255;									// Top end color of bars (red gradient)
-	private float[] VALUES = new float[NBVALUES];				// Bar values
-	private Bar[] bars = new Bar[NBVALUES];						// Bars array
-	private boolean[] barsDoneDrawing = new boolean[NBVALUES];  // Bars animations done flags
+	private int repeatCount;											// Number of loops
+	private Bar[] bars = new Bar[NBVALUES];								// Bars array
 
 
 	public class Bar {
 		private int currentHeight;
 		private int finalHeight;
 		private int panelIndex;
+		private boolean isDoneDrawing;
 		private int r = 0;
 		private float delay;
 		private AniSequence aniBar;
 		private AniSequence aniColor;
 
-		private Bar(int finalHeight, int panelIndex) {
-			this.finalHeight = finalHeight;
-			this.currentHeight = 0;
+		private Bar(int panelIndex, boolean isDoneDrawing) {
+			this.isDoneDrawing = isDoneDrawing;
 			this.panelIndex = panelIndex;
+			this.currentHeight = 0;
 			this.delay = (float) (panelIndex  * Math.random() * DURATION / NBVALUES);
 			this.aniBar = new AniSequence(applet);
 			this.aniColor = new AniSequence(applet);
 			this.setAniBar();
 			this.setAniColor();
+		}
+
+		private void setFinalHeight(int finalHeight){
+			this.finalHeight = finalHeight;
+		}
+
+		private void setIsDoneDrawing(boolean isDoneDrawing){
+			this.isDoneDrawing = isDoneDrawing;
 		}
 
 		/**
@@ -55,8 +62,6 @@ public class BarFlowAnimation extends Animation{
 			aniBar.add(Ani.to(this, 0, 0, "currentHeight", 0, Ani.QUAD_OUT));
 			aniBar.add(Ani.to(this, DURATION, delay, "currentHeight", finalHeight + graphicsContext.height, Ani.QUAD_IN));
 			aniBar.endSequence();
-
-			aniBar.start();
 		}
 
 		/**
@@ -67,8 +72,6 @@ public class BarFlowAnimation extends Animation{
 			aniColor.add(Ani.to(this, 0, 0, "r", 0, Ani.QUAD_OUT));
 			aniColor.add(Ani.to(this, DURATION, delay, "r", finalr, Ani.QUAD_IN));
 			aniColor.endSequence();
-
-			aniColor.start();
 		}
 
 		private void draw(PGraphics g) {
@@ -88,7 +91,7 @@ public class BarFlowAnimation extends Animation{
 
 			// If both animation ended, change done flag to true
 			if (aniBar.isEnded() && aniColor.isEnded()) {
-				barsDoneDrawing[panelIndex] = true;
+				isDoneDrawing = true;
 			}
 		}
 
@@ -96,31 +99,39 @@ public class BarFlowAnimation extends Animation{
 
 	public BarFlowAnimation(boolean inDefaultRotation, PApplet applet) {
 		super(inDefaultRotation, applet);
-		generateBars();
+
+		// Set repeat count
+		setRepeatCount();
+
+		// Create bars
+		for(int i = 0; i < NBVALUES; i++) {
+			bars[i] = new Bar(i, false);
+		}
 	}
 
+	private void setRepeatCount(){
+		repeatCount = 3;
+	}
 
 	/**
 	 * Get y coordinates and height
 	 */
-	private void generateBars(){
-		VALUES = generateRandomValues(NBVALUES);
+	private void initBars(){
+		float[] VALUES = generateRandomValues(NBVALUES);
 
 		for(int i = 0; i < NBVALUES; i++) {
 			int finalHeight = (int) PApplet.map(VALUES[i], 0, 2, 0, graphicsContext.height);
-			bars[i] = new Bar(finalHeight, i);
-			barsDoneDrawing[i] = false;
+			bars[i].setFinalHeight(finalHeight);
+			bars[i].setIsDoneDrawing(false);
+			bars[i].aniBar.start();
+			bars[i].aniColor.start();
 		}
 	}
 
-	/**
-	 * When all the line animations are done, generate new lines and renew the animation
-	 */
-	public void isDoneDrawing() {
-		repeatCount--;
-		generateBars();
+	private boolean allBarsDoneDrawing(){
+		for(Bar bar : bars) if(!bar.isDoneDrawing) return false;
+	    return true;
 	}
-
 
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
@@ -132,7 +143,10 @@ public class BarFlowAnimation extends Animation{
 			bar.draw(g);
 		}
 
-		if (areAllTrue(barsDoneDrawing)) { isDoneDrawing(); }
+		if (allBarsDoneDrawing() && repeatCount > 0) {
+			initBars();
+			repeatCount--;
+		}
 
 	}
 
@@ -143,7 +157,7 @@ public class BarFlowAnimation extends Animation{
 
 	@Override
 	public void prepareForQueueRotation() {
-		isDoneDrawing();
-		repeatCount = 2;
+		setRepeatCount();
+		initBars();
 	}
 }
