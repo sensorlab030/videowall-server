@@ -11,12 +11,16 @@ import com.cleverfranke.ledwall.animation.VideoStream;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class MainController extends PApplet {
 
 	// Animation manager
 	AnimationManager animationManager;
+
+	// Graphics
+	PGraphics g;
 
 	// Configuration
 	private final static String[] SERIAL_PORTS = {"/dev/tty1", "/dev/tty2"};
@@ -42,20 +46,23 @@ public class MainController extends PApplet {
 		// Initialize animations
 		Ani.init(this);
 
+		// Initialize graphics context
+		g = this.createGraphics(WallConfiguration.SOURCE_IMG_WIDTH, WallConfiguration.SOURCE_IMG_HEIGHT);
+		g.noSmooth();
+
+		// Initialize animations
 		animationManager = new AnimationManager();
      	animationManager.queueVisualization(new BarFlowAnimation(true, this));
 		animationManager.queueVisualization(new LineGraphAnimation(true, this));
 		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
 		animationManager.queueVisualization(new LineFlowAnimation(true, this));
-//		animationManager.queueVisualization(new VideoStream(true, this));
+		animationManager.queueVisualization(new VideoStream(true, this));
 //		animationManager.queueVisualization(new CaptureStream(true, this));
 	}
 
 	@Override
 	public void draw() {
-		background(0);
-
 		// Update animation frame
 		animationManager.draw(g);
 
@@ -64,7 +71,7 @@ public class MainController extends PApplet {
 
 		// If the animationFrame does have the expected dimension of the preview input, create preview, else just draw the animation frame
 		if (animationFrame.height == WallConfiguration.ROWS_COUNT && animationFrame.width == WallConfiguration.COLUMNS_COUNT) {
-			PImage previewImage = Preview.createPreview(this, animationFrame);
+			PImage previewImage = Preview.createPreview(g, animationFrame);
 			image(previewImage, 0, 0);
 		} else {
 			image(animationFrame, 0, 0);
