@@ -13,13 +13,13 @@ import processing.core.PImage;
  * It also contains some generic util methods.
  */
 public abstract class Animation {
-	
+
 	private boolean inDefaultRotation;	// Whether visual should be in default rotation
 	protected PApplet applet;
 	protected PGraphics graphicsContext;
 	protected PImage image;
 
-	
+
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
@@ -27,13 +27,13 @@ public abstract class Animation {
 		this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
 		this.image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
 	}
-	
+
 	/**
 	 * Flags when animation is finished
 	 * @return
 	 */
 	public abstract boolean isDone();
-	
+
 	/**
 	 * Get if visualization is in default rotation
 	 * @return
@@ -41,25 +41,24 @@ public abstract class Animation {
 	public boolean isInDefaultRotation() {
 		return inDefaultRotation;
 	}
-	
+
 	/**
 	 * Draw new frame of the animation
 	 * @return the new frame
 	 *
 	 */
 	public PImage draw() {
-		
 		// Draw animation frame to image
 		graphicsContext.beginDraw();
-		drawAnimationFrame(graphicsContext);		
+		drawAnimationFrame(graphicsContext);
 		graphicsContext.endDraw();
 		image = graphicsContext.get();
-		
+
 		//Return image
 		return getImage();
-		
+
 	}
-	
+
 	/**
 	 * Draw animation frame on the given PGraphics context
 	 * @param g
@@ -69,26 +68,26 @@ public abstract class Animation {
 
 	/**
 	 * Fetch the latest animation frame
-	 * 
+	 *
 	 * @return latest animation frame
 	 */
 	public PImage getImage() {
 		return image;
 	}
-	
+
 	/**
 	 * Method that is called by the VisualizationManager just
 	 * before the Visualization is shown, can be used to
 	 * switch from subject, or change palette.
 	 */
 	public abstract void prepareForQueueRotation();
-	
+
 	/**
 	 * Method that is called by the VisualizationManager just
 	 * before the Visualization is shown, to check if the
 	 * visualization can be put into rotation. If false is
 	 * returned, the visualization is skipped
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isAvailableForQueueRotation() {
@@ -100,13 +99,13 @@ public abstract class Animation {
 	 * after the Visualization transition is done.
 	 */
 	public void inAnimationDone() {}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/*** UTILS ***/
-	
+
 	/**
 	 * Generate a random RGB color
 	 * @return PColor
@@ -117,7 +116,7 @@ public abstract class Animation {
 		int b = (int) (Math.random() * 255);
 		return PColor.color(r, g, b);
 	}
-	
+
 	/**
 	 * Generate a random RGBA color
 	 * @return PColor
@@ -128,7 +127,7 @@ public abstract class Animation {
 		int b = (int) (Math.random() * 255);
 		return PColor.color(r, g, b, alpha);
 	}
-	
+
 	/**
 	 * Test if a boolean arrayList is all true
 	 * @param array
@@ -138,7 +137,7 @@ public abstract class Animation {
 	    for(Boolean b : array) if(!b) return false;
 	    return true;
 	}
-	
+
 	/**
 	 * Test if a boolean array is all true
 	 * @param array
@@ -148,7 +147,7 @@ public abstract class Animation {
 	    for(boolean b : array) if(!b) return false;
 	    return true;
 	}
-	
+
 	/**
 	 * Generate an array of random values
 	 * @param length: the number of random values wanted
@@ -158,11 +157,11 @@ public abstract class Animation {
 		float[] VALUES = new float[length];
 		for(int i = 0; i < length; i++) {
 			VALUES[i] = (float)(Math.random());
-		}	
-		
+		}
+
 		return VALUES;
 	}
-	
+
 	/**
 	 * Find min and max in VALUES.
 	 * Here we also use this function to generate random values at first, but the animation could be provided with real VALUES.
@@ -170,16 +169,16 @@ public abstract class Animation {
 	public float[] findMinMaxValues(float[] VALUES) {
 		float max = Integer.MIN_VALUE;	// Maximum of bar values
 		float min = Integer.MAX_VALUE;	// Minimum of bar values
-		
+
 		for(int i = 0; i < VALUES.length; i++) {
 		    if (VALUES[i] < min) { min = VALUES[i]; }
 		    if (VALUES[i] > max) { max = VALUES[i]; }
-		}	
-		
+		}
+
 		return new float[]{min, max};
 	}
-	
-	
+
+
 	public int[] mapPanelWidth() {
 		int[] mapped = new int[WallConfiguration.PANEL_COUNT];
 		for (int i=0; i < WallConfiguration.PANEL_COUNT; i++) {

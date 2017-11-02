@@ -12,3 +12,6 @@ data
 .recommenders
 *.mov
 *.ucls
+*.jar
+*.idea
+*.iml

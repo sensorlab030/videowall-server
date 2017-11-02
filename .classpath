@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/processing/gstreamer-java.jar"/>
 	<classpathentry kind="lib" path="lib/processing/video.jar"/>
 	<classpathentry kind="lib" path="lib/processing/jna.jar"/>
+	<classpathentry kind="lib" path="lib/IPCapture-0.3.0-any/library/IPCapture.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
