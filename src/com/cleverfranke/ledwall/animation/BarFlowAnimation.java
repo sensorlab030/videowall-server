@@ -16,7 +16,7 @@ import de.looksgood.ani.AniSequence;
  */
 public class BarFlowAnimation extends Animation{
 	// Parameters
-	private final int NBVALUES = WallConfiguration.COLUMNS_COUNT; 		// Total number of bars
+	private final int NBVALUES = WallConfiguration.COLUMN_COUNT; 		// Total number of bars
 	private final float DURATION = 4;									// Animation duration
 	private final int finalr = 255;										// Top end color of bars (red gradient)
 	private final int startColor = PColor.color(0, 180, 180); 			// Bars initial color

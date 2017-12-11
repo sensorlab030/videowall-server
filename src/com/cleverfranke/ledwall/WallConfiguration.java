@@ -10,7 +10,7 @@ public class WallConfiguration {
 	// Physical dimensions in centimeters
 	public static final int[] PHYSICAL_PANEL_WIDTH_CM = {63, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 74}; 	// Width for each panel (index 0 is leftmost panel)
 	public static final int PHYSICAL_WALL_WIDTH_CM = Arrays.stream(PHYSICAL_PANEL_WIDTH_CM).sum();				// Width of  complete wall width in cm (sum of all panel widths)
-	public static final int PHYSICAL_WALL_HEIGHT_CM = 81 * 3;														// Height of complete wall in cm
+	public static final int PHYSICAL_WALL_HEIGHT_CM = 81 * 3;													// Height of complete wall in cm
 	public static final int PHYSICAL_BEAM_WIDTH_CM = 4;															// Width of the beams between two panels in cm
 	public static final int PHYSICAL_PIXEL_OFFSET_CM = 10;														// Distance between ceiling and first pixel in cm
 	public static final int PHYSICAL_PIXEL_PITCH_CM = 3;														// Distance between two pixels in cm
@@ -24,11 +24,9 @@ public class WallConfiguration {
 
 	// Computed values
 	public static final int RATIO = SOURCE_IMG_WIDTH / SOURCE_IMG_HEIGHT;										// Width / height ratio
-	public static final int ROWS_COUNT = (int) Math.floor(PHYSICAL_WALL_HEIGHT_CM / PHYSICAL_PIXEL_PITCH_CM); 	// Number of led rows
-	public static final int COLUMNS_COUNT = PANEL_COUNT * 2; 													// Number of led columns
-	public static final int ROW_HEIGHT = (int) Math.floor(SOURCE_IMG_HEIGHT / ROWS_COUNT);						// Row height
-
-
+	public static final int ROW_COUNT = (int) Math.floor(PHYSICAL_WALL_HEIGHT_CM / PHYSICAL_PIXEL_PITCH_CM); 	// Number of led rows
+	public static final int COLUMN_COUNT = PANEL_COUNT * 2; 													// Number of led columns
+	public static final int ROW_HEIGHT = (int) Math.floor(SOURCE_IMG_HEIGHT / ROW_COUNT);						// Row height
 
 	// Arrays containing coordinates and width of the panels and panel sides
 	// They only depend on the parameters mentionned above
@@ -36,7 +34,6 @@ public class WallConfiguration {
 	public static final float XPANELSIDESCOORD[] = getXCoordOfPanelSides();										// X coordinates of each sides of the panels
 	public static final float XPANELCOORD[] = getXCoordOfPanels();												// X coordinates of each panels
 	public static final float PANEL_WIDTH[] = getPixelWidthsOfPanels();											// Width in pixels of each panels
-
 
 	/**
 	 * Return an array that contains the X coordinates of the panel boundaries.
@@ -60,7 +57,6 @@ public class WallConfiguration {
 		return xPos;
 	}
 
-
 	/**
 	 * Return an array that contains the width in pixels of the panels
 	 * @return xWidth
@@ -77,7 +73,6 @@ public class WallConfiguration {
 		return xWidth;
 	}
 
-
 	/**
 	 * Return an array that contains the width in pixels of the panels
 	 * @return xWidth
@@ -93,7 +88,6 @@ public class WallConfiguration {
 
 		return xWidth;
 	}
-
 
 	/**
 	 * Return an array that contains the width in pixels of the panels

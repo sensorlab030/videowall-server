@@ -19,13 +19,12 @@ public abstract class Animation {
 	protected PGraphics graphicsContext;
 	protected PImage image;
 
-
 	public Animation(boolean inDefaultRotation, PApplet applet) {
 		this.inDefaultRotation = inDefaultRotation;
 		this.applet = applet;
 
-		this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
-		this.image = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT * 4);
+		this.graphicsContext = applet.createGraphics(WallConfiguration.COLUMN_COUNT, WallConfiguration.ROW_COUNT);
+		this.image = new PImage(WallConfiguration.COLUMN_COUNT, WallConfiguration.ROW_COUNT * 4);
 	}
 
 	/**
@@ -182,7 +181,7 @@ public abstract class Animation {
 	public int[] mapPanelWidth() {
 		int[] mapped = new int[WallConfiguration.PANEL_COUNT];
 		for (int i=0; i < WallConfiguration.PANEL_COUNT; i++) {
-			mapped[i] = (int) PApplet.map(WallConfiguration.PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROWS_COUNT);
+			mapped[i] = (int) PApplet.map(WallConfiguration.PANEL_WIDTH[i], 0, WallConfiguration.SOURCE_IMG_HEIGHT, 0, WallConfiguration.ROW_COUNT);
 		}
 		return mapped;
 	}

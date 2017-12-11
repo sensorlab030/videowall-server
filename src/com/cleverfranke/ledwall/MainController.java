@@ -38,6 +38,8 @@ public class MainController extends PApplet {
 	public void setup() {
 		// Setup frame rate
 		frameRate(30);
+		
+		System.out.println(WallConfiguration.COLUMN_COUNT + "x" + WallConfiguration.ROW_COUNT);
 
 		// Add setup code here
 		driver = new WallDriver(this);
@@ -52,17 +54,18 @@ public class MainController extends PApplet {
 
 		// Initialize animations
 		animationManager = new AnimationManager();
-     	animationManager.queueVisualization(new BarFlowAnimation(true, this));
-		animationManager.queueVisualization(new LineGraphAnimation(true, this));
-		animationManager.queueVisualization(new BarGraphAnimation(true, this));
-		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
-		animationManager.queueVisualization(new LineFlowAnimation(true, this));
+		animationManager.queueVisualization(new BarFlowAnimation(true, this));
+//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+//		animationManager.queueVisualization(new BarGraphAnimation(true, this));
+//		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
+//		animationManager.queueVisualization(new LineFlowAnimation(true, this));
 //		animationManager.queueVisualization(new VideoStream(true, this));
 //		animationManager.queueVisualization(new CaptureStream(true, this));
 	}
 
 	@Override
 	public void draw() {
+		
 		// Update animation frame
 		animationManager.draw(g);
 
@@ -70,7 +73,7 @@ public class MainController extends PApplet {
 		PImage animationFrame = animationManager.currentVisualization.getImage();
 
 		// If the animationFrame does have the expected dimension of the preview input, create preview, else just draw the animation frame
-		if (animationFrame.height == WallConfiguration.ROWS_COUNT && animationFrame.width == WallConfiguration.COLUMNS_COUNT) {
+		if (animationFrame.height == WallConfiguration.ROW_COUNT && animationFrame.width == WallConfiguration.COLUMN_COUNT) {
 			PImage previewImage = Preview.createPreview(g, animationFrame);
 			image(previewImage, 0, 0);
 		} else {

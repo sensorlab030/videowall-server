@@ -129,11 +129,11 @@ public abstract class CanvasAnimation extends Animation {
 		int[] pixels = canvas.pixels;
 
 		// Create grid image
-		PImage grid = new PImage(WallConfiguration.COLUMNS_COUNT, WallConfiguration.ROWS_COUNT);
+		PImage grid = new PImage(WallConfiguration.COLUMN_COUNT, WallConfiguration.ROW_COUNT);
 
-		for (int i = 0; i < WallConfiguration.COLUMNS_COUNT; i++) {
+		for (int i = 0; i < WallConfiguration.COLUMN_COUNT; i++) {
 
-			for (int j = 0; j < WallConfiguration.ROWS_COUNT; j++) {
+			for (int j = 0; j < WallConfiguration.ROW_COUNT; j++) {
 				// Get the x and y coordinates of the led positions projected on the canvas image
 				int x = PANEL_COORD_MAPPED_TO_CANVAS[i];
 				int y = ROWS_COORD_MAPPED_TO_CANVAS[j];
@@ -183,10 +183,10 @@ public abstract class CanvasAnimation extends Animation {
 	 * @return mapped
 	 */
 	private static int[] mapRowsCoordToCanvas(){
-		int[] mapped = new int[WallConfiguration.ROWS_COUNT];
+		int[] mapped = new int[WallConfiguration.ROW_COUNT];
 
-		for(int i = 0; i < WallConfiguration.ROWS_COUNT; i++) {
-			mapped[i] = (int) PApplet.map(i, 0, WallConfiguration.ROWS_COUNT, 0, CANVAS_HEIGHT);
+		for(int i = 0; i < WallConfiguration.ROW_COUNT; i++) {
+			mapped[i] = (int) PApplet.map(i, 0, WallConfiguration.ROW_COUNT, 0, CANVAS_HEIGHT);
 		}
 
 		return mapped;

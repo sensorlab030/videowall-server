@@ -61,7 +61,7 @@ public class BarGraphAnimation extends Animation {
 
 
 		private void draw(PGraphics g) {
-			g.rect(panelIndex, WallConfiguration.ROWS_COUNT - currentHeight, 1, currentHeight);
+			g.rect(panelIndex, WallConfiguration.ROW_COUNT - currentHeight, 1, currentHeight);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class BarGraphAnimation extends Animation {
 		float[] minMax = findMinMaxValues(VALUES);
 
 		for(int i = 0; i < NBVALUES; i++) {
-			int finalHeight = (int) PApplet.map(VALUES[i], 0, minMax[1], 0, WallConfiguration.ROWS_COUNT);
+			int finalHeight = (int) PApplet.map(VALUES[i], 0, minMax[1], 0, WallConfiguration.ROW_COUNT);
 			bars[i] = new Bar(finalHeight, i);
 			barsDoneDrawing[i] = false;
 		}
