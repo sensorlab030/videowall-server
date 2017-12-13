@@ -1,6 +1,7 @@
 package com.cleverfranke.ledwall;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -26,10 +27,11 @@ public class DebugController extends PApplet {
 		
 		// Setup LED driver
 		driver = new WallDriver(this);
-		// driver.initialize(SERIAL_PORTS);
+//		driver.initialize(SERIAL_PORTS);
 		
 		// Setup animation
-//		animation = new ImagePixelAnimation(this, "testPattern.png");
+//		animation = new ImagePixelAnimation(this, "testpat-colorbars.png");
+//		animation = new ImagePixelAnimation(this, "testpat-pixelmap.png");
 		animation = new BeachballPixelAnimation(this);
 
 	}

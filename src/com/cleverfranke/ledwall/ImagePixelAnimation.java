@@ -24,7 +24,7 @@ public class ImagePixelAnimation extends BasePixelAnimation {
 		g.pushMatrix();
 		g.background(0);
 		g.imageMode(PConstants.CENTER);
-		g.image(image, PIXEL_RESOLUTION_X/2, PIXEL_RESOLUTION_Y/2);
+		g.image(image, PIXEL_RESOLUTION_X / 2, PIXEL_RESOLUTION_Y / 2);
 		g.popMatrix();
 	}
 
