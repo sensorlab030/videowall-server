@@ -1,5 +1,7 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.util.FileSystem;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -8,7 +10,7 @@ import processing.core.PImage;
 public class DebugController extends PApplet {
 
 	// Configuration
-	private final static String[] SERIAL_PORTS = {"/dev/tty1", "/dev/tty2"};
+	private final static String[] SERIAL_PORTS = {"COM5", "COM4"};
 
 	// Runtime members
 	private WallDriver driver;
@@ -24,32 +26,44 @@ public class DebugController extends PApplet {
 	public void setup() {
 		// Setup frame rate
 		frameRate(60);
-		
+		WallDriver.printPortList();
 		// Setup LED driver
 		driver = new WallDriver(this);
-//		driver.initialize(SERIAL_PORTS);
-		
-		// Setup animation
-//		animation = new ImagePixelAnimation(this, "testpat-colorbars.png");
-//		animation = new ImagePixelAnimation(this, "testpat-pixelmap.png");
-		animation = new BeachballPixelAnimation(this);
+		driver.initialize(SERIAL_PORTS);
 
+		// First anim
+		animation = new BeachballPixelAnimation(this);
+//		animation = new LineAnimation(this);
+//		animation = new ImagePixelAnimation(this, FileSystem.getApplicationPath("resources/testpat-pixelmap.png"));
+//		animation = new ImagePixelAnimation(this, FileSystem.getApplicationPath("resources/testpat-colorbars.png"));
+		
 	}
 
 	@Override
 	public void draw() {
+		
+		// Animation change
+//		if (frameCount == 4 * 60) {
+//			animation = new BeachballPixelAnimation(this);
+//		} else if (frameCount == 10 * 60) {
+//			
+//		} else if (frameCount == 20 * 60) {
+//			animation = new LineAnimation(this);
+//		}
 		
 		// Update animation, fetch image
 		animation.draw();
 		PImage image = animation.getImage();
 		
 		// Send to LED driver
-		driver.displayImage(image);
+		if (image != null) {
+			driver.displayImage(image);
+		}
 		
 		// Display as preview
 		image(image, 0, 0);
 		
-		System.out.println(frameRate);
+//		System.out.println(frameRate);
 		
 	}
 

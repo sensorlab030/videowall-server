@@ -23,7 +23,7 @@ public class MainController extends PApplet {
 	PGraphics g;
 
 	// Configuration
-	private final static String[] SERIAL_PORTS = {"/dev/tty1", "/dev/tty2"};
+	private final static String[] SERIAL_PORTS = {"COM5", "COM4"};
 
 	// Runtime members
 	private WallDriver driver;
@@ -43,7 +43,7 @@ public class MainController extends PApplet {
 
 		// Add setup code here
 		driver = new WallDriver(this);
-		// driver.initialize(SERIAL_PORTS);
+		driver.initialize(SERIAL_PORTS);
 
 		// Initialize animations
 		Ani.init(this);
@@ -54,8 +54,8 @@ public class MainController extends PApplet {
 
 		// Initialize animations
 		animationManager = new AnimationManager();
-		animationManager.queueVisualization(new BarFlowAnimation(true, this));
-//		animationManager.queueVisualization(new LineGraphAnimation(true, this));
+//		animationManager.queueVisualization(new BarFlowAnimation(true, this));
+		animationManager.queueVisualization(new LineGraphAnimation(true, this));
 //		animationManager.queueVisualization(new BarGraphAnimation(true, this));
 //		animationManager.queueVisualization(new ChestBoardAnimation(true, this));
 //		animationManager.queueVisualization(new LineFlowAnimation(true, this));
@@ -79,6 +79,8 @@ public class MainController extends PApplet {
 		} else {
 			image(animationFrame, 0, 0);
 		}
+		
+		driver.displayImage(animationFrame);
 	}
 
 	public static void main(String[] args) {

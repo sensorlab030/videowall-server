@@ -18,9 +18,9 @@ public class LineGraphAnimation extends CanvasAnimation {
 	private float[] yOffset = new float[LINE_COUNT];							// Stores the yOffset of each line
 	int frameCount;																// Stores the frame count at which the animation starts
 	private int[] colors = {													// Line colors
-			PColor.color(0, 255, 255), 
-			PColor.color(255, 0, 255),
-			PColor.color(255, 255, 0)
+			PColor.color(0, 255, 255, 100), 
+			PColor.color(255, 0, 255, 100),
+			PColor.color(255, 255, 0, 100)
 			};
 	
 	public LineGraphAnimation(boolean inDefaultRotation, PApplet applet) {
@@ -36,9 +36,10 @@ public class LineGraphAnimation extends CanvasAnimation {
 	@Override
 	public void drawAnimationFrame(PGraphics g) {
 		
-		g.background(255);
+		g.background(255, 255, 0);
 		g.noFill();
-		g.strokeWeight((float) (0.25*g.height));
+		g.strokeWeight((float) (0.15*g.height));
+		g.blendMode(PConstants.MULTIPLY);
 		
 		for (int i = 0; i < LINE_COUNT; i++) {
 			
