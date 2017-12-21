@@ -26,7 +26,7 @@ public class MainController extends PApplet {
 	private final static String[] SERIAL_PORTS = {"COM5", "COM4"};
 
 	// Runtime members
-	private WallDriver driver;
+	private WallDriverDepr driver;
 
 
 	@Override
@@ -42,7 +42,7 @@ public class MainController extends PApplet {
 		System.out.println(WallConfiguration.COLUMN_COUNT + "x" + WallConfiguration.ROW_COUNT);
 
 		// Add setup code here
-		driver = new WallDriver(this);
+		driver = new WallDriverDepr(this);
 		driver.initialize(SERIAL_PORTS);
 
 		// Initialize animations

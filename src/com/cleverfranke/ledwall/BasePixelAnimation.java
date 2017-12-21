@@ -7,8 +7,8 @@ import processing.core.PImage;
 public abstract class BasePixelAnimation {
 	
 	// Pixel canvas resolution
-	public static final int PIXEL_RESOLUTION_X = 81;	// Width in pixels
-	public static final int PIXEL_RESOLUTION_Y = 32;	// Height in pixels
+	public static final int PIXEL_RESOLUTION_X = 26;	// Width in pixels
+	public static final int PIXEL_RESOLUTION_Y = 81;	// Height in pixels
 	
 	// Animation members
 	protected PApplet applet;						// The parent applet

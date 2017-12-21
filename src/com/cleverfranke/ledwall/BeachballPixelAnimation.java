@@ -16,7 +16,7 @@ public class BeachballPixelAnimation extends BasePixelAnimation {
 		super(applet);
 		image = applet.loadImage(FileSystem.getApplicationPath("resources/beachball.png"));
 		if (image != null) {
-			image.resize((int) (PIXEL_RESOLUTION_X * 1.1f), 0);
+			image.resize(0, (int) (PIXEL_RESOLUTION_Y * 1.1f));
 		}
 	}
 

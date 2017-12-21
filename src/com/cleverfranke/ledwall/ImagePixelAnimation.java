@@ -9,7 +9,7 @@ import processing.core.PImage;
 
 public class ImagePixelAnimation extends BasePixelAnimation {
 	
-	PImage image;
+	private PImage image;
 
 	public ImagePixelAnimation(PApplet applet, String imageFile) {
 		super(applet);

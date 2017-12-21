@@ -13,7 +13,7 @@ public class DebugController extends PApplet {
 	private final static String[] SERIAL_PORTS = {"COM5", "COM4"};
 
 	// Runtime members
-	private WallDriver driver;
+	private WallDriverDepr driver;
 	private BasePixelAnimation animation;
 	
 
@@ -26,9 +26,9 @@ public class DebugController extends PApplet {
 	public void setup() {
 		// Setup frame rate
 		frameRate(60);
-		WallDriver.printPortList();
+		WallDriverDepr.printPortList();
 		// Setup LED driver
-		driver = new WallDriver(this);
+		driver = new WallDriverDepr(this);
 		driver.initialize(SERIAL_PORTS);
 
 		// First anim
@@ -42,15 +42,6 @@ public class DebugController extends PApplet {
 	@Override
 	public void draw() {
 		
-		// Animation change
-//		if (frameCount == 4 * 60) {
-//			animation = new BeachballPixelAnimation(this);
-//		} else if (frameCount == 10 * 60) {
-//			
-//		} else if (frameCount == 20 * 60) {
-//			animation = new LineAnimation(this);
-//		}
-		
 		// Update animation, fetch image
 		animation.draw();
 		PImage image = animation.getImage();
@@ -62,8 +53,6 @@ public class DebugController extends PApplet {
 		
 		// Display as preview
 		image(image, 0, 0);
-		
-//		System.out.println(frameRate);
 		
 	}
 
