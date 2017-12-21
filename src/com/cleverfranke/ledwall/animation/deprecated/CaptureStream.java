@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -9,7 +9,7 @@ import processing.video.*;
 /**
  * Projects each frame of the video on a the pixel grid
  */
-public class CaptureStream extends CanvasAnimation {
+public class CaptureStream extends CanvasAnimationDepr {
 	Capture cam;
 //	IPCapture cam;
 

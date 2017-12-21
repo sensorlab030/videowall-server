@@ -1,5 +1,5 @@
 
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import com.cleverfranke.ledwall.WallConfiguration;
 import com.cleverfranke.util.PColor;

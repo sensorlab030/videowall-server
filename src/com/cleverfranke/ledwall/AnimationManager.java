@@ -2,7 +2,9 @@ package com.cleverfranke.ledwall;
 
 import processing.core.PGraphics;
 import java.util.LinkedList;
-import com.cleverfranke.ledwall.animation.Animation;
+
+import com.cleverfranke.ledwall.animation.deprecated.Animation;
+
 import de.looksgood.ani.Ani;
 import de.looksgood.ani.easing.Easing;
 
@@ -16,11 +18,8 @@ public class AnimationManager {
 	Animation currentVisualization;								// Current visualization member
 	int currentVisualizationFrameCount;							// Frame counter for current visualization, updated by update()
 
-
 	public AnimationManager() {
-
 		this.transition = new AnimationTransition();
-
 	}
 
 	/**

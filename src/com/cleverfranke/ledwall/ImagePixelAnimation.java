@@ -1,5 +1,6 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.animation.PixelAnimation;
 import com.cleverfranke.util.FileSystem;
 
 import processing.core.PApplet;
@@ -7,7 +8,7 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-public class ImagePixelAnimation extends BasePixelAnimation {
+public class ImagePixelAnimation extends PixelAnimation {
 	
 	private PImage image;
 
@@ -20,7 +21,7 @@ public class ImagePixelAnimation extends BasePixelAnimation {
 	}
 
 	@Override
-	protected void doDraw(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g) {
 		g.pushMatrix();
 		g.background(0);
 		g.imageMode(PConstants.CENTER);

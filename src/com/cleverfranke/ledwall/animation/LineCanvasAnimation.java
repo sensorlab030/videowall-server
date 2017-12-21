@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall;
+package com.cleverfranke.ledwall.animation;
 
 import com.cleverfranke.util.PColor;
 
@@ -7,20 +7,18 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 
-public class LineAnimation extends BasePixelAnimation {
+public class LineCanvasAnimation extends CanvasAnimation {
 	
 	private final int LINE_COUNT = 3;											// Number of lines to plot
-	private final float RESOLUTION_X = (float) graphicsContext.width / 100f;	// Resolution of x
+	
 	private float[] yOffset = new float[LINE_COUNT];							// Stores the yOffset of each line
-	int frameCount;																// Stores the frame count at which the animation starts
 	private int[] colors = {													// Line colors
 			PColor.color(0, 255, 255), 
 			PColor.color(255, 0, 255),
 			PColor.color(255, 255, 0)
 			};
 	
-
-	public LineAnimation(PApplet applet) {
+	public LineCanvasAnimation(PApplet applet) {
 		super(applet);
 		
 		// Initialize noise seed
@@ -30,8 +28,7 @@ public class LineAnimation extends BasePixelAnimation {
 	}
 
 	@Override
-	protected void doDraw(PGraphics g) {
-		
+	protected void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(255);
 		g.noFill();
 		g.strokeWeight((float) (0.25*g.height));
@@ -42,7 +39,7 @@ public class LineAnimation extends BasePixelAnimation {
 			line.beginShape(PConstants.LINE);
 			
 			float xOff = 0;
-			for (float x = 0; x < g.width + 1; x += RESOLUTION_X) {
+			for (float x = 0; x < g.width + 1; x += (float) getGeometry().width / 100f) {
 				float y = PApplet.map(applet.noise(xOff, yOffset[i]), 0, 1, 0, g.height);
 				line.vertex(x,  y);
 				xOff += 0.01f;
@@ -57,7 +54,6 @@ public class LineAnimation extends BasePixelAnimation {
 			yOffset[i] += 0.01f;
 			
 		}
-
 	}
 
 }

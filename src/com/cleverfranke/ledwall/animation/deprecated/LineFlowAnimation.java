@@ -1,9 +1,10 @@
 
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import de.looksgood.ani.Ani;

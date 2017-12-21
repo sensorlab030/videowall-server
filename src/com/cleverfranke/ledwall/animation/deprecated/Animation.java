@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import java.util.List;
 import com.cleverfranke.ledwall.WallConfiguration;
@@ -11,6 +11,8 @@ import processing.core.PImage;
  * Animation class is the parent class of all the animations.
  * It draws an image on the graphicsContext which has as many pixels as the number of leds on the wall.
  * It also contains some generic util methods.
+ * 
+ * @deprecated
  */
 public abstract class Animation {
 
@@ -98,10 +100,6 @@ public abstract class Animation {
 	 * after the Visualization transition is done.
 	 */
 	public void inAnimationDone() {}
-
-
-
-
 
 	/*** UTILS ***/
 

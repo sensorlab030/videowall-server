@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
@@ -10,7 +10,7 @@ import processing.core.PShape;
 /**
  * Animation that draws 3 lines with a wave-like motion
  */
-public class LineGraphAnimation extends CanvasAnimation {
+public class LineGraphAnimation extends CanvasAnimationDepr {
 	
 	private final int F_DURATION = 40; 											// Nb of frames that define how long the animation lasts
 	private final int LINE_COUNT = 3;											// Number of lines to plot

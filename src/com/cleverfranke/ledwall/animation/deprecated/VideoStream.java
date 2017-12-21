@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package com.cleverfranke.ledwall.animation.deprecated;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -7,7 +7,7 @@ import processing.video.*;
 /**
  * Projects each frame of the video on a the pixel grid
  */
-public class VideoStream extends CanvasAnimation {
+public class VideoStream extends CanvasAnimationDepr {
 	Movie myMovie;
 
 	public VideoStream(boolean inDefaultRotation, PApplet applet) {

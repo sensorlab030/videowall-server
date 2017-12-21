@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall;
+package com.cleverfranke.ledwall.walldriver;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
