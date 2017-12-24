@@ -8,7 +8,7 @@ public class WallDriverPort {
 	
 	public final static int PANEL_IMAGE_WIDTH = 81;
 	public final static int PANEL_IMAGE_HEIGHT = 16;
-	public final static int FRAMERATE = 30;
+	public final static int FRAMERATE = 60;
 	private final static float GAMMA = 1.7f;
 	
 	private boolean master;

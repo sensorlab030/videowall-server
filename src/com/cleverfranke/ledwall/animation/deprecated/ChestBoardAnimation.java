@@ -2,8 +2,6 @@ package com.cleverfranke.ledwall.animation.deprecated;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import com.cleverfranke.ledwall.WallConfiguration;
-
 import de.looksgood.ani.Ani;
 import de.looksgood.ani.AniSequence;
 
