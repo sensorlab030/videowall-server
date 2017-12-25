@@ -1,5 +1,6 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.Settings;
 import com.cleverfranke.ledwall.animation.BaseCanvasAnimation;
 import com.cleverfranke.ledwall.animation.BasePixelAnimation;
 import com.cleverfranke.ledwall.animation.BeachballAnimation;
@@ -41,7 +42,9 @@ public class MainController extends PApplet {
 		preview = new Preview(this);
 		
 		// Configure wall driver
-		driver = new WallDriver(this, "COM5", "COM4");
+		driver = new WallDriver(this, 
+				Settings.getValue("driverPort1"), 
+				Settings.getValue("driverPort2"));
 	}
 
 	@Override
@@ -59,6 +62,13 @@ public class MainController extends PApplet {
 	}
 	
 	public static void main(String[] args) {
+		
+		// Load settings (either first argument or settings.json by default)
+		String settingsFile = args.length > 0 ? args[0] : "settings.json";
+		if (!Settings.loadSettings(settingsFile)) {
+			System.exit(1);
+		}
+		
 		// Program execution starts here
 		PApplet.main(MainController.class.getName());
 	}
