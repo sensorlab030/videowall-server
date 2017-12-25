@@ -1,9 +1,6 @@
 package com.cleverfranke.ledwall.animation;
 
-import com.cleverfranke.util.FileSystem;
-
 import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
