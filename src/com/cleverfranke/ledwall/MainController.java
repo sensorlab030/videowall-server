@@ -1,12 +1,8 @@
 package com.cleverfranke.ledwall;
 
 import com.cleverfranke.ledwall.Settings;
-import com.cleverfranke.ledwall.animation.BaseCanvasAnimation;
 import com.cleverfranke.ledwall.animation.BasePixelAnimation;
-import com.cleverfranke.ledwall.animation.BeachballAnimation;
-import com.cleverfranke.ledwall.animation.LineWaveAnimation;
 import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
-import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
 
@@ -38,7 +34,6 @@ public class MainController extends PApplet {
 //		animation = new BeachballAnimation(this);
 //		animation = new VideoAnimation(this);
 		animation = new SpectrumAnalyzerAnimation(this);
-		
 		preview = new Preview(this);
 		
 		// Configure wall driver
