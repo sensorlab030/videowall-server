@@ -1,8 +1,10 @@
 package com.cleverfranke.ledwall;
 
+import com.cleverfranke.ledwall.animation.BaseCanvasAnimation;
 import com.cleverfranke.ledwall.animation.BasePixelAnimation;
 import com.cleverfranke.ledwall.animation.BeachballAnimation;
 import com.cleverfranke.ledwall.animation.LineWaveAnimation;
+import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
 import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
@@ -31,9 +33,10 @@ public class MainController extends PApplet {
 		// Initialize ANI
 		Ani.init(this);
 		
-		animation = new LineWaveAnimation(this);
+//		animation = new LineWaveAnimation(this);
 //		animation = new BeachballAnimation(this);
 //		animation = new VideoAnimation(this);
+		animation = new SpectrumAnalyzerAnimation(this);
 		
 		preview = new Preview(this);
 		
@@ -46,12 +49,9 @@ public class MainController extends PApplet {
 		
 		// Draw animation frame
 		animation.draw();
-//		PImage canvasImage = animation.getCanvasImage();
-//		image(canvasImage, 0, 0);
 		
 		// Render and display preview
 		image(preview.renderPreview(animation.getImage()), 0, 0);
-//		image(animation.getImage(), 0, 400);
 		
 		// Send image to driver
 		driver.displayImage(animation.getImage());
