@@ -3,6 +3,7 @@ package com.cleverfranke.ledwall;
 import com.cleverfranke.ledwall.Settings;
 import com.cleverfranke.ledwall.animation.BasePixelAnimation;
 import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
+import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
 
@@ -15,6 +16,7 @@ public class MainController extends PApplet {
 	WallDriver driver;
 	private BasePixelAnimation animation;
 	private Preview preview;
+	private MainWindow mw;
 	
 	@Override
 	public void settings() {
@@ -35,6 +37,9 @@ public class MainController extends PApplet {
 //		animation = new VideoAnimation(this);
 		animation = new SpectrumAnalyzerAnimation(this);
 		preview = new Preview(this);
+		
+		mw = new MainWindow();
+		
 		
 		// Configure wall driver
 		driver = new WallDriver(this, 
