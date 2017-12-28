@@ -9,6 +9,7 @@ import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
 import com.cleverfranke.ledwall.walldriver.WallGeometry;
+import com.cleverfranke.util.Settings;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;

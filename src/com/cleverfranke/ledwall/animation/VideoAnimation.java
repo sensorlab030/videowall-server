@@ -3,7 +3,7 @@ package com.cleverfranke.ledwall.animation;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import com.cleverfranke.ledwall.Settings;
+import com.cleverfranke.util.Settings;
 
 import processing.core.PApplet;
 import processing.core.PConstants;

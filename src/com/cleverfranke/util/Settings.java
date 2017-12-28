@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall;
+package com.cleverfranke.util;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
