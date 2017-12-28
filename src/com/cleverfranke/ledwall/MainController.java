@@ -1,5 +1,6 @@
 package com.cleverfranke.ledwall;
 
+import java.awt.Rectangle;
 import java.io.File;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
@@ -10,6 +11,7 @@ import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
+import com.cleverfranke.ledwall.walldriver.WallGeometry;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
@@ -23,12 +25,15 @@ public class MainController extends PApplet {
 	
 	@Override
 	public void settings() {
-		size(1024, 768);
+		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
+		size(previewRect.width, previewRect.height);
+		
 	}
 
 	@Override
 	public void setup() {
 		frameRate(WallDriverPort.FRAMERATE);
+		surface.setTitle("Preview");
 		
 		// Initialize ANI
 		Ani.init(this);
@@ -53,9 +58,9 @@ public class MainController extends PApplet {
 		new MainWindow();
 		
 		// Configure wall driver
-//		driver = new WallDriver(this, 
-//				Settings.getValue("driverPort1"), 
-//				Settings.getValue("driverPort2"));
+		driver = new WallDriver(this, 
+				Settings.getValue("driverPort1"), 
+				Settings.getValue("driverPort2"));
 	}
 
 	@Override
@@ -74,7 +79,7 @@ public class MainController extends PApplet {
 		image(preview.renderPreview(animation.getImage()), 0, 0);
 		
 		// Send image to driver
-//		driver.displayImage(animation.getImage());
+		driver.displayImage(animation.getImage());
 		
 	}
 	
