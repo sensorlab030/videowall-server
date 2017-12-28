@@ -32,7 +32,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 		
 		// Get and resize movie frame
 		PImage frame = movie.get();
-		frame.resize(g.width, 0);
+		frame.resize(g.width, g.height);
 		
 		// Draw movie frame
 		g.imageMode(PConstants.CENTER);

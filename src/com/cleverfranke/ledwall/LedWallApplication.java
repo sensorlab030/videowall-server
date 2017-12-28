@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
+import com.cleverfranke.ledwall.animation.BaseCanvasAnimation;
 import com.cleverfranke.ledwall.animation.Preview;
 import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
@@ -21,7 +22,8 @@ public class LedWallApplication extends PApplet {
 	private Preview preview;
 	private MainWindow mainWindow;
 	
-	private boolean previewEnabled = true;
+	private boolean ledPreviewEnabled = true;
+	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
 	
 	@Override
@@ -56,22 +58,23 @@ public class LedWallApplication extends PApplet {
 
 	@Override
 	public void draw() {
+		background(0);
 		
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
-			background(0);
 			return;
 		}
 		
 		// Draw animation frame
 		animation.draw();
 		
-		// Render and display preview
-		if (previewEnabled) {
+		// Display previews
+		if (ledPreviewEnabled) {
 			image(preview.renderPreview(animation.getImage()), 0, 0);
-		} else {
-			background(0);
+		}
+		if (sourcePreviewEnabled && BaseCanvasAnimation.class.isAssignableFrom(animation.getClass())) {
+			image(((BaseCanvasAnimation) animation).getCanvasImage(), 0, 0);
 		}
 		
 		// Send image to driver
@@ -98,8 +101,12 @@ public class LedWallApplication extends PApplet {
 				mainWindow.toggle();
 				break;
 			case KeyEvent.VK_F2:
-				previewEnabled = !previewEnabled;
-				System.out.println("Preview enabled: " + previewEnabled);
+				ledPreviewEnabled = !ledPreviewEnabled;
+				System.out.println("LED preview enabled: " + ledPreviewEnabled);
+				break;
+			case KeyEvent.VK_F3:
+				sourcePreviewEnabled = !sourcePreviewEnabled;
+				System.out.println("Source preview enabled: " + sourcePreviewEnabled);
 				break;
 			case KeyEvent.VK_SPACE:
 				blackOutEnabled = !blackOutEnabled;
