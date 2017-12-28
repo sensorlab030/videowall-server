@@ -1,6 +1,7 @@
 package com.cleverfranke.ledwall;
 
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
 import com.cleverfranke.ledwall.animation.Preview;
@@ -8,7 +9,6 @@ import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
 import com.cleverfranke.ledwall.walldriver.WallGeometry;
-import com.jogamp.newt.event.KeyEvent;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
@@ -96,10 +96,10 @@ public class MainController extends PApplet {
 	
 	public void keyPressed() {
 		switch (keyCode) {
-			case KeyEvent.VK_1:
+			case KeyEvent.VK_F1:
 				mainWindow.toggle();
 				break;
-			case KeyEvent.VK_2:
+			case KeyEvent.VK_F2:
 				previewEnabled = !previewEnabled;
 				System.out.println("Preview enabled: " + previewEnabled);
 				break;
