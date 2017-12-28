@@ -20,7 +20,10 @@ public class SpectrumAnalyzerAnimation extends BaseCanvasAnimation {
 		minim = new Minim(this);
 		
 		in = minim.getLineIn();
-		in.enableMonitoring();
+		if (in == null) {
+			System.err.println("No Audio input found");
+			return;
+		}
 
 		fft = new FFT(in.bufferSize(), in.sampleRate());
 		fft.logAverages(200, 10);
@@ -32,6 +35,11 @@ public class SpectrumAnalyzerAnimation extends BaseCanvasAnimation {
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
+		
+		if (in == null) {
+			g.background(0);
+			return;
+		}
 		
 		// perform a forward FFT on the samples in input buffer
 		fft.forward(in.mix);
@@ -70,8 +78,19 @@ public class SpectrumAnalyzerAnimation extends BaseCanvasAnimation {
 
 			prevVals[i] = avgVal;
 		}
-		
 
+	}
+	
+	public void isStarting() {
+		if (in != null) {
+			in.enableMonitoring();
+		}
+	}
+	
+	public void isStopping() {
+		if (in != null) {
+			in.disableMonitoring();
+		}
 	}
 	
 	static float dB(float x) {

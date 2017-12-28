@@ -7,6 +7,7 @@ import com.cleverfranke.ledwall.animation.BaseAnimation;
 import com.cleverfranke.ledwall.animation.BeachballAnimation;
 import com.cleverfranke.ledwall.animation.LineWaveAnimation;
 import com.cleverfranke.ledwall.animation.Preview;
+import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
 import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
@@ -40,7 +41,7 @@ public class MainController extends PApplet {
 		// Setup animation manager
 		animationManager.addAnimation("Beach ball", new BeachballAnimation(this));
 		animationManager.addAnimation("Line wave", new LineWaveAnimation(this));
-//		animationManager.addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(this));
+		animationManager.addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(this));
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(this);
