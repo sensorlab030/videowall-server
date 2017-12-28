@@ -14,7 +14,7 @@ import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.video.Movie;
 
-public class MainController extends PApplet {
+public class LedWallApplication extends PApplet {
 	
 	private WallDriver driver;
 	private Preview preview;
@@ -34,10 +34,8 @@ public class MainController extends PApplet {
 		frameRate(WallDriverPort.FRAMERATE);
 		surface.setTitle("Preview");
 		
-		
 		// Initialize animation manager
 		AnimationManager.initialize(this);
-		
 		
 		// Setup preview
 		preview = new Preview(this);
@@ -120,7 +118,7 @@ public class MainController extends PApplet {
 		}
 		
 		// Program execution starts here
-		PApplet.main(MainController.class.getName());
+		PApplet.main(LedWallApplication.class.getName());
 	}
 
 }
