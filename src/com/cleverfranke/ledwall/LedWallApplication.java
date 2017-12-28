@@ -42,7 +42,7 @@ public class LedWallApplication extends PApplet {
 		preview = new Preview(this);
 		
 		// Create mainWindow
-		mainWindow = new MainWindow();
+		mainWindow = new MainWindow(this);
 		
 		// Configure wall driver
 		driver = new WallDriver(this, 
@@ -74,12 +74,12 @@ public class LedWallApplication extends PApplet {
 			background(0);
 		}
 		
+		
+		
 		// Send image to driver
-		if (blackOutEnabled) {
-			driver.blackOut();
-		} else {
-			driver.displayImage(animation.getImage());
-		}
+		driver.displayImage(animation.getImage());
+		
+		image(driver.getBuffer(), 0, 0);
 		
 	}
 	
@@ -104,10 +104,16 @@ public class LedWallApplication extends PApplet {
 				break;
 			case KeyEvent.VK_SPACE:
 				blackOutEnabled = !blackOutEnabled;
+				driver.setBlackOutEnabled(blackOutEnabled);
 				System.out.println("Black out enabled: " + blackOutEnabled);
 				break;
 		}
 
+	}
+	
+	public void setWallBrightness(int brightness) {
+		System.out.println("SWB" + brightness);
+		driver.setBrightness(brightness);
 	}
 	
 	public static void main(String[] args) {

@@ -12,7 +12,8 @@ public class WallDriver {
 	private PImage imageBuffer;					// Buffer image used by imageBufferContext
 	private PImage port1Image, port2Image;		// Separate images to be sent to the two UC's driving the wall
 	private boolean portsConnected;				// Flag to determine if ports are connected
-	private PImage blackOutImage;				// Image that can is used to black out
+	private boolean blackoutEnabled = false;	// Flag to enable/disable blackout
+	private int brightness = 255;				// Brightness [0, 255]
 	
 	/**
 	 * Initialize wall driver
@@ -41,25 +42,22 @@ public class WallDriver {
 		port1Image = applet.createImage(WallDriverPort.PANEL_IMAGE_WIDTH, WallDriverPort.PANEL_IMAGE_HEIGHT, PConstants.RGB);
 		port2Image = applet.createImage(WallDriverPort.PANEL_IMAGE_WIDTH, WallDriverPort.PANEL_IMAGE_HEIGHT, PConstants.RGB);
 		
-		// Create blackout image (black image)
-		blackOutImage = applet.createImage(26, 81, PConstants.RGB);
-		
 	}
 	
 	/**
 	 * Send an image to be displayed on the led wall. The image is expected to be 26px wide and 81px high in RGB. 
 	 * Brightness of the image will be controlled by the WallDriver. 
 	 * 
-	 * @param image
+	 * @param sourceImage
 	 */
-	public void displayImage(PImage image) {
+	public void displayImage(PImage sourceImage) {
 		
 		// Check for valid image
-		if (image == null) {
+		if (sourceImage == null) {
 			System.err.println("No image");
 			return;
 		}
-		if (image.width != 26 || image.height != 81) {
+		if (sourceImage.width != 26 || sourceImage.height != 81) {
 			System.err.println("Invalid image dimensions");
 			return;
 		}
@@ -69,7 +67,22 @@ public class WallDriver {
 		imageBufferContext.beginDraw();
 		imageBufferContext.translate(81, 0);
 		imageBufferContext.rotate(PApplet.radians(90));
-		imageBufferContext.image(image, 0, 0);
+		
+		if (blackoutEnabled) {
+			
+			// Paint it black
+			imageBufferContext.background(0);
+			
+		} else {
+			
+			// Place source image
+			imageBufferContext.image(sourceImage, 0, 0);
+			
+			// Apply brightness
+			imageBufferContext.fill(0, 0, 0, 255 - brightness);
+			imageBufferContext.rect(0, 0, sourceImage.width, sourceImage.height);
+		}
+		
 		imageBufferContext.endDraw();
 		imageBuffer = imageBufferContext.get();
 		
@@ -89,8 +102,12 @@ public class WallDriver {
 	/**
 	 * Black out the led wall (all leds off)
 	 */
-	public void blackOut() {
-		displayImage(blackOutImage);
+	public void setBlackOutEnabled(boolean blackoutEnabled) {
+		this.blackoutEnabled = blackoutEnabled;
+	}
+	
+	public void setBrightness(int brightness) {
+		this.brightness = Math.max(Math.min(255,  brightness), 0);
 	}
 	
 	/** 

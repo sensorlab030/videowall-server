@@ -1,20 +1,27 @@
 package com.cleverfranke.ledwall.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.cleverfranke.ledwall.AnimationManager;
 import com.cleverfranke.ledwall.AnimationManager.AnimationEntry;
+import com.cleverfranke.ledwall.LedWallApplication;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements AnimationManager.AnimationEventListener {
@@ -22,7 +29,7 @@ public class MainWindow extends JFrame implements AnimationManager.AnimationEven
 	private DefaultListModel<AnimationManager.AnimationEntry> animationModel;
 	private JList<AnimationManager.AnimationEntry> animationList;
 	
-	public MainWindow() {
+	public MainWindow(LedWallApplication application) {
 		
 		// Initialize frame
 		setTitle("Configuration panel");
@@ -62,10 +69,26 @@ public class MainWindow extends JFrame implements AnimationManager.AnimationEven
 		// Add scroll pane for list
 		JScrollPane listScroller = new JScrollPane(animationList);
 		listScroller.setPreferredSize(new Dimension(250, 80));
-		getContentPane().add(listScroller);
+		
+		JSlider brighnessSlider = new JSlider(JSlider.VERTICAL, 0, 255, 255);
+		brighnessSlider.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				application.setWallBrightness((int) source.getValue());
+			}
+		});
+		
+		// Add controls to content pane
+		Container contentPane = getContentPane();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.LINE_AXIS));
+		contentPane.add(listScroller, BorderLayout.CENTER);
+		contentPane.add(brighnessSlider, BorderLayout.PAGE_END);
 		
 		pack();
 		open();
+		
 	}
 	
 	public void toggle() {
