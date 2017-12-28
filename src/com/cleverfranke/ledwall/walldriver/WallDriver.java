@@ -12,6 +12,7 @@ public class WallDriver {
 	private PImage imageBuffer;					// Buffer image used by imageBufferContext
 	private PImage port1Image, port2Image;		// Separate images to be sent to the two UC's driving the wall
 	private boolean portsConnected;				// Flag to determine if ports are connected
+	private PImage blackOutImage;				// Image that can is used to black out
 	
 	/**
 	 * Initialize wall driver
@@ -39,6 +40,9 @@ public class WallDriver {
 		// Create port images
 		port1Image = applet.createImage(WallDriverPort.PANEL_IMAGE_WIDTH, WallDriverPort.PANEL_IMAGE_HEIGHT, PConstants.RGB);
 		port2Image = applet.createImage(WallDriverPort.PANEL_IMAGE_WIDTH, WallDriverPort.PANEL_IMAGE_HEIGHT, PConstants.RGB);
+		
+		// Create blackout image (black image)
+		blackOutImage = applet.createImage(26, 81, PConstants.RGB);
 		
 	}
 	
@@ -82,8 +86,15 @@ public class WallDriver {
 		
 	}
 	
+	/**
+	 * Black out the led wall (all leds off)
+	 */
+	public void blackOut() {
+		displayImage(blackOutImage);
+	}
+	
 	/** 
-	 * Retrieve buffer image
+	 * Retrieve buffer image for debugging purposes
 	 * @return
 	 */
 	public PImage getBuffer() {
@@ -105,5 +116,5 @@ public class WallDriver {
 	public PImage getPort2Image() {
 		return port2Image;
 	}
-
+	
 }

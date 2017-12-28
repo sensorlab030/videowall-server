@@ -65,7 +65,23 @@ public class MainWindow extends JFrame implements AnimationManager.AnimationEven
 		getContentPane().add(listScroller);
 		
 		pack();
-		setVisible(true);
+		open();
+	}
+	
+	public void toggle() {
+		if (!this.isVisible()) {
+			open();
+		} else {
+			close();
+		}
+	}
+	
+	public void open () {
+		this.setVisible(true);
+	}
+	
+	public void close () {
+		this.setVisible(false);
 	}
 	
 	@Override

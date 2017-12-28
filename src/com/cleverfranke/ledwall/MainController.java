@@ -8,6 +8,7 @@ import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
 import com.cleverfranke.ledwall.walldriver.WallGeometry;
+import com.jogamp.newt.event.KeyEvent;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
@@ -17,6 +18,10 @@ public class MainController extends PApplet {
 	
 	private WallDriver driver;
 	private Preview preview;
+	private MainWindow mainWindow;
+	
+	private boolean previewEnabled = true;
+	private boolean blackOutEnabled;
 	
 	@Override
 	public void settings() {
@@ -38,7 +43,7 @@ public class MainController extends PApplet {
 		preview = new Preview(this);
 		
 		// Create mainWindow
-		new MainWindow();
+		mainWindow = new MainWindow();
 		
 		// Configure wall driver
 		driver = new WallDriver(this, 
@@ -64,11 +69,46 @@ public class MainController extends PApplet {
 		animation.draw();
 		
 		// Render and display preview
-		image(preview.renderPreview(animation.getImage()), 0, 0);
+		if (previewEnabled) {
+			image(preview.renderPreview(animation.getImage()), 0, 0);
+		} else {
+			background(0);
+		}
 		
 		// Send image to driver
-		driver.displayImage(animation.getImage());
+		if (blackOutEnabled) {
+			driver.blackOut();
+		} else {
+			driver.displayImage(animation.getImage());
+		}
 		
+	}
+	
+	/**
+	 * Handle movie events (used by VideoAnimation class), read
+	 * a new frame from the movie
+	 * 
+	 * @param m
+	 */
+	public void movieEvent(Movie m) {
+		m.read();
+	}
+	
+	public void keyPressed() {
+		switch (keyCode) {
+			case KeyEvent.VK_1:
+				mainWindow.toggle();
+				break;
+			case KeyEvent.VK_2:
+				previewEnabled = !previewEnabled;
+				System.out.println("Preview enabled: " + previewEnabled);
+				break;
+			case KeyEvent.VK_SPACE:
+				blackOutEnabled = !blackOutEnabled;
+				System.out.println("Black out enabled: " + blackOutEnabled);
+				break;
+		}
+
 	}
 	
 	public static void main(String[] args) {
@@ -81,16 +121,6 @@ public class MainController extends PApplet {
 		
 		// Program execution starts here
 		PApplet.main(MainController.class.getName());
-	}
-	
-	/**
-	 * Handle movie events (used by VideoAnimation class), read
-	 * a new frame from the movie
-	 * 
-	 * @param m
-	 */
-	public void movieEvent(Movie m) {
-		m.read();
 	}
 
 }
