@@ -74,12 +74,8 @@ public class LedWallApplication extends PApplet {
 			background(0);
 		}
 		
-		
-		
 		// Send image to driver
 		driver.displayImage(animation.getImage());
-		
-		image(driver.getBuffer(), 0, 0);
 		
 	}
 	
@@ -93,6 +89,9 @@ public class LedWallApplication extends PApplet {
 		m.read();
 	}
 	
+	/**
+	 * Handle key presses
+	 */
 	public void keyPressed() {
 		switch (keyCode) {
 			case KeyEvent.VK_F1:
@@ -111,8 +110,12 @@ public class LedWallApplication extends PApplet {
 
 	}
 	
+	/**
+	 * Set wall brightness 
+	 * 
+	 * @param brightness [0, 255] (0 = off, 255 is brightest possible)
+	 */
 	public void setWallBrightness(int brightness) {
-		System.out.println("SWB" + brightness);
 		driver.setBrightness(brightness);
 	}
 	
