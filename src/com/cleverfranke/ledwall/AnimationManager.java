@@ -1,6 +1,7 @@
 package com.cleverfranke.ledwall;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
 
@@ -12,8 +13,12 @@ public class AnimationManager {
 	// Singleton instance
 	private static AnimationManager instance = null; 
 
-	private BaseAnimation currentAnimation;
-	private ArrayList<AnimationEntry> availableAnimations = new ArrayList<>();
+	
+	private BaseAnimation currentAnimation;										// Current animation
+	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animation
+	
+	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
+	
 	
 	protected AnimationManager() {}
 	
@@ -44,7 +49,7 @@ public class AnimationManager {
 		return addAnimation(label, null, animation);
 	}
 	
-	public ArrayList<AnimationEntry> getAvailableAnimations() {
+	public List<AnimationEntry> getAvailableAnimations() {
 		return availableAnimations;
 	}
 	
@@ -66,15 +71,27 @@ public class AnimationManager {
 		// Set current animation to animation with given index
 		AnimationEntry entry = availableAnimations.get(index);
 		currentAnimation = entry.getAnimation();
-		if (currentAnimation != null) {
-			if (entry.getData() != null && !entry.getData().isEmpty()) {
-				currentAnimation.setData(entry.getData());
-			}
-			
-			// Send starting signal
-			currentAnimation.isStarting();
+		if (currentAnimation == null) {
+			return;
 		}
 		
+		// Set data (if any data is available)
+		if (entry.getData() != null && !entry.getData().isEmpty()) {
+			currentAnimation.setData(entry.getData());
+		}
+		
+		// Send starting signal
+		currentAnimation.isStarting();
+		
+		// Send change event
+		for (AnimationEventListener listener : eventListeners) {
+			listener.onCurrentAnimationChanged(index);
+		}
+		
+	}
+	
+	public void addListener(AnimationEventListener listener) {
+		eventListeners.add(listener);
 	}
 	
 	public class AnimationEntry {
@@ -108,6 +125,20 @@ public class AnimationManager {
 			return animation;
 		}
 		
+	}
+	
+	/**
+	 * Interface to subscribe to event changes
+	 */
+	public interface AnimationEventListener {
+		
+		/**
+		 * Method that is called when the current animation
+		 * has changed
+		 * 
+		 * @param index
+		 */
+		void onCurrentAnimationChanged(int index);
 	}
 
 }

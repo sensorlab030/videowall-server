@@ -27,7 +27,6 @@ public class MainController extends PApplet {
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
 		size(previewRect.width, previewRect.height);
-		
 	}
 
 	@Override
@@ -61,6 +60,7 @@ public class MainController extends PApplet {
 		driver = new WallDriver(this, 
 				Settings.getValue("driverPort1"), 
 				Settings.getValue("driverPort2"));
+		
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class MainController extends PApplet {
 		// Fetch current animation
 		BaseAnimation animation = animationManager.getCurrentAnimation();
 		if (animation == null) {
+			background(0);
 			return;
 		}
 		
@@ -95,9 +96,14 @@ public class MainController extends PApplet {
 		PApplet.main(MainController.class.getName());
 	}
 	
-	// Called every time a new frame is available to read
+	/**
+	 * Handle movie events (used by VideoAnimation class), read
+	 * a new frame from the movie
+	 * 
+	 * @param m
+	 */
 	public void movieEvent(Movie m) {
-	  m.read();
+		m.read();
 	}
 
 }

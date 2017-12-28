@@ -17,7 +17,7 @@ import com.cleverfranke.ledwall.AnimationManager;
 import com.cleverfranke.ledwall.AnimationManager.AnimationEntry;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements AnimationManager.AnimationEventListener {
 	
 	private DefaultListModel<AnimationManager.AnimationEntry> animationModel;
 	private JList<AnimationManager.AnimationEntry> animationList;
@@ -55,6 +55,9 @@ public class MainWindow extends JFrame {
 			}
 		});
 		animationList.getSelectionModel().addListSelectionListener(new AnimationListSelectionHandler(animationList));
+		
+		// Subscribe to animation events
+		AnimationManager.getInstance().addListener(this);
 
 		// Add scroll pane for list
 		JScrollPane listScroller = new JScrollPane(animationList);
@@ -63,6 +66,11 @@ public class MainWindow extends JFrame {
 		
 		pack();
 		setVisible(true);
+	}
+	
+	@Override
+	public void onCurrentAnimationChanged(int index) {
+		animationList.setSelectedIndex(index);
 	}
 	
 	class AnimationListSelectionHandler implements ListSelectionListener {
@@ -79,5 +87,7 @@ public class MainWindow extends JFrame {
 			}
 		}
 	}
-	
+
+
+
 }
