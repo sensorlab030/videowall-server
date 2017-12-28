@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall;
+package com.cleverfranke.ledwall.animation;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -25,7 +25,6 @@ public class Preview {
 	
 	private WallGeometry wallGeometry = WallGeometry.getInstance();
 	private int pixelLength;
-	
 	
 	public Preview(PApplet applet) {
 		

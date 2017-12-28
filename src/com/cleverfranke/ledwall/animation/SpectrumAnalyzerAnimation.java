@@ -14,7 +14,6 @@ public class SpectrumAnalyzerAnimation extends BaseCanvasAnimation {
 	
 	private float[] prevVals;
 	private int relevantBandCount;
-
 	
 	public SpectrumAnalyzerAnimation(PApplet applet) {
 		super(applet);

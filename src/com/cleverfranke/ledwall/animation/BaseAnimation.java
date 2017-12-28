@@ -5,7 +5,7 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 
 /**
- * PixelAnimation class is the parent class of all the animations. It draws an 
+ * BaseAnimation class is the parent class of all the animations. It draws an 
  * animation frame on the graphicsContext which has as many pixels as the number 
  * of leds on the wall.
  * 
@@ -13,11 +13,11 @@ import processing.core.PImage;
  * take the spacing between the pixel columns into account. For a more convenient
  * interface to draw content see CanvasAnimation.
  */
-public abstract class BasePixelAnimation {
+public abstract class BaseAnimation {
 	
 	// Pixel canvas resolution
-	public static final int PIXEL_RESOLUTION_X = 26;	// Image width in pixels
-	public static final int PIXEL_RESOLUTION_Y = 81;	// Image height in pixels
+	public static final int PIXEL_RESOLUTION_X = 26;	// Image width in pixels (number of pixels on the wall)
+	public static final int PIXEL_RESOLUTION_Y = 81;	// Image height in pixels (number of pixels on the wall)
 	
 	// Animation members
 	protected PApplet applet;						// The parent applet
@@ -29,7 +29,7 @@ public abstract class BasePixelAnimation {
 	 * 
 	 * @param applet
 	 */
-	public BasePixelAnimation(PApplet applet) {
+	public BaseAnimation(PApplet applet) {
 		this.applet = applet;
 		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 	}
@@ -55,7 +55,7 @@ public abstract class BasePixelAnimation {
 	
 	/**
 	 * Implementation of generating the animation frame by child classes. Classes
-	 * extending PixelAnimation are required to implement this method and use
+	 * extending BaseAnimation are required to implement this method and use
 	 * the supplied PGraphics context to draw the animation frame
 	 * 
 	 * @param g
@@ -70,6 +70,39 @@ public abstract class BasePixelAnimation {
 	 */
 	final public PImage getImage() {
 		return lastAnimationFrame;
+	}
+	
+	/**
+	 * Method that is called just before an animation is started. THis
+	 * can happen multiple times in the application lifecycle, as other
+	 * animations are ran and then switched back to this application. 
+	 * 
+	 * This method can be used to (re-)seed random values of the animation
+	 * and (re)load assets or to start processes such as audio or network
+	 * processing
+	 */
+	public void isStarting() {}
+	
+	/**
+	 * Method that is called after the animation has ended (for example when
+	 * the user starts another animation). 
+	 * 
+	 * This method can be used to stop intensive tasks the animation depends
+	 * on such as audio or network processing
+	 */
+	public void isStopping() {
+		
+	}
+	
+	/**
+	 * Method that is called to animation that can have data attached to it, 
+	 * such as filepaths to video or audio files. Each animation is supposed
+	 * to handle the supplied data themselves (e.g. parsing and using the data)
+	 * 
+	 * @param data
+	 */
+	public void setData(String data) {
+		
 	}
 	
 }

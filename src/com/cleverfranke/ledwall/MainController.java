@@ -1,8 +1,12 @@
 package com.cleverfranke.ledwall;
 
-import com.cleverfranke.ledwall.Settings;
-import com.cleverfranke.ledwall.animation.BasePixelAnimation;
-import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
+import java.io.File;
+
+import com.cleverfranke.ledwall.animation.BaseAnimation;
+import com.cleverfranke.ledwall.animation.BeachballAnimation;
+import com.cleverfranke.ledwall.animation.LineWaveAnimation;
+import com.cleverfranke.ledwall.animation.Preview;
+import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
@@ -13,15 +17,12 @@ import processing.video.Movie;
 
 public class MainController extends PApplet {
 	
-	WallDriver driver;
-	private BasePixelAnimation animation;
+	private WallDriver driver;
+	private AnimationManager animationManager = AnimationManager.getInstance();
 	private Preview preview;
-	private MainWindow mw;
 	
 	@Override
 	public void settings() {
-//		Rectangle canvasGeometry = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), CanvasAnimation.SCALE);
-//		size(canvasGeometry.width, canvasGeometry.height);
 		size(1024, 768);
 	}
 
@@ -32,23 +33,39 @@ public class MainController extends PApplet {
 		// Initialize ANI
 		Ani.init(this);
 		
-//		animation = new LineWaveAnimation(this);
-//		animation = new BeachballAnimation(this);
-//		animation = new VideoAnimation(this);
-		animation = new SpectrumAnalyzerAnimation(this);
+		// Setup animation manager
+		animationManager.addAnimation("Beach ball", new BeachballAnimation(this));
+		animationManager.addAnimation("Line wave", new LineWaveAnimation(this));
+//		animationManager.addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(this));
+		
+		// Add videos to animation manager
+		VideoAnimation videoAnimation = new VideoAnimation(this);
+		for (File f : VideoAnimation.getVideoFileList()) {
+			String filename = f.getName();
+			filename = filename.substring(0, filename.lastIndexOf('.'));
+			animationManager.addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
+		}
+		
+		// Setup preview
 		preview = new Preview(this);
 		
-		mw = new MainWindow();
-		
+		// Create mainWindow
+		new MainWindow();
 		
 		// Configure wall driver
-		driver = new WallDriver(this, 
-				Settings.getValue("driverPort1"), 
-				Settings.getValue("driverPort2"));
+//		driver = new WallDriver(this, 
+//				Settings.getValue("driverPort1"), 
+//				Settings.getValue("driverPort2"));
 	}
 
 	@Override
 	public void draw() {
+		
+		// Fetch current animation
+		BaseAnimation animation = animationManager.getCurrentAnimation();
+		if (animation == null) {
+			return;
+		}
 		
 		// Draw animation frame
 		animation.draw();
@@ -57,7 +74,7 @@ public class MainController extends PApplet {
 		image(preview.renderPreview(animation.getImage()), 0, 0);
 		
 		// Send image to driver
-		driver.displayImage(animation.getImage());
+//		driver.displayImage(animation.getImage());
 		
 	}
 	

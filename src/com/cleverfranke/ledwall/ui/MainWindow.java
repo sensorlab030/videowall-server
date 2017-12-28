@@ -2,28 +2,27 @@ package com.cleverfranke.ledwall.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.io.File;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import com.cleverfranke.ledwall.animation.VideoAnimation;
+import com.cleverfranke.ledwall.AnimationManager;
+import com.cleverfranke.ledwall.AnimationManager.AnimationEntry;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	
-	private DefaultListModel<AnimationModelEntry> animationModel;
-	private JList<AnimationModelEntry> animationList;
+	private DefaultListModel<AnimationManager.AnimationEntry> animationModel;
+	private JList<AnimationManager.AnimationEntry> animationList;
 	
 	public MainWindow() {
-		initAnimationList();
 		
 		// Initialize frame
 		setTitle("Configuration panel");
@@ -35,49 +34,50 @@ public class MainWindow extends JFrame {
 		setMinimumSize(d);
 		setResizable(true);
 		
-		animationList = new JList<AnimationModelEntry>(animationModel);
+		// Load model
+		animationModel = new DefaultListModel<>();
+		for (AnimationManager.AnimationEntry e : AnimationManager.getInstance().getAvailableAnimations()) {
+			animationModel.addElement(e);
+		}
+		
+		// Create list
+		animationList = new JList<>(animationModel);
 		animationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		animationList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (renderer instanceof JLabel && value instanceof AnimationModelEntry) {
-                    // Here value will be of the Type 'CD'
-                    ((JLabel) renderer).setText(((AnimationModelEntry) value).label);
-                }
-                return renderer;
-            }
-        });
-		
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if (renderer instanceof JLabel && value instanceof AnimationManager.AnimationEntry) {
+					((JLabel) renderer).setText(((AnimationManager.AnimationEntry) value).getLabel());
+				}
+				return renderer;
+			}
+		});
+		animationList.getSelectionModel().addListSelectionListener(new AnimationListSelectionHandler(animationList));
+
+		// Add scroll pane for list
 		JScrollPane listScroller = new JScrollPane(animationList);
 		listScroller.setPreferredSize(new Dimension(250, 80));
-		
-		
-		
-//		final JPanel root = new JPanel(new GridLayout(1, 1));
-//		root.add(listScroller);
 		getContentPane().add(listScroller);
 		
 		pack();
 		setVisible(true);
 	}
 	
-	private void initAnimationList() {
+	class AnimationListSelectionHandler implements ListSelectionListener {
 		
-		animationModel = new DefaultListModel<AnimationModelEntry>();
-				
-		// Add animations
-		animationModel.addElement(new AnimationModelEntry("beachball", "Beach Ball"));
-		animationModel.addElement(new AnimationModelEntry("linewave", "Line Wave"));
-		animationModel.addElement(new AnimationModelEntry("spectrumanalyzer", "Spectrum Analyzer"));
+		private JList<AnimationEntry> sourceList;
 		
-		// Add videos
-		for (File f : VideoAnimation.getVideoFileList()) {
-			String id = "video_" + f.getName();
-			String label = f.getName() + " (Video)";
-			animationModel.addElement(new AnimationModelEntry(id, label));
+		public AnimationListSelectionHandler(JList<AnimationEntry> sourceList) {
+			this.sourceList = sourceList;
 		}
 		
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
+				AnimationManager.getInstance().startAnimation(sourceList.getSelectedIndex());
+			}
+		}
 	}
 	
 }

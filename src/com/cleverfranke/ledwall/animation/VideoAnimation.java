@@ -8,6 +8,7 @@ import com.cleverfranke.ledwall.Settings;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
+import processing.core.PImage;
 import processing.video.Movie;
 
 /**
@@ -17,28 +18,46 @@ public class VideoAnimation extends BaseCanvasAnimation {
 	
 	private Movie movie;
 	
-	public VideoAnimation(String file, PApplet applet) {
+	public VideoAnimation(PApplet applet) {
 		super(applet);
-
-		// Load image
-		movie = new Movie(applet, file);
-		movie.loop();
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
 		
-		if (movie == null) {
+		if (movie == null || movie.width == 0) {
 			return;
 		}
 		
-		// Draw movie image 
-		// @TODO scale image to size
+		// Get and resize movie frame
+		PImage frame = movie.get();
+		frame.resize(g.width, 0);
+		
+		// Draw movie frame
 		g.imageMode(PConstants.CENTER);
 		g.translate(g.width / 2, g.height / 2);
-		g.image(movie, 0, 0);
-
+		g.image(frame, 0, 0);
+	}
+	
+	public void setVideoFile(String videofile) {
+		movie = new Movie(applet, videofile);
+	}
+	
+	public void isStarting() {
+		if (movie != null) {
+			movie.loop();
+		}
+	}
+	
+	public void isStopping() {
+		if (movie != null) {
+			movie.stop();
+		}
+	}
+	
+	public void setData(String data) {
+		setVideoFile(data);
 	}
 
 	/**
@@ -70,6 +89,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 					|| lcName.endsWith(".mov")
 					|| lcName.endsWith(".mpeg")
 					|| lcName.endsWith(".mpg")
+					|| lcName.endsWith(".3gp")
 					|| lcName.endsWith(".avi");
 			}
 		});
