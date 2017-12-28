@@ -1,26 +1,63 @@
 package com.cleverfranke.ledwall;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
+import com.cleverfranke.ledwall.animation.BeachballAnimation;
+import com.cleverfranke.ledwall.animation.LineWaveAnimation;
+import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
+import com.cleverfranke.ledwall.animation.VideoAnimation;
+
+import processing.core.PApplet;
 
 /**
  * Class that handles the animation queue and transitions between them.
  */
 public class AnimationManager {
 	
-	// Singleton instance
-	private static AnimationManager instance = null; 
-
-	
-	private BaseAnimation currentAnimation;										// Current animation
+	private static AnimationManager instance = null; 						// Singleton instance
+	private BaseAnimation currentAnimation;									// Current animation
 	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animation
 	
 	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
 	
+	/**
+	 * Instantiate AnimationManager; add animations to the available
+	 * animations list
+	 * 
+	 * @param applet
+	 */
+	public AnimationManager(PApplet applet) {
+		
+		// Setup animation manager
+		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Line wave", new LineWaveAnimation(applet));
+		addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(applet));
+		
+		// Add videos to animation manager
+		VideoAnimation videoAnimation = new VideoAnimation(applet);
+		for (File f : VideoAnimation.getVideoFileList()) {
+			String filename = f.getName();
+			filename = filename.substring(0, filename.lastIndexOf('.'));
+			addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
+		}
+	}
 	
-	protected AnimationManager() {}
+	/**
+	 * Initialize Animation. This method should be called before calling
+	 * AnimationManager.getInstance() and subsequent methods
+	 * 
+	 * @return
+	 */
+	public static void initialize(PApplet applet) {
+		if (instance != null) {
+			System.err.println("Cannot initialize AnimationManager twice, this call is ignored");
+		} else {
+			instance = new AnimationManager(applet);
+		}
+	}
 	
 	/**
 	 * Get singleton instance
@@ -28,7 +65,7 @@ public class AnimationManager {
 	 */
 	public static AnimationManager getInstance() {
 		if (instance == null) {
-			instance = new AnimationManager();
+			System.err.println("AnimationManager not initialized; first cal AnimationManager.initialize");
 		}
 		return instance;
 	}

@@ -1,14 +1,9 @@
 package com.cleverfranke.ledwall;
 
 import java.awt.Rectangle;
-import java.io.File;
 
 import com.cleverfranke.ledwall.animation.BaseAnimation;
-import com.cleverfranke.ledwall.animation.BeachballAnimation;
-import com.cleverfranke.ledwall.animation.LineWaveAnimation;
 import com.cleverfranke.ledwall.animation.Preview;
-import com.cleverfranke.ledwall.animation.SpectrumAnalyzerAnimation;
-import com.cleverfranke.ledwall.animation.VideoAnimation;
 import com.cleverfranke.ledwall.ui.MainWindow;
 import com.cleverfranke.ledwall.walldriver.WallDriver;
 import com.cleverfranke.ledwall.walldriver.WallDriverPort;
@@ -21,7 +16,6 @@ import processing.video.Movie;
 public class MainController extends PApplet {
 	
 	private WallDriver driver;
-	private AnimationManager animationManager = AnimationManager.getInstance();
 	private Preview preview;
 	
 	@Override
@@ -35,21 +29,10 @@ public class MainController extends PApplet {
 		frameRate(WallDriverPort.FRAMERATE);
 		surface.setTitle("Preview");
 		
-		// Initialize ANI
-		Ani.init(this);
 		
-		// Setup animation manager
-		animationManager.addAnimation("Beach ball", new BeachballAnimation(this));
-		animationManager.addAnimation("Line wave", new LineWaveAnimation(this));
-		animationManager.addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(this));
+		// Initialize animation manager
+		AnimationManager.initialize(this);
 		
-		// Add videos to animation manager
-		VideoAnimation videoAnimation = new VideoAnimation(this);
-		for (File f : VideoAnimation.getVideoFileList()) {
-			String filename = f.getName();
-			filename = filename.substring(0, filename.lastIndexOf('.'));
-			animationManager.addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
-		}
 		
 		// Setup preview
 		preview = new Preview(this);
@@ -62,13 +45,16 @@ public class MainController extends PApplet {
 				Settings.getValue("driverPort1"), 
 				Settings.getValue("driverPort2"));
 		
+		// Initialize ANI
+		Ani.init(this);
+		
 	}
 
 	@Override
 	public void draw() {
 		
 		// Fetch current animation
-		BaseAnimation animation = animationManager.getCurrentAnimation();
+		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			background(0);
 			return;
