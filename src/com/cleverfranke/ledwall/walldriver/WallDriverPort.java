@@ -26,7 +26,6 @@ public class WallDriverPort {
 	 */
 	public WallDriverPort(PApplet applet, String portName, boolean isMaster) throws Exception {
 		
-		System.out.println(portName);
 		serialPort = new Serial(applet, portName);
 		if (serialPort == null) {
 			throw new Exception("Failed to open serial port " + portName);
