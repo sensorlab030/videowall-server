@@ -34,7 +34,7 @@ public final class PColor {
 	 * @return
 	 */
 	public static int color(float grey, float a) {
-		return color(grey * 255f, a * 255f);
+		return color((int) (grey * 255f), (int) (a * 255f));
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public final class PColor {
 	 * @return
 	 */
 	public static int color(float r, float g, float b, float a) {
-		return color(r * 255f, g * 255f, b * 255f, a * 255f);
+		return color((int) (r * 255f), (int) (g * 255f), (int) (b * 255f), (int) (a * 255f));
 	}
 	
 	/**

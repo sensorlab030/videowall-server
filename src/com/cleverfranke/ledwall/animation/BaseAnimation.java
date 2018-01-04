@@ -1,6 +1,7 @@
 package com.cleverfranke.ledwall.animation;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -31,7 +32,7 @@ public abstract class BaseAnimation {
 	 */
 	public BaseAnimation(PApplet applet) {
 		this.applet = applet;
-		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, PConstants.P3D);
 	}
 	
 	/**

@@ -29,7 +29,7 @@ public class LedWallApplication extends PApplet {
 	@Override
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
-		size(previewRect.width, previewRect.height);
+		size(previewRect.width, previewRect.height, P3D);
 	}
 
 	@Override
@@ -97,14 +97,14 @@ public class LedWallApplication extends PApplet {
 	 */
 	public void keyPressed() {
 		switch (keyCode) {
-			case KeyEvent.VK_F1:
+			case KeyEvent.VK_Q:
 				mainWindow.toggle();
 				break;
-			case KeyEvent.VK_F2:
+			case KeyEvent.VK_W:
 				ledPreviewEnabled = !ledPreviewEnabled;
 				System.out.println("LED preview enabled: " + ledPreviewEnabled);
 				break;
-			case KeyEvent.VK_F3:
+			case KeyEvent.VK_E:
 				sourcePreviewEnabled = !sourcePreviewEnabled;
 				System.out.println("Source preview enabled: " + sourcePreviewEnabled);
 				break;

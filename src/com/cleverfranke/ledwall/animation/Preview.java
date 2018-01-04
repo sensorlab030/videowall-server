@@ -15,7 +15,7 @@ import processing.core.PImage;
  */
 public class Preview {
 	
-	public static final float SCALE = 1f; // Scale from cm to pixels
+	public static final float SCALE = 2f; // Scale from cm to pixels
 	
 	private Rectangle previewGeometry;
 	private PGraphics previewContext;

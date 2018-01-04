@@ -29,7 +29,7 @@ public abstract class BaseCanvasAnimation extends BaseAnimation {
 		
 		// Create canvas
 		canvasGeometry = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), DEFAULT_SCALE);
-		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height); 
+		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height, PConstants.P3D); 
 		canvasImage = applet.createImage(canvasGeometry.width, canvasGeometry.height, PConstants.RGB); 
 		
 		// Create pixel mapping
