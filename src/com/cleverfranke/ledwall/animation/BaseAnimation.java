@@ -32,7 +32,7 @@ public abstract class BaseAnimation {
 	 */
 	public BaseAnimation(PApplet applet) {
 		this.applet = applet;
-		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, PConstants.P3D);
+		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 	}
 	
 	/**

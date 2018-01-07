@@ -14,7 +14,7 @@ import com.cleverfranke.util.PColor;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-public class SoundAnimation extends BaseCanvasAnimation {
+public class SoundAnimation extends BaseCanvas3dAnimation {
 	
 	Minim minim;
 	AudioPlayer song;

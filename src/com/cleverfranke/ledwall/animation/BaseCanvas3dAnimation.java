@@ -10,26 +10,21 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-/**
- * Animation class that allows for drawing on a normal canvas, that mimicks the actual wall, abstracting away
- * all the pixel mapping and the non-regular grid. This is the most convenient class to subclass when
- * making a 'raster' based animation.
- */
-public abstract class BaseCanvasAnimation extends BaseAnimation {
-	
-	public static final float DEFAULT_SCALE = 0.5f; // Scale from cm to pixels
+public abstract class BaseCanvas3dAnimation extends BaseAnimation {
+
+	public static final float DEFAULT_SCALE = BaseCanvasAnimation.DEFAULT_SCALE; // Scale from cm to pixels
 	
 	private Rectangle canvasGeometry;	// Geometry of the canvas to draw on
 	private PGraphics canvasContext;	// Graphics context of the canvas
 	private PImage canvasImage;			// Image that is the result of the canvas context
 	private int[] canvasPixelMapping;	// Mapping from led pixel index to canvas pixel index 
 	
-	public BaseCanvasAnimation(PApplet applet) {
+	public BaseCanvas3dAnimation(PApplet applet) {
 		super(applet);
 		
 		// Create canvas
 		canvasGeometry = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), DEFAULT_SCALE);
-		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height); 
+		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height, PConstants.P3D); 
 		canvasImage = applet.createImage(canvasGeometry.width, canvasGeometry.height, PConstants.RGB); 
 		
 		// Create pixel mapping
@@ -87,5 +82,5 @@ public abstract class BaseCanvasAnimation extends BaseAnimation {
 	protected final Rectangle getGeometry() {
 		return canvasGeometry;
 	}
-	
+
 }
