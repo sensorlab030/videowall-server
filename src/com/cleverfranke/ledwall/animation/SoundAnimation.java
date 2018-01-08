@@ -80,9 +80,9 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		width = geom.width;
 		height = geom.height;
 		
-		for(int i = 0; i < 100; i++) {
-			shapes.add(new Shape((float) Math.random() * (float) width, (float) Math.random() * height, (float) i / 100f * Shape.Z_MAX));
-		}
+//		for(int i = 0; i < 100; i++) {
+//			shapes.add(new Shape((float) Math.random() * (float) width, (float) Math.random() * height, (float) i / 100f * Shape.Z_MAX));
+//		}
 		
 
 		// Créer tous les objets
@@ -183,60 +183,60 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g);
 		}
 
-//		// Murs lignes, ici il faut garder la valeur de la bande précédent et la
-//		// suivante pour les connecter ensemble
-//		float previousBandValue = fft.getBand(0);
-//
-//		// Distance entre chaque point de ligne, négatif car sur la dimension z
-//		float dist = -25;
-//
-//		// Multiplier la hauteur par cette constante
-//		float heightMult = 2;
-//
-//		// Pour chaque bande
-//		for (int i = 1; i < fft.specSize(); i++) {
-//			// Valeur de la bande de fréquence, on multiplie les bandes plus loins pour
-//			// qu'elles soient plus visibles.
-//			float bandValue = fft.getBand(i) * (1 + (i / 50));
-//
-//			// Selection de la couleur en fonction des forces des différents types de sons
-//			g.stroke(100 + scoreLow, 100 + scoreMid, 100 + scoreHi, 255 - i);
-//			g.strokeWeight(1 + (scoreGlobal / 100));
-//
-//			// ligne inferieure gauche
-//			g.line(0, 
-//					height - (previousBandValue * heightMult), 
-//					dist * (i - 1), 
-//					0, height - (bandValue * heightMult), 
-//					dist * i);
-//			g.line((previousBandValue * heightMult), height, dist * (i - 1), (bandValue * heightMult), height,
-//					dist * i);
-//			g.line(0, height - (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), height,
-//					dist * i);
-//
-//			// ligne superieure gauche
-//			g.line(0, (previousBandValue * heightMult), dist * (i - 1), 0, (bandValue * heightMult), dist * i);
-//			g.line((previousBandValue * heightMult), 0, dist * (i - 1), (bandValue * heightMult), 0, dist * i);
-//			g.line(0, (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), 0, dist * i);
-//
-//			// ligne inferieure droite
-//			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width,
-//					height - (bandValue * heightMult), dist * i);
-//			g.line(width - (previousBandValue * heightMult), height, dist * (i - 1), width - (bandValue * heightMult),
-//					height, dist * i);
-//			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult),
-//					height, dist * i);
-//
-//			// ligne superieure droite
-//			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width, (bandValue * heightMult), dist * i);
-//			g.line(width - (previousBandValue * heightMult), 0, dist * (i - 1), width - (bandValue * heightMult), 0,
-//					dist * i);
-//			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult), 0,
-//					dist * i);
-//
-//			// Sauvegarder la valeur pour le prochain tour de boucle
-//			previousBandValue = bandValue;
-//		}
+		// Murs lignes, ici il faut garder la valeur de la bande précédent et la
+		// suivante pour les connecter ensemble
+		float previousBandValue = fft.getBand(0);
+
+		// Distance entre chaque point de ligne, négatif car sur la dimension z
+		float dist = -25;
+
+		// Multiplier la hauteur par cette constante
+		float heightMult = 2;
+
+		// Pour chaque bande
+		for (int i = 1; i < fft.specSize(); i++) {
+			// Valeur de la bande de fréquence, on multiplie les bandes plus loins pour
+			// qu'elles soient plus visibles.
+			float bandValue = fft.getBand(i) * (1 + (i / 50));
+
+			// Selection de la couleur en fonction des forces des différents types de sons
+			g.stroke(100 + scoreLow, 100 + scoreMid, 100 + scoreHi, 255 - i);
+			g.strokeWeight(1 + (scoreGlobal / 100));
+
+			// ligne inferieure gauche
+			g.line(0, 
+					height - (previousBandValue * heightMult), 
+					dist * (i - 1), 
+					0, height - (bandValue * heightMult), 
+					dist * i);
+			g.line((previousBandValue * heightMult), height, dist * (i - 1), (bandValue * heightMult), height,
+					dist * i);
+			g.line(0, height - (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), height,
+					dist * i);
+
+			// ligne superieure gauche
+			g.line(0, (previousBandValue * heightMult), dist * (i - 1), 0, (bandValue * heightMult), dist * i);
+			g.line((previousBandValue * heightMult), 0, dist * (i - 1), (bandValue * heightMult), 0, dist * i);
+			g.line(0, (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), 0, dist * i);
+
+			// ligne inferieure droite
+			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width,
+					height - (bandValue * heightMult), dist * i);
+			g.line(width - (previousBandValue * heightMult), height, dist * (i - 1), width - (bandValue * heightMult),
+					height, dist * i);
+			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult),
+					height, dist * i);
+
+			// ligne superieure droite
+			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width, (bandValue * heightMult), dist * i);
+			g.line(width - (previousBandValue * heightMult), 0, dist * (i - 1), width - (bandValue * heightMult), 0,
+					dist * i);
+			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult), 0,
+					dist * i);
+
+			// Sauvegarder la valeur pour le prochain tour de boucle
+			previousBandValue = bandValue;
+		}
 
 		// Murs rectangles
 		for (int i = 0; i < nbMurs; i++) {
