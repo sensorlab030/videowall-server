@@ -91,9 +91,7 @@ public abstract class BaseAnimation {
 	 * This method can be used to stop intensive tasks the animation depends
 	 * on such as audio or network processing
 	 */
-	public void isStopping() {
-		
-	}
+	public void isStopping() {}
 	
 	/**
 	 * Method that is called to animation that can have data attached to it, 
