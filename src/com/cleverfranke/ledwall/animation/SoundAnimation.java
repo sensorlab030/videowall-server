@@ -54,6 +54,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	Mur[] murs;
 
 	float width, height;
+	int bgColor = PColor.color(0, 0, 0);
+	int squareColor = PColor.color(0, 0, 0);
 
 	public SoundAnimation(PApplet applet) {
 		super(applet);
@@ -171,7 +173,12 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 		// Couleur subtile de background
 		g.beginDraw();
-		g.background(scoreLow / 100, scoreMid / 100, scoreHi / 100);
+		if (beat.isOnset()) {
+			bgColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255), 100);
+			squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255), 100);
+		}
+
+		g.background(bgColor);
 
 		// Cube pour chaque bande de fr�quence
 		for (int i = 0; i < nbCubes; i++) {
@@ -181,7 +188,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			// La couleur est repr�sent�e ainsi: rouge pour les basses, vert pour les sons
 			// moyens et bleu pour les hautes.
 			// L'opacit� est d�termin�e par le volume de la bande et le volume global.
-			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g, beat.isOnset());
+			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g);
 		}
 
 
@@ -203,13 +210,11 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Classe pour les cubes qui flottent dans l'espace
 	class Cube {
 		// Position Z de "spawn" et position Z maximale
-		float startingZ = -500;
-		float maxZ = 0;
+		float startingZ = -400;
+		float maxZ = 10;
 
 		// Valeurs de positions
 		float x, y, z;
-		float rotX, rotY, rotZ;
-		float sumRotX, sumRotY, sumRotZ;
 
 		// Constructeur
 		Cube() {
@@ -218,18 +223,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			x = (float) Math.random() * width;
 			y = (float) Math.random() * height;
 			z = (float) Math.random() * maxZ;
-
-			// Donner au cube une rotation al�atoire
-			rotX = (float) Math.random();
-			rotY = (float) Math.random();
-			rotZ = (float) Math.random();
 		}
 
-		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn) {
+		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g) {
 			// S�lection de la couleur, opacit� d�termin�e par l'intensit� (volume de la
 			// bande)
 			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, intensity * 5f);
-			g.fill(displayColor);
+			g.fill(squareColor);
 
 			// Couleur lignes, elles disparaissent avec l'intensit� individuelle du cube
 			g.stroke(0);
@@ -255,7 +255,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			if (z >= maxZ) {
 				x = (float) Math.random() * width;
 				y = (float) Math.random() * height;
-				z = startingZ;
+				z = (float) (startingZ - Math.random() * startingZ);
 			}
 		}
 	}
@@ -290,7 +290,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			if (beatIsOn) {
 				g.fill(PColor.color(rand[0] * 255, rand[1] * 255, rand[2] * 255));
 			} else {
-				g.fill(PColor.color(0));
+				g.fill(bgColor);
 			}
 
 			g.noStroke();
