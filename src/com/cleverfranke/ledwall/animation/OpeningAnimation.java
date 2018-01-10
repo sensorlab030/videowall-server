@@ -49,7 +49,8 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	public OpeningAnimation(PApplet applet) {
 		super(applet);
 		ui = new AudioUI();
-		serialPort = new Serial(applet, "COM5");
+		serialPort = new Serial(applet, "COM4");
+		
 	}
 
 	@Override
@@ -77,7 +78,9 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 			}
 			
 			// Send output volume to Arduino
-			serialPort.write(outputVolume & (0xff));
+			if (serialPort != null) {
+				serialPort.write(outputVolume & (0xff));
+			}
 			
 			// Set UI values
 			ui.setSoundMonitors(rawVolume, amplifiedVolume, outputVolume);
@@ -109,7 +112,9 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	public void isStarting() { 
 		minim = new Minim(applet);
 		in = minim.getLineIn(Minim.MONO, 512);
-		in.disableMonitoring();
+		if (in != null) {
+			in.disableMonitoring();
+		}
 		
 		ui.setVisible(true);
 	}
