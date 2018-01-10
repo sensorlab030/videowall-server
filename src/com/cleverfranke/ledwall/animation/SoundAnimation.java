@@ -17,7 +17,7 @@ import ddf.minim.analysis.*;
 public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	Minim minim;
-	AudioPlayer song;
+	AudioInput song;
 	FFT fft;
 	BeatDetect beat;
 
@@ -49,11 +49,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int nbCubes;
 	Cube[] cubes;
 
-	// Beat cube
-	float eRadius;
-
-	ArrayList<Shape> shapes = new ArrayList<>();
-
 	// Lignes qui apparaissent sur les cot�s
 	int nbMurs = 4;
 	Mur[] murs;
@@ -67,8 +62,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		minim = new Minim(applet);
 
 		// Charger la chanson
-		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
-
+		//		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
+		song = minim.getLineIn(Minim.MONO);
 		// Cr�er l'objet FFT pour analyser la chanson
 		fft = new FFT(song.bufferSize(), song.sampleRate());
 
@@ -87,10 +82,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		width = geom.width;
 		height = geom.height;
 
-//		for(int i = 0; i < 100; i++) {
-//			shapes.add(new Shape((float) Math.random() * (float) width, (float) Math.random() * height, (float) i / 100f * Shape.Z_MAX));
-//		}
-
 
 		// Cr�er tous les objets
 		// Cr�er les objets cubes
@@ -101,31 +92,29 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// Cr�er les objets murs
 		// Murs gauches
 		for (int i = 0; i < nbMurs; i += 4) {
-			murs[i] = new Mur(0, height / 2, 40, height);
+			murs[i] = new Mur(0, height / 2, 20, height);
 		}
 
 		// Murs droits
 		for (int i = 1; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width, height / 2, 40, height);
+			murs[i] = new Mur(width, height / 2, 20, height);
 		}
 
 		// Murs bas
 		for (int i = 2; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, height, width, 40);
+			murs[i] = new Mur(width / 2, height, width, 20);
 		}
 
 		// Murs haut
 		for (int i = 3; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, 0, width, 40);
+			murs[i] = new Mur(width / 2, 0, width, 20);
 		}
 
-		// Beat detection radius
-		eRadius = 20;
 	}
 
 	@Override
 	public void isStarting() {
-		song.play(0);
+//		song.play(0);
 	}
 
 	@Override
@@ -196,13 +185,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		}
 
 
-
+		int wallColor[] = {(int)Math.round(Math.random()),(int)Math.round(Math.random()),(int)Math.round(Math.random())};
 
 		// Murs rectangles
 		for (int i = 0; i < nbMurs; i++) {
 			// On assigne � chaque mur une bande, et on lui envoie sa force.
 			float intensity = fft.getBand(i % ((int) (fft.specSize() * specHi)));
-			murs[i].display(scoreLow, scoreMid, scoreHi, intensity, scoreGlobal, g, beat.isOnset());
+			murs[i].display(scoreLow, scoreMid, scoreHi, intensity, scoreGlobal, g, beat.isOnset(), wallColor);
 		}
 
 		g.endDraw();
@@ -211,46 +200,10 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	}
 
-	class Shape {
-
-		public static final float Z_MAX = 100f;
-		public static final float Z_MIN = 10f;
-		private PVector pos;
-
-		public Shape(float x, float y, float z) {
-			this.pos = new PVector(x, y, z);
-		}
-
-		public void draw(PGraphics g) {
-
-			g.pushMatrix();
-
-			float scaler = -0.2f;
-
-			// @TODO apply color
-			g.fill(255, 40);
-			g.noStroke();
-			g.ellipseMode(PConstants.CENTER);
-			g.translate(pos.x, pos.y);
-//			g.scale(scaler * pos.z);
-			g.ellipse(0,  0, scaler * pos.z * 10, scaler * pos.z * 10);
-
-			g.popMatrix();
-
-			// Update z
-			pos.z--;
-			if (pos.z < Z_MIN) {
-				pos.z = Z_MAX;
-			}
-		}
-
-
-	}
-
 	// Classe pour les cubes qui flottent dans l'espace
 	class Cube {
 		// Position Z de "spawn" et position Z maximale
-		float startingZ = -2000;
+		float startingZ = -500;
 		float maxZ = 0;
 
 		// Valeurs de positions
@@ -277,11 +230,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			// bande)
 			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, intensity * 5f);
 			g.fill(displayColor);
-//			if (beatIsOn) {
-//				g.fill(displayColor, 255);
-//			} else {
-//				g.fill(PColor.color(255,255,255), 255);
-//			}
 
 			// Couleur lignes, elles disparaissent avec l'intensit� individuelle du cube
 			g.stroke(0);
@@ -293,16 +241,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 			// D�placement
 			g.translate(x, y, z);
-
-			// Calcul de la rotation en fonction de l'intensit� pour le cube
-//			sumRotX += intensity * (rotX / 1000);
-//			sumRotY += intensity * (rotY / 1000);
-//			sumRotZ += intensity * (rotZ / 1000);
-//
-//			// Application de la rotation
-//			g.rotateX(sumRotX);
-//			g.rotateY(sumRotY);
-//			g.rotateZ(sumRotZ);
 
 			// Cr�ation de la boite, taille variable en fonction de l'intensit� pour le cube
 			g.box(50 + (intensity / 2));
@@ -325,8 +263,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Classe pour afficher les lignes sur les cot�s
 	class Mur {
 		// Position minimale et maximale Z
-		float startingZ = -1000;
-		float maxZ = 50;
+		float startingZ = -300;
+		float maxZ = 100;
 
 		// Valeurs de position
 		float x, y, z;
@@ -347,18 +285,14 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		}
 
 		// Fonction d'affichage
-		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn) {
+		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn, int[] rand) {
 			// Couleur d�termin�e par les sons bas, moyens et �lev�
-			// Opacit� d�termin� par le volume global
-			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, scoreGlobal);
-
 			if (beatIsOn) {
-				g.fill(PColor.color(255, 0, 0));
+				g.fill(PColor.color(rand[0] * 255, rand[1] * 255, rand[2] * 255));
 			} else {
-				g.fill(PColor.color(0, 0, 0));
+				g.fill(PColor.color(0));
 			}
-			// Faire disparaitre les lignes au loin pour donner une illusion de brouillard
-//			g.fill(PColor.color(255, 0, 0), ((scoreGlobal - 5) / 1000) * (255 + (z / 25)));
+
 			g.noStroke();
 
 			// Premi�re bande, celle qui bouge en fonction de la force
@@ -376,23 +310,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			// Cr�ation de la "boite"
 			g.box(1);
 			g.popMatrix();
-
-//			// Deuxi�me bande, celle qui est toujours de la m�me taille
-//			displayColor = PColor.color(scoreLow * 0.5f, scoreMid * 0.5f, scoreHi * 0.5f, scoreGlobal);
-//			g.fill(displayColor, (scoreGlobal / 5000) * (255 + (z / 25)));
-//
-//			// Matrice de transformation
-//			g.pushMatrix();
-//
-//			// D�placement
-//			g.translate(x, y, z);
-//
-//			// Agrandissement
-//			g.scale(sizeX, sizeY, 10);
-//
-//			// Cr�ation de la "boite"
-//			g.box(1);
-//			g.popMatrix();
 
 			// D�placement Z
 			z += (Math.pow((scoreGlobal / 150), 2));
