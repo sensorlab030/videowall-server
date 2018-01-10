@@ -21,6 +21,7 @@ import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.serial.Serial;
 
 public class OpeningAnimation extends BaseCanvasAnimation {
 	
@@ -43,10 +44,12 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	private Minim minim;
 	private AudioInput in;
 	private AudioUI ui;
+	private Serial serialPort;
 
 	public OpeningAnimation(PApplet applet) {
 		super(applet);
 		ui = new AudioUI();
+		serialPort = new Serial(applet, "COM5");
 	}
 
 	@Override
@@ -73,7 +76,8 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 				outputVolume = 0;
 			}
 			
-			// @TODO Send output volume to Arduino 
+			// Send output volume to Arduino
+			serialPort.write(outputVolume & (0xff));
 			
 			// Set UI values
 			ui.setSoundMonitors(rawVolume, amplifiedVolume, outputVolume);
