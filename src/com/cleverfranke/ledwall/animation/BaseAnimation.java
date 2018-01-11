@@ -1,7 +1,6 @@
 package com.cleverfranke.ledwall.animation;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
