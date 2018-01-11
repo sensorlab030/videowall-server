@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -17,9 +18,13 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.cleverfranke.util.PColor;
+
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.serial.Serial;
 
@@ -45,18 +50,33 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	private AudioInput in;
 	private AudioUI ui;
 	private Serial serialPort;
-
+	
+	private ArrayList<AnimationCircle> circles = new ArrayList<>();
+	
+	
 	public OpeningAnimation(PApplet applet) {
 		super(applet);
 		ui = new AudioUI();
-		serialPort = new Serial(applet, "COM4");
 		
+		try {
+			serialPort = new Serial(applet, "COM24");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		
+		g.background(0);
+		
 		if (triggered) {
+			
+			drawOpeningAnimationFrame(g);
+			
+			if (serialPort != null) {
+				serialPort.write(50 & (0xff));
+			}
 		
 		} else if (in != null) {
 			
@@ -94,17 +114,36 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 		
 	}
 	
-	public void trigger() {
-		if (!triggerEnabled) {
-			return;
+	private void drawOpeningAnimationFrame(PGraphics g)  {
+		g.pushMatrix();
+
+		g.ellipseMode(PConstants.CENTER);
+		g.translate(g.width / 2, g.height);
+		
+		for (AnimationCircle c : circles) {
+			c.draw(g);
 		}
 		
+		g.popMatrix();
+	}
+	
+	public void trigger() {
+		
+		// @TODO FIX SAFETY
+		if (!triggerEnabled) {
+//			return;
+		}
+		
+		// @TODO set UI trigger flag
 		System.out.println("TRIGGGERRR");
+		
+		// Create circles
+		for(int i = 0; i < 3; i++) {
+			circles.add(new AnimationCircle((float) i * AnimationCircle.DELAY_OFFSET));
+		}
 		
 		// Set triggered flag
 		triggered = true;
-		
-		// @TODO Start movie
 		
 	}
 	
@@ -116,7 +155,15 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 			in.disableMonitoring();
 		}
 		
+		// Reset all
+		triggered = false;
+		circles.clear();
+		
+		// @TODO reset UI
 		ui.setVisible(true);
+		
+		// @TODO remove
+		trigger();
 	}
 	
 	@Override
@@ -326,6 +373,43 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 
 		@Override
 		public void keyTyped(KeyEvent e) {}
+		
+	}
+	
+	private class AnimationCircle {
+
+		public final static float DELAY_OFFSET = .5f;
+		
+		private final static float TARGET_SIZE = 500;
+		private final static float ANIM_DURATION = 2.5f;
+		private final static float START_STROKEWEIGHT = 10f;
+		private final static float TARGET_STROKEWEIGHT = 40f;
+
+		private Ani sizeAanim;
+		private Ani strokeAnim;
+		
+		private float strokeWeight;
+		private float size;
+		
+		public AnimationCircle(float delay) {
+			
+			sizeAanim = new Ani(this, ANIM_DURATION, delay, "size", TARGET_SIZE);
+//			sizeAanim.setEasing(Ani.CUBIC_OUT);
+			sizeAanim.repeat();
+			
+			strokeAnim = new Ani(this, ANIM_DURATION, delay, "strokeWeight", TARGET_STROKEWEIGHT);
+			strokeAnim.setBegin(START_STROKEWEIGHT);
+			strokeAnim.setEasing(Ani.CUBIC_OUT);
+			strokeAnim.repeat();
+			
+		}
+		
+		public void draw(PGraphics g) {
+			g.noFill();
+			g.strokeWeight(strokeWeight);
+			g.stroke(255, 255, 255);
+			g.ellipse(0, 0, size, size);
+		}
 		
 	}
 	
