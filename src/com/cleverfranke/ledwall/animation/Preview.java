@@ -41,7 +41,7 @@ public class Preview {
 		}
 		
 		// 
-		pixelLength = (int) Math.round(30f * SCALE);
+		pixelLength = (int) Math.round(15f * SCALE);
 		
 	}
 	
