@@ -19,6 +19,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.cleverfranke.util.PColor;
+import com.cleverfranke.util.Settings;
 
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
@@ -53,13 +54,12 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	
 	private ArrayList<AnimationCircle> circles = new ArrayList<>();
 	
-	
 	public OpeningAnimation(PApplet applet) {
 		super(applet);
 		ui = new AudioUI();
 		
 		try {
-			serialPort = new Serial(applet, "COM24");
+			serialPort = new Serial(applet, Settings.getValue("soundstickComPort"));
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
