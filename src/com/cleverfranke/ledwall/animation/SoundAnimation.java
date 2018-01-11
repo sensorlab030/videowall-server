@@ -5,10 +5,8 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.awt.Rectangle;
-import java.awt.Color;
 
 import com.cleverfranke.ledwall.walldriver.WallGeometry;
-import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.PColor;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
@@ -69,9 +67,9 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	// Roel's animation
 	float diam, xpos, ypos;
-	int h,pompi;
+	float hue;
+	int color;
 	int i = 0;
-
 
 	int currentFrame = 0;
 
@@ -84,7 +82,10 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 //		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
 		song = minim.getLineIn(Minim.MONO);
 		// Cr�er l'objet FFT pour analyser la chanson
-		fft = new FFT(song.bufferSize(), song.sampleRate());
+		
+		if (song != null) {
+			fft = new FFT(song.bufferSize(), song.sampleRate());
+		}
 
 		// New beat detection
 		beat = new BeatDetect();
@@ -104,9 +105,9 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		diam = 0;
 		xpos = width/2;
 		ypos = height/2;
-		h = (int)(Math.random() * 360);
-		pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
-
+		color = PColor.hsb((float) Math.random(), 1f, 1f);
+		
+		
 		// Cr�er tous les objets
 		// Cr�er les objets cubes
 		for (int i = 0; i < nbCubes; i++) {
@@ -140,11 +141,21 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	public void isStarting() {
 //		song.play(0);
 	}
+	
+	public void isStopping() {
+		if (song != null) {
+			song = null;
+		}
+	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
+		if (song == null) {
+			return;
+		}
+		
 		currentFrame++;
-
+		
 		beat.detect(song.mix);
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
@@ -248,7 +259,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	void drawBeatingShapes(PGraphics g) {
 
-
 		if (!hasSetColors) {
 			beatingShapesColors = setBeatingShapesColors();
 			hasSetColors = true;
@@ -257,7 +267,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		g.beginDraw();
 		g.rectMode(PConstants.RADIUS);
 		g.background(PColor.color(0,0,0));
-
 
 		if ( beat.isOnset() ) {
 			radiusTopLeft = (int) (Math.random() * (200 - 10) + 10);
@@ -294,15 +303,15 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	}
 
 	int[] setBeatingShapesColors() {
-		int h0 = (int) (Math.random() * 360);
-		int h1 = (int) (Math.random() * 360);
-		int h2 = (h0 + 175) % 360;
-		int h3 = (h1 + 175) % 360;
+		float h0 = (float) Math.random();
+		float h1 = (float) Math.random();
+		float h2 = h0 + .5f % 1f;
+		float h3 = h1 + .5f % 1f;
 
-		beatingShapesColors[0] = Color.HSBtoRGB(PApplet.map(h0, 0, 360, 0, 1), 1f, 1f);
-		beatingShapesColors[1] = Color.HSBtoRGB(PApplet.map(h1, 0, 360, 0, 1), 1f, 1f);
-		beatingShapesColors[2] = Color.HSBtoRGB(PApplet.map(h2, 0, 360, 0, 1), 1f, 1f);
-		beatingShapesColors[3] = Color.HSBtoRGB(PApplet.map(h3, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[0] = PColor.hsb(h0, 1f, 1f);
+		beatingShapesColors[1] = PColor.hsb(h1, 1f, 1f);
+		beatingShapesColors[2] = PColor.hsb(h2, 1f, 1f);
+		beatingShapesColors[3] = PColor.hsb(h3, 1f, 1f);
 		return beatingShapesColors;
 	}
 
@@ -310,7 +319,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		g.noStroke();
 		g.rectMode(PConstants.CENTER);
 
-		g.fill(pompi);
+		g.fill(color);
 		switch (option) {
 			case 1:
 				g.rect(xpos, height/2, diam, diam);
@@ -332,7 +341,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		if (diam > width) {
 		  diam = 1;
 		  // contrasting color change
-		  h = (h + 175) % 360;
+		  hue = (hue + .495f) % 1f;
 		}
 	}
 
