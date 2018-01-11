@@ -18,7 +18,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.cleverfranke.util.PColor;
 import com.cleverfranke.util.Settings;
 
 import ddf.minim.AudioInput;
