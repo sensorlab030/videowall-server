@@ -56,7 +56,6 @@ public class Preview {
 			Point coord = pixelMapping[i];
 			
 			previewContext.stroke(color);
-			previewContext.point(coord.x, coord.y);
 			previewContext.line(coord.x, coord.y, coord.x + ((i % 2 == 0) ? pixelLength : -pixelLength), coord.y);
 		}
 		
