@@ -42,6 +42,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 	
 	public void setVideoFile(String videofile) {
 		movie = new Movie(applet, videofile);
+		movie.playbin.setVolume(0);
 	}
 	
 	public void isStarting() {
