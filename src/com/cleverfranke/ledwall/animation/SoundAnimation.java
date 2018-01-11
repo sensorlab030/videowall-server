@@ -17,7 +17,8 @@ import ddf.minim.analysis.*;
 public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	Minim minim;
-	AudioInput song;
+//	AudioInput song;
+	AudioPlayer song;
 	FFT fft;
 	BeatDetect beat;
 
@@ -57,15 +58,19 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int bgColor = PColor.color(0, 0, 0);
 	int squareColor = PColor.color(0, 0, 0);
 
+	boolean invertColor = false;
+	boolean invertShape = false;
+	int invertColorFrames = 500;
+	int invertColorShapes = 1000;
+
 	public SoundAnimation(PApplet applet) {
 		super(applet);
-
 		// Charger la librairie minim
 		minim = new Minim(applet);
 
 		// Charger la chanson
-		//		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
-		song = minim.getLineIn(Minim.MONO);
+		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
+//		song = minim.getLineIn(Minim.MONO);
 		// Cr�er l'objet FFT pour analyser la chanson
 		fft = new FFT(song.bufferSize(), song.sampleRate());
 
@@ -116,11 +121,19 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	@Override
 	public void isStarting() {
-//		song.play(0);
+		song.play(0);
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
+
+		if (applet.frameCount % invertColorFrames == 0) {
+			invertColor = !invertColor;
+		};
+
+		if (applet.frameCount % invertColorShapes == 0) {
+			invertShape = !invertShape;
+		};
 
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
@@ -174,8 +187,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// Couleur subtile de background
 		g.beginDraw();
 		if (beat.isOnset()) {
-			bgColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255), 100);
-			squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255), 100);
+			if (invertColor) {
+				bgColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
+				squareColor = PColor.color(0,0,0);
+			} else {
+				bgColor = PColor.color(0,0,0);
+				squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
+			}
 		}
 
 		g.background(bgColor);
@@ -210,8 +228,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Classe pour les cubes qui flottent dans l'espace
 	class Cube {
 		// Position Z de "spawn" et position Z maximale
-		float startingZ = -400;
-		float maxZ = 10;
+		float startingZ = -1000;
+		float maxZ = -50;
 
 		// Valeurs de positions
 		float x, y, z;
@@ -228,7 +246,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g) {
 			// S�lection de la couleur, opacit� d�termin�e par l'intensit� (volume de la
 			// bande)
-			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, intensity * 5f);
 			g.fill(squareColor);
 
 			// Couleur lignes, elles disparaissent avec l'intensit� individuelle du cube
@@ -243,7 +260,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			g.translate(x, y, z);
 
 			// Cr�ation de la boite, taille variable en fonction de l'intensit� pour le cube
-			g.box(50 + (intensity / 2));
+			if (invertShape) {
+				g.lights();
+				g.sphere(20 + (intensity / 2));
+			} else {
+				g.box(50 + (intensity / 2));
+			}
+
 
 			// Application de la matrice
 			g.popMatrix();
@@ -255,7 +278,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			if (z >= maxZ) {
 				x = (float) Math.random() * width;
 				y = (float) Math.random() * height;
-				z = (float) (startingZ - Math.random() * startingZ);
+				z = (float) (Math.random() * startingZ + startingZ/2);
 			}
 		}
 	}
@@ -263,7 +286,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Classe pour afficher les lignes sur les cot�s
 	class Mur {
 		// Position minimale et maximale Z
-		float startingZ = -300;
+		float startingZ = -100;
 		float maxZ = 100;
 
 		// Valeurs de position
