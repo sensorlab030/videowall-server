@@ -35,6 +35,7 @@ public class AnimationManager {
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		
+		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
@@ -42,6 +43,9 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
 		}
+		
+		addAnimation("Debug animation", new DebugCanvasAnimation(applet));
+		
 	}
 	
 	/**

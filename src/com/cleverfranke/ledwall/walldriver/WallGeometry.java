@@ -14,13 +14,11 @@ public class WallGeometry {
 	private static final int PIXEL_Y_COUNT = 81;	
 	private static final int[] PANEL_WIDTH_CM = {52, 64, 63, 60, 60, 60, 62, 62, 63, 64, 65, 64, 67}; // Panel width (space between two horizontal pixels)
 	private static final int BEAM_WIDTH_CM = 4;				// Width of a beam (between panels)
-	private static final int PIXEL_BOTTOM_OFFSET_CM = 6;	// Offset from floor to bottom most pixel
-	private static final int PIXEL_TOP_OFFSET_CM = 2;		// Offset from top to top most pixel
 	private static final int PIXEL_PITCH_CM = 3;			// Space between two vertical pixels
 	
 	// Calculated outer geometry in cm
 	private static final int WALL_WIDTH_CM = IntStream.of(PANEL_WIDTH_CM).sum() + (PANEL_WIDTH_CM.length + 1) * BEAM_WIDTH_CM;	// Width of wall
-	private static final int WALL_HEIGHT_CM = PIXEL_Y_COUNT * PIXEL_PITCH_CM + PIXEL_BOTTOM_OFFSET_CM + PIXEL_TOP_OFFSET_CM; 	// Height of wall 
+	private static final int WALL_HEIGHT_CM = PIXEL_Y_COUNT * PIXEL_PITCH_CM; 	// Height of wall 
 	
 	// Singleton instance
 	private static WallGeometry instance = null; 
@@ -70,12 +68,12 @@ public class WallGeometry {
 		// List pixel coordinates
 		pixelCoordinates = new Point[getPanelCount() * 2 * PIXEL_Y_COUNT];
 		int pixelCoordinateIndex = 0;
-		int y = PIXEL_TOP_OFFSET_CM;
+		int y = 0;
 		for (int yIndex = 0; yIndex < PIXEL_Y_COUNT; yIndex++) {
 			for (int panelIndex = 0; panelIndex < panelGeometries.length; panelIndex++) {
 				Rectangle panelGeometry = panelGeometries[panelIndex];
-				pixelCoordinates[pixelCoordinateIndex++] = new Point(panelGeometry.x, y);
-				pixelCoordinates[pixelCoordinateIndex++] = new Point(panelGeometry.x + panelGeometry.width, y);
+				pixelCoordinates[pixelCoordinateIndex++] = new Point(panelGeometry.x + 1, y); // Left pixel in panel
+				pixelCoordinates[pixelCoordinateIndex++] = new Point(panelGeometry.x + panelGeometry.width - 2, y); // Right pixel in panel
 			}
 			y += PIXEL_PITCH_CM;
 		}
