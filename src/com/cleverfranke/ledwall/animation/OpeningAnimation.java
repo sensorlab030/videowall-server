@@ -70,19 +70,18 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 		
 		g.background(0);
 		
+		// Calculate volumes 
+		if (in != null) {
+			rawVolume = soundSmoothingRatio * rawVolume + (1.f - soundSmoothingRatio) * in.mix.level();
+			amplifiedVolume = Math.min(rawVolume * soundAmplification, 1);
+		}
+		
 		if (triggered) {
 			
 			drawOpeningAnimationFrame(g);
-			
-			if (serialPort != null) {
-				serialPort.write(50 & (0xff));
-			}
+			outputVolume = 50;
 		
-		} else if (in != null) {
-			
-			// Calculate volumes 
-			rawVolume = soundSmoothingRatio * rawVolume + (1.f - soundSmoothingRatio) * in.mix.level();
-			amplifiedVolume = Math.min(rawVolume * soundAmplification, 1);
+		} else {
 			
 			if (outputEnabled) {
 				if (triggerEnabled) {
@@ -97,20 +96,20 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 				outputVolume = 0;
 			}
 			
-			// Send output volume to Arduino
-			if (serialPort != null) {
-				serialPort.write(outputVolume & (0xff));
-			}
-			
-			// Set UI values
-			ui.setSoundMonitors(rawVolume, amplifiedVolume, outputVolume);
-			
 			// Trigger
 			if (amplifiedVolume > .9f) {
 				trigger();
 			}
 			
 		} 
+		
+		// Set UI values
+		ui.setSoundMonitors(rawVolume, amplifiedVolume, outputVolume);
+		
+		// Send output volume to Arduino
+		if (serialPort != null) {
+			serialPort.write(outputVolume & (0xff));
+		}
 		
 	}
 	
@@ -129,13 +128,12 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	
 	public void trigger() {
 		
-		// @TODO FIX SAFETY
 		if (!triggerEnabled) {
-//			return;
+			return;
 		}
 		
-		// @TODO set UI trigger flag
-		System.out.println("TRIGGGERRR");
+		// Set UI triggered
+		ui.setTriggered();
 		
 		// Create circles
 		for(int i = 0; i < 3; i++) {
@@ -158,12 +156,11 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 		// Reset all
 		triggered = false;
 		circles.clear();
+		ui.reset();
 		
-		// @TODO reset UI
+		// Show UI
 		ui.setVisible(true);
 		
-		// @TODO remove
-		trigger();
 	}
 	
 	@Override
@@ -353,6 +350,16 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 			outputVolumeMonitor.setValue(outputVolume);
 		}
 
+		public void reset() {
+			outputEnabledCheckbox.setSelected(false);
+			triggerEnabledCheckbox.setSelected(false);
+			warningLabel.setText("Safe");
+		}
+		
+		public void setTriggered() {
+			warningLabel.setText("TRIGGERED");
+		}
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			switch (e.getKeyCode()) {
