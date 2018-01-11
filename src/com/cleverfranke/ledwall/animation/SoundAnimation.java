@@ -63,6 +63,11 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int invertColorFrames = 500;
 	int invertColorShapes = 1000;
 
+	float radiusTopLeft = 0;
+	float radiusBottomRight = 0;
+	float radiusBottomLeft = 0;
+	float radiusTopRight = 0;
+
 	public SoundAnimation(PApplet applet) {
 		super(applet);
 		// Charger la librairie minim
@@ -99,22 +104,22 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// Cr�er les objets murs
 		// Murs gauches
 		for (int i = 0; i < nbMurs; i += 4) {
-			murs[i] = new Mur(0, height / 2, 20, height);
+			murs[i] = new Mur(0, height / 2, 20, height, 5);
 		}
 
 		// Murs droits
 		for (int i = 1; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width, height / 2, 20, height);
+			murs[i] = new Mur(width, height / 2, 20, height, 5);
 		}
 
 		// Murs bas
 		for (int i = 2; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, height, width, 20);
+			murs[i] = new Mur(width / 2, height, width, 20, 5);
 		}
 
 		// Murs haut
 		for (int i = 3; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, 0, width, 20);
+			murs[i] = new Mur(width / 2, 0, width, 20, 5);
 		}
 
 	}
@@ -138,6 +143,17 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
 
+		if (applet.frameCount % 500 == 0 ) {
+			draw3DWallsAndCubes(g);
+
+		} else {
+			drawBeatingShapes(g);
+		}
+
+	}
+
+
+	void draw3DWallsAndCubes(PGraphics g) {
 		// Calcul des "scores" (puissance) pour trois cat�gories de son
 		// D'abord, sauvgarder les anciennes valeurs
 		oldScoreLow = scoreLow;
@@ -219,10 +235,52 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			murs[i].display(scoreLow, scoreMid, scoreHi, intensity, scoreGlobal, g, beat.isOnset(), wallColor);
 		}
 
+
 		g.endDraw();
 		g.image(g.get(), 0, 0);
+	}
+
+	void drawBeatingShapes(PGraphics g) {
+
+		beat.detect(song.mix);
+
+		g.beginDraw();
+		g.rectMode(PConstants.RADIUS);
+		g.background(PColor.color(0,0,0));
 
 
+		if ( beat.isOnset() ) {
+			radiusTopLeft = (int) (Math.random() * (50 - 10) + 10);
+			radiusBottomRight = (int) (Math.random() * (40 - 10) + 10);
+			radiusTopRight = (int) (Math.random() * (10 - 5) + 5);
+			radiusBottomLeft = (int) (Math.random() * (20 - 10) + 10);
+		}
+
+		g.lights();
+		g.fill(0, 255, 0);
+		g.rect(width/2 - radiusTopLeft, height/2 - radiusTopLeft, radiusTopLeft, radiusTopLeft);
+		g.fill(255, 0, 0);
+		g.rect(width/2 + radiusBottomRight, height/2 + radiusBottomRight, radiusBottomRight, radiusBottomRight);
+		g.fill(0, 255, 255);
+		g.rect(width/2 + radiusTopRight, height/2 - radiusTopRight, radiusTopRight, radiusTopRight);
+		g.fill(255, 0, 255);
+		g.rect(width/2 - radiusBottomLeft, height/2 + radiusBottomLeft, radiusBottomLeft, radiusBottomLeft);
+
+
+		radiusTopLeft *= 0.7;
+		if ( radiusTopLeft < 5 ) radiusTopLeft = 5;
+
+		radiusBottomRight *= 0.7;
+		if ( radiusBottomRight < 5 ) radiusBottomRight = 5;
+
+		radiusTopRight *= 0.7;
+		if ( radiusTopRight < 5 ) radiusTopRight = 5;
+
+		radiusBottomLeft *= 0.7;
+		if ( radiusBottomLeft < 5 ) radiusBottomLeft = 5;
+
+		g.endDraw();
+		g.image(g.get(), 0, 0);
 	}
 
 	// Classe pour les cubes qui flottent dans l'espace
@@ -286,15 +344,18 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Classe pour afficher les lignes sur les cot�s
 	class Mur {
 		// Position minimale et maximale Z
-		float startingZ = -100;
+		float startingZ = -1000;
 		float maxZ = 100;
 
 		// Valeurs de position
 		float x, y, z;
 		float sizeX, sizeY;
 
+		int colorDuration;
+		boolean stayColored;
+
 		// Constructeur
-		Mur(float x, float y, float sizeX, float sizeY) {
+		Mur(float x, float y, float sizeX, float sizeY, int colorDuration) {
 			// Faire apparaitre la ligne � l'endroit sp�cifi�
 			this.x = x;
 			this.y = y;
@@ -305,13 +366,31 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			// que ceux sur les c�t�s
 			this.sizeX = sizeX;
 			this.sizeY = sizeY;
+			this.colorDuration = colorDuration;
+			this.stayColored = false;
+		}
+
+		void setColorDuration(int colorDuration) {
+			this.colorDuration = colorDuration;
 		}
 
 		// Fonction d'affichage
 		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn, int[] rand) {
 			// Couleur d�termin�e par les sons bas, moyens et �lev�
 			if (beatIsOn) {
+				this.stayColored = true;
+			}
+
+			if (this.stayColored) {
+				this.setColorDuration(this.colorDuration - 1);
+			}
+
+			if (this.colorDuration > 0) {
 				g.fill(PColor.color(rand[0] * 255, rand[1] * 255, rand[2] * 255));
+			} else if (this.colorDuration == 0) {
+				this.stayColored = false;
+				this.setColorDuration(5);
+				g.fill(bgColor);
 			} else {
 				g.fill(bgColor);
 			}
