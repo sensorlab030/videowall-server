@@ -3,32 +3,34 @@ package com.cleverfranke.ledwall.animation;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.core.PVector;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
+import java.awt.Color;
 
+import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.PColor;
-
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
 public class SoundAnimation extends BaseCanvas3dAnimation {
-	
-	Minim minim;
-	AudioPlayer song;
-	FFT fft;
 
-	// Variables qui définissent les "zones" du spectre
-	// Par exemple, pour les basses, on prend seulement les premières 4% du spectre
+	Minim minim;
+	AudioInput song;
+//	AudioPlayer song;
+	FFT fft;
+	BeatDetect beat;
+	WallGeometry wall = WallGeometry.getInstance();
+
+	// Variables qui dï¿½finissent les "zones" du spectre
+	// Par exemple, pour les basses, on prend seulement les premiï¿½res 4% du spectre
 	// total
 	float specLow = 0.03f; // 3%
 	float specMid = 0.125f; // 12.5%
 	float specHi = 0.20f; // 20%
 
-	// Il reste donc 64% du spectre possible qui ne sera pas utilisé.
-	// Ces valeurs sont généralement trop hautes pour l'oreille humaine de toute
+	// Il reste donc 64% du spectre possible qui ne sera pas utilisï¿½.
+	// Ces valeurs sont gï¿½nï¿½ralement trop hautes pour l'oreille humaine de toute
 	// facon.
 
 	// Valeurs de score pour chaque zone
@@ -36,7 +38,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	float scoreMid = 0;
 	float scoreHi = 0;
 
-	// Valeur précédentes, pour adoucir la reduction
+	// Valeur prï¿½cï¿½dentes, pour adoucir la reduction
 	float oldScoreLow = scoreLow;
 	float oldScoreMid = scoreMid;
 	float oldScoreHi = scoreHi;
@@ -47,29 +49,48 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	// Cubes qui apparaissent dans l'espace
 	int nbCubes;
 	Cube[] cubes;
-	
-	ArrayList<Shape> shapes = new ArrayList<>();
 
-	// Lignes qui apparaissent sur les cotés
-	int nbMurs = 500;
+	// Lignes qui apparaissent sur les cotï¿½s
+	int nbMurs = 4;
 	Mur[] murs;
 
 	float width, height;
+	int bgColor = PColor.color(0, 0, 0);
+	int squareColor = PColor.color(0, 0, 0);
+
+	// Beating shapes
+	float radiusTopLeft = 0;
+	float radiusBottomRight = 0;
+	float radiusBottomLeft = 0;
+	float radiusTopRight = 0;
+
+	int[] beatingShapesColors = new int[4];
+	boolean hasSetColors = false;
+
+	// Roel's animation
+	float diam, xpos, ypos;
+	int h,pompi;
+	int i = 0;
+
+
+	int currentFrame = 0;
 
 	public SoundAnimation(PApplet applet) {
 		super(applet);
-
 		// Charger la librairie minim
 		minim = new Minim(applet);
 
 		// Charger la chanson
-		song = minim.loadFile(FileSystem.getApplicationPath("song.mp3"));
-
-		// Créer l'objet FFT pour analyser la chanson
+//		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
+		song = minim.getLineIn(Minim.MONO);
+		// Crï¿½er l'objet FFT pour analyser la chanson
 		fft = new FFT(song.bufferSize(), song.sampleRate());
 
-		// Un cube par bande de fréquence
-		nbCubes = (int) (fft.specSize() * specHi);
+		// New beat detection
+		beat = new BeatDetect();
+
+		// Un cube par bande de frï¿½quence
+		nbCubes = 5; // (int) (fft.specSize() * specHi);
 		cubes = new Cube[nbCubes];
 
 		// Autant de murs qu'on veux
@@ -79,59 +100,76 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 		width = geom.width;
 		height = geom.height;
-		
-//		for(int i = 0; i < 100; i++) {
-//			shapes.add(new Shape((float) Math.random() * (float) width, (float) Math.random() * height, (float) i / 100f * Shape.Z_MAX));
-//		}
-		
 
-		// Créer tous les objets
-		// Créer les objets cubes
+		diam = 0;
+		xpos = width/2;
+		ypos = height/2;
+		h = (int)(Math.random() * 360);
+		pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
+
+		// Crï¿½er tous les objets
+		// Crï¿½er les objets cubes
 		for (int i = 0; i < nbCubes; i++) {
 			cubes[i] = new Cube();
 		}
 
-		// Créer les objets murs
+		// Crï¿½er les objets murs
 		// Murs gauches
 		for (int i = 0; i < nbMurs; i += 4) {
-			murs[i] = new Mur(0, height / 2, 10, height);
+			murs[i] = new Mur(0, height / 2, 20, height, 5);
 		}
 
 		// Murs droits
 		for (int i = 1; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width, height / 2, 10, height);
+			murs[i] = new Mur(width, height / 2, 20, height, 5);
 		}
 
 		// Murs bas
 		for (int i = 2; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, height, width, 10);
+			murs[i] = new Mur(width / 2, height, width, 20, 5);
 		}
 
 		// Murs haut
 		for (int i = 3; i < nbMurs; i += 4) {
-			murs[i] = new Mur(width / 2, 0, width, 10);
+			murs[i] = new Mur(width / 2, 0, width, 20, 5);
 		}
 
 	}
 
 	@Override
 	public void isStarting() {
-		song.play(0);
+//		song.play(0);
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
-		
+		currentFrame++;
+
+		beat.detect(song.mix);
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
 
-		// Calcul des "scores" (puissance) pour trois catégories de son
+		if (currentFrame < 100) draw3DWallsAndCubes(g, false, false);
+		if (currentFrame >= 100 && currentFrame < 200) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame == 200) hasSetColors = false;
+		if (currentFrame >= 200 && currentFrame < 300) drawBeatingShapes(g);
+		if (currentFrame >= 300 && currentFrame < 400) draw3DWallsAndCubes(g, true, true);
+		if (currentFrame >= 400 && currentFrame < 500) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame == 500) hasSetColors = false;
+		if (currentFrame >= 500 && currentFrame < 600) drawBeatingShapes(g);
+		if (currentFrame >= 600) currentFrame = 0;
+
+	}
+
+
+	void draw3DWallsAndCubes(PGraphics g, boolean invertColor, boolean invertShape) {
+		// Calcul des "scores" (puissance) pour trois catï¿½gories de son
 		// D'abord, sauvgarder les anciennes valeurs
 		oldScoreLow = scoreLow;
 		oldScoreMid = scoreMid;
 		oldScoreHi = scoreHi;
 
-		// Réinitialiser les valeurs
+		// Rï¿½initialiser les valeurs
 		scoreLow = 0;
 		scoreMid = 0;
 		scoreHi = 0;
@@ -162,241 +200,262 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			scoreHi = oldScoreHi - scoreDecreaseRate;
 		}
 
-		// Volume pour toutes les fréquences à ce moment, avec les sons plus haut plus
+		// Volume pour toutes les frï¿½quences ï¿½ ce moment, avec les sons plus haut plus
 		// importants.
-		// Cela permet à l'animation d'aller plus vite pour les sons plus aigus, qu'on
+		// Cela permet ï¿½ l'animation d'aller plus vite pour les sons plus aigus, qu'on
 		// remarque plus
 		float scoreGlobal = 0.66f * scoreLow + 0.8f * scoreMid + 1f * scoreHi;
 
 		// Couleur subtile de background
 		g.beginDraw();
-		g.background(scoreLow / 100, scoreMid / 100, scoreHi / 100);
+		if (beat.isOnset()) {
+			if (invertColor) {
+				bgColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
+				squareColor = PColor.color(0,0,0);
+			} else {
+				bgColor = PColor.color(0,0,0);
+				squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
+			}
+		}
 
-		// Cube pour chaque bande de fréquence
+		g.background(bgColor);
+
+		// Cube pour chaque bande de frï¿½quence
 		for (int i = 0; i < nbCubes; i++) {
-			// Valeur de la bande de fréquence
+			// Valeur de la bande de frï¿½quence
 			float bandValue = fft.getBand(i);
 
-			// La couleur est représentée ainsi: rouge pour les basses, vert pour les sons
+			// La couleur est reprï¿½sentï¿½e ainsi: rouge pour les basses, vert pour les sons
 			// moyens et bleu pour les hautes.
-			// L'opacité est déterminée par le volume de la bande et le volume global.
-			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g);
+			// L'opacitï¿½ est dï¿½terminï¿½e par le volume de la bande et le volume global.
+			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g, invertShape);
 		}
 
-		// Murs lignes, ici il faut garder la valeur de la bande précédent et la
-		// suivante pour les connecter ensemble
-		float previousBandValue = fft.getBand(0);
 
-		// Distance entre chaque point de ligne, négatif car sur la dimension z
-		float dist = -25;
-
-		// Multiplier la hauteur par cette constante
-		float heightMult = 2;
-
-		// Pour chaque bande
-		for (int i = 1; i < fft.specSize(); i++) {
-			// Valeur de la bande de fréquence, on multiplie les bandes plus loins pour
-			// qu'elles soient plus visibles.
-			float bandValue = fft.getBand(i) * (1 + (i / 50));
-
-			// Selection de la couleur en fonction des forces des différents types de sons
-			g.stroke(100 + scoreLow, 100 + scoreMid, 100 + scoreHi, 255 - i);
-			g.strokeWeight(1 + (scoreGlobal / 100));
-
-			// ligne inferieure gauche
-			g.line(0, 
-					height - (previousBandValue * heightMult), 
-					dist * (i - 1), 
-					0, height - (bandValue * heightMult), 
-					dist * i);
-			g.line((previousBandValue * heightMult), height, dist * (i - 1), (bandValue * heightMult), height,
-					dist * i);
-			g.line(0, height - (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), height,
-					dist * i);
-
-			// ligne superieure gauche
-			g.line(0, (previousBandValue * heightMult), dist * (i - 1), 0, (bandValue * heightMult), dist * i);
-			g.line((previousBandValue * heightMult), 0, dist * (i - 1), (bandValue * heightMult), 0, dist * i);
-			g.line(0, (previousBandValue * heightMult), dist * (i - 1), (bandValue * heightMult), 0, dist * i);
-
-			// ligne inferieure droite
-			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width,
-					height - (bandValue * heightMult), dist * i);
-			g.line(width - (previousBandValue * heightMult), height, dist * (i - 1), width - (bandValue * heightMult),
-					height, dist * i);
-			g.line(width, height - (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult),
-					height, dist * i);
-
-			// ligne superieure droite
-			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width, (bandValue * heightMult), dist * i);
-			g.line(width - (previousBandValue * heightMult), 0, dist * (i - 1), width - (bandValue * heightMult), 0,
-					dist * i);
-			g.line(width, (previousBandValue * heightMult), dist * (i - 1), width - (bandValue * heightMult), 0,
-					dist * i);
-
-			// Sauvegarder la valeur pour le prochain tour de boucle
-			previousBandValue = bandValue;
-		}
+		int wallColor[] = {(int)Math.round(Math.random()),(int)Math.round(Math.random()),(int)Math.round(Math.random())};
 
 		// Murs rectangles
 		for (int i = 0; i < nbMurs; i++) {
-			// On assigne à chaque mur une bande, et on lui envoie sa force.
+			// On assigne ï¿½ chaque mur une bande, et on lui envoie sa force.
 			float intensity = fft.getBand(i % ((int) (fft.specSize() * specHi)));
-			murs[i].display(scoreLow, scoreMid, scoreHi, intensity, scoreGlobal, g);
+			murs[i].display(scoreLow, scoreMid, scoreHi, intensity, scoreGlobal, g, beat.isOnset(), wallColor);
 		}
-		
+
+
 		g.endDraw();
 		g.image(g.get(), 0, 0);
-		
-		
 	}
-	
-	class Shape {
-		
-		public static final float Z_MAX = 100f;
-		public static final float Z_MIN = 10f;
-		private PVector pos;
-		
-		public Shape(float x, float y, float z) {
-			this.pos = new PVector(x, y, z);
+
+	void drawBeatingShapes(PGraphics g) {
+
+
+		if (!hasSetColors) {
+			beatingShapesColors = setBeatingShapesColors();
+			hasSetColors = true;
 		}
-		
-		public void draw(PGraphics g) {
-			
-			g.pushMatrix();
-			
-			float scaler = -0.2f;
-			
-			// @TODO apply color
-			g.fill(255, 40);
-			g.noStroke();
-			g.ellipseMode(PConstants.CENTER);
-			g.translate(pos.x, pos.y);
-//			g.scale(scaler * pos.z);
-			g.ellipse(0,  0, scaler * pos.z * 10, scaler * pos.z * 10);
-			
-			g.popMatrix();
-			
-			// Update z
-			pos.z--;
-			if (pos.z < Z_MIN) {
-				pos.z = Z_MAX;
-			}
+
+		g.beginDraw();
+		g.rectMode(PConstants.RADIUS);
+		g.background(PColor.color(0,0,0));
+
+
+		if ( beat.isOnset() ) {
+			radiusTopLeft = (int) (Math.random() * (200 - 10) + 10);
+			radiusBottomRight = (int) (Math.random() * (100 - 10) + 10);
+			radiusTopRight = (int) (Math.random() * (20 - 5) + 5);
+			radiusBottomLeft = (int) (Math.random() * (50 - 10) + 10);
 		}
-		
-		
+
+		g.lights();
+		g.fill(beatingShapesColors[0]);
+		g.rect(width/2 - radiusTopLeft, height/2 - radiusTopLeft, radiusTopLeft, radiusTopLeft);
+		g.fill(beatingShapesColors[1]);
+		g.rect(width/2 + radiusBottomRight, height/2 + radiusBottomRight, radiusBottomRight, radiusBottomRight);
+		g.fill(beatingShapesColors[3]);
+		g.rect(width/2 + radiusTopRight, height/2 - radiusTopRight, radiusTopRight, radiusTopRight);
+		g.fill(beatingShapesColors[2]);
+		g.rect(width/2 - radiusBottomLeft, height/2 + radiusBottomLeft, radiusBottomLeft, radiusBottomLeft);
+
+
+		radiusTopLeft *= 0.7;
+		if ( radiusTopLeft < 5 ) radiusTopLeft = 5;
+
+		radiusBottomRight *= 0.7;
+		if ( radiusBottomRight < 5 ) radiusBottomRight = 5;
+
+		radiusTopRight *= 0.7;
+		if ( radiusTopRight < 5 ) radiusTopRight = 5;
+
+		radiusBottomLeft *= 0.7;
+		if ( radiusBottomLeft < 5 ) radiusBottomLeft = 5;
+
+		g.endDraw();
+		g.image(g.get(), 0, 0);
 	}
+
+	int[] setBeatingShapesColors() {
+		int h0 = (int) (Math.random() * 360);
+		int h1 = (int) (Math.random() * 360);
+		int h2 = (h0 + 175) % 360;
+		int h3 = (h1 + 175) % 360;
+
+		beatingShapesColors[0] = Color.HSBtoRGB(PApplet.map(h0, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[1] = Color.HSBtoRGB(PApplet.map(h1, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[2] = Color.HSBtoRGB(PApplet.map(h2, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[3] = Color.HSBtoRGB(PApplet.map(h3, 0, 360, 0, 1), 1f, 1f);
+		return beatingShapesColors;
+	}
+
+	void drawRoelAnimation(PGraphics g, int option) {
+		g.noStroke();
+		g.rectMode(PConstants.CENTER);
+
+		g.fill(pompi);
+		switch (option) {
+			case 1:
+				g.rect(xpos, height/2, diam, diam);
+			break;
+			case 2: g.rect(xpos*2, height/2, diam, height);
+			break;
+			case 3: g.rect(width/2, ypos, width, diam);
+			break;
+		}
+
+		//scaling en moving
+		diam = diam+100;
+		xpos = xpos + 20;
+
+//		if (beat.isOnset()) {
+//			pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
+//		}
+
+		if (diam > width) {
+		  diam = 1;
+		  // contrasting color change
+		  h = (h + 175) % 360;
+		}
+	}
+
 
 	// Classe pour les cubes qui flottent dans l'espace
 	class Cube {
 		// Position Z de "spawn" et position Z maximale
-		float startingZ = -10000;
-		float maxZ = 1000;
+		float startingZ = -1000;
+		float maxZ = -50;
 
 		// Valeurs de positions
 		float x, y, z;
-		float rotX, rotY, rotZ;
-		float sumRotX, sumRotY, sumRotZ;
 
 		// Constructeur
 		Cube() {
 
-			// Faire apparaitre le cube à un endroit aléatoire
+			// Faire apparaitre le cube ï¿½ un endroit alï¿½atoire
 			x = (float) Math.random() * width;
 			y = (float) Math.random() * height;
 			z = (float) Math.random() * maxZ;
-
-			// Donner au cube une rotation aléatoire
-			rotX = (float) Math.random();
-			rotY = (float) Math.random();
-			rotZ = (float) Math.random();
 		}
 
-		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g) {
-			// Sélection de la couleur, opacité déterminée par l'intensité (volume de la
+		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean invertShape) {
+			// Sï¿½lection de la couleur, opacitï¿½ dï¿½terminï¿½e par l'intensitï¿½ (volume de la
 			// bande)
-			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, intensity * 5f);
-			g.fill(displayColor, 255);
+			g.fill(squareColor);
 
-			// Couleur lignes, elles disparaissent avec l'intensité individuelle du cube
-			int strokeColor = PColor.color(255, 150 - (20 * intensity));
-			g.stroke(strokeColor);
-			g.strokeWeight(1 + (scoreGlobal / 300));
+			// Couleur lignes, elles disparaissent avec l'intensitï¿½ individuelle du cube
+			g.stroke(0);
+			g.strokeWeight(0);
 
-			// Création d'une matrice de transformation pour effectuer des rotations,
+			// Crï¿½ation d'une matrice de transformation pour effectuer des rotations,
 			// agrandissements
 			g.pushMatrix();
 
-			// Déplacement
+			// Dï¿½placement
 			g.translate(x, y, z);
 
-			// Calcul de la rotation en fonction de l'intensité pour le cube
-			sumRotX += intensity * (rotX / 1000);
-			sumRotY += intensity * (rotY / 1000);
-			sumRotZ += intensity * (rotZ / 1000);
+			// Crï¿½ation de la boite, taille variable en fonction de l'intensitï¿½ pour le cube
+			if (invertShape) {
+				g.lights();
+				g.sphere(20 + (intensity / 2));
+			} else {
+				g.box(50 + (intensity / 2));
+			}
 
-			// Application de la rotation
-			g.rotateX(sumRotX);
-			g.rotateY(sumRotY);
-			g.rotateZ(sumRotZ);
-
-			// Création de la boite, taille variable en fonction de l'intensité pour le cube
-			g.box(100 + (intensity / 2));
 
 			// Application de la matrice
 			g.popMatrix();
 
-			// Déplacement Z
-			z += (1 + (intensity / 5) + (Math.pow((scoreGlobal / 150), 2)));
+			// Dï¿½placement Z
+			z += 1 + (intensity / 5) + (Math.pow((scoreGlobal / 150), 2));
 
-			// Replacer la boite à l'arrière lorsqu'elle n'est plus visible
+			// Replacer la boite ï¿½ l'arriï¿½re lorsqu'elle n'est plus visible
 			if (z >= maxZ) {
 				x = (float) Math.random() * width;
 				y = (float) Math.random() * height;
-				z = startingZ;
+				z = (float) (Math.random() * startingZ + startingZ/2);
 			}
 		}
 	}
 
-	// Classe pour afficher les lignes sur les cotés
+	// Classe pour afficher les lignes sur les cotï¿½s
 	class Mur {
 		// Position minimale et maximale Z
-		float startingZ = -10000;
-		float maxZ = 50;
+		float startingZ = -1000;
+		float maxZ = 100;
 
 		// Valeurs de position
 		float x, y, z;
 		float sizeX, sizeY;
 
+		int colorDuration;
+		boolean stayColored;
+
 		// Constructeur
-		Mur(float x, float y, float sizeX, float sizeY) {
-			// Faire apparaitre la ligne à l'endroit spécifié
+		Mur(float x, float y, float sizeX, float sizeY, int colorDuration) {
+			// Faire apparaitre la ligne ï¿½ l'endroit spï¿½cifiï¿½
 			this.x = x;
 			this.y = y;
-			// Profondeur aléatoire
+			// Profondeur alï¿½atoire
 			this.z = PApplet.map((float) Math.random(), 0, 1, startingZ, maxZ);
 
-			// On détermine la taille car les murs au planchers ont une taille différente
-			// que ceux sur les côtés
+			// On dï¿½termine la taille car les murs au planchers ont une taille diffï¿½rente
+			// que ceux sur les cï¿½tï¿½s
 			this.sizeX = sizeX;
 			this.sizeY = sizeY;
+			this.colorDuration = colorDuration;
+			this.stayColored = false;
+		}
+
+		void setColorDuration(int colorDuration) {
+			this.colorDuration = colorDuration;
 		}
 
 		// Fonction d'affichage
-		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g) {
-			// Couleur déterminée par les sons bas, moyens et élevé
-			// Opacité déterminé par le volume global
-			int displayColor = PColor.color(scoreLow * 0.67f, scoreMid * 0.67f, scoreHi * 0.67f, scoreGlobal);
+		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn, int[] rand) {
+			// Couleur dï¿½terminï¿½e par les sons bas, moyens et ï¿½levï¿½
+			if (beatIsOn) {
+				this.stayColored = true;
+			}
 
-			// Faire disparaitre les lignes au loin pour donner une illusion de brouillard
-			g.fill(displayColor, ((scoreGlobal - 5) / 1000) * (255 + (z / 25)));
+			if (this.stayColored) {
+				this.setColorDuration(this.colorDuration - 1);
+			}
+
+			if (this.colorDuration > 0) {
+				g.fill(PColor.color(rand[0] * 255, rand[1] * 255, rand[2] * 255));
+			} else if (this.colorDuration == 0) {
+				this.stayColored = false;
+				this.setColorDuration(5);
+				g.fill(bgColor);
+			} else {
+				g.fill(bgColor);
+			}
+
 			g.noStroke();
 
-			// Première bande, celle qui bouge en fonction de la force
+			// Premiï¿½re bande, celle qui bouge en fonction de la force
 			// Matrice de transformation
 			g.pushMatrix();
 
-			// Déplacement
+			// Dï¿½placement
 			g.translate(x, y, z);
 
 			// Agrandissement
@@ -404,28 +463,11 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 				intensity = 100;
 			g.scale(sizeX * (intensity / 100), sizeY * (intensity / 100), 20);
 
-			// Création de la "boite"
+			// Crï¿½ation de la "boite"
 			g.box(1);
 			g.popMatrix();
 
-			// Deuxième bande, celle qui est toujours de la même taille
-			displayColor = PColor.color(scoreLow * 0.5f, scoreMid * 0.5f, scoreHi * 0.5f, scoreGlobal);
-			g.fill(displayColor, (scoreGlobal / 5000) * (255 + (z / 25)));
-
-			// Matrice de transformation
-			g.pushMatrix();
-
-			// Déplacement
-			g.translate(x, y, z);
-
-			// Agrandissement
-			g.scale(sizeX, sizeY, 10);
-
-			// Création de la "boite"
-			g.box(1);
-			g.popMatrix();
-
-			// Déplacement Z
+			// Dï¿½placement Z
 			z += (Math.pow((scoreGlobal / 150), 2));
 			if (z >= maxZ) {
 				z = startingZ;

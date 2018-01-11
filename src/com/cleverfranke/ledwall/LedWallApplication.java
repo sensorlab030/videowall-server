@@ -18,15 +18,15 @@ import processing.core.PApplet;
 import processing.video.Movie;
 
 public class LedWallApplication extends PApplet {
-	
+
 	private WallDriver driver;
 	private Preview preview;
 	private MainWindow mainWindow;
-	
+
 	private boolean ledPreviewEnabled = true;
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
-	
+
 	@Override
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
@@ -37,39 +37,39 @@ public class LedWallApplication extends PApplet {
 	public void setup() {
 		frameRate(WallDriverPort.FRAMERATE);
 		surface.setTitle("Preview");
-		
+
 		// Initialize animation manager
 		AnimationManager.initialize(this);
-		
+
 		// Setup preview
 		preview = new Preview(this);
-		
+
 		// Create mainWindow
 		mainWindow = new MainWindow(this);
-		
+
 		// Configure wall driver
-		driver = new WallDriver(this, 
-				Settings.getValue("driverPort1"), 
+		driver = new WallDriver(this,
+				Settings.getValue("driverPort1"),
 				Settings.getValue("driverPort2"));
-		
+
 		// Initialize ANI
 		Ani.init(this);
-		
+
 	}
 
 	@Override
 	public void draw() {
 		background(0);
-		
+
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			return;
 		}
-		
+
 		// Draw animation frame
 		animation.draw();
-		
+
 		// Display previews
 		if (ledPreviewEnabled) {
 			image(preview.renderPreview(animation.getImage()), 0, 0);
@@ -82,22 +82,23 @@ public class LedWallApplication extends PApplet {
 		}
 		// Send image to driver
 		driver.displayImage(animation.getImage());
-		
+
 	}
-	
+
 	/**
 	 * Handle movie events (used by VideoAnimation class), read
 	 * a new frame from the movie
-	 * 
+	 *
 	 * @param m
 	 */
 	public void movieEvent(Movie m) {
 		m.read();
 	}
-	
+
 	/**
 	 * Handle key presses
 	 */
+	@Override
 	public void keyPressed() {
 		switch (keyCode) {
 			case KeyEvent.VK_Q:
@@ -119,24 +120,24 @@ public class LedWallApplication extends PApplet {
 		}
 
 	}
-	
+
 	/**
-	 * Set wall brightness 
-	 * 
+	 * Set wall brightness
+	 *
 	 * @param brightness [0, 255] (0 = off, 255 is brightest possible)
 	 */
 	public void setWallBrightness(int brightness) {
 		driver.setBrightness(brightness);
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		// Load settings (either first argument or settings.json by default)
 		String settingsFile = args.length > 0 ? args[0] : "settings.json";
 		if (!Settings.loadSettings(settingsFile)) {
 			System.exit(1);
 		}
-		
+
 		// Program execution starts here
 		PApplet.main(LedWallApplication.class.getName());
 	}
