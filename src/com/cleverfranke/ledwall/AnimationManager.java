@@ -33,7 +33,7 @@ public class AnimationManager {
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 //		addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
-		
+		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
