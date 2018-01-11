@@ -3,14 +3,11 @@ package com.cleverfranke.ledwall.animation;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.core.PVector;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.PColor;
-
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
@@ -58,15 +55,12 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int bgColor = PColor.color(0, 0, 0);
 	int squareColor = PColor.color(0, 0, 0);
 
-	boolean invertColor = false;
-	boolean invertShape = false;
-	int invertColorFrames = 500;
-	int invertColorShapes = 1000;
-
 	float radiusTopLeft = 0;
 	float radiusBottomRight = 0;
 	float radiusBottomLeft = 0;
 	float radiusTopRight = 0;
+
+	int currentFrame = 0;
 
 	public SoundAnimation(PApplet applet) {
 		super(applet);
@@ -131,29 +125,23 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
-
-		if (applet.frameCount % invertColorFrames == 0) {
-			invertColor = !invertColor;
-		};
-
-		if (applet.frameCount % invertColorShapes == 0) {
-			invertShape = !invertShape;
-		};
+		currentFrame++;
 
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
 
-		if (applet.frameCount % 500 == 0 ) {
-			draw3DWallsAndCubes(g);
-
-		} else {
-			drawBeatingShapes(g);
-		}
+		if (currentFrame < 100) draw3DWallsAndCubes(g, false, false);
+		if (currentFrame >= 100 && currentFrame < 200) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame >= 200 && currentFrame < 300) drawBeatingShapes(g);
+		if (currentFrame >= 300 && currentFrame < 400) draw3DWallsAndCubes(g, true, true);
+		if (currentFrame >= 400 && currentFrame < 500) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame >= 500 && currentFrame < 600) drawBeatingShapes(g);
+		if (currentFrame >= 600) currentFrame = 0;
 
 	}
 
 
-	void draw3DWallsAndCubes(PGraphics g) {
+	void draw3DWallsAndCubes(PGraphics g, boolean invertColor, boolean invertShape) {
 		// Calcul des "scores" (puissance) pour trois cat�gories de son
 		// D'abord, sauvgarder les anciennes valeurs
 		oldScoreLow = scoreLow;
@@ -222,7 +210,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			// La couleur est repr�sent�e ainsi: rouge pour les basses, vert pour les sons
 			// moyens et bleu pour les hautes.
 			// L'opacit� est d�termin�e par le volume de la bande et le volume global.
-			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g);
+			cubes[i].display(scoreLow, scoreMid, scoreHi, bandValue, scoreGlobal, g, invertShape);
 		}
 
 
@@ -301,7 +289,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 			z = (float) Math.random() * maxZ;
 		}
 
-		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g) {
+		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean invertShape) {
 			// S�lection de la couleur, opacit� d�termin�e par l'intensit� (volume de la
 			// bande)
 			g.fill(squareColor);
