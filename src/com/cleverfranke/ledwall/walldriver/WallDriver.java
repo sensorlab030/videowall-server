@@ -13,7 +13,7 @@ public class WallDriver {
 	private PImage port1Image, port2Image;		// Separate images to be sent to the two UC's driving the wall
 	private boolean portsConnected;				// Flag to determine if ports are connected
 	private boolean blackoutEnabled = false;	// Flag to enable/disable blackout
-	private int brightness = 255;				// Brightness [0, 255]
+	private int dimming = 0;					// Dimming [0, 255] 0 = full brightness
 	
 	/**
 	 * Initialize wall driver
@@ -62,11 +62,11 @@ public class WallDriver {
 			return;
 		}
 		
-		// Create image buffer image by rotating the image 90degrees clockwise. Image buffer 
+		// Create image buffer image by rotating the image 90 degrees clockwise. Image buffer 
 		// is thus 81px wide and 26px high 
 		imageBufferContext.beginDraw();
 		imageBufferContext.translate(81, 0);
-		imageBufferContext.rotate(PApplet.radians(90));
+		imageBufferContext.rotate(PApplet.HALF_PI); 
 		
 		if (blackoutEnabled) {
 			
@@ -79,8 +79,11 @@ public class WallDriver {
 			imageBufferContext.image(sourceImage, 0, 0);
 			
 			// Apply brightness
-			imageBufferContext.fill(0, 0, 0, 255 - brightness);
-			imageBufferContext.rect(0, 0, sourceImage.width, sourceImage.height);
+			if (dimming > 0) {
+				imageBufferContext.noStroke();
+				imageBufferContext.fill(0, 0, 0, dimming);
+				imageBufferContext.rect(0, 0, sourceImage.width, sourceImage.height);
+			}
 		}
 		
 		imageBufferContext.endDraw();
@@ -107,7 +110,8 @@ public class WallDriver {
 	}
 	
 	public void setBrightness(int brightness) {
-		this.brightness = Math.max(Math.min(255,  brightness), 0);
+		this.dimming = (255 - Math.max(Math.min(255,  brightness), 0));
+		
 	}
 	
 	/** 
