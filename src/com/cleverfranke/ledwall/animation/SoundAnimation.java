@@ -5,7 +5,9 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.awt.Rectangle;
+import java.awt.Color;
 
+import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.PColor;
 import ddf.minim.*;
@@ -14,10 +16,11 @@ import ddf.minim.analysis.*;
 public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	Minim minim;
-//	AudioInput song;
-	AudioPlayer song;
+	AudioInput song;
+//	AudioPlayer song;
 	FFT fft;
 	BeatDetect beat;
+	WallGeometry wall = WallGeometry.getInstance();
 
 	// Variables qui d�finissent les "zones" du spectre
 	// Par exemple, pour les basses, on prend seulement les premi�res 4% du spectre
@@ -55,10 +58,20 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int bgColor = PColor.color(0, 0, 0);
 	int squareColor = PColor.color(0, 0, 0);
 
+	// Beating shapes
 	float radiusTopLeft = 0;
 	float radiusBottomRight = 0;
 	float radiusBottomLeft = 0;
 	float radiusTopRight = 0;
+
+	int[] beatingShapesColors = new int[4];
+	boolean hasSetColors = false;
+
+	// Roel's animation
+	float diam, xpos, ypos;
+	int h,pompi;
+	int i = 0;
+
 
 	int currentFrame = 0;
 
@@ -68,8 +81,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		minim = new Minim(applet);
 
 		// Charger la chanson
-		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
-//		song = minim.getLineIn(Minim.MONO);
+//		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
+		song = minim.getLineIn(Minim.MONO);
 		// Cr�er l'objet FFT pour analyser la chanson
 		fft = new FFT(song.bufferSize(), song.sampleRate());
 
@@ -88,6 +101,11 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		width = geom.width;
 		height = geom.height;
 
+		diam = 0;
+		xpos = width/2;
+		ypos = height/2;
+		h = (int)(Math.random() * 360);
+		pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
 
 		// Cr�er tous les objets
 		// Cr�er les objets cubes
@@ -120,21 +138,24 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	@Override
 	public void isStarting() {
-		song.play(0);
+//		song.play(0);
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		currentFrame++;
 
+		beat.detect(song.mix);
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
 
 		if (currentFrame < 100) draw3DWallsAndCubes(g, false, false);
 		if (currentFrame >= 100 && currentFrame < 200) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame == 200) hasSetColors = false;
 		if (currentFrame >= 200 && currentFrame < 300) drawBeatingShapes(g);
 		if (currentFrame >= 300 && currentFrame < 400) draw3DWallsAndCubes(g, true, true);
 		if (currentFrame >= 400 && currentFrame < 500) draw3DWallsAndCubes(g, true, false);
+		if (currentFrame == 500) hasSetColors = false;
 		if (currentFrame >= 500 && currentFrame < 600) drawBeatingShapes(g);
 		if (currentFrame >= 600) currentFrame = 0;
 
@@ -185,9 +206,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// remarque plus
 		float scoreGlobal = 0.66f * scoreLow + 0.8f * scoreMid + 1f * scoreHi;
 
-
-		beat.detect(song.mix);
-
 		// Couleur subtile de background
 		g.beginDraw();
 		if (beat.isOnset()) {
@@ -230,7 +248,11 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 	void drawBeatingShapes(PGraphics g) {
 
-		beat.detect(song.mix);
+
+		if (!hasSetColors) {
+			beatingShapesColors = setBeatingShapesColors();
+			hasSetColors = true;
+		}
 
 		g.beginDraw();
 		g.rectMode(PConstants.RADIUS);
@@ -238,20 +260,20 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 
 		if ( beat.isOnset() ) {
-			radiusTopLeft = (int) (Math.random() * (50 - 10) + 10);
-			radiusBottomRight = (int) (Math.random() * (40 - 10) + 10);
-			radiusTopRight = (int) (Math.random() * (10 - 5) + 5);
-			radiusBottomLeft = (int) (Math.random() * (20 - 10) + 10);
+			radiusTopLeft = (int) (Math.random() * (200 - 10) + 10);
+			radiusBottomRight = (int) (Math.random() * (100 - 10) + 10);
+			radiusTopRight = (int) (Math.random() * (20 - 5) + 5);
+			radiusBottomLeft = (int) (Math.random() * (50 - 10) + 10);
 		}
 
 		g.lights();
-		g.fill(0, 255, 0);
+		g.fill(beatingShapesColors[0]);
 		g.rect(width/2 - radiusTopLeft, height/2 - radiusTopLeft, radiusTopLeft, radiusTopLeft);
-		g.fill(255, 0, 0);
+		g.fill(beatingShapesColors[1]);
 		g.rect(width/2 + radiusBottomRight, height/2 + radiusBottomRight, radiusBottomRight, radiusBottomRight);
-		g.fill(0, 255, 255);
+		g.fill(beatingShapesColors[3]);
 		g.rect(width/2 + radiusTopRight, height/2 - radiusTopRight, radiusTopRight, radiusTopRight);
-		g.fill(255, 0, 255);
+		g.fill(beatingShapesColors[2]);
 		g.rect(width/2 - radiusBottomLeft, height/2 + radiusBottomLeft, radiusBottomLeft, radiusBottomLeft);
 
 
@@ -270,6 +292,50 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		g.endDraw();
 		g.image(g.get(), 0, 0);
 	}
+
+	int[] setBeatingShapesColors() {
+		int h0 = (int) (Math.random() * 360);
+		int h1 = (int) (Math.random() * 360);
+		int h2 = (h0 + 175) % 360;
+		int h3 = (h1 + 175) % 360;
+
+		beatingShapesColors[0] = Color.HSBtoRGB(PApplet.map(h0, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[1] = Color.HSBtoRGB(PApplet.map(h1, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[2] = Color.HSBtoRGB(PApplet.map(h2, 0, 360, 0, 1), 1f, 1f);
+		beatingShapesColors[3] = Color.HSBtoRGB(PApplet.map(h3, 0, 360, 0, 1), 1f, 1f);
+		return beatingShapesColors;
+	}
+
+	void drawRoelAnimation(PGraphics g, int option) {
+		g.noStroke();
+		g.rectMode(PConstants.CENTER);
+
+		g.fill(pompi);
+		switch (option) {
+			case 1:
+				g.rect(xpos, height/2, diam, diam);
+			break;
+			case 2: g.rect(xpos*2, height/2, diam, height);
+			break;
+			case 3: g.rect(width/2, ypos, width, diam);
+			break;
+		}
+
+		//scaling en moving
+		diam = diam+100;
+		xpos = xpos + 20;
+
+//		if (beat.isOnset()) {
+//			pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
+//		}
+
+		if (diam > width) {
+		  diam = 1;
+		  // contrasting color change
+		  h = (h + 175) % 360;
+		}
+	}
+
 
 	// Classe pour les cubes qui flottent dans l'espace
 	class Cube {
