@@ -1,19 +1,19 @@
-package com.cleverfranke.ledwall;
+package nl.sensorlab.videowall;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import com.cleverfranke.ledwall.animation.BaseAnimation;
-import com.cleverfranke.ledwall.animation.BaseCanvas3dAnimation;
-import com.cleverfranke.ledwall.animation.BaseCanvasAnimation;
-import com.cleverfranke.ledwall.animation.Preview;
-import com.cleverfranke.ledwall.ui.MainWindow;
-import com.cleverfranke.ledwall.walldriver.WallDriver;
-import com.cleverfranke.ledwall.walldriver.WallDriverPort;
-import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.Settings;
 
 import de.looksgood.ani.Ani;
+import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.BaseCanvas3dAnimation;
+import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
+import nl.sensorlab.videowall.animation.Preview;
+import nl.sensorlab.videowall.ui.MainWindow;
+import nl.sensorlab.videowall.walldriver.WallDriver;
+import nl.sensorlab.videowall.walldriver.WallDriverPort;
+import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.video.Movie;
 

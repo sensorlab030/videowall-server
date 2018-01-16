@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.ui;
+package nl.sensorlab.videowall.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -19,9 +19,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.cleverfranke.ledwall.AnimationManager;
-import com.cleverfranke.ledwall.AnimationManager.AnimationEntry;
-import com.cleverfranke.ledwall.LedWallApplication;
+import nl.sensorlab.videowall.AnimationManager;
+import nl.sensorlab.videowall.LedWallApplication;
+import nl.sensorlab.videowall.AnimationManager.AnimationEntry;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements AnimationManager.AnimationEventListener {

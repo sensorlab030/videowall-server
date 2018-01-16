@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package nl.sensorlab.videowall.animation;
 
 import java.io.File;
 import java.io.FilenameFilter;

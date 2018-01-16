@@ -1,10 +1,10 @@
-package com.cleverfranke.ledwall.animation;
+package nl.sensorlab.videowall.animation;
 
 import java.awt.Rectangle;
 
-import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.PColor;
 
+import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 

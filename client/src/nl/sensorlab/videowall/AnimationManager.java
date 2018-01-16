@@ -1,11 +1,10 @@
-package com.cleverfranke.ledwall;
+package nl.sensorlab.videowall;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cleverfranke.ledwall.animation.*;
-
+import nl.sensorlab.videowall.animation.*;
 import processing.core.PApplet;
 
 /**

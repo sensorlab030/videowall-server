@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package nl.sensorlab.videowall.animation;
 
 import java.awt.Container;
 import java.awt.Font;

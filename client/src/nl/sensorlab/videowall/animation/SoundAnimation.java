@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package nl.sensorlab.videowall.animation;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -6,10 +6,11 @@ import processing.core.PGraphics;
 
 import java.awt.Rectangle;
 
-import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.PColor;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
+import nl.sensorlab.videowall.walldriver.WallGeometry;
+
 import java.util.Random;
 
 public class SoundAnimation extends BaseCanvas3dAnimation {

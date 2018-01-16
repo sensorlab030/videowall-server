@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.walldriver;
+package nl.sensorlab.videowall.walldriver;
 
 import java.awt.Point;
 import java.awt.Rectangle;

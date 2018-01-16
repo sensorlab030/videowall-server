@@ -1,4 +1,4 @@
-package com.cleverfranke.ledwall.animation;
+package nl.sensorlab.videowall.animation;
 
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
