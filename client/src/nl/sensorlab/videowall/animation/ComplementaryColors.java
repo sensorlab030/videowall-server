@@ -16,7 +16,7 @@ public class ComplementaryColors extends BaseCanvasAnimation {
 	private boolean initialized;
 
 	public ComplementaryColors(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 	
 		// Random starting color
 		Random generator = new Random(System.currentTimeMillis());

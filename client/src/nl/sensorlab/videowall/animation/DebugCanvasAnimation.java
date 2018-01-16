@@ -13,7 +13,7 @@ public class DebugCanvasAnimation extends BaseCanvasAnimation {
 	private int[] panelColors;
 	
 	public DebugCanvasAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 		
 		panelColors = new int[3];
 		panelColors[0] = PColor.color(255, 0, 0);

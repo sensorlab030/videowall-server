@@ -16,19 +16,28 @@ import processing.core.PImage;
  */
 public abstract class BaseCanvasAnimation extends BaseAnimation {
 	
-	public static final float DEFAULT_SCALE = 0.5f; // Scale from cm to pixels
+	public static final String CANVAS_MODE_2D = PConstants.P2D;		// 2D Mode
+	public static final String CANVAS_MODE_3D = PConstants.P3D;		// 3D Mode
+	public static final float DEFAULT_SCALE = 0.5f; 				// Wall scale from cm to pixels
 	
 	private Rectangle canvasGeometry;	// Geometry of the canvas to draw on
 	private PGraphics canvasContext;	// Graphics context of the canvas
 	private PImage canvasImage;			// Image that is the result of the canvas context
 	private int[] canvasPixelMapping;	// Mapping from led pixel index to canvas pixel index 
 	
-	public BaseCanvasAnimation(PApplet applet) {
+	/**
+	 * Construct Canvas Animation
+	 * 
+	 * @param applet (
+	 * @param scale 	use BaseCanvasAnimation.DEFAULT_SCALE by default
+	 * @param mode		Canvas mode, use either BaseCanvasAnimation.CANVAS_MODE_2D or BaseCanvasAnimation.CANVAS_MODE_3D
+	 */
+	public BaseCanvasAnimation(PApplet applet, float scale, String mode) {
 		super(applet);
 		
 		// Create canvas
-		canvasGeometry = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), DEFAULT_SCALE);
-		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height); 
+		canvasGeometry = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), scale);
+		canvasContext = applet.createGraphics(canvasGeometry.width, canvasGeometry.height, mode); 
 		canvasImage = applet.createImage(canvasGeometry.width, canvasGeometry.height, PConstants.RGB); 
 		
 		// Create pixel mapping
