@@ -77,9 +77,6 @@ public class LedWallApplication extends PApplet {
 		if (sourcePreviewEnabled && BaseCanvasAnimation.class.isAssignableFrom(animation.getClass())) {
 			image(((BaseCanvasAnimation) animation).getCanvasImage(), 0, 0);
 		}
-		if (sourcePreviewEnabled && BaseCanvas3dAnimation.class.isAssignableFrom(animation.getClass())) {
-			image(((BaseCanvas3dAnimation) animation).getCanvasImage(), 0, 0);
-		}
 		// Send image to driver
 		driver.displayImage(animation.getImage());
 

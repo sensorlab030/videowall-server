@@ -16,7 +16,7 @@ public class SpectrumAnalyzerAnimation extends BaseCanvasAnimation {
 	private int relevantBandCount;
 	
 	public SpectrumAnalyzerAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 		minim = new Minim(this);
 		
 		in = minim.getLineIn();

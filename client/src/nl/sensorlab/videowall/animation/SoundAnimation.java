@@ -13,7 +13,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
-public class SoundAnimation extends BaseCanvas3dAnimation {
+public class SoundAnimation extends BaseCanvasAnimation {
 
 	Minim minim;
 	AudioInput song;
@@ -75,7 +75,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	int pulseBackup = 20;
 	
 	public SoundAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_3D);
 		// Charger la librairie minim
 		minim = new Minim(applet);
 

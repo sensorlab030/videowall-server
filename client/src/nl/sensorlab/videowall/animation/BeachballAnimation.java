@@ -16,7 +16,7 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 	private float rotation;
 	
 	public BeachballAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 
 		// Load image
 		image = applet.loadImage(FileSystem.getApplicationPath("resources/beachball.png"));

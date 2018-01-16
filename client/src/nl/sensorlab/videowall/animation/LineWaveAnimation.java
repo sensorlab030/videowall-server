@@ -23,7 +23,7 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 			};
 	
 	public LineWaveAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 		
 		// Initialize noise seed
 		for (int i = 0; i < LINE_COUNT; i++) {

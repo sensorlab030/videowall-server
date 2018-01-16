@@ -19,7 +19,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 	private Movie movie;
 	
 	public VideoAnimation(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 	}
 
 	@Override
