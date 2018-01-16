@@ -1,17 +1,17 @@
 package nl.sensorlab.videowall.animation;
 
+import java.awt.Rectangle;
+import java.util.Random;
+
+import com.cleverfranke.util.PColor;
+
+import ddf.minim.AudioInput;
+import ddf.minim.Minim;
+import ddf.minim.analysis.BeatDetect;
+import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-
-import java.awt.Rectangle;
-
-import com.cleverfranke.util.PColor;
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import nl.sensorlab.videowall.walldriver.WallGeometry;
-
-import java.util.Random;
 
 public class SoundAnimation extends BaseCanvas3dAnimation {
 
