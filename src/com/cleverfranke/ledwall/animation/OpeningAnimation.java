@@ -147,7 +147,7 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 	@Override
 	public void isStarting() { 
 		minim = new Minim(applet);
-		in = minim.getLineIn(Minim.MONO, 512);
+		in = minim.getLineIn(Minim.MONO);
 		if (in != null) {
 			in.disableMonitoring();
 		}
@@ -400,7 +400,7 @@ public class OpeningAnimation extends BaseCanvasAnimation {
 		public AnimationCircle(float delay) {
 			
 			sizeAanim = new Ani(this, ANIM_DURATION, delay, "size", TARGET_SIZE);
-//			sizeAanim.setEasing(Ani.CUBIC_OUT);
+			sizeAanim.setEasing(Ani.CUBIC_OUT);
 			sizeAanim.repeat();
 			
 			strokeAnim = new Ani(this, ANIM_DURATION, delay, "strokeWeight", TARGET_STROKEWEIGHT);

@@ -28,7 +28,7 @@ public class AnimationManager {
 	public AnimationManager(PApplet applet) {
 		
 		// Setup animation manager
-		addAnimation("Opening animation", new OpeningAnimation(applet));
+//		addAnimation("Opening animation", new OpeningAnimation(applet));
 		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 //		addAnimation("Spectrum analyzer", new SpectrumAnalyzerAnimation(applet));

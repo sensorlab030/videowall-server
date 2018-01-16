@@ -10,6 +10,7 @@ import com.cleverfranke.ledwall.walldriver.WallGeometry;
 import com.cleverfranke.util.PColor;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
+import java.util.Random;
 
 public class SoundAnimation extends BaseCanvas3dAnimation {
 
@@ -18,7 +19,6 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 //	AudioPlayer song;
 	FFT fft;
 	BeatDetect beat;
-	WallGeometry wall = WallGeometry.getInstance();
 
 	// Variables qui d�finissent les "zones" du spectre
 	// Par exemple, pour les basses, on prend seulement les premi�res 4% du spectre
@@ -66,13 +66,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 	boolean hasSetColors = false;
 
 	// Roel's animation
-	float diam, xpos, ypos;
-	float hue;
-	int color;
-	int i = 0;
+	private float hue; 
+	private int size, xpos, ypos, counter;
+	private boolean initialized;
 
 	int currentFrame = 0;
-
+	int pulseBackup = 20;
+	
 	public SoundAnimation(PApplet applet) {
 		super(applet);
 		// Charger la librairie minim
@@ -91,7 +91,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		beat = new BeatDetect();
 
 		// Un cube par bande de fr�quence
-		nbCubes = 5; // (int) (fft.specSize() * specHi);
+		nbCubes = 10; // (int) (fft.specSize() * specHi);
 		cubes = new Cube[nbCubes];
 
 		// Autant de murs qu'on veux
@@ -102,10 +102,8 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		width = geom.width;
 		height = geom.height;
 
-		diam = 0;
-		xpos = width/2;
-		ypos = height/2;
-		color = PColor.hsb((float) Math.random(), 1f, 1f);
+		Random generator = new Random(System.currentTimeMillis());
+		hue = generator.nextFloat();
 		
 		
 		// Cr�er tous les objets
@@ -153,22 +151,31 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		if (song == null) {
 			return;
 		}
-		
+		System.out.println(applet.frameRate);
 		currentFrame++;
 		
 		beat.detect(song.mix);
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
-
+		
 		if (currentFrame < 100) draw3DWallsAndCubes(g, false, false);
 		if (currentFrame >= 100 && currentFrame < 200) draw3DWallsAndCubes(g, true, false);
+		
 		if (currentFrame == 200) hasSetColors = false;
 		if (currentFrame >= 200 && currentFrame < 300) drawBeatingShapes(g);
-		if (currentFrame >= 300 && currentFrame < 400) draw3DWallsAndCubes(g, true, true);
-		if (currentFrame >= 400 && currentFrame < 500) draw3DWallsAndCubes(g, true, false);
-		if (currentFrame == 500) hasSetColors = false;
-		if (currentFrame >= 500 && currentFrame < 600) drawBeatingShapes(g);
-		if (currentFrame >= 600) currentFrame = 0;
+		
+		if (currentFrame >= 300 && currentFrame < 600) drawRoelAnimation(g, 1);
+		if (currentFrame >= 600 && currentFrame < 900) drawRoelAnimation(g, 2);
+		if (currentFrame >= 900 && currentFrame < 1200) drawRoelAnimation(g, 3);
+		
+		
+		if (currentFrame >= 1200 && currentFrame < 1500) draw3DWallsAndCubes(g, true, true);
+		if (currentFrame >= 1500 && currentFrame < 1800) draw3DWallsAndCubes(g, true, false);
+		
+		if (currentFrame == 1800) hasSetColors = false;
+		if (currentFrame >= 1800 && currentFrame < 2000) drawBeatingShapes(g);
+		
+		if (currentFrame >= 2000) currentFrame = 0;
 
 	}
 
@@ -219,7 +226,7 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 
 		// Couleur subtile de background
 		g.beginDraw();
-		if (beat.isOnset()) {
+		if (beat.isOnset() || pulseBackup == 0) {
 			if (invertColor) {
 				bgColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
 				squareColor = PColor.color(0,0,0);
@@ -227,6 +234,10 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 				bgColor = PColor.color(0,0,0);
 				squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
 			}
+			
+			resetPulseBackup();
+		} else {
+			pulseBackup--;
 		}
 
 		g.background(bgColor);
@@ -268,11 +279,15 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		g.rectMode(PConstants.RADIUS);
 		g.background(PColor.color(0,0,0));
 
-		if ( beat.isOnset() ) {
+		if ( beat.isOnset() || pulseBackup == 0) {
 			radiusTopLeft = (int) (Math.random() * (200 - 10) + 10);
 			radiusBottomRight = (int) (Math.random() * (100 - 10) + 10);
 			radiusTopRight = (int) (Math.random() * (20 - 5) + 5);
 			radiusBottomLeft = (int) (Math.random() * (50 - 10) + 10);
+			
+			resetPulseBackup();
+		} else {
+			pulseBackup--;
 		}
 
 		g.lights();
@@ -314,34 +329,49 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		beatingShapesColors[3] = PColor.hsb(h3, 1f, 1f);
 		return beatingShapesColors;
 	}
-
+	
+	void resetPulseBackup() {
+		// Assuming music these days is around 120bpm, then the equivalent number of frames at 
+		// a frame rate of 17 per second is 9.
+		pulseBackup = 9;
+	}
 	void drawRoelAnimation(PGraphics g, int option) {
+		
+		if (!initialized) {
+			size = g.height;
+			xpos = 0;
+			ypos = g.height / 2;
+			g.background(0);
+			initialized = true;
+		}
+		
 		g.noStroke();
 		g.rectMode(PConstants.CENTER);
-
-		g.fill(color);
-		switch (option) {
-			case 1:
-				g.rect(xpos, height/2, diam, diam);
-			break;
-			case 2: g.rect(xpos*2, height/2, diam, height);
-			break;
-			case 3: g.rect(width/2, ypos, width, diam);
-			break;
+		
+		// scaling en moving
+		size = size + size;
+		xpos = (xpos + 1) % g.width;
+		ypos = (ypos + 1) % g.height;
+		
+		if (beat.isOnset() || pulseBackup == 0) {
+			g.fill(PColor.hsb(hue, 1f, 1f));
+			resetPulseBackup();
+		} else {
+			pulseBackup--;
 		}
-
-		//scaling en moving
-		diam = diam+100;
-		xpos = xpos + 20;
-
-//		if (beat.isOnset()) {
-//			pompi = Color.HSBtoRGB(PApplet.map(h, 0, 360, 0, 1), 1f, 1f);
-//		}
-
-		if (diam > width) {
-		  diam = 1;
-		  // contrasting color change
-		  hue = (hue + .495f) % 1f;
+		
+		if (size > g.height * 2) {
+			size = 1;
+			hue = (hue + .495f) % 1f;
+		}
+		
+		switch (option) {
+			case 1: g.rect(xpos, g.height/2, size, size);
+			break;
+			case 2: g.rect(xpos*2 % g.width, g.height/2, size, g.height);
+			break;
+			case 3: g.rect(g.width/2, ypos, g.width, size);
+			break;
 		}
 	}
 
@@ -440,9 +470,13 @@ public class SoundAnimation extends BaseCanvas3dAnimation {
 		// Fonction d'affichage
 		void display(float scoreLow, float scoreMid, float scoreHi, float intensity, float scoreGlobal, PGraphics g, boolean beatIsOn, int[] rand) {
 			// Couleur d�termin�e par les sons bas, moyens et �lev�
-			if (beatIsOn) {
+			if (beatIsOn || pulseBackup == 0) {
 				this.stayColored = true;
+				resetPulseBackup();
+			} else {
+				pulseBackup--;
 			}
+
 
 			if (this.stayColored) {
 				this.setColorDuration(this.colorDuration - 1);
