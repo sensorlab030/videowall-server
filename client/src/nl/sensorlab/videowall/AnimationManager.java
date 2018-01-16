@@ -26,7 +26,7 @@ public class AnimationManager {
 	 */
 	public AnimationManager(PApplet applet) {
 		
-		// Setup animation manager
+		// All Applet based animation
 		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
@@ -40,7 +40,16 @@ public class AnimationManager {
 			addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
 		}
 		
-		addAnimation("Debug animation", new DebugCanvasAnimation(applet));
+		// Add images to animation manager
+		ImageAnimation imageAnimation = new ImageAnimation(applet);
+		for (File f : ImageAnimation.getImageFileList()) {
+			String filename = f.getName();
+			filename = filename.substring(0, filename.lastIndexOf('.'));
+			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
+		}
+		
+		// Debug
+//		addAnimation("Debug animation", new DebugCanvasAnimation(applet));
 		
 	}
 	

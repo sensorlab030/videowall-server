@@ -96,5 +96,5 @@ public class VideoAnimation extends BaseCanvasAnimation {
 		});
 		
 	}
-	
+
 }

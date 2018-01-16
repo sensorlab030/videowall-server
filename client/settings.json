@@ -1,5 +1,6 @@
 {
 	"driverPort1": "COM5",
 	"driverPort2": "COM4", 
-	"videoDir": ""
+	"videoDir": "",
+	"imageDir": ""
 }
