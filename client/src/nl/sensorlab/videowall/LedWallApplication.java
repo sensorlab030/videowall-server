@@ -7,7 +7,6 @@ import com.cleverfranke.util.Settings;
 
 import de.looksgood.ani.Ani;
 import nl.sensorlab.videowall.animation.BaseAnimation;
-import nl.sensorlab.videowall.animation.BaseCanvas3dAnimation;
 import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.animation.Preview;
 import nl.sensorlab.videowall.ui.MainWindow;
