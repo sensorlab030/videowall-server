@@ -29,7 +29,23 @@ by 20 AWG power cable.
 
 ![Video wall power distribution](docs/img/power.png "Video wall power distribution")
 
-## Creating animations and pixel mapping
+## Pixel mapping
+
+Creating led data from a rasterized image the size of the wall is not straightforward
+as the video wall does not have a regular grid of led (pixels) like a normal display
+does. To facilitate creating animations, we apply pixel mapping to a rasterized image
+that has the same proportions as the physical wall, then fetch the colors of the pixels
+of that image on the coordinates that the leds are, and use that as the data for the 
+leds, removing all the physical empty space that is between the leds.
+
+The resulting pixel image needs to be rotated as the hardware on the wall is installed
+90° CCW (like a monitor laying on it's side), which made the physical installation
+much easier. 
+
+Then it needs to be split between the two Teensies, which both expect an
+image that required a row count that is a multiple of eight. We only have 14 or 12 rows 
+(depending on which half of the wall), so we introduce 'phantom' rows that remain black
+and are ignored by the hardware (there's just no led strips attached to show those rows).
 
 ![Video wall pixel mapping](docs/img/pixel-mapping.png "Video wall pixel mapping")
 
