@@ -152,7 +152,6 @@ public class SoundAnimation extends BaseCanvasAnimation {
 		if (song == null) {
 			return;
 		}
-		System.out.println(applet.frameRate);
 		currentFrame++;
 		
 		beat.detect(song.mix);
