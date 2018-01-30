@@ -1,5 +1,7 @@
 package nl.sensorlab.videowall.animation;
 
+import java.net.URL;
+
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -99,8 +101,15 @@ public abstract class BaseAnimation {
 	 * 
 	 * @param data
 	 */
-	public void setData(String data) {
-		
+	public void setData(String data) {}
+	
+	/**
+	 * Get file path from a compiled resource in the nl.sensorlab.videowall.resources package
+	 * @return
+	 */
+	public String getResource(String relativePath) {
+		URL url = getClass().getClassLoader().getResource("nl/sensorlab/videowall/resources/" + relativePath);
+		return (url != null) ? url.getFile().toString() : null;
 	}
 	
 }

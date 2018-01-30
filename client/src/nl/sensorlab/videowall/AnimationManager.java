@@ -28,7 +28,7 @@ public class AnimationManager {
 		
 		// All Applet based animation
 		addAnimation("Blank", new BlankAnimation(applet));
-//		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 //		addAnimation("Sound animation", new SoundAnimation(applet));

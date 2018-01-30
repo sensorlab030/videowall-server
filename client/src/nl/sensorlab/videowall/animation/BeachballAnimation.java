@@ -1,7 +1,5 @@
 package nl.sensorlab.videowall.animation;
 
-import com.cleverfranke.util.FileSystem;
-
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -17,12 +15,20 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 	
 	public BeachballAnimation(PApplet applet) {
 		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
+		
+		// Fetch file from resources
+		String file = getResource("beachball.png");
+		if (file == null) {
+			System.err.println("Failed to locate beachball file");
+			return;
+		}
 
 		// Load image
-		image = applet.loadImage(FileSystem.getApplicationPath("resources/beachball.png"));
+		image = applet.loadImage(file);
 		if (image != null) {
 			image.resize((int) (getGeometry().width * 1.1f), 0);
 		}
+		
 	}
 
 	@Override
@@ -45,3 +51,4 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 	}
 
 }
+
