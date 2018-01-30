@@ -18,28 +18,43 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 
 	public SensorlabLogoAnimation(PApplet applet) {
 		super(applet, BaseCanvasAnimation.DEFAULT_SCALE, CANVAS_MODE_2D);
+	}
+	
+	@Override
+	public void isStarting() {
 		
-		// Create squares
+		// Define square size
 		int width = getGeometry().width;
 		int height = getGeometry().height;
 		final int squaresize = height;
 		
+		// Create squares
 		for (int y = 0; y < height; y += squaresize) {
 			for (int x = 0; x < width; x += squaresize) {
 				squares.add(new Square(new PVector(x + squaresize / 2, y + squaresize / 2), applet, squaresize));
 			}
 		}
 		
-		
 	}
-
+	
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
+		
+		// Draw all squares
 		for (Square s: squares) {
 			s.draw(g);
 		}
+		
 	}
 	
+	@Override
+	public void isStopping() {
+		squares.clear();
+	}
+	
+	/**
+	 * Class that represents one square
+	 */
 	public class Square {
 		
 		private int size;
@@ -56,10 +71,7 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 		public Square(PVector pos, PApplet applet, int size) {
 			this.size = size;
 			this.halfsize = size / 2;
-			
 			this.pos = pos;
-//			this.blackOnWhite = randomColorStyle();
-//			rotation = randomRotation();
 			
 			float t = (float) (4f + Math.random() * 8f); 
 			
@@ -95,20 +107,6 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 			switch (pattern) {
 				case BLANK: 
 					break;
-//				case CIRCLES_CONCENTRIC: {
-//					g.noFill();
-//					g.stroke(colorF);
-//					g.strokeWeight(size / 10);
-//					g.strokeCap(PConstants.SQUARE);
-//					
-//					float start = PConstants.PI;
-//					float end = PConstants.PI + transitionProgress * PConstants.PI * 0.5f;
-//					float diff = end - start;
-//					
-//					g.arc(halfsize, halfsize, size * 1.4f, size * 1.4f, start, end);
-//					g.arc(halfsize, halfsize, size * 1f, size * 1f,  PConstants.PI + PConstants.PI * 0.5f - diff, PConstants.PI + PConstants.PI * 0.5f);
-//					g.arc(halfsize, halfsize, size * .6f, size * .6f,  start, end);
-//				} break;
 				case LINES: {
 					g.noFill();
 					g.stroke(colorF);
@@ -148,7 +146,6 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 		public void change() {
 			pattern = randomPattern();
 			rotation = randomRotation();
-//			blackOnWhite = randomColorStyle();
 			
 			// Start transition
 			inOutTransition.start();
@@ -163,18 +160,15 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 			int random = new Random().nextInt(4);
 			return ((float) random) * 0.5f * PConstants.PI;
 		}
-		
-		private boolean randomColorStyle() {
-			return (new Random().nextInt(2) == 1);
-		}
 			
 	}
 	
+	/**
+	 * Enumeration for the square patterns
+	 */
 	public enum Pattern {
 		BLANK,
-//		CIRCLES_CONCENTRIC,
 		LINES
-		
 	}
 
 }
