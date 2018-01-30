@@ -5,7 +5,6 @@ import com.cleverfranke.util.PColor;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.core.PShape;
 
 /**
  * Animation that shows a number of horizontal wavy lines, driven by
