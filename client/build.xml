@@ -4,7 +4,6 @@
     <!-- set global properties for this build -->
     <property name="dist" location="dist" />
 	<property name="lib" location="lib" />
-	<property name="resources" location="resources" />
 	
 	<!-- Clear the dist folder -->
 	<target name="clean">
@@ -48,16 +47,11 @@
 			<fileset dir="${lib}" />
 		</copy>
 			
-		<!-- Copy runtime resources -->
-		<copy todir="${dist}/resources">
-			<fileset dir="${resources}" />
-		</copy>
-		
 		<!-- Copy default settings -->
 		<copy file="settings.json" tofile="${dist}/settings.json" overwrite="true" />
 		
 		<!-- Copy bat file -->
-		<move file="${dist}/resources/videowall.bat" tofile="${dist}/videowall.bat" overwrite="true" />
+		<copy file="videowall.bat" tofile="${dist}/videowall.bat" overwrite="true" />
 		
 	</target>	
 	
