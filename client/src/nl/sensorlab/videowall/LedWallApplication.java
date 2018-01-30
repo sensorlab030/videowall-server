@@ -36,6 +36,11 @@ public class LedWallApplication extends PApplet {
 	public void setup() {
 		frameRate(WallDriverPort.FRAMERATE);
 		surface.setTitle("Preview");
+		
+		// Init Ani library
+		Ani.init(this);
+		Ani.noAutostart();
+		Ani.setDefaultTimeMode("SECONDS");
 
 		// Initialize animation manager
 		AnimationManager.initialize(this);
