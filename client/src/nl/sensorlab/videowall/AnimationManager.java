@@ -27,6 +27,7 @@ public class AnimationManager {
 	public AnimationManager(PApplet applet) {
 		
 		// All Applet based animation
+		addAnimation("Blank", new BlankAnimation(applet));
 //		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
@@ -48,9 +49,6 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-		
-		// Debug
-//		addAnimation("Debug animation", new DebugCanvasAnimation(applet));
 		
 	}
 	
