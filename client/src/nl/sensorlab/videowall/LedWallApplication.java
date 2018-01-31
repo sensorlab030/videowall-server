@@ -11,7 +11,6 @@ import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.animation.Preview;
 import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
-import nl.sensorlab.videowall.walldriver.WallDriverPort;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.video.Movie;
@@ -36,7 +35,7 @@ public class LedWallApplication extends PApplet {
 
 	@Override
 	public void setup() {
-		frameRate(WallDriverPort.FRAMERATE);
+		frameRate(60);
 		surface.setTitle("Preview");
 		
 		// Init Ani library
@@ -56,7 +55,8 @@ public class LedWallApplication extends PApplet {
 		// Configure wall driver
 		driver = new WallDriver(this,
 				Settings.getValue("driverPort1"),
-				Settings.getValue("driverPort2"));
+				Settings.getValue("driverPort2"),
+				(int) frameRate);
 		
 		// Start first animation (blank)
 		AnimationManager.getInstance().startAnimation(0);
