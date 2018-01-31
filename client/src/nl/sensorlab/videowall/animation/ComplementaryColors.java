@@ -25,7 +25,7 @@ public class ComplementaryColors extends BaseCanvasAnimation {
 	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		
 		if (!initialized) {
 			size = g.height;

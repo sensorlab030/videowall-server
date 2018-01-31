@@ -40,13 +40,14 @@ public abstract class BaseAnimation {
 	 * Draw (and return) animation frame. The generated image will be 
 	 * PIXEL_RESOLUTION_X px wide by PIXEL_RESOLUTION_Y px high
 	 * 
+	 * @param dt the time in ms between the current and previous draw call
 	 * @return the generated animation frame
 	 */
-	final public PImage draw() {
+	final public PImage draw(double dt) {
 		
 		// Draw animation frame
 		graphicsContext.beginDraw();
-		drawAnimationFrame(graphicsContext);
+		drawAnimationFrame(graphicsContext, dt);
 		graphicsContext.endDraw();
 		
 		// Capture (and return) frame
@@ -61,8 +62,9 @@ public abstract class BaseAnimation {
 	 * the supplied PGraphics context to draw the animation frame
 	 * 
 	 * @param g
+	 * @param dt the time in ms between the current and previous draw call
 	 */
-	abstract protected void drawAnimationFrame(PGraphics g);
+	abstract protected void drawAnimationFrame(PGraphics g, double dt);
 	
 	/**
 	 * Fetch the image created by draw method. The image will be 
@@ -112,13 +114,4 @@ public abstract class BaseAnimation {
 		return (url != null) ? url.getFile().toString() : null;
 	}
 
-	/**
-	 * Update step for more consistent physics or animation (independent of frame rate). The method is called 
-	 * to update the state of the physics or animation with time t, then all calls to drawAnimationFrame should only
-	 * do rendering of the state of the physics or animation, not advance it.
-	 * 
-	 * @param dt the difference in ms between the current and previous call to update
-	 */
-	public void update(double dt) {}
-	
 }

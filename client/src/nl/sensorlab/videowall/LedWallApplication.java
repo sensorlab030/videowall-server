@@ -77,11 +77,8 @@ public class LedWallApplication extends PApplet {
 			return;
 		}
 		
-		// Update the animation with delta time
-		animation.update(dt);
-		
-		// Draw animation frame
-		animation.draw();
+		// Draw animation frame with delta time
+		animation.draw(dt);
 		
 		// Send image to driver
 		driver.displayImage(animation.getImage());

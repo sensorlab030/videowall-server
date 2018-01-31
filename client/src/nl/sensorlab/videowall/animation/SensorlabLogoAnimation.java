@@ -38,7 +38,7 @@ public class SensorlabLogoAnimation extends BaseCanvasAnimation {
 	}
 	
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		
 		// Draw all squares
 		for (Square s: squares) {

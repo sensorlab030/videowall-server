@@ -22,7 +22,7 @@ public class DebugCanvasAnimation extends BaseCanvasAnimation {
 	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		drawPanelBars(g);
 	}
 	

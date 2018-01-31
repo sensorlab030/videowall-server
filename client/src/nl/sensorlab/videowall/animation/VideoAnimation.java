@@ -23,7 +23,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		g.background(0);
 		
 		if (movie == null || movie.width == 0) {

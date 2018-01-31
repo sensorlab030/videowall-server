@@ -148,7 +148,7 @@ public class SoundAnimation extends BaseCanvasAnimation {
 	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		if (song == null) {
 			return;
 		}

@@ -34,17 +34,15 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 	}
 	
 	@Override
-	public void update(double dt) {
-		rotation += ROTATION_SPEED * dt;
-	}
-
-	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		g.background(0);
 		
 		if (image == null) {
 			return;
 		}
+		
+		// Update rotation
+		rotation += ROTATION_SPEED * dt;
 		
 		// Draw rotated image
 		g.pushMatrix();

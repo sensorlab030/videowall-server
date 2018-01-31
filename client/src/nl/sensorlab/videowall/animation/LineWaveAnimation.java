@@ -37,15 +37,9 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 	
 	}
 	
-	@Override
-	public void update(double dt) {
-		for (Line l: lines) {
-			l.update(dt);
-		}
-	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		g.background(0);
 		g.blendMode(PConstants.SCREEN);
 		g.strokeWeight((float) g.height * .1f);
@@ -53,7 +47,7 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 		
 		// Draw lines
 		for (Line l: lines) {
-			l.draw(g);
+			l.draw(g, dt);
 		}
 
 	}
@@ -73,11 +67,8 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 			noiseY = (float) Math.random();
 		}
 		
-		public void update(double dt) {
+		public void draw(PGraphics g, double dt) {
 			noiseY += noiseSpeed * dt;
-		}
-		
-		public void draw(PGraphics g) {
 			
 			// Draw line
 			g.beginShape();
