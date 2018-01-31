@@ -14,23 +14,34 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 	
 	private final int LINE_COUNT = 3;											// Number of lines to plot
 	private final float OFFSCREEN_RATIO = .3f;									// How far the lines can move off screen
-	private float[] xDiff = new float[LINE_COUNT];
-	private float[] yOffset = new float[LINE_COUNT];							// Stores the yOffset of each line
+	
 	private int[] colors = {													// Line colors
 			PColor.color(0, 255, 255), 
 			PColor.color(255, 0, 255),
 			PColor.color(255, 255, 0)
 			};
 	
+	private Line[] lines = new Line[LINE_COUNT];
+	
 	public LineWaveAnimation(PApplet applet) {
 		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 		
-		// Initialize noise seed
+		// Initialize lines
+		float vertexSpacing = getGeometry().width / 10;
 		for (int i = 0; i < LINE_COUNT; i++) {
-			xDiff[i] = 0.05f + (float) i * 0.10f;
-			yOffset[i] = (float) i / (float) LINE_COUNT;
+			lines[i] = new Line(
+					vertexSpacing, 
+					 0.0001f * (i + 1), 
+					colors[i], applet);
 		}
 	
+	}
+	
+	@Override
+	public void update(double dt) {
+		for (Line l: lines) {
+			l.update(dt);
+		}
 	}
 
 	@Override
@@ -40,22 +51,45 @@ public class LineWaveAnimation extends BaseCanvasAnimation {
 		g.strokeWeight((float) g.height * .1f);
 		g.noFill();
 		
-		for (int i = 0; i < LINE_COUNT; i++) {
+		// Draw lines
+		for (Line l: lines) {
+			l.draw(g);
+		}
+
+	}
+	
+	public class Line {
+
+		private float vertexSpacing;
+		private float noiseY;
+		private float noiseSpeed;
+		private int color;
+		
+		public Line(float vertexSpacing, float noiseSpeed, int color, PApplet applet) {
+			this.vertexSpacing = vertexSpacing;
+			this.noiseSpeed = noiseSpeed;
+			this.color = color;
+			
+			noiseY = (float) Math.random();
+		}
+		
+		public void update(double dt) {
+			noiseY += noiseSpeed * dt;
+		}
+		
+		public void draw(PGraphics g) {
 			
 			// Draw line
 			g.beginShape();
-			float xOff = 0;
-			for (float x = 0; x < g.width + 1; x += (float) getGeometry().width / 10f) {
-				g.vertex(x,  PApplet.map(applet.noise(xOff, yOffset[i]), 0, 1, g.height * -OFFSCREEN_RATIO, g.height + g.height * OFFSCREEN_RATIO));
-				xOff += xDiff[i];
+			for (float x = 0; x < g.width + 1; x += vertexSpacing) {
+				float noiseVal = applet.noise(x * 0.005f, noiseY);
+				float y = PApplet.map(noiseVal, 0, 1, (g.height * -OFFSCREEN_RATIO), (g.height + g.height * OFFSCREEN_RATIO));
+				g.vertex(x, y);
 			}
-			g.stroke(colors[i]);
+			g.stroke(color);
 			g.endShape();
-			
-			// Update Y offset
-			yOffset[i] += 0.01f;
-			
 		}
+		
 	}
 
 }
