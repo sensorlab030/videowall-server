@@ -111,5 +111,14 @@ public abstract class BaseAnimation {
 		URL url = getClass().getClassLoader().getResource("nl/sensorlab/videowall/resources/" + relativePath);
 		return (url != null) ? url.getFile().toString() : null;
 	}
+
+	/**
+	 * Update step for more consistent physics or animation (independent of frame rate). The method is called 
+	 * to update the state of the physics or animation with time t, then all calls to drawAnimationFrame should only
+	 * do rendering of the state of the physics or animation, not advance it.
+	 * 
+	 * @param dt the difference in ms between the current and previous call to update
+	 */
+	public void update(double dt) {}
 	
 }

@@ -10,6 +10,8 @@ import processing.core.PImage;
  */
 public class BeachballAnimation extends BaseCanvasAnimation {
 	
+	private final static float ROTATION_SPEED = 0.002f;
+	
 	private PImage image;
 	private float rotation;
 	
@@ -30,6 +32,11 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 		}
 		
 	}
+	
+	@Override
+	public void update(double dt) {
+		rotation += ROTATION_SPEED * dt;
+	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
@@ -41,12 +48,11 @@ public class BeachballAnimation extends BaseCanvasAnimation {
 		
 		// Draw rotated image
 		g.pushMatrix();
-		g.translate(getGeometry().width/2, getGeometry().height/2);
+		g.translate(g.width/2, g.height/2);
 		g.rotate(rotation);
 		g.imageMode(PConstants.CENTER);
 		g.image(image, 0, 0);
 		g.popMatrix();
-		rotation += .05f;
 		
 	}
 

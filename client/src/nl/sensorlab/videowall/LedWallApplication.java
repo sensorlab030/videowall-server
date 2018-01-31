@@ -25,7 +25,9 @@ public class LedWallApplication extends PApplet {
 	private boolean ledPreviewEnabled = true;
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
-
+	
+	private double currentTime;						// Current time (used for keeping track of delta time)
+	
 	@Override
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
@@ -55,37 +57,46 @@ public class LedWallApplication extends PApplet {
 		driver = new WallDriver(this,
 				Settings.getValue("driverPort1"),
 				Settings.getValue("driverPort2"));
-
-		// Initialize ANI
-		Ani.init(this);
+		
+		// Start first animation (blank)
+		AnimationManager.getInstance().startAnimation(0);
 
 	}
 
 	@Override
 	public void draw() {
-		background(0);
-
+		
+		// Capture current and delta time
+		double t = System.currentTimeMillis();
+		double dt = t - currentTime;
+		currentTime = t;
+		
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			return;
 		}
-
+		
+		// Update the animation with delta time
+		animation.update(dt);
+		
 		// Draw animation frame
 		animation.draw();
-
+		
+		// Send image to driver
+		driver.displayImage(animation.getImage());
+		
 		// Display previews
+		background(0);
 		if (ledPreviewEnabled) {
 			image(preview.renderPreview(animation.getImage()), 0, 0);
 		}
 		if (sourcePreviewEnabled && BaseCanvasAnimation.class.isAssignableFrom(animation.getClass())) {
 			image(((BaseCanvasAnimation) animation).getCanvasImage(), 0, 0);
 		}
-		// Send image to driver
-		driver.displayImage(animation.getImage());
-
+		
 	}
-
+	
 	/**
 	 * Handle movie events (used by VideoAnimation class), read
 	 * a new frame from the movie
