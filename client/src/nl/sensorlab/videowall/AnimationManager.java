@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cleverfranke.util.PColor;
+
 import nl.sensorlab.videowall.animation.*;
 import processing.core.PApplet;
 
@@ -26,12 +28,20 @@ public class AnimationManager {
 	 */
 	public AnimationManager(PApplet applet) {
 		
-		// All Applet based animation
-		addAnimation("Blank", new BlankAnimation(applet));
+		// Full black
+		ColorAnimation black = new ColorAnimation(applet);
+		black.setData(String.valueOf(PColor.color(0)));
+		addAnimation("COL: Black", black);
+		
+		// Full white
+		ColorAnimation white = new ColorAnimation(applet);
+		white.setData(String.valueOf(PColor.color(255)));
+		addAnimation("COL: White", white);
+			
+		// Simple animations
 		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
-//		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		
 		// Add videos to animation manager
