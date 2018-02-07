@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 
 import nl.sensorlab.videowall.udp.UDPVideoStreamClient;
 
+import com.cleverfranke.util.Settings;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -22,16 +24,18 @@ public class VideoStream extends BaseAnimation {
 	PImage frame;
 
 	// Constants
-	static final int CAPTURE_WIDTH = 26;		// Capture width (256x192 is max UDP can easily handle)
-	static final int CAPTURE_HEIGHT = 81;		// Capture height
-	static final String IPCLIENT = "192.168.1.90";
+	static final int CAPTURE_WIDTH = PIXEL_RESOLUTION_X;		// Capture width (256x192 is max UDP can easily handle)
+	static final int CAPTURE_HEIGHT = PIXEL_RESOLUTION_Y;		// Capture height
+	static final String IPCLIENT = Settings.getValue("IPCLIENT"); // IP address of the client machine
+	static final float brightnessFac = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
+	static final float saturationFac = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
 
 	public VideoStream(PApplet applet) {
 		super(applet);
 
 		// Create frame placeholder and init UDP Video Stream Client
 		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
-		udpClient = new UDPVideoStreamClient(IPCLIENT, CAPTURE_WIDTH, CAPTURE_HEIGHT);
+		udpClient = new UDPVideoStreamClient(IPCLIENT, CAPTURE_WIDTH, CAPTURE_HEIGHT, brightnessFac, saturationFac);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class VideoStream extends BaseAnimation {
 			udpClient.stop();
 			udpClient.inSocket.close();
 
-			System.out.println("NetworkBlobReader thread exited");
+			System.out.println("UDP Video Stream Client thread exited");
 		}
 
 		// Draw image on canvas

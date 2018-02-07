@@ -8,25 +8,29 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
+import com.cleverfranke.util.PColor;
 
 public class UDPVideoStreamClient implements Runnable {
 
 	// Misc constants
-	private static final int PORT_IN = 10233;	// Network in port
-	static final int imageType = BufferedImage.TYPE_INT_ARGB;
-	private int CAPTURE_WIDTH, CAPTURE_HEIGHT;
+	private static final int PORT_IN = 10233;					// Network in port
+	static final int imageType = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
+	private int CAPTURE_WIDTH, CAPTURE_HEIGHT;					// Dimensions of received image
+	private float BRIGHTNESSFAC, SATURATIONFAC;					// Factors to boost brightness and saturation
 
 	// Misc
 	public DatagramSocket inSocket;				// Receive socket
 	private byte[] inBuffer = new byte[65508];	// In buffer (max 65508b)
 	volatile BufferedImage streamImage; 		// Stream image
 	Object streamImageLock = new Object();		// Lock for stream image
-	public boolean running = true;						// looping while true
+	public boolean running = true;				// Looping while true
 
 
-	public UDPVideoStreamClient(String ipClient, int captureWidth, int captureHeight) {
+	public UDPVideoStreamClient(String ipClient, int captureWidth, int captureHeight, float brightnessFac, float saturationFac) {
 		CAPTURE_WIDTH = captureWidth;
 		CAPTURE_HEIGHT = captureHeight;
+		BRIGHTNESSFAC = brightnessFac;
+		SATURATIONFAC = saturationFac;
 
 		try {
 
@@ -90,14 +94,45 @@ public class UDPVideoStreamClient implements Runnable {
 			for (int x = 0; x < tmpImage.getWidth(); x++) {
 				int alpha = inBuffer[bufferIndex++] & 0xff;
 				int red = inBuffer[bufferIndex++] & 0xff;
-				int blue = inBuffer[bufferIndex++] & 0xff;
 				int green = inBuffer[bufferIndex++] & 0xff;
+				int blue = inBuffer[bufferIndex++] & 0xff;
 
-				tmpImage.setRGB(x, y, (alpha << 24) + (red << 16) + (blue << 8) + green);
+
+				tmpImage.setRGB(x, y, boostColors(alpha, red, green, blue));
+//				tmpImage.setRGB(x, y, (alpha << 24) + (red << 16) + (green << 8) + blue);
 			}
 		}
 	}
 
+
+	/**
+	 * Takes ARGB values, convert them to HSB format, multiply brightness and saturation values
+	 * by the constants BRIGHTNESSFAC and SATURATIONFAC which are set in settings.json
+	 * and return an ARGB int value
+	 *
+	 * @param alpha
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @return int hex code in ARGB
+	 */
+	public int boostColors(int alpha, int red, int green, int blue) {
+		float[] hsbColors = null;
+		int[] rgbColor = null;
+
+		hsbColors = PColor.RGBtoHSB(red, green, blue, null);
+		hsbColors[1] = (hsbColors[1] *  BRIGHTNESSFAC > 1) ? 1 : hsbColors[1] * BRIGHTNESSFAC;
+		hsbColors[2] = (hsbColors[2] * SATURATIONFAC > 1) ? 1 : hsbColors[2] * SATURATIONFAC;
+
+		rgbColor = PColor.HSBtoRGB(hsbColors[0], hsbColors[1], hsbColors[2]);
+
+		int RGB = alpha;
+		RGB = (RGB << 8) + rgbColor[0];
+		RGB = (RGB << 8) + rgbColor[1];
+		RGB = (RGB << 8) + rgbColor[2];
+
+		return RGB;
+	}
 
 
 	/**
@@ -141,8 +176,6 @@ public class UDPVideoStreamClient implements Runnable {
 		}
 
 	}
-
-
 
 	@Override
 	public void run() {
