@@ -1,9 +1,9 @@
 {
 	"driverPort1": "COM5",
 	"driverPort2": "COM4", 
-	"videoDir": "/Users/agathelenclen/Projects/led-wall/videos",
+	"videoDir": "",
 	"imageDir": "",
 	"IPCLIENT": "192.168.1.90",
-	"videoStreamBrightnessBoost": "2",
-	"videoStreamSaturationBoost": "2"
+	"videoStreamBrightnessBoost": "1.4",
+	"videoStreamSaturationBoost": "1.4"
 }
