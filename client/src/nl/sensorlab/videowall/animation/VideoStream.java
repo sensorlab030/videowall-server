@@ -12,9 +12,7 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 
 /**
- * Animation class that allows for drawing on a normal canvas, that mimicks the actual wall, abstracting away
- * all the pixel mapping and the non-regular grid. This is the most convenient class to subclass when
- * making a 'raster' based animation.
+ * Animation class that starts a UDP Client of video streams and display the received images on the wall
  */
 public class VideoStream extends BaseAnimation {
 
