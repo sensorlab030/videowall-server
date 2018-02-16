@@ -14,7 +14,9 @@ public class UDPVideoStreamClient implements Runnable {
 
 	// Misc constants
 	private static final int PORT_IN = 10233;							// Network in port
-	private static final int imageType = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
+	private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
+
+	// Constructor Fields
 	private int capture_width, capture_height;							// Dimensions of received image
 	private float brigthnessFac, saturationFac;							// Factors to boost brightness and saturation
 
@@ -41,7 +43,7 @@ public class UDPVideoStreamClient implements Runnable {
 			System.out.println("UDP Video Stream Client / Listening to port:" + inSocket.getLocalPort());
 
 			// Initialize image
-			streamImage = new BufferedImage(capture_width, capture_height, imageType);
+			streamImage = new BufferedImage(capture_width, capture_height, IMAGE_TYPE);
 
 			// Start deamon thread for listening
 			Thread t = new Thread(this);
@@ -153,7 +155,7 @@ public class UDPVideoStreamClient implements Runnable {
 			if (header.equals("IMG")) { // Image packet
 
 				// Create buffered image
-				BufferedImage tmpImage = new BufferedImage(capture_width, capture_height, imageType);
+				BufferedImage tmpImage = new BufferedImage(capture_width, capture_height, IMAGE_TYPE);
 
 				// Update buffered image with RGB image data
 				setARGBData(tmpImage);

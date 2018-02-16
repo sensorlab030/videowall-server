@@ -16,22 +16,26 @@ import processing.core.PImage;
  */
 public class VideoStream extends BaseAnimation {
 
+	// Constants
+	private final float BRIGHTNESS_FACTOR = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
+	private final float SATURATION_FACTOR = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
+
 	// Images and stream
 	private UDPVideoStreamClient udpClient;
 	private BufferedImage buffImage;
 	private PImage frame;
 
-	// Constants
-	static final float brightnessFac = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
-	static final float saturationFac = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
+
 
 	public VideoStream(PApplet applet) {
 		super(applet);
 
 		// Create frame placeholder and init UDP Video Stream Client
 		frame = new PImage(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, PConstants.ARGB);
-		udpClient = new UDPVideoStreamClient(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, brightnessFac, saturationFac);
+		udpClient = new UDPVideoStreamClient(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, BRIGHTNESS_FACTOR, SATURATION_FACTOR);
 	}
+
+
 
 	@Override
 	protected final void drawAnimationFrame(PGraphics g) {
