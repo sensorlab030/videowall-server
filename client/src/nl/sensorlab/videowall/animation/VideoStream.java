@@ -46,7 +46,7 @@ public class VideoStream extends BaseAnimation {
 			// Receive image packet, get the stream image and convert as PImage
 			udpClient.receivePacket();
 			buffImage = udpClient.getStreamImage();
-			getAsPImage(buffImage);
+			frame = udpClient.bufferedImageToPImage(buffImage);
 
 		} else {
 			// Stop UDP Client
@@ -56,28 +56,4 @@ public class VideoStream extends BaseAnimation {
 		// Draw image on canvas
 		g.image(frame, 0, 0);
 	}
-
-	/**
-	 * Transform a Buffered image data to a Pimage
-	 * @param bimg, buffered image
-	 */
-    public void getAsPImage(BufferedImage bimg) {
-
-      try {
-
-    	// Get buffered image as Pimage
-        bimg.getRGB(0, 0, frame.width, frame.height, frame.pixels, 0, frame.width);
-        // Update pixels of current frame
-        frame.updatePixels();
-
-      }
-      catch(Exception e) {
-
-        System.err.println("Can't create image from buffer");
-        e.printStackTrace();
-
-      }
-    }
-
-
 }

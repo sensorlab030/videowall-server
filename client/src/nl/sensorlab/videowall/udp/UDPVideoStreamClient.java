@@ -10,6 +10,9 @@ import java.util.Arrays;
 
 import com.cleverfranke.util.PColor;
 
+import processing.core.PConstants;
+import processing.core.PImage;
+
 public class UDPVideoStreamClient implements Runnable {
 
 	// Misc constants
@@ -17,7 +20,7 @@ public class UDPVideoStreamClient implements Runnable {
 	private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
 
 	// Constructor Fields
-	private int capture_width, capture_height;							// Dimensions of received image
+	private int captureWidth, captureHeight;							// Dimensions of received image
 	private float brigthnessFac, saturationFac;							// Factors to boost brightness and saturation
 
 	// Misc
@@ -29,8 +32,8 @@ public class UDPVideoStreamClient implements Runnable {
 
 
 	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brigthnessFac, float saturationFac) {
-		this.capture_width = captureWidth;
-		this.capture_height = captureHeight;
+		this.captureWidth = captureWidth;
+		this.captureHeight = captureHeight;
 		this.brigthnessFac = brigthnessFac;
 		this.saturationFac = saturationFac;
 
@@ -43,7 +46,7 @@ public class UDPVideoStreamClient implements Runnable {
 			System.out.println("UDP Video Stream Client / Listening to port:" + inSocket.getLocalPort());
 
 			// Initialize image
-			streamImage = new BufferedImage(capture_width, capture_height, IMAGE_TYPE);
+			streamImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
 
 			// Start deamon thread for listening
 			Thread t = new Thread(this);
@@ -155,7 +158,7 @@ public class UDPVideoStreamClient implements Runnable {
 			if (header.equals("IMG")) { // Image packet
 
 				// Create buffered image
-				BufferedImage tmpImage = new BufferedImage(capture_width, capture_height, IMAGE_TYPE);
+				BufferedImage tmpImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
 
 				// Update buffered image with RGB image data
 				setARGBData(tmpImage);
@@ -179,6 +182,32 @@ public class UDPVideoStreamClient implements Runnable {
 		}
 
 	}
+
+	/**
+	 * Transform a Buffered image data to a Pimage
+	 * @param bimg, buffered image
+	 */
+    public PImage bufferedImageToPImage(BufferedImage bimg) {
+    	PImage frame = new PImage(captureWidth, captureHeight, PConstants.ARGB);
+
+		try {
+
+			// Get buffered image as Pimage
+			bimg.getRGB(0, 0, frame.width, frame.height, frame.pixels, 0, frame.width);
+			// Update pixels of current frame
+			frame.updatePixels();
+
+		}
+		catch(Exception e) {
+
+			System.err.println("Can't create image from buffer");
+		    e.printStackTrace();
+
+		}
+
+		return frame;
+    }
+
 
 	@Override
 	public void run() {
