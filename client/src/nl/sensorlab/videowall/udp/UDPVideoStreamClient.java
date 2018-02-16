@@ -13,24 +13,24 @@ import com.cleverfranke.util.PColor;
 public class UDPVideoStreamClient implements Runnable {
 
 	// Misc constants
-	private static final int PORT_IN = 10233;					// Network in port
-	static final int imageType = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
-	private int CAPTURE_WIDTH, CAPTURE_HEIGHT;					// Dimensions of received image
-	private float BRIGHTNESSFAC, SATURATIONFAC;					// Factors to boost brightness and saturation
+	private static final int PORT_IN = 10233;							// Network in port
+	private static final int imageType = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
+	private int capture_width, capture_height;							// Dimensions of received image
+	private float brigthnessFac, saturationFac;							// Factors to boost brightness and saturation
 
 	// Misc
-	public DatagramSocket inSocket;				// Receive socket
-	private byte[] inBuffer = new byte[65508];	// In buffer (max 65508b)
-	volatile BufferedImage streamImage; 		// Stream image
-	Object streamImageLock = new Object();		// Lock for stream image
-	public boolean running = true;				// Looping while true
+	private DatagramSocket inSocket;					// Receive socket
+	private byte[] inBuffer = new byte[65508];			// In buffer (max 65508b)
+	private volatile BufferedImage streamImage; 		// Stream image
+	private Object streamImageLock = new Object();		// Lock for stream image
+	public boolean running = true;						// Looping while true
 
 
-	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brightnessFac, float saturationFac) {
-		CAPTURE_WIDTH = captureWidth;
-		CAPTURE_HEIGHT = captureHeight;
-		BRIGHTNESSFAC = brightnessFac;
-		SATURATIONFAC = saturationFac;
+	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brigthnessFac, float saturationFac) {
+		this.capture_width = captureWidth;
+		this.capture_height = captureHeight;
+		this.brigthnessFac = brigthnessFac;
+		this.saturationFac = saturationFac;
 
 		try {
 
@@ -41,7 +41,7 @@ public class UDPVideoStreamClient implements Runnable {
 			System.out.println("UDP Video Stream Client / Listening to port:" + inSocket.getLocalPort());
 
 			// Initialize image
-			streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, imageType);
+			streamImage = new BufferedImage(capture_width, capture_height, imageType);
 
 			// Start deamon thread for listening
 			Thread t = new Thread(this);
@@ -108,7 +108,7 @@ public class UDPVideoStreamClient implements Runnable {
 
 	/**
 	 * Takes ARGB values, convert them to HSB format, multiply brightness and saturation values
-	 * by the constants BRIGHTNESSFAC and SATURATIONFAC which are set in settings.json
+	 * by the constants brigthnessFac and saturationFac which are set in settings.json
 	 * and return an ARGB int value
 	 *
 	 * @param alpha
@@ -122,8 +122,8 @@ public class UDPVideoStreamClient implements Runnable {
 		int[] rgbColor = null;
 
 		hsbColors = PColor.RGBtoHSB(red, green, blue, null);
-		hsbColors[1] = (hsbColors[1] *  BRIGHTNESSFAC > 1) ? 1 : hsbColors[1] * BRIGHTNESSFAC;
-		hsbColors[2] = (hsbColors[2] * SATURATIONFAC > 1) ? 1 : hsbColors[2] * SATURATIONFAC;
+		hsbColors[1] = (hsbColors[1] *  brigthnessFac > 1) ? 1 : hsbColors[1] * brigthnessFac;
+		hsbColors[2] = (hsbColors[2] * saturationFac > 1) ? 1 : hsbColors[2] * saturationFac;
 
 		rgbColor = PColor.HSBtoRGB(hsbColors[0], hsbColors[1], hsbColors[2]);
 
@@ -153,7 +153,7 @@ public class UDPVideoStreamClient implements Runnable {
 			if (header.equals("IMG")) { // Image packet
 
 				// Create buffered image
-				BufferedImage tmpImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, imageType);
+				BufferedImage tmpImage = new BufferedImage(capture_width, capture_height, imageType);
 
 				// Update buffered image with RGB image data
 				setARGBData(tmpImage);

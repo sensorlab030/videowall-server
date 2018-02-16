@@ -17,14 +17,11 @@ import processing.core.PImage;
 public class VideoStream extends BaseAnimation {
 
 	// Images and stream
-	UDPVideoStreamClient udpClient;
-	BufferedImage buffImage;
-	PImage frame;
+	private UDPVideoStreamClient udpClient;
+	private BufferedImage buffImage;
+	private PImage frame;
 
 	// Constants
-	static final int CAPTURE_WIDTH = PIXEL_RESOLUTION_X;		// Capture width (256x192 is max UDP can easily handle)
-	static final int CAPTURE_HEIGHT = PIXEL_RESOLUTION_Y;		// Capture height
-
 	static final float brightnessFac = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
 	static final float saturationFac = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
 
@@ -32,8 +29,8 @@ public class VideoStream extends BaseAnimation {
 		super(applet);
 
 		// Create frame placeholder and init UDP Video Stream Client
-		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
-		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, brightnessFac, saturationFac);
+		frame = new PImage(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, PConstants.ARGB);
+		udpClient = new UDPVideoStreamClient(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, brightnessFac, saturationFac);
 	}
 
 	@Override
