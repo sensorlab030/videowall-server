@@ -24,7 +24,7 @@ public class VideoStream extends BaseAnimation {
 	// Constants
 	static final int CAPTURE_WIDTH = PIXEL_RESOLUTION_X;		// Capture width (256x192 is max UDP can easily handle)
 	static final int CAPTURE_HEIGHT = PIXEL_RESOLUTION_Y;		// Capture height
-	static final String IPCLIENT = Settings.getValue("IPCLIENT"); // IP address of the client machine
+
 	static final float brightnessFac = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
 	static final float saturationFac = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
 
@@ -33,7 +33,7 @@ public class VideoStream extends BaseAnimation {
 
 		// Create frame placeholder and init UDP Video Stream Client
 		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
-		udpClient = new UDPVideoStreamClient(IPCLIENT, CAPTURE_WIDTH, CAPTURE_HEIGHT, brightnessFac, saturationFac);
+		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, brightnessFac, saturationFac);
 	}
 
 	@Override

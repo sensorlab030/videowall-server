@@ -26,7 +26,7 @@ public class UDPVideoStreamClient implements Runnable {
 	public boolean running = true;				// Looping while true
 
 
-	public UDPVideoStreamClient(String ipClient, int captureWidth, int captureHeight, float brightnessFac, float saturationFac) {
+	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brightnessFac, float saturationFac) {
 		CAPTURE_WIDTH = captureWidth;
 		CAPTURE_HEIGHT = captureHeight;
 		BRIGHTNESSFAC = brightnessFac;
@@ -38,7 +38,7 @@ public class UDPVideoStreamClient implements Runnable {
 			inSocket = new DatagramSocket(PORT_IN);
 			inSocket.setSoTimeout(100);
 
-			System.out.println("UDP Video Stream Client / Listening to " + ipClient + ":" + inSocket.getLocalPort());
+			System.out.println("UDP Video Stream Client / Listening to port:" + inSocket.getLocalPort());
 
 			// Initialize image
 			streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, imageType);
