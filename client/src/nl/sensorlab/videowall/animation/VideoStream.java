@@ -1,8 +1,8 @@
 package nl.sensorlab.videowall.animation;
 
-import java.awt.image.BufferedImage;
-
 import nl.sensorlab.videowall.udp.UDPVideoStreamClient;
+
+import java.awt.Rectangle;
 
 import com.cleverfranke.util.Settings;
 
@@ -14,43 +14,52 @@ import processing.core.PImage;
 /**
  * Animation class that starts a UDP Client of video streams and display the received images on the wall
  */
-public class VideoStream extends BaseAnimation {
+public class VideoStream extends BaseCanvasAnimation {
 
 	// Constants
 	private final float BRIGHTNESS_FACTOR = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
 	private final float SATURATION_FACTOR = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
 
+	// Aspect ratio sent by the UDP video stream server
+	private final int CAPTURE_WIDTH = 108;
+	private final int CAPTURE_HEIGHT = 81;
+
 	// Images and stream
 	private UDPVideoStreamClient udpClient;
-	private BufferedImage buffImage;
 	private PImage frame;
-
+	private Rectangle canvasGeometry;
 
 
 	public VideoStream(PApplet applet) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 
-		// Create frame placeholder and init UDP Video Stream Client
-		frame = new PImage(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, PConstants.ARGB);
-		udpClient = new UDPVideoStreamClient(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, BRIGHTNESS_FACTOR, SATURATION_FACTOR);
+		// Get canvas geometry for future resize
+		canvasGeometry = getGeometry();
+
+		// Init UDP Video Stream Client
+		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, BRIGHTNESS_FACTOR, SATURATION_FACTOR);
 	}
 
 
 
 	@Override
-	protected final void drawAnimationFrame(PGraphics g) {
+	protected final void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
+
+		// Create placeholder image
+		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
 
 		if (udpClient.running && !Thread.currentThread().isInterrupted()) {
 
-			// Receive image packet, get the stream image and convert as PImage
-			udpClient.receivePacket();
-			buffImage = udpClient.getStreamImage();
-			frame = udpClient.bufferedImageToPImage(buffImage);
+			// Get image from stream
+			frame = udpClient.getImage();
+			frame.resize(canvasGeometry.width, canvasGeometry.height);
 
 		} else {
+
 			// Stop UDP Client
 			udpClient.stop();
+
 		}
 
 		// Draw image on canvas

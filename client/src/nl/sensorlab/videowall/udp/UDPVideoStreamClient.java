@@ -43,7 +43,7 @@ public class UDPVideoStreamClient implements Runnable {
 			inSocket = new DatagramSocket(PORT_IN);
 			inSocket.setSoTimeout(100);
 
-			System.out.println("UDP Video Stream Client / Listening to port:" + inSocket.getLocalPort());
+			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort());
 
 			// Initialize image
 			streamImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
@@ -194,8 +194,6 @@ public class UDPVideoStreamClient implements Runnable {
 
 			// Get buffered image as Pimage
 			bimg.getRGB(0, 0, frame.width, frame.height, frame.pixels, 0, frame.width);
-			// Update pixels of current frame
-			frame.updatePixels();
 
 		}
 		catch(Exception e) {
@@ -208,6 +206,18 @@ public class UDPVideoStreamClient implements Runnable {
 		return frame;
     }
 
+
+    /**
+     * Receive image packet, get the stream image and convert as PImage
+     * @return
+     */
+    public PImage getImage() {
+
+		receivePacket();
+		BufferedImage buffImage = getStreamImage();
+
+		return bufferedImageToPImage(buffImage);
+    }
 
 	@Override
 	public void run() {
