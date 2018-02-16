@@ -63,7 +63,8 @@ public class UDPVideoStreamClient implements Runnable {
 
 		running = false;
 		inSocket.disconnect();
-
+		inSocket.close();
+		System.out.println("UDP Video Stream Client thread exited");
 	}
 
 

@@ -48,12 +48,8 @@ public class VideoStream extends BaseAnimation {
 			getAsPImage(buffImage);
 
 		} else {
-
-			// Stop UDP Client and close socket
+			// Stop UDP Client
 			udpClient.stop();
-			udpClient.inSocket.close();
-
-			System.out.println("UDP Video Stream Client thread exited");
 		}
 
 		// Draw image on canvas
