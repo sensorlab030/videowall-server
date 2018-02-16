@@ -4,5 +4,6 @@
 	"videoDir": "",
 	"imageDir": "",
 	"videoStreamBrightnessBoost": "1.4",
-	"videoStreamSaturationBoost": "1.4"
+	"videoStreamSaturationBoost": "1.4",
+	"IPSERVER": "192.168.1.145"
 }

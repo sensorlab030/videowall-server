@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ public class UDPVideoStreamClient implements Runnable {
 	// Constructor Fields
 	private int captureWidth, captureHeight;							// Dimensions of received image
 	private float brigthnessFac, saturationFac;							// Factors to boost brightness and saturation
+	private String IPServer;
 
 	// Misc
 	private DatagramSocket inSocket;					// Receive socket
@@ -31,11 +33,12 @@ public class UDPVideoStreamClient implements Runnable {
 	public boolean running = true;						// Looping while true
 
 
-	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brigthnessFac, float saturationFac) {
+	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brigthnessFac, float saturationFac, String IPServer) {
 		this.captureWidth = captureWidth;
 		this.captureHeight = captureHeight;
 		this.brigthnessFac = brigthnessFac;
 		this.saturationFac = saturationFac;
+		this.IPServer = IPServer;
 
 		try {
 
@@ -43,7 +46,7 @@ public class UDPVideoStreamClient implements Runnable {
 			inSocket = new DatagramSocket(PORT_IN);
 			inSocket.setSoTimeout(100);
 
-			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort());
+			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort() + ". Expecting packets from IP : " + IPServer);
 
 			// Initialize image
 			streamImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
@@ -150,6 +153,19 @@ public class UDPVideoStreamClient implements Runnable {
 			// Receive packet header
 			DatagramPacket packet = new DatagramPacket(inBuffer, inBuffer.length);
 			inSocket.receive(packet);
+
+			// Check origin of the packet
+			String originAddress = packet.getAddress().toString();
+
+			if (IPServer.equals("")) {
+				System.out.println("Please provide an IP address for the server in settings.json, IPServer!");
+				return;
+			}
+
+			if (!originAddress.equals("/" + IPServer)) {
+				System.out.println("Received a packet from another IP than " + IPServer);
+				return;
+			}
 
 			// Extract header and update index
 			String header = new String(Arrays.copyOfRange(inBuffer, 0, 3));
