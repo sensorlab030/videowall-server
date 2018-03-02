@@ -106,41 +106,9 @@ public class UDPVideoStreamClient implements Runnable {
 				int green = inBuffer[bufferIndex++] & 0xff;
 				int blue = inBuffer[bufferIndex++] & 0xff;
 
-
-				tmpImage.setRGB(x, y, boostColors(alpha, red, green, blue));
-//				tmpImage.setRGB(x, y, (alpha << 24) + (red << 16) + (green << 8) + blue);
+				tmpImage.setRGB(x, y, (alpha << 24) + (red << 16) + (green << 8) + blue);
 			}
 		}
-	}
-
-
-	/**
-	 * Takes ARGB values, convert them to HSB format, multiply brightness and saturation values
-	 * by the constants brigthnessFac and saturationFac which are set in settings.json
-	 * and return an ARGB int value
-	 *
-	 * @param alpha
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @return int hex code in ARGB
-	 */
-	public int boostColors(int alpha, int red, int green, int blue) {
-		float[] hsbColors = null;
-		int[] rgbColor = null;
-
-		hsbColors = PColor.RGBtoHSB(red, green, blue, null);
-		hsbColors[1] = (hsbColors[1] *  brigthnessFac > 1) ? 1 : hsbColors[1] * brigthnessFac;
-		hsbColors[2] = (hsbColors[2] * saturationFac > 1) ? 1 : hsbColors[2] * saturationFac;
-
-		rgbColor = PColor.HSBtoRGB(hsbColors[0], hsbColors[1], hsbColors[2]);
-
-		int RGB = alpha;
-		RGB = (RGB << 8) + rgbColor[0];
-		RGB = (RGB << 8) + rgbColor[1];
-		RGB = (RGB << 8) + rgbColor[2];
-
-		return RGB;
 	}
 
 
