@@ -4,12 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
-
-import com.cleverfranke.util.PColor;
 
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -22,7 +19,6 @@ public class UDPVideoStreamClient implements Runnable {
 
 	// Constructor Fields
 	private int captureWidth, captureHeight;							// Dimensions of received image
-	private float brigthnessFac, saturationFac;							// Factors to boost brightness and saturation
 	private String IPServer;
 
 	// Misc
@@ -33,11 +29,9 @@ public class UDPVideoStreamClient implements Runnable {
 	public boolean running = true;						// Looping while true
 
 
-	public UDPVideoStreamClient(int captureWidth, int captureHeight, float brigthnessFac, float saturationFac, String IPServer) {
+	public UDPVideoStreamClient(int captureWidth, int captureHeight, String IPServer) {
 		this.captureWidth = captureWidth;
 		this.captureHeight = captureHeight;
-		this.brigthnessFac = brigthnessFac;
-		this.saturationFac = saturationFac;
 		this.IPServer = IPServer;
 
 		try {

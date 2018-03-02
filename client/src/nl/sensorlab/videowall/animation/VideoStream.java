@@ -17,8 +17,6 @@ import processing.core.PImage;
 public class VideoStream extends BaseCanvasAnimation {
 
 	// Constants
-	private final float BRIGHTNESS_FACTOR = Float.parseFloat(Settings.getValue("videoStreamBrightnessBoost"));
-	private final float SATURATION_FACTOR = Float.parseFloat(Settings.getValue("videoStreamSaturationBoost"));
 	private static final String IPSERVER = Settings.getValue("IPSERVER"); // IP address of the server machine
 
 	// Aspect ratio sent by the UDP video stream server
@@ -38,7 +36,7 @@ public class VideoStream extends BaseCanvasAnimation {
 		canvasGeometry = getGeometry();
 
 		// Init UDP Video Stream Client
-		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, BRIGHTNESS_FACTOR, SATURATION_FACTOR, IPSERVER);
+		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, IPSERVER);
 	}
 
 
