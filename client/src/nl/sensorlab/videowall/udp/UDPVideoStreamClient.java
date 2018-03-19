@@ -27,7 +27,7 @@ public class UDPVideoStreamClient implements Runnable {
 	private volatile BufferedImage streamImage; 		// Stream image
 	private Object streamImageLock = new Object();		// Lock for stream image
 	public boolean running = true;						// Looping while true
-
+	public Thread t;
 
 	public UDPVideoStreamClient(int captureWidth, int captureHeight, String IPServer) {
 		this.captureWidth = captureWidth;
@@ -46,7 +46,7 @@ public class UDPVideoStreamClient implements Runnable {
 			streamImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
 
 			// Start deamon thread for listening
-			Thread t = new Thread(this);
+			t = new Thread(this);
 			t.setDaemon(true);
 			t.start();
 
@@ -198,8 +198,5 @@ public class UDPVideoStreamClient implements Runnable {
     }
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-
-	}
+	public void run() {}
 }

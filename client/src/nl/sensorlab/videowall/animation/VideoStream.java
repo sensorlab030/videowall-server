@@ -48,7 +48,7 @@ public class VideoStream extends BaseCanvasAnimation {
 		// Create placeholder image
 		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
 
-		if (udpClient.running && !Thread.currentThread().isInterrupted()) {
+		if (udpClient.running && !udpClient.t.isInterrupted()) {
 
 			// Get image from stream
 			frame = udpClient.getImage();
