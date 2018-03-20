@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/processing/core.jar"/>
-	<classpathentry kind="lib" path="lib/processing/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/processing/itext.jar"/>
-	<classpathentry kind="lib" path="lib/processing/jogl-all.jar"/>
-	<classpathentry kind="lib" path="lib/processing/pdf.jar"/>
-	<classpathentry kind="lib" path="lib/processing/serial/jssc.jar"/>
-	<classpathentry kind="lib" path="lib/processing/serial/serial.jar"/>
-	<classpathentry kind="lib" path="lib/Ani.jar"/>
-	<classpathentry kind="lib" path="lib/processing/gstreamer-java.jar"/>
-	<classpathentry kind="lib" path="lib/processing/video.jar"/>
-	<classpathentry kind="lib" path="lib/processing/jna.jar"/>
-	<classpathentry kind="lib" path="lib/IPCapture-0.3.0-any/library/IPCapture.jar"/>
-	<classpathentry kind="lib" path="lib/minim/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/minim/jsminim.jar"/>
-	<classpathentry kind="lib" path="lib/minim/minim.jar"/>
-	<classpathentry kind="lib" path="lib/minim/mp3spi1.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/minim/tritonus_aos.jar"/>
-	<classpathentry kind="lib" path="lib/minim/tritonus_share.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/core.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/gluegen-rt.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/itext.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/jogl-all.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/pdf.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/serial/jssc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/serial/serial.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Sensor Lab VideoWall Client/lib/processing/serial/macosx"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/Ani.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/gstreamer-java.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/video.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/processing/jna.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/IPCapture-0.3.0-any/library/IPCapture.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/jl1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/jsminim.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/minim.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/mp3spi1.9.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/tritonus_aos.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/minim/tritonus_share.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
