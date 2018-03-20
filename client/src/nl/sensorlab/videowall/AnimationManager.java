@@ -6,6 +6,7 @@ import java.util.List;
 
 import nl.sensorlab.videowall.animation.*;
 import processing.core.PApplet;
+import weathermetrics.WeatherMetrics;
 
 /**
  * Class that handles the animation queue and transitions between them.
