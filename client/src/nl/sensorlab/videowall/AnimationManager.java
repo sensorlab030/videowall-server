@@ -52,8 +52,8 @@ public class AnimationManager {
 		// Debug
 		// addAnimation("Debug animation", new DebugCanvasAnimation(applet));
 		
-		// Start weather metrics at start of application
-		startAnimation(4);
+		// Start with the latest animation (in the list)
+		startAnimation(availableAnimations.size()-1);
 	}
 	
 	/**

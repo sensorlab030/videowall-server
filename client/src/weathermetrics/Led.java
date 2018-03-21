@@ -1,37 +1,44 @@
 package weathermetrics;
+
+import java.awt.Color;
+
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.WeatherMetrics;
 import processing.core.PVector;
 
-public class Led {
-	WeatherMetrics parent;
+public class LED {
 	
-	PVector position;
-	int width;
-	int height;
+	WeatherMetrics parent; 
 	
-	float alpha;
+	public PVector positionA; // <-- Starting position
+	public PVector positionB; // <-- End positions
 	
-	boolean doneAnimation = false;
+	public int index;
+	public int color;
+	public float alpha;
 	
-	float speed = (float) 0.5;
-	int direction = 1; // <-- FadeIn or FadeOut
+	//	float hue, saturation, brightness;
 	
-	public Led(WeatherMetrics _p, PVector _position, int _width, int _height, float _alpha){
+	public boolean doneAnimating = false;
+	
+	public float speed = (float) 200; // Increase speed
+	public int direction = 1; // FadeIn or FadeOut
+	
+	public LED(WeatherMetrics _p, int _index, PVector _positionA, PVector _positionB, int _c, float _a){
 		this.parent = _p;
-		this.position = new PVector(_position.x, _position.y);
-		this.width = _width;
-		this.height= _height;
-		this.alpha = _alpha;
+		this.index= _index;
+		this.positionA = _positionA;
+		this.positionB = _positionB;
+		this.color = _c;
+		this.alpha = _a;
 	}
 	
 	public void update() {
-//		// Update the brightness
-//		color += 10;
-//		if(color > 255) {
-//			doneAnimation = true;
-//		}
+		alpha += (speed * direction);
+		if(alpha > 255 || alpha < 0) {
+			alpha = alpha > 255 ? 255 : 0; // Make sure alpha is clamped so doneAnimating will not be set when exceeding
+			doneAnimating = true;
+		}
 	}
-
 }
