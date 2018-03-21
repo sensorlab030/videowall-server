@@ -1,12 +1,10 @@
 package nl.sensorlab.videowall;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.sensorlab.videowall.animation.*;
 import processing.core.PApplet;
-import weathermetrics.WeatherMetrics;
 
 /**
  * Class that handles the animation queue and transitions between them.
@@ -32,7 +30,7 @@ public class AnimationManager {
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
-		addAnimation("Weather metrics", new WeatherMetrics(applet));
+		addAnimation("Weather Metrics", new WeatherMetrics(applet));
 		
 		
 		// Add videos to animation manager

@@ -1,6 +1,7 @@
 package weathermetrics;
 import com.cleverfranke.util.PColor;
 
+import nl.sensorlab.videowall.animation.WeatherMetrics;
 import processing.core.PVector;
 
 public class Led {
@@ -17,7 +18,7 @@ public class Led {
 	float speed = (float) 0.5;
 	int direction = 1; // <-- FadeIn or FadeOut
 	
-	Led(WeatherMetrics _p, PVector _position, int _width, int _height, float _alpha){
+	public Led(WeatherMetrics _p, PVector _position, int _width, int _height, float _alpha){
 		this.parent = _p;
 		this.position = new PVector(_position.x, _position.y);
 		this.width = _width;
