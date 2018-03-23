@@ -10,7 +10,7 @@ import processing.core.PGraphics;
 
 public class Alphabet extends BaseAnimation {
 
-	private final static int SLIDING_SPEED = 100;							// Speed at which the phrase moves
+	private final static int SLIDING_TIMER_MS = 150;							// Speed at which the phrase moves
 
 	private Phrase phrase;													// Phrase to animate on the wall.
 	private int offset = WallGeometry.getInstance().getPanelCount() * 2;	// Offset value to move the phrase on the left (starts at left edge, is set to left edge of pixel grid)
@@ -71,7 +71,7 @@ public class Alphabet extends BaseAnimation {
 	 * If the elapsedTime between last movement and now is big enough, move the phrase one step to the left
 	 */
 	private void movePhraseOffset() {
-		if (getElapsedTime() > SLIDING_SPEED) {
+		if (getElapsedTime() > SLIDING_TIMER_MS) {
 			// Move phrase
 			offset--;
 			totalOffset++;

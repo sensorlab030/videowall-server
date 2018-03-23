@@ -3,6 +3,6 @@
 	"driverPort2": "COM4", 
 	"videoDir": "",
 	"imageDir": "",
-	"phrase": "abcdefghijklmnopqrstuvwxyz?!<>+-=_#%/.;:()",
+	"phrase": "abcdefghijklmnopqrstuvwxyz0123456789?!<>+-=_#%/.;:()",
 	"phraseColor": "#ff6c6c"
 }
