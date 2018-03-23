@@ -3,9 +3,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.cleverfranke.util.PColor;
-
 import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -22,7 +20,6 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 	// Indicator updater
 	private int currentIndicatorIndex = 0;
-	private int currentAmountAnimated = 0;
 	private boolean sequenceComplete = false;
 
 	public WeatherMetrics(PApplet applet) {
@@ -33,7 +30,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 		// Generate the LEDs
 		generateLEDs();
-	}
+	} 
 
 	protected void generateLEDs() {
 		// Create the LED instances using the WallGeometry	 
@@ -50,7 +47,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 			float xOffset = ((i % 2 == 0) ? width : -width);
 
 			// Some random settings
-			int color = PColor.color(255, 0, 0);
+			int color = PColor.color(0,191,255);
 			float a = applet.random(20, 200);
 
 			// Add the new instance to the list
@@ -77,14 +74,26 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		for(int i = 0; i < referenceListCanvas.size(); i++) {
 			LED led = leds.get(referenceListCanvas.get(i));
 			led.update();
-//			led.alpha = applet.random(20, 150);
 			if(led.doneAnimating) {
 				led.doneAnimating = false;
 				led.direction = led.direction == -1 ? 1 : -1;
 			}
 			
 		}
+		
 	}
+	
+	
+	
+//	public float xrect = 0;
+//	protected void updateRectIndicator(PGraphics g) {
+//		g.fill(255);
+//		g.noStroke();
+//		g.rect(0,0,xrect, 20);
+//		
+//		xrect += 4;
+//		
+//	}
 
 	protected void updateIndicator() {
 		// Update individually
@@ -143,12 +152,15 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		g.background(0);
 		// Update the leds
 		update();
-		// Just simple update the LEDS; all changes, e.g. alpha and colors are being updated within the update function (depending on which sequence is selected)
+		
+		// Just simple draw the LEDS; all changes, e.g. alpha and colors are being updated within the update function (depending on which sequence is selected)
 		g.noFill();
 		for(LED led:leds) {
 			g.stroke(led.color, led.alpha);
 			g.line(led.positionA.x, led.positionA.y, led.positionB.x, led.positionB.y);
 		}
+		
+		//updateRectIndicator(g);
 	}
 
 }
