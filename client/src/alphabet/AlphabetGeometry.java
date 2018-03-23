@@ -49,6 +49,21 @@ public class AlphabetGeometry {
 	// Punctuation
 	private static final int[][] LETTER_EXCLAMATION = new int[][] {{0, 0}, {0, 1}, {0, 2}, {0, 4}};
 	private static final int[][] LETTER_APOSTROPHE = new int[][] {{0, 0}};
+	private static final int[][] LETTER_POINT = new int[][] {{0, 4}};
+	private static final int[][] LETTER_INTERROGATION = new int[][] {{0, 0}, {1, 0}, {1, 2}, {1, 4}, {2, 0}, {2, 1}};
+	private static final int[][] LETTER_LESSTHAN = new int[][] {{0, 2}, {1,1}, {1, 3}, {2, 0}, {2, 4}};
+	private static final int[][] LETTER_MORETHAN = new int[][] {{0, 0}, {0, 4}, {1, 1}, {1, 3}, {2, 2}};
+	private static final int[][] LETTER_PLUS = new int[][] {{0, 2}, {1, 1}, {1, 2}, {1, 3}, {2, 2}};
+	private static final int[][] LETTER_MINUS = new int[][] {{0, 2}, {1, 2}};
+	private static final int[][] LETTER_EQUAL = new int[][] {{0, 1}, {0, 3}, {1, 1}, {1, 3}, {2, 1}, {2, 3}};
+	private static final int[][] LETTER_UNDERSCORE = new int[][] {{0, 4}, {1, 4}, {2, 4}};
+	private static final int[][] LETTER_HASHTAG = new int[][] {{0, 1}, {0, 3}, {1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {2, 1}, {2, 3}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}, {4, 1}, {4, 3}};
+	private static final int[][] LETTER_PERCENT = new int[][] {{0, 0}, {0, 3}, {0, 4}, {1, 2}, {2, 0}, {2, 1}, {2, 4}};
+	private static final int[][] LETTER_SLASH = new int[][] {{0, 4}, {1, 3}, {1, 2}, {1, 1}, {2, 0}};
+	private static final int[][] LETTER_FLOATINGPOINT = new int[][] {{0, 0}, {0, 3}, {0, 4}};
+	private static final int[][] LETTER_COLUMN = new int[][] {{0, 2}, {0, 4}};
+	private static final int[][] LETTER_OPENBRACKET = new int[][] {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 4}};
+	private static final int[][] LETTER_CLOSEDBRACKET = new int[][] {{1, 1}, {1, 2}, {1, 3}, {0, 0}, {0, 4}};
 
 	// Singleton instance
 	private static AlphabetGeometry instance = null;
@@ -87,6 +102,21 @@ public class AlphabetGeometry {
 		ALPHABET.put('Z', getLetterAsLetterPoints(LETTER_Z));
 		ALPHABET.put('!', getLetterAsLetterPoints(LETTER_EXCLAMATION));
 		ALPHABET.put('\'', getLetterAsLetterPoints(LETTER_APOSTROPHE));
+		ALPHABET.put('.', getLetterAsLetterPoints(LETTER_POINT));
+		ALPHABET.put('?', getLetterAsLetterPoints(LETTER_INTERROGATION));
+		ALPHABET.put('<', getLetterAsLetterPoints(LETTER_LESSTHAN));
+		ALPHABET.put('>', getLetterAsLetterPoints(LETTER_MORETHAN));
+		ALPHABET.put('+', getLetterAsLetterPoints(LETTER_PLUS));
+		ALPHABET.put('-', getLetterAsLetterPoints(LETTER_MINUS));
+		ALPHABET.put('=', getLetterAsLetterPoints(LETTER_EQUAL));
+		ALPHABET.put('_', getLetterAsLetterPoints(LETTER_UNDERSCORE));
+		ALPHABET.put('#', getLetterAsLetterPoints(LETTER_HASHTAG));
+		ALPHABET.put('%', getLetterAsLetterPoints(LETTER_PERCENT));
+		ALPHABET.put('/', getLetterAsLetterPoints(LETTER_SLASH));
+		ALPHABET.put(';', getLetterAsLetterPoints(LETTER_FLOATINGPOINT));
+		ALPHABET.put(':', getLetterAsLetterPoints(LETTER_COLUMN));
+		ALPHABET.put('(', getLetterAsLetterPoints(LETTER_OPENBRACKET));
+		ALPHABET.put(')', getLetterAsLetterPoints(LETTER_CLOSEDBRACKET));
 	}
 
 

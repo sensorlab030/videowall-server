@@ -3,5 +3,6 @@
 	"driverPort2": "COM4", 
 	"videoDir": "",
 	"imageDir": "",
-	"phrase": "you smell like dog buns"
+	"phrase": "abcdefghijklmnopqrstuvwxyz?!<>+-=_#%/.;:()",
+	"phraseColor": "#ff6c6c"
 }

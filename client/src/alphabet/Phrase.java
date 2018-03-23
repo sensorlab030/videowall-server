@@ -29,7 +29,7 @@ public class Phrase {
 	 * @param s
 	 */
 	private void setWords(String s) {
-		Pattern p = Pattern.compile("[\\w']+");
+		Pattern p = Pattern.compile("[\\w'!.?<>+-=_#%/;:()]+");
 		Matcher m = p.matcher(s);
 
 		while ( m.find() ) {
