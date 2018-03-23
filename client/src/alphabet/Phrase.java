@@ -7,16 +7,27 @@ import java.util.regex.Pattern;
 
 import processing.core.PGraphics;
 
+/**
+ * A phrase is a collection of words
+ * @author agathelenclen
+ *
+ */
 public class Phrase {
-	private List<Word> words;
-	private int phraseLength = 0;
+
+	private List<Word> words;		// List of words in the phrase
+	private int phraseLength = 0;	// Total phrase length, in pixel
+
 
 	public Phrase(String phrase) {
-		String uppercasePhrase = phrase.toUpperCase();
 		words = new ArrayList<Word>();
-		setWords(uppercasePhrase);
+		setWords(phrase);
 	}
 
+
+	/**
+	 * Identifies the different words in the phrase, and save them to the list of words
+	 * @param s
+	 */
 	private void setWords(String s) {
 		Pattern p = Pattern.compile("[\\w']+");
 		Matcher m = p.matcher(s);
@@ -27,22 +38,29 @@ public class Phrase {
 		    words.add(word);
 
 		    // Update phrase length
-		    setPhraseLength(getPhraseLength() + word.getWordLength() + 2 * AlphabetGeometry.getInstance().LETTER_WIDTH);
+		    setPhraseLength(getPhraseLength() + word.getWordLength() + 2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH);
 		}
 	}
 
+
+	/**
+	 * Draw the phrase
+	 * @param g
+	 */
 	public void draw(PGraphics g) {
 		for(Word word: words) {
 			word.draw(g);
 
 			// Translate and add a whitespace for next letter
-			g.translate(2 * AlphabetGeometry.getInstance().LETTER_WIDTH, 0);
+			g.translate(2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH, 0);
 		}
 	}
+
 
 	public int getPhraseLength() {
 		return phraseLength;
 	}
+
 
 	public void setPhraseLength(int phraseLength) {
 		this.phraseLength = phraseLength;

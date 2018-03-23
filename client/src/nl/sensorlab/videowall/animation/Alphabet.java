@@ -8,14 +8,17 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Alphabet extends BaseAnimation {
-	Phrase phrase;
-	int offset = WallGeometry.getInstance().getPanelCount() * 2;
-	int totalOffset = 0;
-	long tStart = -1;
-	int speed = 100;
+
+	private final static int SLIDING_SPEED = 100;							// Speed at which the phrase moves
+
+	private Phrase phrase;													// Phrase to animate on the wall.
+	private int offset = WallGeometry.getInstance().getPanelCount() * 2;	// Offset value to move the phrase on the left (starts at left edge, is set to left edge of pixel grid)
+	private int totalOffset = 0;											// Count the total amount of offset operated
+	private long tStart = -1;												// Timer start
+
 
 	/**
-	 * Initialize a PixelAnimation
+	 * Initialize Alphabet animation
 	 *
 	 * @param applet
 	 */
@@ -25,9 +28,7 @@ public class Alphabet extends BaseAnimation {
 	}
 
 	/**
-	 * Implementation of generating the animation frame by child classes. Classes
-	 * extending BaseAnimation are required to implement this method and use
-	 * the supplied PGraphics context to draw the animation frame
+	 * Draws a moving-to-the-left phrase that comes from the right edge of the wall
 	 *
 	 * @param g
 	 */
@@ -49,14 +50,23 @@ public class Alphabet extends BaseAnimation {
 
 	}
 
+
+	/**
+	 * Get elapsed time between now and previous timestamp
+	 * @return Delta
+	 */
 	private long getElapsedTime() {
 		long tEnd = System.currentTimeMillis();
 		long tDelta = tEnd - tStart;
 		return tDelta;
 	}
 
+
+	/**
+	 * If the elapsedTime between last movement and now is big enough, move the phrase one step to the left
+	 */
 	private void movePhraseOffset() {
-		if (getElapsedTime() > speed) {
+		if (getElapsedTime() > SLIDING_SPEED) {
 			// Move phrase
 			offset--;
 			totalOffset++;
@@ -67,7 +77,12 @@ public class Alphabet extends BaseAnimation {
 
 	}
 
+	/**
+	 * Loop phrase back to its beginning when it's done moving left of the wall
+	 * @param g
+	 */
 	private void loopPhrase(PGraphics g) {
+
 		// If phrase has not yet disappeared to the left, continue animation
 		if (!(totalOffset > WallGeometry.getInstance().getPanelCount() * 2 + phrase.getPhraseLength())) {
 			return;
@@ -77,5 +92,6 @@ public class Alphabet extends BaseAnimation {
 		offset = WallGeometry.getInstance().getPanelCount() * 2;
 		totalOffset = 0;
 		g.translate(offset + phrase.getPhraseLength(), 0);
+
 	}
 }

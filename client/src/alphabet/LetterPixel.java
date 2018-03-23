@@ -1,15 +1,35 @@
 package alphabet;
 
-public class LetterPixel extends Block {
+import processing.core.PGraphics;
+
+/**
+ * A LetterPixel represents one 'pixel block' in the pixel font. A letter is composed of several letterPixel
+ * @author agathelenclen
+ *
+ */
+public class LetterPixel {
+
+	private int x;
+	private int y;
+
+
 	public LetterPixel(int x, int y) {
-		super(x, y, AlphabetGeometry.getInstance().LETTER_WIDTH, AlphabetGeometry.getInstance().LETTER_HEIGHT);
+		this.x = x;
+		this.y = y;
 	}
 
-	public void offsetLeft(int value) {
-		this.setX(this.getX() - value);
+
+	public void draw(PGraphics g) {
+		g.rect(this.x, this.y, AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH, AlphabetGeometry.getInstance().LETTER_PIXEL_HEIGHT);
 	}
 
-	public void offsetRight(int value) {
-		this.setX(this.getX() + value);
+
+	public void setX(int newX) {
+		this.x = newX;
+	}
+
+
+	public int getX() {
+		return this.x;
 	}
 }

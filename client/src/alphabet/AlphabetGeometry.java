@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class that contains the wall geometry used for CanvasAnimation and
- * the animation previews.
+ * Class that contains the alphabet geometry used for the alphabet animation.
+ *
  */
 public class AlphabetGeometry {
 
 	// Geometries (in pixels)
-	public final int LETTER_WIDTH = 2;
-	public final int LETTER_HEIGHT = 16;
+	public final int LETTER_PIXEL_WIDTH = 2;
+	public final int LETTER_PIXEL_HEIGHT = 16;
 
 	// Alphabet
 	private static final Map<Character, List<LetterPoint>> ALPHABET = new HashMap<Character, List<LetterPoint>>();
@@ -50,6 +50,7 @@ public class AlphabetGeometry {
 	// Singleton instance
 	private static AlphabetGeometry instance = null;
 
+
 	/**
 	 * Create instance and calculate geometries
 	 * based on real world measurements
@@ -83,6 +84,7 @@ public class AlphabetGeometry {
 		ALPHABET.put('Z', getLetterAsLetterPoints(LETTER_Z));
 	}
 
+
 	/**
 	 * Get singleton instance
 	 * @return
@@ -104,11 +106,12 @@ public class AlphabetGeometry {
 		List<LetterPoint> points = new ArrayList<LetterPoint>(letter.length);
 
 		for(int[] coord: letter) {
-			points.add(new LetterPoint(coord[0] * LETTER_WIDTH, coord[1] * LETTER_HEIGHT));
+			points.add(new LetterPoint(coord[0] * LETTER_PIXEL_WIDTH, coord[1] * LETTER_PIXEL_HEIGHT));
 		}
 
 		return points;
 	}
+
 
 	/**
 	 * Get letter as a list of letter points from the Alphabet
