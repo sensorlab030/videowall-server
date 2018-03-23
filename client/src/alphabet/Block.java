@@ -18,4 +18,12 @@ public class Block {
 	public void draw(PGraphics g) {
 		g.rect(this.x, this.y, this.width, this.height);
 	}
+
+	public void setX(int newX) {
+		this.x = newX;
+	}
+
+	public int getX() {
+		return this.x;
+	}
 }
