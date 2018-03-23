@@ -25,7 +25,7 @@ public class AlphabetGeometry {
 	private static final int[][] LETTER_D = new int[][] {{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 0}, {1, 4}, {2, 0}, {2, 4}, {3, 1}, {3, 2}, {3, 3}};
 	private static final int[][] LETTER_E = new int[][] {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 2}, {1, 4}, {2, 0}, {2, 2}, {2, 4}, {3, 0}, {3, 4}};
 	private static final int[][] LETTER_F = new int[][] {{0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 0}, {1, 2}, {2, 0}, {2, 2}, {3, 0}};
-	private static final int[][] LETTER_G = new int[][] {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 4}, {2, 0}, {2, 4}, {3, 1}, {3, 3}, {3, 4}};
+	private static final int[][] LETTER_G = new int[][] {{0, 1}, {0, 2}, {0, 3}, {1, 0}, {1, 4}, {2, 0}, {2, 2}, {2, 4}, {3, 2}, {3, 3}};
 	private static final int[][] LETTER_H = new int[][] {{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 2}, {2, 2}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}};
 	private static final int[][] LETTER_I = new int[][] {{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}};
 	private static final int[][] LETTER_J = new int[][] {{0, 0}, {0, 3}, {1, 0}, {1, 4}, {2, 0}, {2, 1}, {2, 2}, {2, 3}, {3, 0}};
@@ -46,6 +46,9 @@ public class AlphabetGeometry {
 	private static final int[][] LETTER_Y = new int[][] {{0, 0}, {0, 1}, {0, 2}, {1, 2}, {1, 3}, {1, 4}, {2, 0}, {2, 1}, {2, 2}};
 	private static final int[][] LETTER_Z = new int[][] {{0, 0}, {0, 4}, {1, 0}, {1, 3}, {1, 4}, {2, 0}, {2, 2}, {2, 4}, {3, 0}, {3, 1}, {3, 4}};
 
+	// Punctuation
+	private static final int[][] LETTER_EXCLAMATION = new int[][] {{0, 0}, {0, 1}, {0, 2}, {0, 4}};
+	private static final int[][] LETTER_APOSTROPHE = new int[][] {{0, 0}};
 
 	// Singleton instance
 	private static AlphabetGeometry instance = null;
@@ -82,6 +85,8 @@ public class AlphabetGeometry {
 		ALPHABET.put('X', getLetterAsLetterPoints(LETTER_X));
 		ALPHABET.put('Y', getLetterAsLetterPoints(LETTER_Y));
 		ALPHABET.put('Z', getLetterAsLetterPoints(LETTER_Z));
+		ALPHABET.put('!', getLetterAsLetterPoints(LETTER_EXCLAMATION));
+		ALPHABET.put('\'', getLetterAsLetterPoints(LETTER_APOSTROPHE));
 	}
 
 
