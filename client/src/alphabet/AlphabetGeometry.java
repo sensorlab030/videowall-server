@@ -16,7 +16,7 @@ public class AlphabetGeometry {
 	public final int LETTER_HEIGHT = 16;
 
 	// Alphabet
-	private static final Map<String, List<LetterPoint>> ALPHABET = new HashMap<String, List<LetterPoint>>();
+	private static final Map<Character, List<LetterPoint>> ALPHABET = new HashMap<Character, List<LetterPoint>>();
 
 	// Letters
 	private static final int[][] LETTER_A = new int[][] {{0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 0}, {1, 2}, {2, 0}, {2, 2}, {3, 1}, {3, 2}, {3, 3}, {3, 4}};
@@ -55,32 +55,32 @@ public class AlphabetGeometry {
 	 * based on real world measurements
 	 */
 	protected AlphabetGeometry() {
-		ALPHABET.put("A", getLetterAsLetterPoints(LETTER_A));
-		ALPHABET.put("B", getLetterAsLetterPoints(LETTER_B));
-		ALPHABET.put("C", getLetterAsLetterPoints(LETTER_C));
-		ALPHABET.put("D", getLetterAsLetterPoints(LETTER_D));
-		ALPHABET.put("E", getLetterAsLetterPoints(LETTER_E));
-		ALPHABET.put("F", getLetterAsLetterPoints(LETTER_F));
-		ALPHABET.put("G", getLetterAsLetterPoints(LETTER_G));
-		ALPHABET.put("H", getLetterAsLetterPoints(LETTER_H));
-		ALPHABET.put("I", getLetterAsLetterPoints(LETTER_I));
-		ALPHABET.put("J", getLetterAsLetterPoints(LETTER_J));
-		ALPHABET.put("K", getLetterAsLetterPoints(LETTER_K));
-		ALPHABET.put("L", getLetterAsLetterPoints(LETTER_L));
-		ALPHABET.put("M", getLetterAsLetterPoints(LETTER_M));
-		ALPHABET.put("N", getLetterAsLetterPoints(LETTER_N));
-		ALPHABET.put("O", getLetterAsLetterPoints(LETTER_O));
-		ALPHABET.put("P", getLetterAsLetterPoints(LETTER_P));
-		ALPHABET.put("Q", getLetterAsLetterPoints(LETTER_Q));
-		ALPHABET.put("R", getLetterAsLetterPoints(LETTER_R));
-		ALPHABET.put("S", getLetterAsLetterPoints(LETTER_S));
-		ALPHABET.put("T", getLetterAsLetterPoints(LETTER_T));
-		ALPHABET.put("U", getLetterAsLetterPoints(LETTER_U));
-		ALPHABET.put("V", getLetterAsLetterPoints(LETTER_V));
-		ALPHABET.put("W", getLetterAsLetterPoints(LETTER_W));
-		ALPHABET.put("X", getLetterAsLetterPoints(LETTER_X));
-		ALPHABET.put("Y", getLetterAsLetterPoints(LETTER_Y));
-		ALPHABET.put("Z", getLetterAsLetterPoints(LETTER_Z));
+		ALPHABET.put('A', getLetterAsLetterPoints(LETTER_A));
+		ALPHABET.put('B', getLetterAsLetterPoints(LETTER_B));
+		ALPHABET.put('C', getLetterAsLetterPoints(LETTER_C));
+		ALPHABET.put('D', getLetterAsLetterPoints(LETTER_D));
+		ALPHABET.put('E', getLetterAsLetterPoints(LETTER_E));
+		ALPHABET.put('F', getLetterAsLetterPoints(LETTER_F));
+		ALPHABET.put('G', getLetterAsLetterPoints(LETTER_G));
+		ALPHABET.put('H', getLetterAsLetterPoints(LETTER_H));
+		ALPHABET.put('I', getLetterAsLetterPoints(LETTER_I));
+		ALPHABET.put('J', getLetterAsLetterPoints(LETTER_J));
+		ALPHABET.put('K', getLetterAsLetterPoints(LETTER_K));
+		ALPHABET.put('L', getLetterAsLetterPoints(LETTER_L));
+		ALPHABET.put('M', getLetterAsLetterPoints(LETTER_M));
+		ALPHABET.put('N', getLetterAsLetterPoints(LETTER_N));
+		ALPHABET.put('O', getLetterAsLetterPoints(LETTER_O));
+		ALPHABET.put('P', getLetterAsLetterPoints(LETTER_P));
+		ALPHABET.put('Q', getLetterAsLetterPoints(LETTER_Q));
+		ALPHABET.put('R', getLetterAsLetterPoints(LETTER_R));
+		ALPHABET.put('S', getLetterAsLetterPoints(LETTER_S));
+		ALPHABET.put('T', getLetterAsLetterPoints(LETTER_T));
+		ALPHABET.put('U', getLetterAsLetterPoints(LETTER_U));
+		ALPHABET.put('V', getLetterAsLetterPoints(LETTER_V));
+		ALPHABET.put('W', getLetterAsLetterPoints(LETTER_W));
+		ALPHABET.put('X', getLetterAsLetterPoints(LETTER_X));
+		ALPHABET.put('Y', getLetterAsLetterPoints(LETTER_Y));
+		ALPHABET.put('Z', getLetterAsLetterPoints(LETTER_Z));
 	}
 
 	/**
@@ -112,10 +112,10 @@ public class AlphabetGeometry {
 
 	/**
 	 * Get letter as a list of letter points from the Alphabet
-	 * @param letter
+	 * @param c
 	 * @return
 	 */
-	public List<LetterPoint> getLetter(String letter) {
-		return ALPHABET.get(letter);
+	public List<LetterPoint> getLetter(char c) {
+		return ALPHABET.get(c);
 	}
 }
