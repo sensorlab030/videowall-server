@@ -9,6 +9,7 @@ import processing.core.PGraphics;
 
 public class Phrase {
 	private List<Word> words;
+	private int phraseLength = 0;
 
 	public Phrase(String phrase) {
 		String uppercasePhrase = phrase.toUpperCase();
@@ -21,7 +22,12 @@ public class Phrase {
 		Matcher m = p.matcher(s);
 
 		while ( m.find() ) {
-		    words.add(new Word(s.substring(m.start(), m.end())));
+			// Add word to list of words
+			Word word = new Word(s.substring(m.start(), m.end()));
+		    words.add(word);
+
+		    // Update phrase length
+		    setPhraseLength(getPhraseLength() + word.getWordLength() + 2 * AlphabetGeometry.getInstance().LETTER_WIDTH);
 		}
 	}
 
@@ -30,7 +36,15 @@ public class Phrase {
 			word.draw(g);
 
 			// Translate and add a whitespace for next letter
-			g.translate(AlphabetGeometry.getInstance().LETTER_WIDTH, 0);
+			g.translate(2 * AlphabetGeometry.getInstance().LETTER_WIDTH, 0);
 		}
+	}
+
+	public int getPhraseLength() {
+		return phraseLength;
+	}
+
+	public void setPhraseLength(int phraseLength) {
+		this.phraseLength = phraseLength;
 	}
 }
