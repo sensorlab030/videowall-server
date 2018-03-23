@@ -29,6 +29,16 @@ public class LED {
 		this.alpha = _a;
 	}
 	
+	public void fadeIn(float _speed) {
+		speed = _speed;
+		direction = 1;
+	}
+	
+	public void fadeOut(float _speed) {
+		speed = _speed;
+		direction = -1;
+	}
+	
 	public void update() {
 		alpha += (speed * direction);
 		if(alpha > 255 || alpha < 0) {

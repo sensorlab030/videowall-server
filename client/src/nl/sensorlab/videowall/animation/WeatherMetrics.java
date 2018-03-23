@@ -20,19 +20,37 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 	
 	// Demo
-	private TriggerObject testobject;
+	private TriggerObject testobjectTop, testobjectRight, testobjectBottom, testobjectLeft;
 	
 	// Indicator updater
 	private int currentIndicatorIndex = 0;
 	private boolean sequenceComplete = false;
+	
+	private int patrickcounter = 0;
 
 	public WeatherMetrics(PApplet applet) {
 		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
 
 		// Create new Arraylist containing the LED object
 		leds = new ArrayList<LED>();
+		float wCancas = 440;
+		float hCanvas = 120;
+		float h = 10;
+		float w = 25;
 		
-		testobject = new TriggerObject(new PVector(0,0), new PVector(applet.width, 0), new PVector(applet.width, applet.height), new PVector(0, applet.height), new PVector(-applet.width, 0));
+		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(wCancas, 0), new PVector(wCancas,h), new PVector(0,h), new PVector(-wCancas, 0));
+		testobjectRight = new TriggerObject(new PVector(wCancas - w,  0), new PVector(wCancas, 0), new PVector(wCancas, hCanvas), new PVector(wCancas - w, hCanvas), new PVector(0, -hCanvas));
+		testobjectRight.speed = 2;
+
+		testobjectLeft = new TriggerObject(new PVector(0,  0), new PVector(w, 0), new PVector(w, hCanvas), new PVector(0, hCanvas), new PVector(0, hCanvas));
+		testobjectLeft.toggleDirection();
+		testobjectLeft.speed = 2;
+		
+		testobjectBottom = new TriggerObject(new PVector(0, hCanvas - h), new PVector(wCancas, hCanvas - h), new PVector(wCancas,hCanvas), new PVector(0,hCanvas), new PVector(wCancas, 0));
+		testobjectBottom.toggleDirection();
+		
+//		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(w, 0), new PVector(w,h), new PVector(0,h), new PVector(-w, 0));
+//		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(w, 0), new PVector(w,h), new PVector(0,h), new PVector(-w, 0));
 
 		// Generate the LEDs
 		generateLEDs();
@@ -71,8 +89,10 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 				leds.get(i).alpha = 0; //applet.random(0, 255);
 				//leds.get(i).speed = (float) applet.random(10, 30);
 			}
-			leds.get(i).speed = 10;
+	
+			applet.println("x" +p.x + "y" + p.y + "" + DEFAULT_SCALE);
 		}
+//		applet.exit();
 
 	}
 
@@ -162,35 +182,71 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 	}
 	
 	public void drawObject(PGraphics g) {
-		testobject.speed = 10;
-		testobject.updatePosition(0);
-		testobject.drawTriggerObject(g);
-		
-		if(testobject.doneUpdating) {
-			applet.println("Done" + applet.width );
-		}else {
-			applet.println(testobject.positionOffset.x);
-		}
+//		testobject.drawTriggerObject(g);
+//		testobjectTop.updateObjectPosition();
 		
 		
-		// Check if LED is within bounds; if so fadeIn
-//		for(LED led:leds) {
-//			if(testobject.isInBounds(led)) {
-//				led.direction = 1;
-//			}else {
-//				led.direction = -1;
-//			}
-//			led.update();
+		
+		
+//		testobjectLeft.updateObjectPosition();
+		
+//		
+//		
+//		testobjectTop.drawTriggerObject(g);
+//		testobjectBottom.drawTriggerObject(g);
+//		testobjectRight.drawTriggerObject(g);
+//		testobjectLeft.drawTriggerObject(g);
+//		
+//		if(testobjectTop.doneUpdating) {
+//			testobjectBottom.updateObjectPosition();
+////			applet.println("doneUpdating");
+////			testobjectTop.doneUpdating = false;
+////			testobjectTop.positionOffsetTarget.x = testobjectTop.positionOffsetTarget.x == 0 ? -440 : 0;
+////			testobjectTop.toggleDirection();
 //		}
-		
-//		referenceListCanvas
+//		
+		if(!testobjectTop.doneUpdating) testobjectTop.updateObjectPosition();
+		if(testobjectTop.doneUpdating) {
+			testobjectRight.updateObjectPosition();
+			if(testobjectRight.doneUpdating) {
+				testobjectBottom.updateObjectPosition();
+				if(testobjectBottom.doneUpdating) {
+					testobjectLeft.updateObjectPosition();
+					
+					if(testobjectLeft.doneUpdating) {
+						applet.println("doneUpdating");	
+						patrickcounter++;
+						if(patrickcounter >= 60) {
+						// Reset
+						testobjectTop.resetObjectPosition();
+						testobjectRight.resetObjectPosition();
+						testobjectBottom.resetObjectPosition();
+						testobjectLeft.resetObjectPosition();
+						patrickcounter = 0;
+						}
+					}
+				}
+			}
+		}
+
+		// Check if LED is within bounds; if so fadeIn
+		for(LED led:leds) {
+			if(testobjectTop.isInBounds(led) || testobjectRight.isInBounds(led) ||testobjectBottom.isInBounds(led) ||testobjectLeft.isInBounds(led) ) {
+				led.fadeIn(10);
+				led.color = PColor.color(255,0,0);
+			}else {
+				led.fadeOut(10);
+			}
+			led.update();
+		}
+
 	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
 		// Update the leds
-		// update();
+		//update();
 		
 		drawObject(g);
 		
