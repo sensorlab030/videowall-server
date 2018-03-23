@@ -1,6 +1,5 @@
 package nl.sensorlab.videowall.animation;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import com.cleverfranke.util.PColor;
@@ -9,6 +8,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import weathermetrics.LED;
+import weathermetrics.TriggerObject;
 
 public class WeatherMetrics extends BaseCanvasAnimation {
 
@@ -16,8 +16,12 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 	// Remember led indexes 
 	private List<Integer> referenceListIndicators = new ArrayList<Integer>();  // <-- LED's that function as indicators
-	private List<Integer> referenceListCanvas = new ArrayList<Integer>(); // <-- LED's that function for the canvas
+	private List<Integer> referenceListCanvas = new ArrayList<Integer>(); // <-- LED's that function as the canvas
 
+	
+	// Demo
+	private TriggerObject testobject;
+	
 	// Indicator updater
 	private int currentIndicatorIndex = 0;
 	private boolean sequenceComplete = false;
@@ -27,6 +31,8 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 		// Create new Arraylist containing the LED object
 		leds = new ArrayList<LED>();
+		
+		testobject = new TriggerObject(new PVector(0,0), new PVector(0,0), new PVector(0,5), new PVector(0,5));
 
 		// Generate the LEDs
 		generateLEDs();
@@ -62,9 +68,10 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 			}else {
 				referenceListCanvas.add(i);
 				// Set random alpha
-				leds.get(i).alpha = applet.random(0, 255);
-				leds.get(i).speed = (float) applet.random(10, 50);
+				leds.get(i).alpha = 0; //applet.random(0, 255);
+				//leds.get(i).speed = (float) applet.random(10, 30);
 			}
+			leds.get(i).speed = 10;
 		}
 
 	}
@@ -82,18 +89,6 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		}
 		
 	}
-	
-	
-	
-//	public float xrect = 0;
-//	protected void updateRectIndicator(PGraphics g) {
-//		g.fill(255);
-//		g.noStroke();
-//		g.rect(0,0,xrect, 20);
-//		
-//		xrect += 4;
-//		
-//	}
 
 	protected void updateIndicator() {
 		// Update individually
@@ -123,7 +118,6 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 		// Update all indicators
 		}else if (sequenceComplete) {
-
 			for(int i = 0; i < referenceListIndicators.size(); i++){
 				LED currentLed = leds.get(referenceListIndicators.get(i));
 				
@@ -146,12 +140,56 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		}
 
 	}
+	
+	public void updateObject() {
+		int speed = 10;
+		testobject.positionB.x += speed;
+		testobject.positionC.x +=speed;
+	
+		// Update A and D to create a fade out effect
+		if(testobject.positionB.x > applet.width/5 || testobject.positionC.x > applet.width/5) {
+			testobject.positionA.x+=speed;
+			testobject.positionD.x+=speed;
+		}
+	
+		// Reset
+		if(testobject.positionB.x > applet.width || testobject.positionC.x > applet.width) {
+			testobject.positionB.x = 0;
+			testobject.positionC.x = 0;
+			testobject.positionA.x = 0;
+			testobject.positionD.x = 0;
+		}
+	}
+	
+	public void drawObject(PGraphics g) {
+		updateObject();
+//		g.fill(255);
+//		g.noStroke();
+//		g.beginShape();
+//		g.vertex(testobject.positionA.x, testobject.positionA.y);
+//		g.vertex(testobject.positionB.x, testobject.positionB.y);
+//		g.vertex(testobject.positionC.x, testobject.positionC.y);
+//		g.vertex(testobject.positionD.x, testobject.positionD.y);
+//		g.endShape();
+		
+		// Check if LED is within bounds; if so fadeIn
+		for(LED led:leds) {
+			if(testobject.isInBounds(led)) {
+				led.direction = 1;
+			}else {
+				led.direction = -1;
+			}
+			led.update();
+		}
+	}
 
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
 		// Update the leds
-		update();
+		// update();
+		
+		drawObject(g);
 		
 		// Just simple draw the LEDS; all changes, e.g. alpha and colors are being updated within the update function (depending on which sequence is selected)
 		g.noFill();
@@ -159,8 +197,5 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 			g.stroke(led.color, led.alpha);
 			g.line(led.positionA.x, led.positionA.y, led.positionB.x, led.positionB.y);
 		}
-		
-		//updateRectIndicator(g);
 	}
-
 }

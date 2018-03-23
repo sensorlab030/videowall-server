@@ -1,9 +1,4 @@
 package weathermetrics;
-
-import java.awt.Color;
-
-import com.cleverfranke.util.PColor;
-
 import nl.sensorlab.videowall.animation.WeatherMetrics;
 import processing.core.PVector;
 
