@@ -15,7 +15,7 @@ public class LED {
 	
 	//	float hue, saturation, brightness;
 	
-	public boolean doneAnimating = false;
+	public boolean doneUpdating = false;
 	
 	public float speed = (float) 200; // Increase speed
 	public int direction = 1; // FadeIn or FadeOut
@@ -33,7 +33,7 @@ public class LED {
 		alpha += (speed * direction);
 		if(alpha > 255 || alpha < 0) {
 			alpha = alpha > 255 ? 255 : 0; // Make sure alpha is clamped so doneAnimating will not be set when exceeding
-			doneAnimating = true;
+			doneUpdating = true;
 		}
 	}
 }
