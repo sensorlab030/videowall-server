@@ -8,8 +8,7 @@ import java.util.regex.Pattern;
 import processing.core.PGraphics;
 
 /**
- * A phrase is a collection of words
- * @author agathelenclen
+ * A Phrase is a collection of Words
  *
  */
 public class Phrase {
@@ -19,8 +18,10 @@ public class Phrase {
 
 
 	public Phrase(String phrase) {
+
 		words = new ArrayList<Word>();
 		setWords(phrase);
+
 	}
 
 
@@ -29,17 +30,21 @@ public class Phrase {
 	 * @param s
 	 */
 	private void setWords(String s) {
+
 		Pattern p = Pattern.compile("[\\w'!.?<>+-=_#%/;:()]+");
 		Matcher m = p.matcher(s);
 
 		while ( m.find() ) {
+
 			// Add word to list of words
 			Word word = new Word(s.substring(m.start(), m.end()));
 		    words.add(word);
 
 		    // Update phrase length
 		    setPhraseLength(getPhraseLength() + word.getWordLength() + 2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH);
+
 		}
+
 	}
 
 
@@ -48,21 +53,35 @@ public class Phrase {
 	 * @param g
 	 */
 	public void draw(PGraphics g) {
+
 		for(Word word: words) {
 			word.draw(g);
 
 			// Translate and add a whitespace for next letter
 			g.translate(2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH, 0);
 		}
+
 	}
 
 
+	/**
+	 * Get the phrase total length, in pixels
+	 * @return
+	 */
 	public int getPhraseLength() {
+
 		return phraseLength;
+
 	}
 
 
+	/**
+	 * Set the phrase total length, in pixels
+	 * @param phraseLength
+	 */
 	public void setPhraseLength(int phraseLength) {
+
 		this.phraseLength = phraseLength;
+
 	}
 }

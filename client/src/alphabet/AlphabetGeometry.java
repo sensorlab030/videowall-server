@@ -84,8 +84,7 @@ public class AlphabetGeometry {
 
 
 	/**
-	 * Create instance and calculate geometries
-	 * based on real world measurements
+	 * Create instance and assign character to its letter schema
 	 */
 	protected AlphabetGeometry() {
 		ALPHABET.put('A', getLetterAsLetterPoints(LETTER_A));
@@ -161,8 +160,9 @@ public class AlphabetGeometry {
 
 	/**
 	 * Converts the letter coordinates to pixel positions on the canvas
-	 * @param letter, array of coordinates on a grid of 4 x 5
-	 * @return a list of Points, projection of coordinates on a 26 * 81 grid, with one block being of width LETTER_WIDTH and height LETTER_HEIGHT
+	 * @param letter, array of coordinates (x, y) on a grid of 4 x 5 or 5 x 5
+	 * @return a list of LetterPoint, projection of each coordinate on a grid of 81px height,
+	 * spaced with a width LETTER_WIDTH and a height LETTER_HEIGHT
 	 */
 	private List<LetterPoint> getLetterAsLetterPoints(int[][] letter) {
 		List<LetterPoint> points = new ArrayList<LetterPoint>(letter.length);

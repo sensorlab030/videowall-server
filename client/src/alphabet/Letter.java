@@ -7,8 +7,8 @@ import processing.core.PGraphics;
 
 
 /**
- * A letter is a visual schema representing the letter like pixel font
- * @author agathelenclen
+ * The Letter class represents a letter as a list of LetterPixel
+ * which visually forms the letter
  *
  */
 public class Letter {
@@ -18,6 +18,7 @@ public class Letter {
 
 
 	public Letter(List<LetterPoint> points) {
+
 		letterPixels = new ArrayList<LetterPixel>(points.size());
 
 		for(LetterPoint point: points) {
@@ -29,6 +30,7 @@ public class Letter {
 			this.letterLength = (point.getX() > this.letterLength) ? point.getX() : this.letterLength;
 
 		}
+
 	}
 
 
@@ -37,13 +39,21 @@ public class Letter {
 	 * @param g
 	 */
 	public void draw(PGraphics g) {
+
 		for(LetterPixel letterPixel: letterPixels) {
 			letterPixel.draw(g);
 		}
+
 	}
 
 
+	/**
+	 * Get the letter visual representation length
+	 * in pixels
+	 */
 	public int getLetterLength() {
+
 		return this.letterLength;
+
 	}
 }

@@ -6,8 +6,7 @@ import java.util.List;
 import processing.core.PGraphics;
 
 /**
- * A Word represent a collection of letters
- * @author agathelenclen
+ * A Word represents a collection of Letters
  *
  */
 public class Word {
@@ -17,18 +16,23 @@ public class Word {
 
 
 	public Word(String word) {
+
 		String uppercaseWord = word.toUpperCase();
 		letters = new ArrayList<Letter>();
 		setLetters(uppercaseWord);
+
 	}
+
 
 	/**
 	 * For each letter in a word, create a Letter object
 	 * @param s: the word
 	 */
 	private void setLetters(String s) {
+
 		// Iterate over all the characters
 		for (int i = 0; i < s.length(); i++){
+
 			// Get the character in word
 		    char c = s.charAt(i);
 
@@ -41,7 +45,9 @@ public class Word {
 
 		    // Update word length
 		    this.setWordLength(this.getWordLength() + letter.getLetterLength() + 2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH);
+
 		}
+
 	}
 
 
@@ -50,22 +56,38 @@ public class Word {
 	 * @param g
 	 */
 	public void draw(PGraphics g) {
+
 		for(Letter letter: letters) {
+
 			letter.draw(g);
 
 			// Translate and add a whitespace for next letter
 			int offset = letter.getLetterLength() + 2 * AlphabetGeometry.getInstance().LETTER_PIXEL_WIDTH;
 			g.translate(offset, 0);
+
 		}
+
 	}
 
 
+	/**
+	 * Get the word total length, in pixels
+	 * @return
+	 */
 	public int getWordLength() {
+
 		return wordLength;
+
 	}
 
 
+	/**
+	 * Set the word total length, in pixels
+	 * @param wordLength
+	 */
 	public void setWordLength(int wordLength) {
+
 		this.wordLength = wordLength;
+
 	}
 }

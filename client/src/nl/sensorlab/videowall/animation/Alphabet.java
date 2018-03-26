@@ -8,15 +8,24 @@ import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
+
+/**
+ * The Alphabet animation takes a sentence from the settings file
+ * and display it on the led wall, from left to right.
+ *
+ * The color of the phrase can also be supplied from the settings file.
+ *
+ */
 public class Alphabet extends BaseAnimation {
 
-	private final static int SLIDING_TIMER_MS = 200;							// Speed at which the phrase moves
+	private final static int SLIDING_TIMER_MS = 200;						// Time countdown after which the phrase animates one step to the left
 
-	private Phrase phrase;													// Phrase to animate on the wall.
-	private int offset = WallGeometry.getInstance().getPanelCount() * 2;	// Offset value to move the phrase on the left (starts at left edge, is set to left edge of pixel grid)
+	private Phrase phrase;													// Phrase to animate on the wall
+	private int offset = WallGeometry.getInstance().getPanelCount() * 2;	// Offset value to position the left edge of the phrase (is set to right edge of the pixel grid)
 	private int totalOffset = 0;											// Count the total amount of offset operated
 	private long tStart = -1;												// Timer start
-	private int color = PColor.color(0, 255, 0);
+	private int color = PColor.color(0, 255, 0);							// Default phrase color
+
 
 	/**
 	 * Initialize Alphabet animation
@@ -24,13 +33,19 @@ public class Alphabet extends BaseAnimation {
 	 * @param applet
 	 */
 	public Alphabet(PApplet applet) {
+
 		super(applet);
+
+		// Create Phrase
 		phrase = new Phrase(Settings.getValue("phrase"));
 
+		// Set color if provided
 		if (Settings.getValue("phraseColor").length() != 0) {
 			color = PColor.color(Settings.getValue("phraseColor"));
 		}
+
 	}
+
 
 	/**
 	 * Draws a moving-to-the-left phrase that comes from the right edge of the wall
@@ -39,18 +54,28 @@ public class Alphabet extends BaseAnimation {
 	 */
 	@Override
 	protected final void drawAnimationFrame(PGraphics g) {
+
+		// On first draw, start the timer
 		if (tStart == -1) {
 			tStart = System.currentTimeMillis();
 		}
 
+		// Drawing constants
 		g.background(0);
 		g.fill(color);
 		g.noStroke();
 
+		// Translate phrase one step to the left
 		g.translate(offset, 0);
+
+		// Draw phrase
 		phrase.draw(g);
 
+		// Update the offset value
 		movePhraseOffset();
+
+		// Put the phrase back to the right edge of the grid
+		// if the whole phrase has been shown
 		loopPhrase(g);
 
 	}
