@@ -1,5 +1,6 @@
 package weathermetrics;
 
+import de.looksgood.ani.Ani;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -7,9 +8,12 @@ import processing.core.PVector;
 public class TriggerObject {
 	
 	public boolean doneUpdating = false;
+	public boolean allowAni = true;
 	
-	public float speed = 0.25f; // Default
+	public float speed = 10; // Default
 	public int direction = 1;
+	
+	Ani px, py; // Ani object for transitioning
 	
 	// Positions to create the trigger vertex; use dist() to control opacity etc. of the LEDs
 	public PVector positionA, positionB, positionC, positionD;
@@ -30,17 +34,36 @@ public class TriggerObject {
 	
 	public boolean isInBounds(Pixel _pixel) {
 		if((_pixel.position.x >= (positionA.x + positionOffset.x) && _pixel.position.x < (positionB.x + positionOffset.x)) 
-		&& (_pixel.position.y >= (positionB.y + positionOffset.y) && _pixel.position.y < (positionD.y + positionOffset.y)))  return true;
+		&& (_pixel.position.y >= (positionB.y + positionOffset.y) && _pixel.position.y < (positionD.y + positionOffset.y))) return true;
 		return false;
 	}
 	
-	public void updateObjectPosition() {
-		if(PVector.dist(positionOffset, positionOffsetTarget) == 0) {
-			doneUpdating = true;
-		}else {
-			if(PVector.dist(new PVector(positionOffset.x, (float) 0), new PVector(positionOffsetTarget.x, (float) 0)) != 0) positionOffset.x += (speed * direction);
-			if(PVector.dist(new PVector((float) 0, positionOffset.y), new PVector((float) 0, positionOffsetTarget.y)) != 0) positionOffset.y += (speed * direction);
+	public void updateObjectPosition() {	
+		if(!doneUpdating) {
+			if(allowAni) {
+				allowAni = false;
+				px = new Ani(this.positionOffset, speed, "x", this.positionOffsetTarget.x, Ani.LINEAR);
+				py = new Ani(this.positionOffset, speed, "y", this.positionOffsetTarget.y, Ani.LINEAR);
+				
+			}else {
+				// Check if ANI is done
+				if(px.isEnded() && py.isEnded()) {
+					doneUpdating = true;
+					allowAni = true;
+				}
+			}
 		}
+//		float dist = PVector.dist(positionOffset, positionOffsetTarget); 
+//		if(dist == 0) {
+//			doneUpdating = true;
+//		}else {
+//			if(PVector.dist(new PVector(positionOffset.x, (float) 0), new PVector(positionOffsetTarget.x, (float) 0)) != 0) { 
+//				positionOffset.x += (speed * direction);
+//			}
+//			if(PVector.dist(new PVector((float) 0, positionOffset.y), new PVector((float) 0, positionOffsetTarget.y)) != 0) {
+//				positionOffset.y += (speed * direction);
+//			}
+//		}
 	}
 	
 	public void toggleDirection() {

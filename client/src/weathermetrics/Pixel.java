@@ -31,7 +31,6 @@ public class Pixel {
 		direction = direction == -1 ? 1 : -1;
 	}
 	
-	
 	public void update() {
 		if(alpha > 255 || alpha < 0) { // We can add a target alpha later;
 			alpha = alpha > 255 ? 255 : 0; // Make sure alpha is clamped so doneAnimating will not be set when exceeding

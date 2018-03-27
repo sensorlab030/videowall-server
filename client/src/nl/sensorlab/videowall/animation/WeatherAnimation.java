@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cleverfranke.util.PColor;
 
+import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -22,20 +23,31 @@ public class WeatherAnimation extends BaseAnimation {
 	private int includeVerticalAmountPixels = 5; // Pixels from the top and the bottom to include in the indicator.
 	private boolean showTriggerObjects = false; // Show triggerObjects as guides to trigger lights (pixels)
 	
-	public TriggerSequence indicatorsequence;
+	public TriggerSequence indicatorsequence, bartest;
 
 	public WeatherAnimation(PApplet applet) {
 		super(applet);
 		
+		// Init Ani
+		Ani.init(applet);
+		
 		// Create the arraylist containing the pixel objects
 		pixels = new ArrayList<Pixel>();
 		generatePixelObjects(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		
 		indicatorsequence = new TriggerSequence();
+		bartest = new TriggerSequence();
+		
+		for(int t = 1; t < PIXEL_RESOLUTION_X - 2; t+=2) {
+			TriggerObject temp = new TriggerObject(new PVector(t, includeVerticalAmountPixels), new PVector(t + 2, includeVerticalAmountPixels), new PVector(t + 2, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(t, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(0, PIXEL_RESOLUTION_Y), -1);
+			temp.speed = 2;
+			bartest.addTriggerObject(temp);
+		}
 		
 		// Add the led strips
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, includeVerticalAmountPixels), new PVector(0, includeVerticalAmountPixels), new PVector(-PIXEL_RESOLUTION_X, 0), 1)); // -PIXEL_RESOLUTION_X
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, includeVerticalAmountPixels), new PVector(0, includeVerticalAmountPixels), new PVector(-PIXEL_RESOLUTION_X, 0), 1));
 		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(PIXEL_RESOLUTION_X - 1, 0), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X - 1, PIXEL_RESOLUTION_Y), new PVector(0, -PIXEL_RESOLUTION_Y), 1));
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X, 0), -1)); // -PIXEL_RESOLUTION_X
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X, 0), -1));
 		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(1, 0), new PVector(1, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), -1));
 	}
 	
@@ -74,6 +86,7 @@ public class WeatherAnimation extends BaseAnimation {
 		// Update sequence indicator
 		if(indicatorsequence.doneUpdating) {
 			indicatorsequence.resetSequence();
+			// Trigger next visual indicator
 		}else {
 			indicatorsequence.updateSequence();
 		}
@@ -88,9 +101,16 @@ public class WeatherAnimation extends BaseAnimation {
 				currentpixel.fadeOut(10); // FadeOut
 			}
 		}
+		
+		if(bartest.doneUpdating){
+			bartest.resetSequence();
+			// Reset and toggle to next animation.
+		}else {
+			bartest.updateSequence();
+		}
 	
 		// Update the canvas pixels
-		for(int i = 0; i < canvasPixels.size(); i++) {
+		for(int i = 0; i < canvasPixels.size(); i++) { // canvasPixels
 			Pixel currentpixel = pixels.get(canvasPixels.get(i));
 			currentpixel.update();
 			// Update pixels; fadeIn and fadeOut
@@ -108,6 +128,7 @@ public class WeatherAnimation extends BaseAnimation {
 			g.point(pixel.position.x, pixel.position.y);
 		}
 		if(showTriggerObjects) indicatorsequence.drawTriggerObjects(g);
+		if(showTriggerObjects) bartest.drawTriggerObjects(g);
 	}
 
 	@Override

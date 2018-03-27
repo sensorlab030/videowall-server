@@ -6,12 +6,12 @@ import processing.core.PGraphics;
 
 public class TriggerSequence {
 	
-	private ArrayList<TriggerObject> triggerobjects;
+	public ArrayList<TriggerObject> triggerobjects;
 	int currentTriggerObjectIndex = 0;
 	
 	int delayCounter = 0;
-	int delayStart = 20; // <-- Delay between end and restart sequence
-	int delayEnd = 60; // <-- Delay between end and restart sequence
+	int delayStart = 60; // <-- Delay between end and restart sequence
+	int delayEnd = 40; // <-- Delay between end and restart sequence
 	
 	public boolean doneUpdating = false;
 	
@@ -35,7 +35,7 @@ public class TriggerSequence {
 		
 		// Update the index when the current triggerObject is done
 		if(currentTriggerObject.doneUpdating) {
-			System.err.println("done");
+			System.err.println((currentTriggerObjectIndex + 1) + " of " + (triggerobjects.size()) + " done");
 			// Set to done when all triggerObjects are done updating.
 			if(currentTriggerObjectIndex == triggerobjects.size()-1) {
 				System.err.println("sequence completed");
@@ -62,6 +62,7 @@ public class TriggerSequence {
 	
 	public void resetSequence() {
 		if(delayCounter >= delayEnd) {
+			System.err.println("sequence reset");
 			for(TriggerObject to : triggerobjects) to.resetObjectPosition(); // <-- Reset all object
 			currentTriggerObjectIndex = 0; // <-- Reset index
 			delayCounter = 0; // <-- Reset delay counter to be used in start delay
@@ -70,15 +71,4 @@ public class TriggerSequence {
 			delayCounter++;
 		}
 	}
-	
-	public boolean sequenceDone() {
-		// Check if sequence is done
-		return doneUpdating;
-	}
-	
-	public int getTotalFrameCount() {
-		// Return the amount of frames (time) when sequence is done
-		return 0;
-	}
-
 }
