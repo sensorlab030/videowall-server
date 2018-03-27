@@ -20,8 +20,8 @@ public class WeatherAnimation extends BaseAnimation {
 	private List<Integer> canvasPixels = new ArrayList<Integer>(); // <-- LED's that function as the canvas
 	
 	private int includeVerticalAmountPixels = 5; // Pixels from the top and the bottom to include in the indicator.
+	private boolean showTriggerObjects = false; // Show triggerObjects as guides to trigger lights (pixels)
 	
-	public TriggerObject test;
 	public TriggerSequence indicatorsequence;
 
 	public WeatherAnimation(PApplet applet) {
@@ -72,20 +72,22 @@ public class WeatherAnimation extends BaseAnimation {
 	
 	protected void updatePixels() {
 		// Update sequence indicator
-		indicatorsequence.update();
+		if(indicatorsequence.doneUpdating) {
+			indicatorsequence.resetSequence();
+		}else {
+			indicatorsequence.updateSequence();
+		}
 		
 		// Update indicator pixels
-//		for(int i = 0; i < indicatorPixels.size(); i++) {
-//			Pixel currentpixel = pixels.get(indicatorPixels.get(i));
-//			currentpixel.update();
-//			if(test.isInBounds(currentpixel)) {
-//				// FadeIn
-//				currentpixel.fadeIn(4);
-//			}else {
-//				// FadeOut
-//				currentpixel.fadeOut(10);
-//			}
-//		}
+		for(int i = 0; i < indicatorPixels.size(); i++) {
+			Pixel currentpixel = pixels.get(indicatorPixels.get(i));
+			currentpixel.update();
+			if(indicatorsequence.isInBounds(currentpixel)) {
+				currentpixel.fadeIn(4); // FadeIn
+			}else {
+				currentpixel.fadeOut(10); // FadeOut
+			}
+		}
 	
 		// Update the canvas pixels
 		for(int i = 0; i < canvasPixels.size(); i++) {
@@ -105,7 +107,7 @@ public class WeatherAnimation extends BaseAnimation {
 			g.stroke(pixel.color, pixel.alpha);
 			g.point(pixel.position.x, pixel.position.y);
 		}
-		indicatorsequence.drawTriggerObjects(g);
+		if(showTriggerObjects) indicatorsequence.drawTriggerObjects(g);
 	}
 
 	@Override

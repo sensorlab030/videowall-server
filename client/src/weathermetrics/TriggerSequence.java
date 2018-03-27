@@ -10,8 +10,10 @@ public class TriggerSequence {
 	int currentTriggerObjectIndex = 0;
 	
 	int delayCounter = 0;
+	int delayStart = 20; // <-- Delay between end and restart sequence
 	int delayEnd = 60; // <-- Delay between end and restart sequence
-
+	
+	public boolean doneUpdating = false;
 	
 	public TriggerSequence() { 
 		triggerobjects = new ArrayList<TriggerObject>();
@@ -21,48 +23,57 @@ public class TriggerSequence {
 		triggerobjects.add(_triggerObject);
 	}
 	
-	public void update() {
+	public void updateSequence() {
 		TriggerObject currentTriggerObject = triggerobjects.get(currentTriggerObjectIndex);
-		currentTriggerObject.updateObjectPosition();
+		
+		// Update the triggerObject
+		if(!currentTriggerObject.doneUpdating && delayCounter >= delayStart) { // <-- Delay only relevant for first object
+			currentTriggerObject.updateObjectPosition();
+		}else {
+			delayCounter++;
+		}
+		
+		// Update the index when the current triggerObject is done
 		if(currentTriggerObject.doneUpdating) {
 			System.err.println("done");
-			// Reset all
+			// Set to done when all triggerObjects are done updating.
 			if(currentTriggerObjectIndex == triggerobjects.size()-1) {
-				if(delayCounter >= delayEnd)	{
-					System.err.println("reset sequence");
-					resetSequence();
-					delayCounter = 0;
-				}
-				delayCounter++;
+				System.err.println("sequence completed");
+				doneUpdating = true;
+				delayCounter = 0;
 			}else {
 				currentTriggerObjectIndex++;
 			}
 		}
 	}
 	
+	public boolean isInBounds(Pixel _pixel) {
+		// Check if pixels falls within any of the trigger objects
+		for(TriggerObject to : triggerobjects) if(to.isInBounds(_pixel)) return true;
+		return false;
+	}
+	
 	public void drawTriggerObjects(PGraphics g) {
+		// Draw trigger objects as reference
 		for(TriggerObject to : triggerobjects) {
 			to.drawTriggerObject(g);
 		}
 	}
 	
 	public void resetSequence() {
-		for(TriggerObject to : triggerobjects) {
-			to.resetObjectPosition();
+		if(delayCounter >= delayEnd) {
+			for(TriggerObject to : triggerobjects) to.resetObjectPosition(); // <-- Reset all object
+			currentTriggerObjectIndex = 0; // <-- Reset index
+			delayCounter = 0; // <-- Reset delay counter to be used in start delay
+			doneUpdating = false; // <-- Content needs to be updated again
+		}else {
+			delayCounter++;
 		}
 	}
 	
-//	test.updateObjectPosition();
-//	if(test.doneUpdating) {
-//		applet.println("done");
-//		// Restart
-//		test.resetObjectPosition();
-//	}
-//	
-	
 	public boolean sequenceDone() {
 		// Check if sequence is done
-		return false;
+		return doneUpdating;
 	}
 	
 	public int getTotalFrameCount() {
