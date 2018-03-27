@@ -30,7 +30,6 @@ public class AnimationManager {
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
-		addAnimation("Weather Metrics", new WeatherMetrics(applet));
 		addAnimation("Weather Metrics Pixel", new WeatherAnimation(applet));
 		
 		// Add videos to animation manager

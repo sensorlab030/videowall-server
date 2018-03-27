@@ -6,13 +6,9 @@ import processing.core.PVector;
 // TriggerObjects trigger animations and set 
 public class TriggerObject {
 	
-	// Snapping
-	public int columns; // <-- X
-	public int rows; // <-- Y
-	
 	public boolean doneUpdating = false;
 	
-	public float speed = 4; // Default
+	public float speed = 0.25f; // Default
 	public int direction = 1;
 	
 	// Positions to create the trigger vertex; use dist() to control opacity etc. of the LEDs
@@ -21,7 +17,7 @@ public class TriggerObject {
 	public PVector positionOffsetTarget; // <-- Target movement
 	public PVector positionOffsetOriginal; // <-- So we can reset the animation
 	
-	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset) {
+	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset, int _direction) {
 		this.positionA = _positionA;
 		this.positionB = _positionB;
 		this.positionC = _positionC;
@@ -29,13 +25,12 @@ public class TriggerObject {
 		this.positionOffset = _positionOffset;
 		this.positionOffsetTarget = new PVector(0, 0); // <-- Make sure it's a new PVector
 		this.positionOffsetOriginal = new PVector(_positionOffset.x, _positionOffset.y);
+		this.direction = _direction;
 	}
 	
-	public boolean isInBounds(LED _led) {
-		if((_led.positionA.x > (positionA.x + positionOffset.x) && _led.positionA.x < (positionB.x + positionOffset.x)) 
-				&& (_led.positionB.x > (positionA.x + positionOffset.x) && _led.positionB.x < (positionB.x  + positionOffset.x))
-				&& (_led.positionA.y > (positionB.y + positionOffset.y) && _led.positionA.y < (positionD.y + positionOffset.y)) 
-				&& (_led.positionB.y > (positionB.y + positionOffset.y) && _led.positionB.y < (positionD.y  + positionOffset.y))) return true;
+	public boolean isInBounds(Pixel _pixel) {
+		if((_pixel.position.x >= (positionA.x + positionOffset.x) && _pixel.position.x < (positionB.x + positionOffset.x)) 
+		&& (_pixel.position.y >= (positionB.y + positionOffset.y) && _pixel.position.y < (positionD.y + positionOffset.y)))  return true;
 		return false;
 	}
 	
@@ -53,7 +48,8 @@ public class TriggerObject {
 	}
 	
 	public void resetObjectPosition() {
-		positionOffset = new PVector(positionOffsetOriginal.x, positionOffsetOriginal.y);
+		positionOffset.x = positionOffsetOriginal.x;
+		positionOffset.y = positionOffsetOriginal.y;
 		doneUpdating = false;
 	}
 	
@@ -69,4 +65,6 @@ public class TriggerObject {
 		g.endShape();
 		g.popStyle();
 	}
+	
+	
 }
