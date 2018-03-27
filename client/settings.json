@@ -3,5 +3,5 @@
 	"driverPort2": "COM4", 
 	"videoDir": "",
 	"imageDir": "",
-	"IPSERVER": ""
+	"ipServer": ""
 }

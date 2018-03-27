@@ -17,7 +17,7 @@ import processing.core.PImage;
 public class VideoStream extends BaseCanvasAnimation {
 
 	// Constants
-	private static final String IPSERVER = Settings.getValue("IPSERVER"); // IP address of the server machine
+	private static final String IPSERVER = Settings.getValue("ipServer"); // IP address of the server machine
 
 	// Aspect ratio sent by the UDP video stream server
 	private final int CAPTURE_WIDTH = 108;
