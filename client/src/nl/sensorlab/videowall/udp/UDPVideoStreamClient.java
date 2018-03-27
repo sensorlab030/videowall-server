@@ -75,7 +75,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * Synchronize streamImageLock to current streamImage
 	 * @return streamImage
 	 */
-	public BufferedImage getStreamImage() {
+	private BufferedImage getStreamImage() {
 
 		synchronized (streamImageLock) {
 			return streamImage;
@@ -90,7 +90,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * ARGB image type
 	 * @param tmpImage: Buffered image containing ARGB bytes data
 	 */
-	public void setARGBData(BufferedImage tmpImage) {
+	private void setARGBData(BufferedImage tmpImage) {
 		int bufferIndex = 3;
 
 		for (int y = 0; y < tmpImage.getHeight(); y++) {
@@ -109,7 +109,7 @@ public class UDPVideoStreamClient implements Runnable {
 	/**
 	 * Receives image datagram packet and updates the streamImage to new image
 	 */
-	public void receivePacket() {
+	private void receivePacket() {
 		try {
 
 			// Receive packet header
@@ -165,7 +165,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * Transform a Buffered image data to a Pimage
 	 * @param bimg, buffered image
 	 */
-    public PImage bufferedImageToPImage(BufferedImage bimg) {
+    private PImage bufferedImageToPImage(BufferedImage bimg) {
     	PImage frame = new PImage(captureWidth, captureHeight, PConstants.ARGB);
 
 		try {
