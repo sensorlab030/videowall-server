@@ -20,7 +20,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 
 	
 	// Demo
-	private TriggerObject testobjectTop, testobjectRight, testobjectBottom, testobjectLeft;
+	private TriggerObject testobjectTop, testobjectRight, testobjectBottom, testobjectLeft, testobjectMove;
 	
 	// Indicator updater
 	private int currentIndicatorIndex = 0;
@@ -39,6 +39,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		float w = 25;
 		
 		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(wCancas, 0), new PVector(wCancas,h), new PVector(0,h), new PVector(-wCancas, 0));
+		
 		testobjectRight = new TriggerObject(new PVector(wCancas - w,  0), new PVector(wCancas, 0), new PVector(wCancas, hCanvas), new PVector(wCancas - w, hCanvas), new PVector(0, -hCanvas));
 		testobjectRight.speed = 2;
 
@@ -49,9 +50,9 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 		testobjectBottom = new TriggerObject(new PVector(0, hCanvas - h), new PVector(wCancas, hCanvas - h), new PVector(wCancas,hCanvas), new PVector(0,hCanvas), new PVector(wCancas, 0));
 		testobjectBottom.toggleDirection();
 		
-//		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(w, 0), new PVector(w,h), new PVector(0,h), new PVector(-w, 0));
-//		testobjectTop = new TriggerObject(new PVector(0,0), new PVector(w, 0), new PVector(w,h), new PVector(0,h), new PVector(-w, 0));
-
+		w = 50;
+		testobjectMove =  new TriggerObject(new PVector(wCancas - w,  0), new PVector(wCancas, 0), new PVector(wCancas, hCanvas), new PVector(wCancas - w, hCanvas), new PVector(-wCancas, 0));
+		testobjectMove.speed = 2;
 		// Generate the LEDs
 		generateLEDs();
 	} 
@@ -185,7 +186,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 //		testobject.drawTriggerObject(g);
 //		testobjectTop.updateObjectPosition();
 		
-		
+//		testobjectMove.drawTriggerObject(g);
 		
 		
 //		testobjectLeft.updateObjectPosition();
@@ -214,7 +215,7 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 					testobjectLeft.updateObjectPosition();
 					
 					if(testobjectLeft.doneUpdating) {
-						applet.println("doneUpdating");	
+						
 						patrickcounter++;
 						if(patrickcounter >= 60) {
 						// Reset
@@ -228,6 +229,13 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 				}
 			}
 		}
+		
+		
+		testobjectMove.updateObjectPosition();
+		if(testobjectMove.doneUpdating) {
+			
+			testobjectMove.resetObjectPosition();
+		}
 
 		// Check if LED is within bounds; if so fadeIn
 		for(LED led:leds) {
@@ -235,7 +243,14 @@ public class WeatherMetrics extends BaseCanvasAnimation {
 				led.fadeIn(10);
 				led.color = PColor.color(255,0,0);
 			}else {
-				led.fadeOut(10);
+				if(testobjectMove.isInBounds(led)) {
+//					applet.println("doneUpdating");	
+					led.fadeIn(10);
+//					led.color = PColor.color(255,0,255);
+				}else {
+					led.fadeOut(10);
+//					led.color = PColor.color(255,255,0);
+				}
 			}
 			led.update();
 		}
