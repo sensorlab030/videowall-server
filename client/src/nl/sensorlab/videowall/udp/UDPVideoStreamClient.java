@@ -8,42 +8,38 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
+import com.cleverfranke.util.Settings;
+
 import processing.core.PConstants;
 import processing.core.PImage;
 
 public class UDPVideoStreamClient implements Runnable {
 
 	// Misc constants
-	private static final int PORT_IN = 10233;							// Network in port
-	private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;	// Buffered image type
+	private static final int PORT_IN = 10233;								// Network in port
+	private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;		// Buffered image type
+	private static final String IPSERVER = Settings.getValue("ipServer"); 	// IP address of the server machine
+	private static final int CAPTURE_WIDTH = 108;							// Aspect ratio (width) sent by the UDP video stream server
+	private static final int CAPTURE_HEIGHT = 81;							// Aspect ratio (height) sent by the UDP video stream server
 
-	// Constructor Fields
-	private int captureWidth, captureHeight;							// Dimensions of received image
-	private String IPServer;
 
 	// Misc
-	private DatagramSocket inSocket;					// Receive socket
-	private byte[] inBuffer = new byte[65508];			// In buffer (max 65508b)
-	private volatile BufferedImage streamImage; 		// Stream image
-	private Object streamImageLock = new Object();		// Lock for stream image
-	public boolean running = true;						// Looping while true
+	private DatagramSocket inSocket;																				// Receive socket
+	private volatile BufferedImage streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE); 		// Stream image
+	private Object streamImageLock = new Object();																	// Lock for stream image
+
+	// Public status
+	public boolean running = true;
 	public Thread t;
 
-	public UDPVideoStreamClient(int captureWidth, int captureHeight, String IPServer) {
-		this.captureWidth = captureWidth;
-		this.captureHeight = captureHeight;
-		this.IPServer = IPServer;
+
+	public UDPVideoStreamClient() {
 
 		try {
 
 			// Initialize receiving socket
 			inSocket = new DatagramSocket(PORT_IN);
 			inSocket.setSoTimeout(100);
-
-			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort() + ". Expecting packets from IP : " + IPServer);
-
-			// Initialize image
-			streamImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
 
 			// Start deamon thread for listening
 			t = new Thread(this);
@@ -52,6 +48,14 @@ public class UDPVideoStreamClient implements Runnable {
 
 		} catch (SocketException e) {
 			e.printStackTrace();
+		}
+
+		// Check if IPSERVER has been provided
+		if (IPSERVER.equals("")) {
+			System.out.println("Please provide an IP address (ipServer) for the server in settings.json, and then restart the application!");
+			running = false;
+		} else {
+			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort() + ". Expecting packets from IP : " + IPSERVER);
 		}
 	}
 
@@ -89,7 +93,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * ARGB image type
 	 * @param tmpImage: Buffered image containing ARGB bytes data
 	 */
-	private void setARGBData(BufferedImage tmpImage) {
+	private void setARGBData(BufferedImage tmpImage, byte[] inBuffer) {
 		int bufferIndex = 3;
 
 		for (int y = 0; y < tmpImage.getHeight(); y++) {
@@ -109,6 +113,8 @@ public class UDPVideoStreamClient implements Runnable {
 	 * Receives image datagram packet and updates the streamImage to new image
 	 */
 	private void receivePacket() {
+		byte[] inBuffer = new byte[65508];			// In buffer (max 65508b)
+
 		try {
 
 			// Receive packet header
@@ -118,13 +124,8 @@ public class UDPVideoStreamClient implements Runnable {
 			// Check origin of the packet
 			String originAddress = packet.getAddress().toString();
 
-			if (IPServer.equals("")) {
-				System.out.println("Please provide an IP address for the server in settings.json, IPServer!");
-				return;
-			}
-
-			if (!originAddress.equals("/" + IPServer)) {
-				System.out.println("Received a packet from another IP than " + IPServer);
+			if (!originAddress.equals("/" + IPSERVER)) {
+				System.out.println("Received a packet from another IP than " + IPSERVER);
 				return;
 			}
 
@@ -135,10 +136,10 @@ public class UDPVideoStreamClient implements Runnable {
 			if (header.equals("IMG")) { // Image packet
 
 				// Create buffered image
-				BufferedImage tmpImage = new BufferedImage(captureWidth, captureHeight, IMAGE_TYPE);
+				BufferedImage tmpImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
 
 				// Update buffered image with RGB image data
-				setARGBData(tmpImage);
+				setARGBData(tmpImage, inBuffer);
 
 				// Replace image with tmp image
 				synchronized (streamImageLock) {
@@ -165,7 +166,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * @param bimg, buffered image
 	 */
     private PImage bufferedImageToPImage(BufferedImage bimg) {
-    	PImage frame = new PImage(captureWidth, captureHeight, PConstants.ARGB);
+    	PImage frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
 
 		try {
 
@@ -195,6 +196,7 @@ public class UDPVideoStreamClient implements Runnable {
 
 		return bufferedImageToPImage(buffImage);
     }
+
 
 	@Override
 	public void run() {}

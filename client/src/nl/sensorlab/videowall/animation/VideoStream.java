@@ -4,10 +4,8 @@ import nl.sensorlab.videowall.udp.UDPVideoStreamClient;
 
 import java.awt.Rectangle;
 
-import com.cleverfranke.util.Settings;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -15,13 +13,6 @@ import processing.core.PImage;
  * Animation class that starts a UDP Client of video streams and display the received images on the wall
  */
 public class VideoStream extends BaseCanvasAnimation {
-
-	// Constants
-	private static final String IPSERVER = Settings.getValue("ipServer"); // IP address of the server machine
-
-	// Aspect ratio sent by the UDP video stream server
-	private final int CAPTURE_WIDTH = 108;
-	private final int CAPTURE_HEIGHT = 81;
 
 	// Images and stream
 	private UDPVideoStreamClient udpClient;
@@ -36,7 +27,7 @@ public class VideoStream extends BaseCanvasAnimation {
 		canvasGeometry = getGeometry();
 
 		// Init UDP Video Stream Client
-		udpClient = new UDPVideoStreamClient(CAPTURE_WIDTH, CAPTURE_HEIGHT, IPSERVER);
+		udpClient = new UDPVideoStreamClient();
 	}
 
 
@@ -45,23 +36,19 @@ public class VideoStream extends BaseCanvasAnimation {
 	protected final void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
 
-		// Create placeholder image
-		frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
-
 		if (udpClient.running && !udpClient.t.isInterrupted()) {
 
 			// Get image from stream
 			frame = udpClient.getImage();
 			frame.resize(canvasGeometry.width, canvasGeometry.height);
 
+			// Draw image on canvas
+			g.image(frame, 0, 0);
 		} else {
 
 			// Stop UDP Client
 			udpClient.stop();
 
 		}
-
-		// Draw image on canvas
-		g.image(frame, 0, 0);
 	}
 }
