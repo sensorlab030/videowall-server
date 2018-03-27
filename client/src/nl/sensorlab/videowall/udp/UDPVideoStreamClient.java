@@ -52,7 +52,6 @@ public class UDPVideoStreamClient implements Runnable {
 
 		} catch (SocketException e) {
 			e.printStackTrace();
-			System.exit (1);
 		}
 	}
 
