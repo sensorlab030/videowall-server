@@ -36,19 +36,11 @@ public class VideoStream extends BaseCanvasAnimation {
 	protected final void drawCanvasAnimationFrame(PGraphics g) {
 		g.background(0);
 
-		if (udpClient.running && !udpClient.t.isInterrupted()) {
+		// Get image from stream
+		frame = udpClient.getImage();
+		frame.resize(canvasGeometry.width, canvasGeometry.height);
 
-			// Get image from stream
-			frame = udpClient.getImage();
-			frame.resize(canvasGeometry.width, canvasGeometry.height);
-
-			// Draw image on canvas
-			g.image(frame, 0, 0);
-		} else {
-
-			// Stop UDP Client
-			udpClient.stop();
-
-		}
+		// Draw image on canvas
+		g.image(frame, 0, 0);
 	}
 }

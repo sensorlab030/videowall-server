@@ -24,13 +24,13 @@ public class UDPVideoStreamClient implements Runnable {
 
 
 	// Misc
-	private DatagramSocket inSocket;																				// Receive socket
-	private volatile BufferedImage streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE); 		// Stream image
-	private Object streamImageLock = new Object();																	// Lock for stream image
+	private DatagramSocket inSocket;						// Receive socket
+	private volatile BufferedImage streamImage; 			// Stream image
+	private Object streamImageLock = new Object();			// Lock for stream image
 
-	// Public status
-	public boolean running = true;
-	public Thread t;
+	// Thread status
+	private boolean running = true;
+	private Thread t;
 
 
 	public UDPVideoStreamClient() {
@@ -40,6 +40,9 @@ public class UDPVideoStreamClient implements Runnable {
 			// Initialize receiving socket
 			inSocket = new DatagramSocket(PORT_IN);
 			inSocket.setSoTimeout(100);
+
+			// Initialize image
+			streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
 
 			// Start deamon thread for listening
 			t = new Thread(this);
@@ -68,8 +71,7 @@ public class UDPVideoStreamClient implements Runnable {
 
 		running = false;
 		inSocket.disconnect();
-		inSocket.close();
-		System.out.println("UDP Video Stream Client thread exited");
+
 	}
 
 
@@ -93,7 +95,11 @@ public class UDPVideoStreamClient implements Runnable {
 	 * ARGB image type
 	 * @param tmpImage: Buffered image containing ARGB bytes data
 	 */
-	private void setARGBData(BufferedImage tmpImage, byte[] inBuffer) {
+	private BufferedImage setARGBData(byte[] inBuffer) {
+		// Create buffered image
+		BufferedImage tmpImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
+
+		// Start buffer index after Header tag
 		int bufferIndex = 3;
 
 		for (int y = 0; y < tmpImage.getHeight(); y++) {
@@ -106,55 +112,69 @@ public class UDPVideoStreamClient implements Runnable {
 				tmpImage.setRGB(x, y, (alpha << 24) + (red << 16) + (green << 8) + blue);
 			}
 		}
+
+		return tmpImage;
 	}
+
+
+
+	/**
+	 * Set the image buffer received to the streamImageLock
+	 * @param inBuffer
+	 */
+	private void setImage(byte[] inBuffer) {
+		// Extract header and update index
+		String header = new String(Arrays.copyOfRange(inBuffer, 0, 3));
+
+		// Parse content
+		if (header.equals("IMG")) { // Image packet
+
+			// Update buffered image with RGB image data and replace image with tmp image
+			synchronized (streamImageLock) {
+				streamImage = setARGBData(inBuffer);
+			}
+
+		} else {
+			System.err.println("Invalid packet received (invalid header)");
+		}
+	}
+
+
+
+	/**
+	 * Check if the origin IP address of the received packet is as expected
+	 * @param packet
+	 * @return boolean
+	 */
+	private boolean checkIpServer(DatagramPacket packet ) {
+		return packet.getAddress().toString().equals("/" + IPSERVER);
+	}
+
 
 
 	/**
 	 * Receives image datagram packet and updates the streamImage to new image
 	 */
 	private void receivePacket() {
-		byte[] inBuffer = new byte[65508];			// In buffer (max 65508b)
+		byte[] inBuffer = new byte[65508]; // In buffer (max 65508b)
 
 		try {
 
-			// Receive packet header
+			// Receive packet
 			DatagramPacket packet = new DatagramPacket(inBuffer, inBuffer.length);
 			inSocket.receive(packet);
 
-			// Check origin of the packet
-			String originAddress = packet.getAddress().toString();
-
-			if (!originAddress.equals("/" + IPSERVER)) {
+			// Update image if origin of the packet is correct
+			if (!checkIpServer(packet)) {
 				System.out.println("Received a packet from another IP than " + IPSERVER);
-				return;
-			}
-
-			// Extract header and update index
-			String header = new String(Arrays.copyOfRange(inBuffer, 0, 3));
-
-			// Parse content
-			if (header.equals("IMG")) { // Image packet
-
-				// Create buffered image
-				BufferedImage tmpImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
-
-				// Update buffered image with RGB image data
-				setARGBData(tmpImage, inBuffer);
-
-				// Replace image with tmp image
-				synchronized (streamImageLock) {
-					streamImage = tmpImage;
-				}
-
 			} else {
-				System.err.println("Invalid packet received (invalid header)");
+				setImage(inBuffer);
 			}
 
 		} catch (SocketTimeoutException e) {
 			// Doesn't matter, had no RX
 		} catch (SocketException e) {
 			System.err.println (e.toString());
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -191,7 +211,6 @@ public class UDPVideoStreamClient implements Runnable {
      */
     public PImage getImage() {
 
-		receivePacket();
 		BufferedImage buffImage = getStreamImage();
 
 		return bufferedImageToPImage(buffImage);
@@ -199,5 +218,13 @@ public class UDPVideoStreamClient implements Runnable {
 
 
 	@Override
-	public void run() {}
+	public void run() {
+		while (running && !t.isInterrupted()) {
+			receivePacket();
+		}
+		stop();
+		inSocket.close();
+
+		System.out.println("UPD Video Stream Client thread exited");
+	}
 }
