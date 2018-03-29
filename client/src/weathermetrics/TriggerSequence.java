@@ -10,8 +10,8 @@ public class TriggerSequence {
 	int currentTriggerObjectIndex = 0;
 	
 	int delayCounter = 0;
-	int delayStart = 60; // <-- Delay between end and restart sequence
-	int delayEnd = 40; // <-- Delay between end and restart sequence
+	int delayStart = 40; // <-- Delay between end and restart sequence
+	int delayEnd = 60; // <-- Delay between end and restart sequence
 	
 	public boolean doneUpdating = false;
 	
@@ -23,6 +23,7 @@ public class TriggerSequence {
 		triggerobjects.add(_triggerObject);
 	}
 	
+	// Sequencing
 	public void updateSequence() {
 		TriggerObject currentTriggerObject = triggerobjects.get(currentTriggerObjectIndex);
 		
@@ -38,11 +39,28 @@ public class TriggerSequence {
 			System.err.println((currentTriggerObjectIndex + 1) + " of " + (triggerobjects.size()) + " done");
 			// Set to done when all triggerObjects are done updating.
 			if(currentTriggerObjectIndex == triggerobjects.size()-1) {
-				System.err.println("sequence completed");
+				System.err.println("updateSequence() sequence completed");
 				doneUpdating = true;
 				delayCounter = 0;
 			}else {
 				currentTriggerObjectIndex++;
+			}
+		}
+	}
+	
+	// Animate all
+	public void updateAll() {
+		for(TriggerObject to : triggerobjects) { 
+			if(!to.doneUpdating) {
+				to.updateObjectPosition();
+			}else {
+				if(currentTriggerObjectIndex == triggerobjects.size()-1) {
+					System.err.println("updateAll() sequence completed");
+					doneUpdating = true;
+					delayCounter = 0;
+				}else {
+					currentTriggerObjectIndex++;
+				}
 			}
 		}
 	}
@@ -63,7 +81,7 @@ public class TriggerSequence {
 	public void resetSequence() {
 		if(delayCounter >= delayEnd) {
 			System.err.println("sequence reset");
-			for(TriggerObject to : triggerobjects) to.resetObjectPosition(); // <-- Reset all object
+			for(TriggerObject to : triggerobjects) to.resetObjectPosition(); // <-- Reset all objects
 			currentTriggerObjectIndex = 0; // <-- Reset index
 			delayCounter = 0; // <-- Reset delay counter to be used in start delay
 			doneUpdating = false; // <-- Content needs to be updated again

@@ -1,6 +1,8 @@
 package weathermetrics;
 
 import de.looksgood.ani.Ani;
+import de.looksgood.ani.easing.CustomEasing;
+import de.looksgood.ani.easing.Easing;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -8,12 +10,12 @@ import processing.core.PVector;
 public class TriggerObject {
 	
 	public boolean doneUpdating = false;
-	public boolean allowAni = true;
+	public boolean allowAni = true; // <-- Init Animation; this need to be set to true to make sure we can check if the Ani has ended
 	
-	public float speed = 10; // Default
-	public int direction = 1;
+	public float speed = 2; // Default
 	
-	Ani px, py; // Ani object for transitioning
+	Ani AniX, AniY; // Ani object for transitioning
+	Easing AniEasing; // Make the easing updatable
 	
 	// Positions to create the trigger vertex; use dist() to control opacity etc. of the LEDs
 	public PVector positionA, positionB, positionC, positionD;
@@ -21,7 +23,7 @@ public class TriggerObject {
 	public PVector positionOffsetTarget; // <-- Target movement
 	public PVector positionOffsetOriginal; // <-- So we can reset the animation
 	
-	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset, int _direction) {
+	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset, Easing _aniEasing) {
 		this.positionA = _positionA;
 		this.positionB = _positionB;
 		this.positionC = _positionC;
@@ -29,7 +31,7 @@ public class TriggerObject {
 		this.positionOffset = _positionOffset;
 		this.positionOffsetTarget = new PVector(0, 0); // <-- Make sure it's a new PVector
 		this.positionOffsetOriginal = new PVector(_positionOffset.x, _positionOffset.y);
-		this.direction = _direction;
+		this.AniEasing = _aniEasing;
 	}
 	
 	public boolean isInBounds(Pixel _pixel) {
@@ -42,38 +44,23 @@ public class TriggerObject {
 		if(!doneUpdating) {
 			if(allowAni) {
 				allowAni = false;
-				px = new Ani(this.positionOffset, speed, "x", this.positionOffsetTarget.x, Ani.LINEAR);
-				py = new Ani(this.positionOffset, speed, "y", this.positionOffsetTarget.y, Ani.LINEAR);
-				
+				AniX = new Ani(this.positionOffset, speed, "x", this.positionOffsetTarget.x, AniEasing);
+				AniY = new Ani(this.positionOffset, speed, "y", this.positionOffsetTarget.y, AniEasing);
 			}else {
 				// Check if ANI is done
-				if(px.isEnded() && py.isEnded()) {
+				if(AniX.isEnded() && AniY.isEnded()) {
 					doneUpdating = true;
 					allowAni = true;
 				}
 			}
 		}
-//		float dist = PVector.dist(positionOffset, positionOffsetTarget); 
-//		if(dist == 0) {
-//			doneUpdating = true;
-//		}else {
-//			if(PVector.dist(new PVector(positionOffset.x, (float) 0), new PVector(positionOffsetTarget.x, (float) 0)) != 0) { 
-//				positionOffset.x += (speed * direction);
-//			}
-//			if(PVector.dist(new PVector((float) 0, positionOffset.y), new PVector((float) 0, positionOffsetTarget.y)) != 0) {
-//				positionOffset.y += (speed * direction);
-//			}
-//		}
-	}
-	
-	public void toggleDirection() {
-		direction = direction == -1 ? 1 : -1;
 	}
 	
 	public void resetObjectPosition() {
 		positionOffset.x = positionOffsetOriginal.x;
 		positionOffset.y = positionOffsetOriginal.y;
 		doneUpdating = false;
+		allowAni = true;
 	}
 	
 	public void drawTriggerObject(PGraphics g) {
@@ -88,6 +75,4 @@ public class TriggerObject {
 		g.endShape();
 		g.popStyle();
 	}
-	
-	
 }

@@ -1,4 +1,5 @@
 package weathermetrics;
+import de.looksgood.ani.Ani;
 import processing.core.PVector;
 
 public class Pixel {
@@ -6,38 +7,58 @@ public class Pixel {
 	public PVector position;
 	public int color;
 	
-	public float alpha;
+	Ani aniAlpha;
 	
-	public float speed = 10;
-	public int direction = 1;
+	public float alpha = 0;
+	public float alphaTarget = 0;
+	
+	public float speed;
 	
 	public boolean doneUpdating = false;
+	public boolean allowAni = true;
 	
 	public Pixel(PVector _position) {
 		this.position = _position;
 	}
 	
-	public void fadeIn(float _speed) {
-		speed = _speed;
-		direction = 1;
-	}
-	
-	public void fadeOut(float _speed) {
-		speed = _speed;
-		direction = -1;
-	}
-	
-	public void toggleDirection() {
-		direction = direction == -1 ? 1 : -1;
-	}
-	
 	public void update() {
-		if(alpha > 255 || alpha < 0) { // We can add a target alpha later;
-			alpha = alpha > 255 ? 255 : 0; // Make sure alpha is clamped so doneAnimating will not be set when exceeding
-			doneUpdating = true;
-		}else {
-			alpha += (speed * direction);
+		if(!doneUpdating) {
+			if(allowAni) {
+				allowAni = false;
+				aniAlpha = new Ani(this, speed, "alpha", alphaTarget, Ani.LINEAR);
+			}else {
+				// Check if ANI is done
+				if(aniAlpha.isEnded()) {
+					doneUpdating = true;
+					allowAni = true;
+				}
+			}
 		}
 	}
 	
+	public void fadeIn(float _speed, float _alphaTarget) {
+		// Check if the alpha target is different then the current alpha target; if so allow overwrite
+		if(_alphaTarget != alphaTarget) {
+			allowAni = true;
+			doneUpdating = false;
+		}
+		alphaTarget =  _alphaTarget;
+		speed =  _speed;
+	}
+	
+	public void fadeOut(float _speed, float _alphaTarget) {
+		// Check if the alpha target is different then the current alpha target; if so allow overwrite
+		if(_alphaTarget != alphaTarget) {
+			allowAni = true;
+			doneUpdating = false;
+		}
+		alphaTarget = (float) _alphaTarget;
+		speed = (float) _speed;
+	}
+	
+	public void toggleAlphaTarget() {
+		alphaTarget = alphaTarget == 255 ? 0 : 255;
+		allowAni = true;
+		doneUpdating = false;
+	}
 }
