@@ -29,37 +29,13 @@ public class UDPVideoStreamClient implements Runnable {
 	private Object streamImageLock = new Object();			// Lock for stream image
 
 	// Thread status
-	private boolean running = true;
+	private boolean running = false;
 	private Thread t;
 
 
 	public UDPVideoStreamClient() {
-
-		try {
-
-			// Initialize receiving socket
-			inSocket = new DatagramSocket(PORT_IN);
-			inSocket.setSoTimeout(100);
-
-			// Initialize image
-			streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
-
-			// Start deamon thread for listening
-			t = new Thread(this);
-			t.setDaemon(true);
-			t.start();
-
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-
-		// Check if IPSERVER has been provided
-		if (IPSERVER.equals("")) {
-			System.out.println("Please provide an IP address (ipServer) for the server in settings.json, and then restart the application!");
-			running = false;
-		} else {
-			System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort() + ". Expecting packets from IP : " + IPSERVER);
-		}
+		// Initialize image
+		streamImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
 	}
 
 
@@ -69,8 +45,41 @@ public class UDPVideoStreamClient implements Runnable {
 	 */
 	public void stop() {
 
-		running = false;
 		inSocket.disconnect();
+		running = false;
+
+	}
+
+	public void start() {
+
+		// Check if IPSERVER has been provided
+		if (IPSERVER.equals("")) {
+
+			System.out.println("Please provide an IP address (ipServer) for the server in settings.json, and then restart the application!");
+			running = false;
+
+		} else {
+
+			try {
+
+				// Initialize receiving socket
+				inSocket = new DatagramSocket(PORT_IN);
+				inSocket.setSoTimeout(100);
+
+				// Start deamon thread for listening
+				t = new Thread(this);
+				t.setDaemon(true);
+				t.start();
+
+				// Enable client
+				running = true;
+				System.out.println("UDP Video Stream Client / Listening to port: " + inSocket.getLocalPort() + ". Expecting packets from IP : " + IPSERVER);
+
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 
@@ -96,6 +105,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * @param tmpImage: Buffered image containing ARGB bytes data
 	 */
 	private BufferedImage setARGBData(byte[] inBuffer) {
+
 		// Create buffered image
 		BufferedImage tmpImage = new BufferedImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, IMAGE_TYPE);
 
@@ -114,6 +124,7 @@ public class UDPVideoStreamClient implements Runnable {
 		}
 
 		return tmpImage;
+
 	}
 
 
@@ -123,6 +134,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * @param inBuffer
 	 */
 	private void setImage(byte[] inBuffer) {
+
 		// Extract header and update index
 		String header = new String(Arrays.copyOfRange(inBuffer, 0, 3));
 
@@ -137,6 +149,7 @@ public class UDPVideoStreamClient implements Runnable {
 		} else {
 			System.err.println("Invalid packet received (invalid header)");
 		}
+
 	}
 
 
@@ -156,6 +169,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * Receives image datagram packet and updates the streamImage to new image
 	 */
 	private void receivePacket() {
+
 		byte[] inBuffer = new byte[65508]; // In buffer (max 65508b)
 
 		try {
@@ -186,6 +200,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * @param bimg, buffered image
 	 */
     private PImage bufferedImageToPImage(BufferedImage bimg) {
+
     	PImage frame = new PImage(CAPTURE_WIDTH, CAPTURE_HEIGHT, PConstants.ARGB);
 
 		try {
@@ -219,12 +234,15 @@ public class UDPVideoStreamClient implements Runnable {
 
 	@Override
 	public void run() {
+
 		while (running && !t.isInterrupted()) {
 			receivePacket();
 		}
+
 		stop();
 		inSocket.close();
 
-		System.out.println("UPD Video Stream Client thread exited");
+		System.out.println("UPD Video Stream Client stopped");
+
 	}
 }

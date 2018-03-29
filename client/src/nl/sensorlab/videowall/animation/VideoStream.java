@@ -26,7 +26,6 @@ public class VideoStream extends BaseCanvasAnimation {
 		// Get canvas geometry for future resize
 		canvasGeometry = getGeometry();
 
-		// Init UDP Video Stream Client
 		udpClient = new UDPVideoStreamClient();
 	}
 
@@ -34,6 +33,7 @@ public class VideoStream extends BaseCanvasAnimation {
 
 	@Override
 	protected final void drawCanvasAnimationFrame(PGraphics g) {
+
 		g.background(0);
 
 		// Get image from stream
@@ -42,5 +42,24 @@ public class VideoStream extends BaseCanvasAnimation {
 
 		// Draw image on canvas
 		g.image(frame, 0, 0);
+	}
+
+
+	/**
+	 *  Init UDP Video Stream Client
+	 */
+	@Override
+	public void isStarting() {
+		udpClient.start();
+	}
+
+
+
+	/**
+	 *  Stop UDP Video Stream Client
+	 */
+	@Override
+	public void isStopping() {
+		udpClient.stop();
 	}
 }
