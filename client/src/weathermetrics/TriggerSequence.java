@@ -10,8 +10,8 @@ public class TriggerSequence {
 	int currentTriggerObjectIndex = 0;
 	
 	int delayCounter = 0;
-	int delayStart = 40; // <-- Delay between end and restart sequence
-	int delayEnd = 60; // <-- Delay between end and restart sequence
+	int delayStart = 0;//40; // <-- Delay between end and restart sequence
+	int delayEnd = 0;//60; // <-- Delay between end and restart sequence
 	
 	public boolean doneUpdating = false;
 	
