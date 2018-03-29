@@ -18,7 +18,7 @@ public class UDPVideoStreamClient implements Runnable {
 	// Misc constants
 	private static final int PORT_IN = 10233;								// Network in port
 	private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_ARGB;		// Buffered image type
-	private static final String IPSERVER = Settings.getValue("ipServer"); 	// IP address of the server machine
+	private static final String IPSERVER = Settings.getValue("ipServer", ""); 	// IP address of the server machine
 	private static final int CAPTURE_WIDTH = 108;							// Aspect ratio (width) sent by the UDP video stream server
 	private static final int CAPTURE_HEIGHT = 81;							// Aspect ratio (height) sent by the UDP video stream server
 
