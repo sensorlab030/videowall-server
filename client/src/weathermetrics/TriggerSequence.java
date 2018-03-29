@@ -78,6 +78,18 @@ public class TriggerSequence {
 		}
 	}
 	
+	public void reverseSequence() {
+		if(delayCounter >= delayEnd) {
+			System.err.println("sequence reset");
+			for(TriggerObject to : triggerobjects) to.reverseObjectPosition(); // <-- Reset all objects
+			currentTriggerObjectIndex = 0; // <-- Reset index
+			delayCounter = 0; // <-- Reset delay counter to be used in start delay
+			doneUpdating = false; // <-- Content needs to be updated again
+		}else {
+			delayCounter++;
+		}
+	}
+	
 	public void resetSequence() {
 		if(delayCounter >= delayEnd) {
 			System.err.println("sequence reset");

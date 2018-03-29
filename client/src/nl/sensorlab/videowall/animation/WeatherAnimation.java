@@ -7,6 +7,7 @@ import com.cleverfranke.util.PColor;
 
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PVector;
 import weathermetrics.Pixel;
@@ -24,6 +25,9 @@ public class WeatherAnimation extends BaseAnimation {
 	private boolean showTriggerObjects = false; // Show triggerObjects as guides to trigger lights (pixels)
 	
 	public TriggerSequence indicatorsequence, bartest;
+	
+	PGraphics stretchFont;
+	PFont pixelFont;
 
 	public WeatherAnimation(PApplet applet) {
 		super(applet);
@@ -38,20 +42,37 @@ public class WeatherAnimation extends BaseAnimation {
 		pixels = new ArrayList<Pixel>();
 		generatePixelObjects(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
+		// Set pixel font
+		pixelFont = applet.createFont("data/Pixeled.tff", 10);
+		
 		indicatorsequence = new TriggerSequence();
 		bartest = new TriggerSequence();
 		
-		for(int t = 1; t < PIXEL_RESOLUTION_X - 2; t+=2) {
-			TriggerObject temp = new TriggerObject(new PVector(t, includeVerticalAmountPixels), new PVector(t + 2, includeVerticalAmountPixels), new PVector(t + 2, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(t, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(0, PIXEL_RESOLUTION_Y), Ani.CIRC_IN_OUT);
-			temp.speed = 2;
+		for(int x = 1; x < PIXEL_RESOLUTION_X - 2; x+=2) {
+			
+			float minPrecp = 0;
+			float maxPrecp = 200;
+			float randomPrecp = applet.random(10 + minPrecp, maxPrecp);
+			
+			float mapYleds = applet.map(randomPrecp, minPrecp, maxPrecp, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels, includeVerticalAmountPixels);
+			
+			TriggerObject temp = new TriggerObject(
+								new PVector(x, mapYleds), 
+								new PVector(x + 2, mapYleds), 
+								new PVector(x + 2, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), 
+								new PVector(x, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), 
+								new PVector(0, PIXEL_RESOLUTION_Y), 
+								Ani.SINE_IN,
+								6);
+			
 			bartest.addTriggerObject(temp);
 		}
 		
 		// Add the led strips
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, includeVerticalAmountPixels), new PVector(0, includeVerticalAmountPixels), new PVector(-PIXEL_RESOLUTION_X, 0), Ani.LINEAR));
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(PIXEL_RESOLUTION_X - 1, includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X - 1, PIXEL_RESOLUTION_Y), new PVector(0, -PIXEL_RESOLUTION_Y), Ani.LINEAR));
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X, 0), Ani.LINEAR));
-		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(1, 0), new PVector(1, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), Ani.LINEAR));
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, includeVerticalAmountPixels), new PVector(0, includeVerticalAmountPixels), new PVector(-PIXEL_RESOLUTION_X, 0), Ani.LINEAR, 5));
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(PIXEL_RESOLUTION_X - 1, includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, 0), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X - 1, PIXEL_RESOLUTION_Y), new PVector(0, -PIXEL_RESOLUTION_Y), Ani.LINEAR, 3));
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X, 0), Ani.LINEAR, 5));
+		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(1, 0), new PVector(1, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), Ani.LINEAR, 3));
 	}
 	
 	protected void generatePixelObjects(int _xDensity, int _yDensity) {
@@ -67,16 +88,14 @@ public class WeatherAnimation extends BaseAnimation {
 				if((y < includeVerticalAmountPixels || y >= _yDensity - includeVerticalAmountPixels) || (x < 1 || x >= _xDensity - 1)) {
 					// Set settings for indicator pixels
 					pixels.get(pixelIndex).alpha = 0;
-					pixels.get(pixelIndex).color = PColor.color(255,0,0);
-					pixels.get(pixelIndex).speed = 4;
+					pixels.get(pixelIndex).color = PColor.color(255);
 					
 					// Add to indicator
 					indicatorPixels.add(pixelIndex);
 				}else {
 					// Set settings for canvas pixels
-					pixels.get(pixelIndex).color = PColor.color(0,191,255);
-					pixels.get(pixelIndex).alpha = 0; //applet.random(0, 255);
-					pixels.get(pixelIndex).speed = applet.random(0.5f, 1.5f);
+					pixels.get(pixelIndex).color = PColor.color(51, 204, 255);
+					pixels.get(pixelIndex).alpha = 0;
 					
 					// Add to canvas 
 					canvasPixels.add(pixelIndex);
@@ -98,29 +117,30 @@ public class WeatherAnimation extends BaseAnimation {
 		for(int i = 0; i < indicatorPixels.size(); i++) {
 			Pixel currentpixel = pixels.get(indicatorPixels.get(i));
 			if(indicatorsequence.isInBounds(currentpixel)) {
-				currentpixel.fadeIn(0.25f, 255); // FadeIn
+				currentpixel.fadeIn(1f, 255); // FadeIn
 			}else {
-				currentpixel.fadeOut(0.25f, 0); // FadeOut
+				currentpixel.fadeOut(0.5f, 0); // FadeOut
 			}
 			// Update the pixel
 			currentpixel.update();
 		}
 		
 		if(bartest.doneUpdating){
-			bartest.resetSequence();
+			bartest.reverseSequence();
 			// Reset and toggle to next animation.
 		}else {
-			bartest.updateAll();
+			bartest.updateAll(); // Update all at once
 		}
 	
 		// Update the canvas pixels
 		for(int i = 0; i < canvasPixels.size(); i++) { // canvasPixels
 			Pixel currentpixel = pixels.get(canvasPixels.get(i));
-			
 			if(bartest.isInBounds(currentpixel)) {
-				currentpixel.fadeIn(0.25f, 255); // FadeIn
+				float a = applet.map(currentpixel.position.y, includeVerticalAmountPixels,  PIXEL_RESOLUTION_Y - includeVerticalAmountPixels, 255, 110); // <-- Set alpha based on distance
+				// a = 255;
+				currentpixel.fadeIn(1.25f, a); // FadeIn
 			}else {
-				currentpixel.fadeOut(0.25f, 0); // FadeOut
+				currentpixel.fadeOut(0.5f, 0); // FadeOut
 			}
 			currentpixel.update();
 		}
@@ -128,13 +148,37 @@ public class WeatherAnimation extends BaseAnimation {
 	
 	protected void drawPixels(PGraphics g) {
 		g.noFill();
-		for(Pixel pixel:pixels) {
-			g.stroke(pixel.color, pixel.alpha);
-			g.point(pixel.position.x, pixel.position.y);
-		}
-		
+//		for(Pixel pixel:pixels) {
+//			g.stroke(pixel.color, pixel.alpha);
+//			g.point(pixel.position.x, pixel.position.y);
+//		}
 		if(showTriggerObjects) indicatorsequence.drawTriggerObjects(g);
 		if(showTriggerObjects) bartest.drawTriggerObjects(g);
+		
+		
+		
+		stretchText("DAYS", g);
+	}
+	
+	public void stretchText(String _text, PGraphics g) {
+		applet.textFont(pixelFont);
+		applet.textSize(20);
+		
+		int textWidth 	= (int)applet.textWidth(_text);
+		int textHeight 	= (int)((applet.textAscent() + applet.textDescent()) * 0.6);
+		
+		// Start drawing the actual text
+		stretchFont = applet.createGraphics(textWidth, textHeight);
+		stretchFont.beginDraw();
+		stretchFont.noStroke();
+		stretchFont.fill(255);
+		stretchFont.textSize(20);
+		stretchFont.textAlign(applet.LEFT, applet.TOP);
+		stretchFont.text(_text, 0, (int)(-textHeight*0.3));
+		stretchFont.endDraw();
+		
+		// Strech the image to fill the canvas
+		g.image(stretchFont, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 	}
 
 	@Override

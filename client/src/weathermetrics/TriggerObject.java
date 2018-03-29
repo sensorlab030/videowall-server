@@ -23,7 +23,7 @@ public class TriggerObject {
 	public PVector positionOffsetTarget; // <-- Target movement
 	public PVector positionOffsetOriginal; // <-- So we can reset the animation
 	
-	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset, Easing _aniEasing) {
+	public TriggerObject(PVector _positionA, PVector _positionB, PVector _positionC, PVector _positionD, PVector _positionOffset, Easing _aniEasing, float _speed) {
 		this.positionA = _positionA;
 		this.positionB = _positionB;
 		this.positionC = _positionC;
@@ -32,6 +32,7 @@ public class TriggerObject {
 		this.positionOffsetTarget = new PVector(0, 0); // <-- Make sure it's a new PVector
 		this.positionOffsetOriginal = new PVector(_positionOffset.x, _positionOffset.y);
 		this.AniEasing = _aniEasing;
+		this.speed = _speed;
 	}
 	
 	public boolean isInBounds(Pixel _pixel) {
@@ -59,6 +60,16 @@ public class TriggerObject {
 	public void resetObjectPosition() {
 		positionOffset.x = positionOffsetOriginal.x;
 		positionOffset.y = positionOffsetOriginal.y;
+		doneUpdating = false;
+		allowAni = true;
+	}
+	
+	public void reverseObjectPosition() {
+		if(PVector.dist(positionOffsetTarget, positionOffsetOriginal) == 0) {
+			positionOffsetTarget = new PVector(0,0); // <-- Toggle between original offset and 0,0
+		}else {
+			positionOffsetTarget = new PVector(positionOffsetOriginal.x, positionOffsetOriginal.y);
+		}
 		doneUpdating = false;
 		allowAni = true;
 	}
