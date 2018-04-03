@@ -29,8 +29,8 @@ public class WeatherAnimation extends BaseAnimation {
 
 	PGraphics stretchFont;
 	PFont pixelFont;
-	
-	public int mode = 3;
+
+	public int mode = 2;
 
 	public WeatherAnimation(PApplet applet) {
 		super(applet);
@@ -58,8 +58,8 @@ public class WeatherAnimation extends BaseAnimation {
 		// Add to triggerSequence:
 		// - Start & End delay
 		// - Color
-		
-		
+
+
 		if(mode == 2) {
 			// Slide in from 0,0
 			TriggerObject temp = new TriggerObject(
@@ -90,7 +90,7 @@ public class WeatherAnimation extends BaseAnimation {
 						new PVector(x + 2, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), 
 						new PVector(x, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), 
 						new PVector(0, PIXEL_RESOLUTION_Y), 
-						Ani.SINE_IN,
+						Ani.SINE_OUT,
 						6);
 
 				bartest.addTriggerObject(temp);
@@ -143,6 +143,14 @@ public class WeatherAnimation extends BaseAnimation {
 		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y - includeVerticalAmountPixels), new PVector(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(PIXEL_RESOLUTION_X, 0), Ani.LINEAR, 5));
 		indicatorsequence.addTriggerObject(new TriggerObject(new PVector(0, 0), new PVector(1, 0), new PVector(1, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), new PVector(0, PIXEL_RESOLUTION_Y), Ani.LINEAR, 3));
 	}
+	
+	
+	public void generateTemperature() {		
+	}
+	public void generateWind() {
+	}
+	public void generatePrecepitation() {
+	}
 
 	protected void generatePixelObjects(int _xDensity, int _yDensity) {
 		for(int x = 0; x < _xDensity; x++) {
@@ -175,8 +183,10 @@ public class WeatherAnimation extends BaseAnimation {
 
 	protected void updatePixels() {
 		// Update sequence indicator
-		if(indicatorsequence.doneUpdating) {
+		if(indicatorsequence.doneUpdating) { // (indicatorsequence.doneUpdating && bartest.doneUpdating)
+
 			indicatorsequence.resetSequence();
+
 			// Trigger next visual indicator
 		}else {
 			indicatorsequence.updateSequence();
@@ -200,12 +210,12 @@ public class WeatherAnimation extends BaseAnimation {
 			}else {
 				bartest.reverseSequence(); // resetSequence();	
 			}
-			
+
 			// Reset and toggle to next animation.
 			// sequenceUpdaterIndex++;
 		}else {
 			bartest.updateAll(); // Update all at once
-			//bartest.updateSequence();
+//			bartest.updateSequence();
 		}
 
 		// Update the canvas pixels
@@ -218,7 +228,7 @@ public class WeatherAnimation extends BaseAnimation {
 			if(bartest.isInBounds(currentpixel)) {
 				float a = applet.map(currentpixel.position.y, includeVerticalAmountPixels,  PIXEL_RESOLUTION_Y - includeVerticalAmountPixels, 255, 110); // <-- Set alpha based on distance
 				a = 255;
-				
+
 				if(mode == 3) { 
 					currentpixel.fadeIn(0.25f, a); // FadeIn//
 				}else {
@@ -226,7 +236,7 @@ public class WeatherAnimation extends BaseAnimation {
 				}
 
 			}else {
-				
+
 				if(mode == 3) {
 					currentpixel.fadeOut(0.15f, 0); // FadeOut
 				}else {
@@ -246,7 +256,7 @@ public class WeatherAnimation extends BaseAnimation {
 		if(showTriggerObjects) indicatorsequence.drawTriggerObjects(g);
 		if(showTriggerObjects) bartest.drawTriggerObjects(g);
 
-//		stretchText("DAYS", g);
+				stretchText("DAYS", g);
 	}
 
 	public void stretchText(String _text, PGraphics g) {
