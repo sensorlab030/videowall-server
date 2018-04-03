@@ -10,13 +10,15 @@ public class TriggerSequence {
 	int currentTriggerObjectIndex = 0;
 	
 	int delayCounter = 0;
-	int delayStart = 0;//40; // <-- Delay between end and restart sequence
-	int delayEnd = 0;//60; // <-- Delay between end and restart sequence
+	int delayStart = 0; // <-- Delay between end and restart sequence
+	int delayEnd = 0; // <-- Delay between end and restart sequence
 	
 	public boolean doneUpdating = false;
 	
-	public TriggerSequence() { 
-		triggerobjects = new ArrayList<TriggerObject>();
+	public TriggerSequence(int _delayStart, int _delayEnd) { 
+		this.delayStart = _delayStart;
+		this.delayEnd = _delayEnd;
+		this.triggerobjects = new ArrayList<TriggerObject>();
 	}
 	
 	public void addTriggerObject(TriggerObject _triggerObject) {

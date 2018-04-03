@@ -19,17 +19,21 @@ public class Pixel {
 	
 	public Pixel(PVector _position) {
 		this.position = _position;
-		aniAlpha.overwrite();
+//		aniAlpha = new Ani(this, speed, "alpha", alphaTarget, Ani.LINEAR, Ani.OVERWRITE);
 	}
 	
 	public void update() {
 		if(!doneUpdating) {
 			if(allowAni) {
 				allowAni = false;
-				aniAlpha = new Ani(this, speed, "alpha", alphaTarget, Ani.LINEAR);
+				//aniAlpha.to(this, speed, "alpha", alphaTarget, Ani.LINEAR);
+//				aniAlpha = new Ani(this, speed, "alpha", alphaTarget, Ani.LINEAR, Ani.OVERWRITE);
+				Ani.to(this, speed, "alpha", alphaTarget, Ani.LINEAR);
+					//				System.err.println((float)alpha + " " +alphaTarget);
+					//				Ani.to(aniAlpha, speed, "alpha", alphaTarget, Ani.LINEAR);
 			}else {
 				// Check if ANI is done
-				if(aniAlpha.isEnded()) doneUpdating = true;
+//				if(aniAlpha.isEnded()) doneUpdating = true;
 			}
 		}else {
 			allowAni = true;
@@ -54,11 +58,5 @@ public class Pixel {
 		}
 		alphaTarget = (float) _alphaTarget;
 		speed = (float) _speed;
-	}
-	
-	public void toggleAlphaTarget() {
-//		alphaTarget = alphaTarget == 255 ? 0 : 255;
-//		allowAni = true;
-//		doneUpdating = false;
 	}
 }
