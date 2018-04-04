@@ -31,6 +31,10 @@ public class AnimationManager {
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Weather Metrics Pixel", new WeatherAnimation(applet));
+		addAnimation("Horizontal Waves", new WavesAnimation(applet));
+		addAnimation("Grid System", new GridSystemAnimation(applet));
+		addAnimation("Swirl System", new SwirlAnimation(applet));
+		addAnimation("Game of Life", new GameOfLifeAnimation(applet));
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

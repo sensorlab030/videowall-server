@@ -1,4 +1,4 @@
-package weathermetrics;
+package jonas;
 import de.looksgood.ani.Ani;
 import processing.core.PVector;
 

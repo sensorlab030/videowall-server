@@ -6,13 +6,13 @@ import java.util.List;
 import com.cleverfranke.util.PColor;
 
 import de.looksgood.ani.Ani;
+import jonas.Pixel;
+import jonas.TriggerObject;
+import jonas.TriggerSequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PVector;
-import weathermetrics.Pixel;
-import weathermetrics.TriggerObject;
-import weathermetrics.TriggerSequence;
 
 public class WeatherAnimation extends BaseAnimation {
 
@@ -30,7 +30,7 @@ public class WeatherAnimation extends BaseAnimation {
 	PGraphics stretchFont;
 	PFont pixelFont;
 
-	public int mode = 2;
+	public int mode = 1;
 
 	public WeatherAnimation(PApplet applet) {
 		super(applet);
@@ -256,7 +256,7 @@ public class WeatherAnimation extends BaseAnimation {
 		if(showTriggerObjects) indicatorsequence.drawTriggerObjects(g);
 		if(showTriggerObjects) bartest.drawTriggerObjects(g);
 
-				stretchText("DAYS", g);
+				//stretchText("DAYS", g);
 	}
 
 	public void stretchText(String _text, PGraphics g) {

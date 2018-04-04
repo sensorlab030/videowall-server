@@ -1,4 +1,4 @@
-package weathermetrics;
+package jonas;
 
 import java.util.ArrayList;
 
