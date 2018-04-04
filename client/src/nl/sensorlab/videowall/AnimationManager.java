@@ -27,11 +27,12 @@ public class AnimationManager {
 	public AnimationManager(PApplet applet) {
 
 		// All Applet based animation
-		addAnimation("Beach ball", new BeachballAnimation(applet));
+//		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
+		addAnimation("Video stream", new VideoStream(applet));
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

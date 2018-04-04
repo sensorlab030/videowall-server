@@ -4,5 +4,6 @@
 	"videoDir": "",
 	"imageDir": "",
 	"phrase": "abcdefghijklmnopqrstuvwxyz0123456789?!<>+-=_#%/.;:()",
-	"phraseColor": "#ff6c6c"
+	"phraseColor": "#ff6c6c",
+	"ipServer": ""
 }
