@@ -104,6 +104,10 @@ public class GameOfLifeAnimation extends BaseAnimation {
 					g.noFill();
 					g.stroke(255,255,255, 75);
 					g.point(x, y);
+				}else {
+					g.noFill();
+					g.stroke(0, 50);
+					g.point(x, y);
 				}
 			}
 		}

@@ -51,11 +51,12 @@ public class Column {
 
 	public void display(PGraphics g) {
 		g.noFill();
-		g.stroke(255,200);
-		g.beginShape();
 		for (PVector p : positions) {
-			g.vertex(p.x, p.y);
+			float colorR = parent.parent.map( p.y, 0, parent.PIXEL_RESOLUTION_Y, 0, 255);
+			float colorG = parent.parent.map(p.x, 0, parent.PIXEL_RESOLUTION_X, 0, 255);
+			g.stroke(colorR, colorG, 200, 128);
+			g.point(p.x, p.y);
 		}
-		g.endShape();
+
 	}
 }
