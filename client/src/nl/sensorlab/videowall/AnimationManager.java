@@ -37,6 +37,7 @@ public class AnimationManager {
 		addAnimation("Game of Life", new GameOfLifeAnimation(applet));
 		addAnimation("Color Grid", new ColorGridAnimation(applet));
 		addAnimation("Perlin Noise", new PerlinNoiseAnimation(applet));
+		addAnimation("Liquid Columns", new LiquidColumnsAnimation(applet));
 		
 		
 		// Add videos to animation manager
