@@ -20,7 +20,9 @@ public class GameOfLifeAnimation extends BaseAnimation {
 	public PApplet parent;
 
 	// Based on Processing example: GameOfLife
-
+	// Maybe add color (related to the life cycle (cycles alive))?
+	// Restart if all dead or idle after x amount of time
+	
 	public int[][] cells;
 	public int[][] cellsPrevious;
 
@@ -46,11 +48,11 @@ public class GameOfLifeAnimation extends BaseAnimation {
 	public void generateCells() {
 		for(int x = 0; x < PIXEL_RESOLUTION_X; x++) {
 			for(int y = 0; y < PIXEL_RESOLUTION_Y; y++) {
-				// Determine if dead or alive start
-				if((Math.random() * 100) > probabilityOfAliveAtStart) { 
-					cells[x][y] = 0; // Dead 
+				// Determine if dead or alive at start
+				if((Math.random() * 100) < probabilityOfAliveAtStart) { 
+					cells[x][y] = 1; // Active 
 				}else {
-					cells[x][y] = 1; // Alive
+					cells[x][y] = 0; // In-active
 				}
 			}
 		}

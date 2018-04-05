@@ -35,6 +35,9 @@ public class AnimationManager {
 		addAnimation("Grid System", new GridSystemAnimation(applet));
 		addAnimation("Swirl System", new SwirlAnimation(applet));
 		addAnimation("Game of Life", new GameOfLifeAnimation(applet));
+		addAnimation("Color Grid", new ColorGridAnimation(applet));
+		addAnimation("Perlin Noise", new PerlinNoiseAnimation(applet));
+		
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
