@@ -62,6 +62,8 @@ public class FlockingAnimation extends BaseAnimation {
 		if(counter > counterAddBoids) {
 			counter = 0;
 			addBoid();
+			
+			System.err.println("boid added");
 			// Reset flock
 			if(flock.boids.size() > 100) {
 				flock.boids.clear();

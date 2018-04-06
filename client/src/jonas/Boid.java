@@ -98,15 +98,13 @@ public class Boid {
 		// Draw a triangle rotated in the direction of velocity
 		float theta = velocity.heading2D() + parent.parent.radians(90);
 		// heading2D() above is now heading() but leaving old syntax until Processing.js catches up
-
-		g.stroke(color);
+		
+		g.noStroke();
+		g.fill(color);
 		g.pushMatrix();
 		g.translate(position.x, position.y);
 		g.rotate(theta);
-		g.beginShape();
-		g.vertex(0, 0);
-		g.vertex(0, r);
-		g.endShape();
+		g.rect(0, 0, 1 + r, 1);
 		g.popMatrix();
 	}
 
