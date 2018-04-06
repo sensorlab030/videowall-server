@@ -39,6 +39,9 @@ public class AnimationManager {
 		addAnimation("Perlin Noise", new PerlinNoiseAnimation(applet));
 		addAnimation("Liquid Columns", new LiquidColumnsAnimation(applet));
 		addAnimation("Flocking", new FlockingAnimation(applet));
+		addAnimation("Bouncy Bubbles", new BouncyBubblesAnimation(applet));
+		
+		
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

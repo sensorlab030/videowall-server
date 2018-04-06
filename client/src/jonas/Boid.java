@@ -18,6 +18,8 @@ public class Boid {
 	float maxforce;    // Maximum steering force
 	float maxspeed;    // Maximum speed
 	
+	float neighbordist = 20;
+	
 	int color;
 
 	public Boid(FlockingAnimation _parent, float _x, float _y, int _color) {
@@ -119,7 +121,7 @@ public class Boid {
 	// Separation
 	// Method checks for nearby boids and steers away
 	public  PVector separate (ArrayList<Boid> boids) {
-		float desiredseparation = 5.0f;
+		float desiredseparation = neighbordist * 0.5f;
 		PVector steer = new PVector(0, 0, 0);
 		int count = 0;
 		// For every boid in the system, check if it's too close
@@ -159,7 +161,6 @@ public class Boid {
 	// Alignment
 	// For every nearby boid in the system, calculate the average velocity
 	public PVector align (ArrayList<Boid> boids) {
-		float neighbordist = 10;
 		PVector sum = new PVector(0, 0);
 		int count = 0;
 		for (Boid other : boids) {
@@ -190,7 +191,6 @@ public class Boid {
 	  // Cohesion
 	  // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
 	public PVector cohesion (ArrayList<Boid> boids) {
-	    float neighbordist = 10;
 	    PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
 	    int count = 0;
 	    for (Boid other : boids) {
