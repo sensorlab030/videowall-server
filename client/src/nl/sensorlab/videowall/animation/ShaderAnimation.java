@@ -16,7 +16,7 @@ import processing.core.PImage;
 import processing.core.PVector;
 import processing.opengl.PShader;
 
-public class ShaderAnimation extends BaseAnimation {
+public class ShaderAnimation extends BaseCanvasAnimation {
 
 	PApplet parent;
 
@@ -28,20 +28,20 @@ public class ShaderAnimation extends BaseAnimation {
 	public boolean hasTexture;
 
 	public ShaderAnimation(PApplet applet, String _shaderName, float _speed, boolean _hasTexture, String _textureName) {
-		super(applet);
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_3D);
 		
 		this.parent = applet;
 		this.speed = _speed;
 		this.hasTexture = _hasTexture;
 
 		// Create graphics so we can use shaders.
-		container = parent.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y, parent.P2D);
+		container = parent.createGraphics(parent.width, parent.height, parent.P3D);
 
 		// Load the shader
 		currentShader = applet.loadShader("data/shaders/" + _shaderName + ".glsl");
 
 		// Set resolution
-		currentShader.set("resolution", (float)PIXEL_RESOLUTION_X, (float) PIXEL_RESOLUTION_Y); // Doesnt work? I think we the shader uses the canvas width and height; ignoring the set width and height.
+		currentShader.set("resolution", (float)parent.width, (float) parent.height); // Doesnt work? I think we the shader uses the canvas width and height; ignoring the set width and height.
 		
 		if(hasTexture) {
 			texture = applet.loadImage("data/textures/"+_textureName+".jpg");
@@ -49,7 +49,7 @@ public class ShaderAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g) {
 		// Update the shader
 		currentShader.set("time", parent.millis() / speed);
 
@@ -57,13 +57,13 @@ public class ShaderAnimation extends BaseAnimation {
 		container.beginDraw();
 		container.shader	(currentShader);
 		if(hasTexture) {
-			container.image(texture, 0, 0,PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+			container.image(texture, 0, 0,parent.width, parent.height);
 		}else {
-			container.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y); // ??????
+			container.rect(0, 0, parent.width, parent.height); // ??????
 		}
 		container.endDraw();
 
 		// Draw the output
-		g.image(container, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		g.image(container, 0, 0, parent.width, parent.height);
 	}
 }

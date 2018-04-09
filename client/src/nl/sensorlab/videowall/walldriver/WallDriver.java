@@ -35,7 +35,7 @@ public class WallDriver {
 		}
 		
 		// Create buffer
-		imageBufferContext = applet.createGraphics(81, 26, applet.P3D);
+		imageBufferContext = applet.createGraphics(81, 26);
 		imageBuffer = applet.createImage(81, 26, PConstants.RGB);
 		
 		// Create port images
