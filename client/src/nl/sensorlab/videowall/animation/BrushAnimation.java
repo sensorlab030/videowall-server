@@ -47,7 +47,7 @@ public class BrushAnimation extends BaseCanvasAnimation {
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g) {
 		g.noStroke();
-		g.fill(0,1);
+		g.fill(0,5);
 		g.rect(0, 0, g.width,  g.height);
 		for(Brush cb : brushes) {
 			cb.paint(g);

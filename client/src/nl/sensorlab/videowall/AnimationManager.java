@@ -45,7 +45,7 @@ public class AnimationManager {
 		addAnimation("Shader Monjori", new ShaderAnimation(applet, "monjori", 1200, false, ""));
 		addAnimation("Shader Landscape", new ShaderAnimation(applet, "landscape", 3500, false, ""));
 		addAnimation("Brush Canvas", new BrushAnimation(applet));
-		
+		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
