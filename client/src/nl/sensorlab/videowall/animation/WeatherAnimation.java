@@ -35,9 +35,6 @@ public class WeatherAnimation extends BaseAnimation {
 	public WeatherAnimation(PApplet applet) {
 		super(applet);
 
-		// Init Ani
-		Ani.init(applet);
-
 		// Allow overwrite
 		Ani.overwrite();
 

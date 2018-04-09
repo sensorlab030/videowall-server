@@ -36,13 +36,17 @@ public class ShaderAnimation extends BaseCanvasAnimation {
 
 		// Create graphics so we can use shaders.
 		container = parent.createGraphics(parent.width, parent.height, parent.P3D);
+	
 
 		// Load the shader
 		currentShader = applet.loadShader("data/shaders/" + _shaderName + ".glsl");
 
 		// Set resolution
-		currentShader.set("resolution", (float)parent.width, (float) parent.height); // Doesnt work? I think we the shader uses the canvas width and height; ignoring the set width and height.
+		currentShader.set("resolution", (float)parent.width, (float)parent.height); // Doesnt work? I think we the shader uses the canvas width and height; ignoring the set width and height.
+		// Set the shader
+		container.shader	(currentShader);
 		
+		// Load texture if needed
 		if(hasTexture) {
 			texture = applet.loadImage("data/textures/"+_textureName+".jpg");
 		}
@@ -55,14 +59,13 @@ public class ShaderAnimation extends BaseCanvasAnimation {
 
 		// Create the 'canvas'
 		container.beginDraw();
-		container.shader	(currentShader);
 		if(hasTexture) {
-			container.image(texture, 0, 0,parent.width, parent.height);
+			container.image(texture, 0, 0, parent.width, parent.height);
 		}else {
+			container.noStroke();
 			container.rect(0, 0, parent.width, parent.height); // ??????
 		}
 		container.endDraw();
-
 		// Draw the output
 		g.image(container, 0, 0, parent.width, parent.height);
 	}
