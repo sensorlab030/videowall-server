@@ -223,5 +223,14 @@ public final class PColor {
 		return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
 	}
 
+
+	/**
+	 * Create color
+	 *
+	 * @return
+	 */
+	public static int getRandomColor() {
+		return color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255), 255);
+	}
 }
 
