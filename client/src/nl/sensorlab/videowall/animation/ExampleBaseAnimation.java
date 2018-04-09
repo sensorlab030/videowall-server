@@ -17,10 +17,6 @@ import processing.core.PGraphics;
  */
 public class ExampleBaseAnimation extends BaseAnimation {
 
-	// Pixel grid dimensions
-	private final int totalColumns = WallGeometry.getInstance().getPanelCount() * 2;
-	private final int totalRows = WallGeometry.getPixelYCount();
-
 	// Grid iterators
 	private int i = 0;
 	private int j = 0;
@@ -55,8 +51,8 @@ public class ExampleBaseAnimation extends BaseAnimation {
 		drawColumn(g, j);
 
 		// Update i and j
-		i = (i + 1 > totalRows) ? 0 : i + 1;
-		j = (j + 1 > totalColumns) ? 0 : j + 1;
+		i = (i + 1 > PIXEL_RESOLUTION_Y) ? 0 : i + 1;
+		j = (j + 1 > PIXEL_RESOLUTION_X) ? 0 : j + 1;
 
 
 	}
@@ -64,14 +60,14 @@ public class ExampleBaseAnimation extends BaseAnimation {
 	private void drawColumn(PGraphics g, int x) {
 
 		// A column is 1px wide and goes from top to bottom (0 to totalRows).
-		g.rect(x, 0, 1, totalRows);
+		g.rect(x, 0, 1, PIXEL_RESOLUTION_Y);
 
 	}
 
 	private void drawRow(PGraphics g, int y) {
 
 		// A row is 1px wide and goes from left to rigth (0 to totalColumns).
-		g.rect(0, y, totalColumns, 1);
+		g.rect(0, y, PIXEL_RESOLUTION_X, 1);
 
 	}
 }
