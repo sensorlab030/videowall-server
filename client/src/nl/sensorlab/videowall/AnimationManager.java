@@ -28,6 +28,7 @@ public class AnimationManager {
 
 		// All Applet based animation
 //		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
