@@ -39,7 +39,7 @@ public class BouncyBubblesAnimation extends BaseAnimation {
 		this.parent = applet;
 		this.balls = new ArrayList<Ball>();
 		generateBalls(amountOfBalls);
-	}
+	}x
 
 
 	public void generateBalls(int _amountOfBalls) {
@@ -51,7 +51,7 @@ public class BouncyBubblesAnimation extends BaseAnimation {
 	public void addBall() {
 		int index = balls.size() - 1;
 		int color = ballcolors[(int)Math.floor(Math.random() * ballcolors.length)];
-		balls.add(new Ball(this,  (float)(Math.random() * PIXEL_RESOLUTION_X), 0, parent.random(1, 3), index, color));
+		balls.add(new Ball(this,  (float)(Math.random() * PIXEL_RESOLUTION_X), -(float)(Math.random() * PIXEL_RESOLUTION_X), parent.random(1, 3), index, color));
 	}
 
 	public void drawBalls(PGraphics g) {

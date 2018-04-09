@@ -41,8 +41,8 @@ public class AnimationManager {
 		addAnimation("Flocking", new FlockingAnimation(applet));
 		addAnimation("Bouncy Bubbles", new BouncyBubblesAnimation(applet));
 		addAnimation("Shader Monjori", new ShaderAnimation(applet, "monjori", 1000, false, ""));
-		addAnimation("Shader Nebula", new ShaderAnimation(applet, "nebula", 500, false, ""));
-		addAnimation("Shader Deform", new ShaderAnimation(applet, "deform", 500, true, "tex"));
+//		addAnimation("Shader Nebula", new ShaderAnimation(applet, "nebula", 500, false, ""));
+//		addAnimation("Shader Deform", new ShaderAnimation(applet, "deform", 500, true, "tex"));
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

@@ -41,7 +41,7 @@ public class ShaderAnimation extends BaseAnimation {
 		currentShader = applet.loadShader("data/shaders/" + _shaderName + ".glsl");
 
 		// Set resolution
-		currentShader.set("resolution", (float)PIXEL_RESOLUTION_X, (float)PIXEL_RESOLUTION_Y);
+		currentShader.set("resolution", (float)PIXEL_RESOLUTION_X, (float) PIXEL_RESOLUTION_Y); // Doesnt work? I think we the shader uses the canvas width and height; ignoring the set width and height.
 		
 		if(hasTexture) {
 			texture = applet.loadImage("data/textures/"+_textureName+".jpg");
@@ -56,11 +56,14 @@ public class ShaderAnimation extends BaseAnimation {
 		// Create the 'canvas'
 		container.beginDraw();
 		container.shader	(currentShader);
-		if(hasTexture) container.image(texture, 0, 0,PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
-		if(!hasTexture)container.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		if(hasTexture) {
+			container.image(texture, 0, 0,PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		}else {
+			container.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y); // ??????
+		}
 		container.endDraw();
 
-		//		// Draw the output
-		g.image(container, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);	
+		// Draw the output
+		g.image(container, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 	}
 }

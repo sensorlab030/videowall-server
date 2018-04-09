@@ -57,6 +57,7 @@ public class FlockingAnimation extends BaseAnimation {
 
 		// Flocking
 		flock.run(g);
+	
 
 		// Add boid
 		if(counter > counterAddBoids) {
