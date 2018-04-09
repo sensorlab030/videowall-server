@@ -44,6 +44,8 @@ public class AnimationManager {
 //		addAnimation("Shader Deform", new ShaderAnimation(applet, "deform", 750, true, "tex"));
 		addAnimation("Shader Monjori", new ShaderAnimation(applet, "monjori", 1200, false, ""));
 		addAnimation("Shader Landscape", new ShaderAnimation(applet, "landscape", 3500, false, ""));
+		addAnimation("Brush Canvas", new BrushAnimation(applet));
+		
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
