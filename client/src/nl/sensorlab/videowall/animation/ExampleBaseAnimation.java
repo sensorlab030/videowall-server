@@ -2,7 +2,6 @@ package nl.sensorlab.videowall.animation;
 
 import com.cleverfranke.util.PColor;
 
-import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
@@ -21,6 +20,12 @@ public class ExampleBaseAnimation extends BaseAnimation {
 	private int i = 0;
 	private int j = 0;
 
+	// Color
+	private int color = PColor.getRandomColor();
+
+	// Timer
+	private final static int TIMER_MS = 300;
+	private long tStart = -1;
 
 
 	/**
@@ -41,18 +46,34 @@ public class ExampleBaseAnimation extends BaseAnimation {
 	@Override
 	protected final void drawAnimationFrame(PGraphics g) {
 
+		// On first draw, start the timer
+		if (tStart == -1) {
+			tStart = System.currentTimeMillis();
+		}
+
 		// Drawing settings
 		g.background(0);
 		g.noStroke();
-		g.fill(PColor.getRandomColor());
+		g.fill(color);
 
 		// Draw one row and one column at the given i,j position
 		drawRow(g, i);
 		drawColumn(g, j);
 
-		// Update i and j
-		i = (i + 1 > PIXEL_RESOLUTION_Y) ? 0 : i + 1;
-		j = (j + 1 > PIXEL_RESOLUTION_X) ? 0 : j + 1;
+		// If enough time has passed, change i and j
+		if (getElapsedTime() > TIMER_MS) {
+
+			// Update i and j
+			i = (i >= PIXEL_RESOLUTION_Y) ? 0 : i + 1;
+			j = (j >= PIXEL_RESOLUTION_X) ? 0 : j + 1;
+
+			// Update color
+			color = PColor.getRandomColor();
+
+			// Reset timer
+			tStart = System.currentTimeMillis();
+		}
+
 
 
 	}
@@ -69,5 +90,13 @@ public class ExampleBaseAnimation extends BaseAnimation {
 		// A row is 1px wide and goes from left to rigth (0 to totalColumns).
 		g.rect(0, y, PIXEL_RESOLUTION_X, 1);
 
+	}
+
+	/**
+	 * Get elapsed time between now and previous timestamp
+	 * @return Delta
+	 */
+	private long getElapsedTime() {
+		return System.currentTimeMillis() - tStart;
 	}
 }
