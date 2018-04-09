@@ -39,8 +39,7 @@ public class BouncyBubblesAnimation extends BaseAnimation {
 		this.parent = applet;
 		this.balls = new ArrayList<Ball>();
 		generateBalls(amountOfBalls);
-	}x
-
+	}
 
 	public void generateBalls(int _amountOfBalls) {
 		for (int i = 0; i < _amountOfBalls; i++) {
