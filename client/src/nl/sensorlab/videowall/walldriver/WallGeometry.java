@@ -207,4 +207,7 @@ public class WallGeometry {
 		return new Point(Math.round((float) point.x * scale), Math.round((float) point.y * scale));
 	}
 	
+	public static int getPixelYCount() {
+		return PIXEL_Y_COUNT;
+	}
 }
