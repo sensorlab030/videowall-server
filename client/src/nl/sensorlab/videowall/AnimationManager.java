@@ -46,6 +46,8 @@ public class AnimationManager {
 		addAnimation("Shader Landscape", new ShaderAnimation(applet, "landscape", 3500, false, ""));
 		addAnimation("Brush Canvas", new BrushAnimation(applet));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
+		addAnimation("Column Pixel", new SinglePixelAnimation(applet));
+		
 		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
