@@ -48,6 +48,8 @@ public class AnimationManager {
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
 		addAnimation("Column Pixel", new SinglePixelAnimation(applet));
 		addAnimation("Sorting Animations", new SortingAnimation(applet));	
+		addAnimation("Fish Tank", new FishTankAnimation(applet));	
+		
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

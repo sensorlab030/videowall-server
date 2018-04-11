@@ -94,9 +94,11 @@ public class SortingAnimation extends BaseAnimation {
 		if(updateMethodCounter >= updateMethodEvery) {
 			updateMethodCounter = 0;
 			sortingIndex++;
+			
 			// Keep in bounds
 			if(sortingIndex >= sortingmethods.size()) sortingIndex = 0;
-			// Reset the data
+			
+			// Reset the data (randomize)
 			sortingmethods.get(sortingIndex).resetData(randomIntArray(amountColumns));
 
 		}else{
