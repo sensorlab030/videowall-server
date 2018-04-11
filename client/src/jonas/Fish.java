@@ -27,7 +27,6 @@ public class Fish {
 		this.d = parent.parent.random(0.015f, 0.03f);
 		this.s = parent.parent.random(-90, 90);
 		
-		
 		this.color = PColor.hsb(parent.parent.random(255),100,100);
 		
 		/* Make a random velocity */
