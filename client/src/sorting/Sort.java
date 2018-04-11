@@ -12,9 +12,9 @@ public abstract class Sort {
 
 	public abstract void sortStep();
 
-	public void drawArray(PGraphics g, int width, int height, int maxValue) {
+	public void drawArray(PGraphics g, int width, int height, int maxValue, int color) {
 		g.noStroke();
-		g.fill(255);
+		g.fill(color);
 		for (int i = 0; i < array.length; i++) {
 			// Skip the first row 
 			float x = 1 + (2 * i);	
