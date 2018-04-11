@@ -30,6 +30,58 @@ tags:
 
 components:
   schemas:
+    ColorParameter:
+      type: object
+      required: [id, name, type]
+      properties:
+        id:
+          type: integer
+          description: "Id of the color parameters arranged in the order as they will be processed by the animation"
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - color
+
+    StringParameter:
+      type: object
+      required: [id, name, type]
+      properties:
+        id:
+          type: integer
+          description: "Id of the string parameters arranged in the order as they will be processed by the animation"
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - string
+
+    ValueIntegerParameter:
+      type: object
+      required: [id, name, type]
+      properties:
+        id:
+          type: integer
+          description: "Id of the value integer parameters arranged in the order as they will be processed by the animation"
+        name:
+          type: string
+        min:
+          type: integer
+        max:
+          type: integer
+        type:
+          type: string
+          enum:
+            - integer
+
+    AnimationParameter:
+      oneOf:
+        - $ref: '#/components/schemas/ColorParameter'
+        - $ref: '#/components/schemas/StringParameter'
+        - $ref: '#/components/schemas/ValueIntegerParameter'
+
     Animation:
       type: object
       required: [id, name, active]
@@ -43,6 +95,11 @@ components:
         active:
           type: boolean
           description: "True if it's the currently played animation"
+        parameters:
+          type: array
+          description: "Parameters available for this animation"
+          items:
+            $ref: '#/components/schemas/AnimationParameter'
 
   responses:
     Error400Response:
@@ -99,6 +156,36 @@ components:
       schema:
         type: string
 
+    animationColorsParameter_query:
+      in: query
+      name: colors
+      description: List of colors to use for the animation, ordered by Id
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+
+    animationStringsParameter_query:
+      in: query
+      name: strings
+      description: List of strings to use for the animation, ordered by Id
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+
+    animationValuesIntegerParameter_query:
+      in: query
+      name: valueIntegers
+      description: List of integer values to use for the animation, ordered by Id
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer
+
 paths:
   /animations:
     get:
@@ -142,6 +229,9 @@ paths:
       tags: [Animations]
       parameters:
         - $ref: '#/components/parameters/animationIdParameter_path'
+        - $ref: '#/components/parameters/animationColorsParameter_query'
+        - $ref: '#/components/parameters/animationStringsParameter_query'
+        - $ref: '#/components/parameters/animationValuesIntegerParameter_query'
       responses:
         200:
           description: "Stopped the animation"
