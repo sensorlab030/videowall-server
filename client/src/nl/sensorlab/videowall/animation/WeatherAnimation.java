@@ -3,6 +3,7 @@ package nl.sensorlab.videowall.animation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.PColor;
 
 import de.looksgood.ani.Ani;
@@ -46,7 +47,7 @@ public class WeatherAnimation extends BaseAnimation {
 		generatePixelObjects(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
 		// Set pixel font
-		pixelFont = applet.createFont("data/Pixeled.tff", 10);
+		pixelFont = applet.createFont(FileSystem.getApplicationPath("resources/Pixeled.tff"), 10);
 
 		// Create Sequence
 		indicatorsequence = new TriggerSequence(30, 60);

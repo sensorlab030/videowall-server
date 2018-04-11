@@ -16,7 +16,6 @@ abstract class Sort {
 		g.noStroke();
 		g.fill(255);
 		for (int i = 0; i < array.length; i++) {
-//			System.err.println(array[i]);
 			// Skip the first row 
 			float x = 1 + (2 * i);	
 			int h = (int)Math.ceil((height / maxValue) * array[i]) ;
