@@ -6,7 +6,7 @@ public class CocktailSort extends Sort {
 	private int a, b;
 	private int dir;
 
-	CocktailSort(int[] arr) {
+	public CocktailSort(int[] arr) {
 		super(arr);
 		current = 0;
 		a = 0;
@@ -16,7 +16,7 @@ public class CocktailSort extends Sort {
 		num = 3;
 	}
 
-	void sortStep() {
+	public void sortStep() {
 		if (dir == 1) {
 			if (current+1 >= array.length-b) {
 				dir = -1;

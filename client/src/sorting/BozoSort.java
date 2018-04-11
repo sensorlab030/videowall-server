@@ -4,13 +4,13 @@ public class BozoSort extends Sort {
 
 	boolean sorted;
 
-	BozoSort(int[] arr) {
+	public BozoSort(int[] arr) {
 		super(arr);
 		sorted = false;
 		num = 6;
 	}
 
-	void sortStep() {
+	public void sortStep() {
 		if (sorted) return;
 
 		int i = (int)(Math.random() * array.length-1);

@@ -1,51 +1,54 @@
 package nl.sensorlab.videowall.animation;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.cleverfranke.util.PColor;
-
-import de.looksgood.ani.Ani;
-import jonas.Brush;
-import jonas.Pixel;
-import jonas.TriggerObject;
-import jonas.TriggerSequence;
-import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
-import processing.core.PFont;
 import processing.core.PGraphics;
-import processing.core.PImage;
-import processing.core.PVector;
-import processing.data.Sort;
-import processing.opengl.PShader;
 import sorting.BozoSort;
 import sorting.BubbleSort;
+import sorting.CocktailSort;
+import sorting.GnomeSort;
+import sorting.InsertionSort;
 import sorting.OddEvenSort;
+import sorting.OptimizedBubbleSort;
+import sorting.Sort;
 
 public class SortingAnimation extends BaseAnimation {
 
 	PApplet parent;
 	
-	BubbleSort currentsort;
+	
+	ArrayList<Sort> sortingmethods;
+	private int sortingIndex = 0;
 
 	// 26 - 2 = 24 / 2 = 12
 	private int amountColumns = 12;
 	
-	private int updateEvery = 2;
+	private int updateSortingEvery = 2;
 	private int updateCounter = 0;
 	
-	private int maxValue;
+	private int updateMethodEvery = 300;
+	private int updateMethodCounter = 0;
+	
+	private int maxValue; // <-- Get the max value; so it's easier to map to (y)
 
 	public SortingAnimation(PApplet applet) {
 		super(applet);
 		this.parent = applet;
-
-		// Init sorting
-		currentsort = new BubbleSort(randomIntArray(amountColumns));
+	
+		// Add the sorting methods to the list
+		this.sortingmethods = new ArrayList<Sort>();
+		
+		// Add the sorting methods
+		sortingmethods.add(new BubbleSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new OptimizedBubbleSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new CocktailSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new OddEvenSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new GnomeSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new BozoSort(randomIntArray(amountColumns)));
+		sortingmethods.add(new InsertionSort(randomIntArray(amountColumns)));
 	}
-
-
+ 
 	private int[] randomIntArray(int n) {
 		int[] data = new int[n];  
 		for (int i = 0; i < n; i++) {
@@ -64,14 +67,28 @@ public class SortingAnimation extends BaseAnimation {
 		g.rect(0, 0, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);
 
 		// Update the sorting
-		if(updateCounter >= updateEvery) {
+		if(updateCounter >= updateSortingEvery) {
 			updateCounter = 0;
-			currentsort.sortStep();
+			sortingmethods.get(sortingIndex).sortStep();
 		}else {
 			updateCounter++;
 		}
 
 		// Draw the sorting
-		currentsort.drawArray(g, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y, maxValue);
+		sortingmethods.get(sortingIndex).drawArray(g, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y, maxValue);
+		
+		// Update the sorting method
+		if(updateMethodCounter >= updateMethodEvery) {
+			updateMethodCounter = 0;
+			sortingIndex++;
+			// Keep in bounds
+			if(sortingIndex >= sortingmethods.size()) sortingIndex = 0;
+			// Reset the data
+			sortingmethods.get(sortingIndex).resetData(randomIntArray(amountColumns));
+			
+		}else{
+			updateMethodCounter++;
+		}
+			
 	}
 }

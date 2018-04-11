@@ -2,15 +2,15 @@ package sorting;
 
 import processing.core.PGraphics;
 
-abstract class Sort {
+public abstract class Sort {
 	protected int[] array;
 	public int num;
 
-	Sort (int[] a) {
+	public Sort (int[] a) {
 		array = a;
 	}
 
-	abstract void sortStep();
+	public abstract void sortStep();
 
 	public void drawArray(PGraphics g, int width, int height, int maxValue) {
 		g.noStroke();
@@ -21,6 +21,10 @@ abstract class Sort {
 			int h = (int)Math.ceil((height / maxValue) * array[i]) ;
 			g.rect(x , height , 2, -h);
 		}
+	}
+	
+	public void resetData(int[] a) {
+		array = a;
 	}
 
 	public void swap(int i, int j) {

@@ -5,7 +5,7 @@ public class InsertionSort  extends Sort {
 	private int i, j;
 	private int value;
 
-	InsertionSort(int[] arr) {
+	public InsertionSort(int[] arr) {
 		super(arr);
 		i = 1;
 		j = 1;
@@ -14,7 +14,7 @@ public class InsertionSort  extends Sort {
 		num = 7;
 	}
 
-	void sortStep() {
+	public void sortStep() {
 		if (i == array.length) return;
 
 		if (j > 0 && value < array[j-1]) {

@@ -11,9 +11,9 @@ public class BubbleSort extends Sort {
 	}
 
 	public void sortStep() {
-		if (current+1 == array.length) current = 0;
-		if (array[current] > array[current+1])
-			swap(current, current+1);
+		if (current + 1 == array.length)current = 0;
+		if (array[current] > array[current + 1])
+			swap(current, current + 1);
 		current++;
 	}
 }

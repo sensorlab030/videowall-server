@@ -4,7 +4,7 @@ public class GnomeSort extends Sort {
 
 	private int i, j;
 
-	GnomeSort(int[] arr) {
+	public GnomeSort(int[] arr) {
 		super(arr);
 		i = 1;
 		j = 1;
@@ -12,7 +12,7 @@ public class GnomeSort extends Sort {
 		num = 5;
 	}
 
-	void sortStep() {
+	public void sortStep() {
 		if (i == array.length) return;
 
 		if (j > 0 && array[j] < array[j-1]) {
