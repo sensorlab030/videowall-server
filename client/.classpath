@@ -24,5 +24,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/minim/mp3spi1.9.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/minim/tritonus_aos.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/minim/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/processing/net/library/net.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
