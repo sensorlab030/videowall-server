@@ -1,19 +1,9 @@
 package nl.sensorlab.videowall.animation;
 
-import java.util.ArrayList;
-
-import com.cleverfranke.util.PColor;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import sorting.BozoSort;
-import sorting.BubbleSort;
-import sorting.CocktailSort;
-import sorting.GnomeSort;
-import sorting.InsertionSort;
-import sorting.OddEvenSort;
-import sorting.OptimizedBubbleSort;
-import sorting.Sort;
+import processing.core.net;
+
 
 public class PongGameAnimation extends BaseAnimation {
 
