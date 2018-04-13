@@ -26,7 +26,7 @@ public class AnimationManager {
 	public AnimationManager(PApplet applet) {
 
 		// All Applet based animation
-		//		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
@@ -49,7 +49,7 @@ public class AnimationManager {
 		addAnimation("Column Pixel", new SinglePixelAnimation(applet));
 		addAnimation("Sorting Animations", new SortingAnimation(applet));	
 		addAnimation("Fish Tank", new FishTankAnimation(applet));	
-		
+
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);

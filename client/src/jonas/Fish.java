@@ -7,28 +7,28 @@ import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Fish {
-	
+
 	FishTankAnimation parent;
 
 	private PVector loc;
 	private PVector vel;
-	
+
 	/* Just to add some individuality to the fish wiggle */
 	float s;
 	float d;
-	
+
 	int color;
 
 	public Fish(FishTankAnimation _p, float _x, float _y) {
 		this.parent = _p;
 		this.loc = new PVector(_x, _y);
-			
+
 		// Scaling
 		this.d = parent.parent.random(0.015f, 0.03f);
 		this.s = parent.parent.random(-90, 90);
-		
+
 		this.color = PColor.hsb(parent.parent.random(255),100,100);
-		
+
 		/* Make a random velocity */
 		float speed = 0.075f;
 		this.vel = new PVector(parent.parent.random(-speed, speed), parent.parent.random(-speed, speed));
@@ -67,10 +67,10 @@ public class Fish {
 
 	public void update(float _width, float _height) {
 		/* Instead of changing the velocity when the fish  */
-	    if (loc.x < 0) loc.x = _width;
-	    if (loc.x > _width) loc.x = 0;
-	    if (loc.y < 0) loc.y = _height;
-	    if (loc.y > _height) loc.y = 0;
+		if (loc.x < 0) loc.x = _width;
+		if (loc.x > _width) loc.x = 0;
+		if (loc.y < 0) loc.y = _height;
+		if (loc.y > _height) loc.y = 0;
 	}
 
 }
