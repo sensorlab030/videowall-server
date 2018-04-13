@@ -1,5 +1,4 @@
 package nl.sensorlab.videowall;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,34 @@ public class AnimationManager {
 	public AnimationManager(PApplet applet) {
 
 		// All Applet based animation
-//		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sound animation", new SoundAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Weather Metrics Pixel", new WeatherAnimation(applet));
+		addAnimation("Horizontal Waves", new WavesAnimation(applet));
+		addAnimation("Grid System", new GridSystemAnimation(applet));
+		addAnimation("Swirl System", new SwirlAnimation(applet));
+		addAnimation("Game of Life", new GameOfLifeAnimation(applet));
+		addAnimation("Color Grid", new ColorGridAnimation(applet));
+		addAnimation("Perlin Noise", new PerlinNoiseAnimation(applet));
+		addAnimation("Liquid Columns", new LiquidColumnsAnimation(applet));
+		addAnimation("Flocking", new FlockingAnimation(applet));
+		addAnimation("Bouncy Bubbles", new BouncyBubblesAnimation(applet));
+		addAnimation("Shader Nebula", new ShaderAnimation(applet, "nebula", 1500, false, ""));
+		//		addAnimation("Shader Deform", new ShaderAnimation(applet, "deform", 750, true, "tex"));
+		addAnimation("Shader Monjori", new ShaderAnimation(applet, "monjori", 1200, false, ""));
+		addAnimation("Shader Landscape", new ShaderAnimation(applet, "landscape", 3500, false, ""));
+		addAnimation("Brush Canvas", new BrushAnimation(applet));
+		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
+		addAnimation("Column Pixel", new SinglePixelAnimation(applet));
+		addAnimation("Sorting Animations", new SortingAnimation(applet));	
+		addAnimation("Fish Tank", new FishTankAnimation(applet));	
 
+		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
@@ -52,7 +71,10 @@ public class AnimationManager {
 		}
 
 		// Debug
-//		addAnimation("Debug animation", new DebugCanvasAnimation(applet));
+		// addAnimation("Debug animation", new DebugCanvasAnimation(applet));
+
+		// Start with the latest animation (in the list)
+		startAnimation(availableAnimations.size()-1);
 
 	}
 
