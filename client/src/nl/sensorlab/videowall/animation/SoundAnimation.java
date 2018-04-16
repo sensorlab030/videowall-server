@@ -67,13 +67,13 @@ public class SoundAnimation extends BaseCanvasAnimation {
 	boolean hasSetColors = false;
 
 	// Roel's animation
-	private float hue; 
-	private int size, xpos, ypos; //, counter;
+	private float hue;
+	private int size, xpos, ypos, counter;
 	private boolean initialized;
 
 	int currentFrame = 0;
 	int pulseBackup = 20;
-	
+
 	public SoundAnimation(PApplet applet) {
 		super(applet, DEFAULT_SCALE, CANVAS_MODE_3D);
 		// Charger la librairie minim
@@ -83,7 +83,7 @@ public class SoundAnimation extends BaseCanvasAnimation {
 //		song = minim.loadFile(FileSystem.getApplicationPath("jonas_mix.mov"));
 		song = minim.getLineIn(Minim.MONO);
 		// Cr�er l'objet FFT pour analyser la chanson
-		
+
 		if (song != null) {
 			fft = new FFT(song.bufferSize(), song.sampleRate());
 		}
@@ -105,8 +105,8 @@ public class SoundAnimation extends BaseCanvasAnimation {
 
 		Random generator = new Random(System.currentTimeMillis());
 		hue = generator.nextFloat();
-		
-		
+
+
 		// Cr�er tous les objets
 		// Cr�er les objets cubes
 		for (int i = 0; i < nbCubes; i++) {
@@ -140,7 +140,8 @@ public class SoundAnimation extends BaseCanvasAnimation {
 	public void isStarting() {
 //		song.play(0);
 	}
-	
+
+	@Override
 	public void isStopping() {
 		if (song != null) {
 			song = null;
@@ -153,28 +154,28 @@ public class SoundAnimation extends BaseCanvasAnimation {
 			return;
 		}
 		currentFrame++;
-		
+
 		beat.detect(song.mix);
 		// Faire avancer la chanson. On draw() pour chaque "frame" de la chanson...
 		fft.forward(song.mix);
-		
+
 		if (currentFrame < 100) draw3DWallsAndCubes(g, false, false);
 		if (currentFrame >= 100 && currentFrame < 200) draw3DWallsAndCubes(g, true, false);
-		
+
 		if (currentFrame == 200) hasSetColors = false;
 		if (currentFrame >= 200 && currentFrame < 300) drawBeatingShapes(g);
-		
+
 		if (currentFrame >= 300 && currentFrame < 600) drawRoelAnimation(g, 1);
 		if (currentFrame >= 600 && currentFrame < 900) drawRoelAnimation(g, 2);
 		if (currentFrame >= 900 && currentFrame < 1200) drawRoelAnimation(g, 3);
-		
-		
+
+
 		if (currentFrame >= 1200 && currentFrame < 1500) draw3DWallsAndCubes(g, true, true);
 		if (currentFrame >= 1500 && currentFrame < 1800) draw3DWallsAndCubes(g, true, false);
-		
+
 		if (currentFrame == 1800) hasSetColors = false;
 		if (currentFrame >= 1800 && currentFrame < 2000) drawBeatingShapes(g);
-		
+
 		if (currentFrame >= 2000) currentFrame = 0;
 
 	}
@@ -234,7 +235,7 @@ public class SoundAnimation extends BaseCanvasAnimation {
 				bgColor = PColor.color(0,0,0);
 				squareColor = PColor.color((int)(Math.random()*255), (int)(Math.random()*255),(int)(Math.random()*255));
 			}
-			
+
 			resetPulseBackup();
 		} else {
 			pulseBackup--;
@@ -284,7 +285,7 @@ public class SoundAnimation extends BaseCanvasAnimation {
 			radiusBottomRight = (int) (Math.random() * (100 - 10) + 10);
 			radiusTopRight = (int) (Math.random() * (20 - 5) + 5);
 			radiusBottomLeft = (int) (Math.random() * (50 - 10) + 10);
-			
+
 			resetPulseBackup();
 		} else {
 			pulseBackup--;
@@ -329,14 +330,14 @@ public class SoundAnimation extends BaseCanvasAnimation {
 		beatingShapesColors[3] = PColor.hsb(h3, 1f, 1f);
 		return beatingShapesColors;
 	}
-	
+
 	void resetPulseBackup() {
-		// Assuming music these days is around 120bpm, then the equivalent number of frames at 
+		// Assuming music these days is around 120bpm, then the equivalent number of frames at
 		// a frame rate of 17 per second is 9.
 		pulseBackup = 9;
 	}
 	void drawRoelAnimation(PGraphics g, int option) {
-		
+
 		if (!initialized) {
 			size = g.height;
 			xpos = 0;
@@ -344,27 +345,27 @@ public class SoundAnimation extends BaseCanvasAnimation {
 			g.background(0);
 			initialized = true;
 		}
-		
+
 		g.noStroke();
 		g.rectMode(PConstants.CENTER);
-		
+
 		// scaling en moving
 		size = size + size;
 		xpos = (xpos + 1) % g.width;
 		ypos = (ypos + 1) % g.height;
-		
+
 		if (beat.isOnset() || pulseBackup == 0) {
 			g.fill(PColor.hsb(hue, 1f, 1f));
 			resetPulseBackup();
 		} else {
 			pulseBackup--;
 		}
-		
+
 		if (size > g.height * 2) {
 			size = 1;
 			hue = (hue + .495f) % 1f;
 		}
-		
+
 		switch (option) {
 			case 1: g.rect(xpos, g.height/2, size, size);
 			break;

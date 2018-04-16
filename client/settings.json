@@ -2,5 +2,8 @@
 	"driverPort1": "COM5",
 	"driverPort2": "COM4", 
 	"videoDir": "",
-	"imageDir": ""
+	"imageDir": "",
+	"phrase": "abcdefghijklmnopqrstuvwxyz0123456789?!<>+-=_#%/.;:()",
+	"phraseColor": "#ff6c6c",
+	"ipServer": ""
 }

@@ -6,27 +6,38 @@ import java.util.List;
 
 import com.cleverfranke.util.PColor;
 
-import nl.sensorlab.videowall.animation.*;
+import nl.sensorlab.videowall.animation.Alphabet;
+import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.BeachballAnimation;
+import nl.sensorlab.videowall.animation.ColorAnimation;
+import nl.sensorlab.videowall.animation.ComplementaryColors;
+import nl.sensorlab.videowall.animation.ExampleBaseAnimation;
+import nl.sensorlab.videowall.animation.ImageAnimation;
+import nl.sensorlab.videowall.animation.LineWaveAnimation;
+import nl.sensorlab.videowall.animation.SensorlabLogoAnimation;
+import nl.sensorlab.videowall.animation.VideoAnimation;
+import nl.sensorlab.videowall.animation.VideoStream;
 import processing.core.PApplet;
 
 /**
  * Class that handles the animation queue and transitions between them.
  */
 public class AnimationManager {
-	
+
 	private static AnimationManager instance = null; 						// Singleton instance
 	private BaseAnimation currentAnimation;									// Current animation
 	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animation
-	
+
 	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
-	
+
 	/**
 	 * Instantiate AnimationManager; add animations to the available
 	 * animations list
-	 * 
+	 *
 	 * @param applet
 	 */
 	public AnimationManager(PApplet applet) {
+
 		
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
@@ -38,12 +49,16 @@ public class AnimationManager {
 		white.setData(String.valueOf(PColor.color(255)));
 		addAnimation("COL: White", white);
 			
-		// Simple animations
+		// All Applet based animation
 		addAnimation("Beach ball", new BeachballAnimation(applet));
+		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
+
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
-		
+		addAnimation("Alphabet", new Alphabet(applet));
+		addAnimation("Video stream", new VideoStream(applet));
+
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
@@ -51,7 +66,7 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
 		}
-		
+
 		// Add images to animation manager
 		ImageAnimation imageAnimation = new ImageAnimation(applet);
 		for (File f : ImageAnimation.getImageFileList()) {
@@ -59,13 +74,13 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Initialize Animation. This method should be called before calling
 	 * AnimationManager.getInstance() and subsequent methods
-	 * 
+	 *
 	 * @return
 	 */
 	public static void initialize(PApplet applet) {
@@ -75,7 +90,7 @@ public class AnimationManager {
 			instance = new AnimationManager(applet);
 		}
 	}
-	
+
 	/**
 	 * Get singleton instance
 	 * @return
@@ -86,11 +101,11 @@ public class AnimationManager {
 		}
 		return instance;
 	}
-	
+
 	public BaseAnimation getCurrentAnimation() {
 		return currentAnimation;
 	}
-	
+
 	public int addAnimation(String label, String data, BaseAnimation animation) {
 		if (availableAnimations.add(new AnimationEntry(label, data, animation))) {
 			return availableAnimations.size() - 1;
@@ -98,71 +113,71 @@ public class AnimationManager {
 			return -1;
 		}
 	}
-	
+
 	public int addAnimation(String label, BaseAnimation animation) {
 		return addAnimation(label, null, animation);
 	}
-	
+
 	public List<AnimationEntry> getAvailableAnimations() {
 		return availableAnimations;
 	}
-	
+
 	public int getAvailableAnimationCount() {
 		return availableAnimations.size();
 	}
-	
+
 	public void startAnimation(int index) {
 		if (index > availableAnimations.size() - 1) {
 			System.err.println("Cannot start animation: Invalid animation index");
 			return;
 		}
-		
+
 		// Send stop signal to current animation
 		if (currentAnimation != null) {
 			currentAnimation.isStopping();
 		}
-		
+
 		// Set current animation to animation with given index
 		AnimationEntry entry = availableAnimations.get(index);
 		currentAnimation = entry.getAnimation();
 		if (currentAnimation == null) {
 			return;
 		}
-		
+
 		// Set data (if any data is available)
 		if (entry.getData() != null && !entry.getData().isEmpty()) {
 			currentAnimation.setData(entry.getData());
 		}
-		
+
 		// Send starting signal
 		currentAnimation.isStarting();
-		
+
 		// Send change event
 		for (AnimationEventListener listener : eventListeners) {
 			listener.onCurrentAnimationChanged(index);
 		}
-		
+
 	}
-	
+
 	public void addListener(AnimationEventListener listener) {
 		eventListeners.add(listener);
 	}
-	
+
 	public class AnimationEntry {
 		private String label;
 		private String data;
 		private BaseAnimation animation;
-		
+
 		private AnimationEntry(String label, String data, BaseAnimation animation) {
 			this.label = label;
 			this.data = data;
 			this.animation = animation;
 		}
-		
+
 		public AnimationEntry createAnimationEntry(String label, BaseAnimation animation) {
 			return new AnimationEntry( label, null, animation);
 		}
-		
+
 		public AnimationEntry createAnimationEntry(String label, String data, BaseAnimation animation) {
 			return new AnimationEntry( label, data, animation);
 		}
@@ -174,22 +189,22 @@ public class AnimationManager {
 		public String getData() {
 			return data;
 		}
-		
+
 		public BaseAnimation getAnimation() {
 			return animation;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Interface to subscribe to event changes
 	 */
 	public interface AnimationEventListener {
-		
+
 		/**
 		 * Method that is called when the current animation
 		 * has changed
-		 * 
+		 *
 		 * @param index
 		 */
 		void onCurrentAnimationChanged(int index);

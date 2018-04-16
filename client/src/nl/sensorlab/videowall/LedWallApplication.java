@@ -13,6 +13,7 @@ import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.video.Movie;
 
 public class LedWallApplication extends PApplet {
@@ -90,8 +91,16 @@ public class LedWallApplication extends PApplet {
 		}
 		if (sourcePreviewEnabled && BaseCanvasAnimation.class.isAssignableFrom(animation.getClass())) {
 			image(((BaseCanvasAnimation) animation).getCanvasImage(), 0, 0);
+		} else if (sourcePreviewEnabled) {
+
+			// Copy animation image (else the animation image gets resized)
+			// and scale it for better visibility
+			PImage sourcePreview = animation.getImage().get();
+			sourcePreview.resize(130, 405);
+
+			image(sourcePreview, 0, 0);
 		}
-		
+
 	}
 	
 	/**
