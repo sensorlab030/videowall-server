@@ -1,4 +1,4 @@
-package alphabet;
+package nl.sensorlab.videowall.animation.baseanimations.alphabet;
 
 /**
  * A LetterPoint represent the top left position (x, y) of a LetterPixel

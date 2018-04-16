@@ -6,17 +6,17 @@ import java.util.List;
 
 import com.cleverfranke.util.PColor;
 
-import nl.sensorlab.videowall.animation.Alphabet;
 import nl.sensorlab.videowall.animation.BaseAnimation;
-import nl.sensorlab.videowall.animation.BeachballAnimation;
-import nl.sensorlab.videowall.animation.ColorAnimation;
-import nl.sensorlab.videowall.animation.ComplementaryColors;
-import nl.sensorlab.videowall.animation.ExampleBaseAnimation;
-import nl.sensorlab.videowall.animation.ImageAnimation;
-import nl.sensorlab.videowall.animation.LineWaveAnimation;
-import nl.sensorlab.videowall.animation.SensorlabLogoAnimation;
-import nl.sensorlab.videowall.animation.VideoAnimation;
-import nl.sensorlab.videowall.animation.VideoStream;
+import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.ComplementaryColors;
+import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.LineWaveAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
 import processing.core.PApplet;
 
 /**

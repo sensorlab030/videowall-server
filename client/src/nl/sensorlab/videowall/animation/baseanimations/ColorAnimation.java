@@ -1,5 +1,6 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.baseanimations;
 
+import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 

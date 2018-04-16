@@ -1,4 +1,4 @@
-package alphabet;
+package nl.sensorlab.videowall.animation.baseanimations.alphabet;
 
 import java.util.ArrayList;
 import java.util.List;

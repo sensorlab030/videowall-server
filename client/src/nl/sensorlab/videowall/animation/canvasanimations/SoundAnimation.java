@@ -1,4 +1,4 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.canvasanimations;
 
 import java.awt.Rectangle;
 import java.util.Random;
@@ -9,6 +9,7 @@ import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
+import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;

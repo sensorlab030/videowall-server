@@ -1,7 +1,8 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.baseanimations;
 
 import com.cleverfranke.util.PColor;
 
+import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 

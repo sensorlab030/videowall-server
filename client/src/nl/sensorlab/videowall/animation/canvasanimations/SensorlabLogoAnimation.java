@@ -1,4 +1,4 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.canvasanimations;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,6 +7,7 @@ import com.cleverfranke.util.PColor;
 
 import de.looksgood.ani.Ani;
 import de.looksgood.ani.AniSequence;
+import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;

@@ -1,7 +1,8 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.canvasanimations;
 
 import java.awt.Rectangle;
 
+import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.udp.UDPVideoStreamClient;
 import processing.core.PApplet;
 import processing.core.PGraphics;

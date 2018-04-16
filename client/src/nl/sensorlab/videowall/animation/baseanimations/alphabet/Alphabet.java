@@ -1,9 +1,9 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.baseanimations.alphabet;
 
 import com.cleverfranke.util.PColor;
 import com.cleverfranke.util.Settings;
 
-import alphabet.Phrase;
+import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PGraphics;

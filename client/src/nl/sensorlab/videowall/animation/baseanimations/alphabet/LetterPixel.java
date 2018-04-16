@@ -1,4 +1,4 @@
-package alphabet;
+package nl.sensorlab.videowall.animation.baseanimations.alphabet;
 
 import processing.core.PGraphics;
 

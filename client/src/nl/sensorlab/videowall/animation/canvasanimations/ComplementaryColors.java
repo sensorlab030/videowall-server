@@ -1,9 +1,10 @@
-package nl.sensorlab.videowall.animation;
+package nl.sensorlab.videowall.animation.canvasanimations;
 
 import java.util.Random;
 
 import com.cleverfranke.util.PColor;
 
+import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
