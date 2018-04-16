@@ -68,7 +68,7 @@ public class SoundAnimation extends BaseCanvasAnimation {
 
 	// Roel's animation
 	private float hue;
-	private int size, xpos, ypos, counter;
+	private int size, xpos, ypos;
 	private boolean initialized;
 
 	int currentFrame = 0;
