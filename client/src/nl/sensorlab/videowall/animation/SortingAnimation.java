@@ -76,7 +76,7 @@ public class SortingAnimation extends BaseAnimation {
 
 		// Fade
 		g.noStroke();
-		g.fill(0, 20);
+		g.fill(0, 50);
 		g.rect(0, 0, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);
 
 		// Update the sorting

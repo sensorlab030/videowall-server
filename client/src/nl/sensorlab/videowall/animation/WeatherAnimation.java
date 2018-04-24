@@ -47,7 +47,7 @@ public class WeatherAnimation extends BaseAnimation {
 		generatePixelObjects(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
 		// Set pixel font
-		pixelFont = applet.createFont(FileSystem.getApplicationPath("resources/Pixeled.tff"), 10);
+//		pixelFont = applet.createFont(FileSystem.getApplicationPath("resources/Pixeled.tff"), 10);
 
 		// Create Sequence
 		indicatorsequence = new TriggerSequence(30, 60);
@@ -258,24 +258,24 @@ public class WeatherAnimation extends BaseAnimation {
 	}
 
 	public void stretchText(String _text, PGraphics g) {
-		applet.textFont(pixelFont);
-		applet.textSize(20);
-
-		int textWidth 	= (int)applet.textWidth(_text);
-		int textHeight 	= (int)((applet.textAscent() + applet.textDescent()) * 0.6);
-
-		// Start drawing the actual text
-		stretchFont = applet.createGraphics(textWidth, textHeight);
-		stretchFont.beginDraw();
-		stretchFont.noStroke();
-		stretchFont.fill(255,200);
-		stretchFont.textSize(20);
-		stretchFont.textAlign(applet.LEFT, applet.TOP);
-		stretchFont.text(_text, 0, (int)(-textHeight*0.3));
-		stretchFont.endDraw();
-
-		// Strech the image to fill the canvas
-		g.image(stretchFont, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+//		applet.textFont(pixelFont);
+//		applet.textSize(20);
+//
+//		int textWidth 	= (int)applet.textWidth(_text);
+//		int textHeight 	= (int)((applet.textAscent() + applet.textDescent()) * 0.6);
+//
+//		// Start drawing the actual text
+//		stretchFont = applet.createGraphics(textWidth, textHeight);
+//		stretchFont.beginDraw();
+//		stretchFont.noStroke();
+//		stretchFont.fill(255,200);
+//		stretchFont.textSize(20);
+//		stretchFont.textAlign(applet.LEFT, applet.TOP);
+//		stretchFont.text(_text, 0, (int)(-textHeight*0.3));
+//		stretchFont.endDraw();
+//
+//		// Strech the image to fill the canvas
+//		g.image(stretchFont, 0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 	}
 
 	@Override

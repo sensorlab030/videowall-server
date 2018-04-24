@@ -23,7 +23,7 @@ public class FishTankAnimation extends BaseAnimation {
 	public PApplet parent;
 
 	private ArrayList<Fish> fishes;
-	private int amountFishes = 10;
+	private int amountFishes = 20;
 
 	public FishTankAnimation(PApplet applet) {
 		super(applet);
@@ -43,7 +43,7 @@ public class FishTankAnimation extends BaseAnimation {
 	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Add some fade effect
 		g.noStroke();
-		g.fill(0,0,128, 30);
+		g.fill(0,0,30, 30);
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
 		// Update and draw

@@ -24,7 +24,7 @@ public class FlockingAnimation extends BaseAnimation {
 	public int[] boidcolors = {PColor.color(245,20,147), PColor.color(69,33,124), PColor.color(7,153,242), PColor.color(255,255,255)};
 
 	public Flock flock;
-	public int sizeFlock = 4;
+	public int sizeFlock = 12;
 
 	public int counter = 0; // <-- Add new boid every x amount of time
 	public int counterAddBoids = 120;
@@ -51,7 +51,7 @@ public class FlockingAnimation extends BaseAnimation {
 	@Override
 	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Add some fade effect
-		g.fill(0, 50);
+		g.fill(0, 20);
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 

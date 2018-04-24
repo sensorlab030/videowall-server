@@ -67,7 +67,6 @@ public class AnimationManager {
 		// All Applet based animation
 		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
-
 		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
@@ -84,7 +83,6 @@ public class AnimationManager {
 		addAnimation("Flocking", new FlockingAnimation(applet));
 		addAnimation("Bouncy Bubbles", new BouncyBubblesAnimation(applet));
 		addAnimation("Shader Nebula", new ShaderAnimation(applet, "nebula", 1500, false, ""));
-		//		addAnimation("Shader Deform", new ShaderAnimation(applet, "deform", 750, true, "tex"));
 		addAnimation("Shader Monjori", new ShaderAnimation(applet, "monjori", 1200, false, ""));
 		addAnimation("Shader Landscape", new ShaderAnimation(applet, "landscape", 3500, false, ""));
 		addAnimation("Brush Canvas", new BrushAnimation(applet));
