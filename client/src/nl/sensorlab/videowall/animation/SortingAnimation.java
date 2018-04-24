@@ -72,7 +72,7 @@ public class SortingAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 
 		// Fade
 		g.noStroke();

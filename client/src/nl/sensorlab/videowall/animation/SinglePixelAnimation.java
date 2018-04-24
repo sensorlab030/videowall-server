@@ -58,7 +58,7 @@ public class SinglePixelAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		update();
 
 		// Fade

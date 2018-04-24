@@ -53,7 +53,7 @@ public class PerlinNoiseAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Draw particles
 		drawParticles(g);
 	}

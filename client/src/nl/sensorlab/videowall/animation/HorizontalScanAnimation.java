@@ -33,7 +33,7 @@ public class HorizontalScanAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		g.noStroke();
 		g.fill(0,5);
 		g.rect(0, 0, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);

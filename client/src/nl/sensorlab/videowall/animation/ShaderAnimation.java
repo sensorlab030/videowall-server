@@ -38,8 +38,8 @@ public class ShaderAnimation extends BaseCanvasAnimation {
 		this.hasTexture = _hasTexture;
 
 		// Load the shader
-		currentShader = applet.loadShader(FileSystem.getApplicationPath("resources/shaders/" + _shaderName + ".glsl"));
-
+		currentShader = applet.loadShader(getResource("shaders/" + _shaderName + ".glsl"));
+		;
 		// Get the canvas dimensions
 		Rectangle canvasRect = getGeometry();
 
@@ -49,12 +49,12 @@ public class ShaderAnimation extends BaseCanvasAnimation {
 		// Load texture if needed
 		if(hasTexture) {
 			parent.textureWrap(parent.REPEAT);
-			texture = parent.loadImage(FileSystem.getApplicationPath("resources/textures/"+_textureName+".jpg"));
+			texture = parent.loadImage(getResource("textures/"+_textureName+".jpg"));
 		}
 	}
 
 	@Override
-	protected void drawCanvasAnimationFrame(PGraphics g) {
+	protected void drawCanvasAnimationFrame(PGraphics g, double t) {
 		// Update the shader
 		currentShader.set("time", (float) (parent.millis() / speed));
 		

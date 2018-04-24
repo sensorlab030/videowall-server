@@ -51,11 +51,11 @@ public abstract class BaseCanvasAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected final void drawAnimationFrame(PGraphics g) {
+	protected final void drawAnimationFrame(PGraphics g, double dt) {
 		
 		// Draw canvas animation on context
 		canvasContext.beginDraw();
-		drawCanvasAnimationFrame(canvasContext);
+		drawCanvasAnimationFrame(canvasContext, dt);
 		canvasContext.endDraw();
 		canvasImage = canvasContext.get();
 		
@@ -75,8 +75,9 @@ public abstract class BaseCanvasAnimation extends BaseAnimation {
 	 * the supplied PGraphics context to draw the animation frame
 	 * 
 	 * @param g
+	 * @param dt the time in ms between the current and previous draw call
 	 */
-	protected abstract void drawCanvasAnimationFrame(PGraphics g);
+	protected abstract void drawCanvasAnimationFrame(PGraphics g, double dt);
 	
 	/**
 	 * Fetch canvas image for preview purposes

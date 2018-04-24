@@ -11,7 +11,6 @@ import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.animation.Preview;
 import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
-import nl.sensorlab.videowall.walldriver.WallDriverPort;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -26,7 +25,9 @@ public class LedWallApplication extends PApplet {
 	private boolean ledPreviewEnabled = true;
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
-
+	
+	private double currentTime;						// Current time (used for keeping track of delta time)
+	
 	@Override
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
@@ -35,8 +36,13 @@ public class LedWallApplication extends PApplet {
 
 	@Override
 	public void setup() {
-		frameRate(WallDriverPort.FRAMERATE);
+		frameRate(60);
 		surface.setTitle("Preview");
+		
+		// Init Ani library
+		Ani.init(this);
+		Ani.noAutostart();
+		Ani.setDefaultTimeMode("SECONDS");
 
 		// Initialize animation manager
 		AnimationManager.initialize(this);
@@ -50,27 +56,36 @@ public class LedWallApplication extends PApplet {
 		// Configure wall driver
 		driver = new WallDriver(this,
 				Settings.getValue("driverPort1"),
-				Settings.getValue("driverPort2"));
-
-		// Initialize ANI
-		Ani.init(this);
+				Settings.getValue("driverPort2"),
+				(int) frameRate);
+		
+		// Start first animation (blank)
+		AnimationManager.getInstance().startAnimation(0);
 
 	}
 
 	@Override
 	public void draw() {
-		background(0);
-
+		
+		// Capture current and delta time
+		double t = System.currentTimeMillis();
+		double dt = t - currentTime;
+		currentTime = t;
+		
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			return;
 		}
-
-		// Draw animation frame
-		animation.draw();
-
+		
+		// Draw animation frame with delta time
+		animation.draw(dt);
+		
+		// Send image to driver
+		driver.displayImage(animation.getImage());
+		
 		// Display previews
+		background(0);
 		if (ledPreviewEnabled) {
 			image(preview.renderPreview(animation.getImage()), 0, 0);
 		}
@@ -86,11 +101,8 @@ public class LedWallApplication extends PApplet {
 			image(sourcePreview, 0, 0);
 		}
 
-		// Send image to driver
-		driver.displayImage(animation.getImage());
-
 	}
-
+	
 	/**
 	 * Handle movie events (used by VideoAnimation class), read
 	 * a new frame from the movie

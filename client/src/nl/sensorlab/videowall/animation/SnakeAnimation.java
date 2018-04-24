@@ -34,7 +34,7 @@ public class SnakeAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Fade
 		g.noStroke();
 		g.fill(0, 2);

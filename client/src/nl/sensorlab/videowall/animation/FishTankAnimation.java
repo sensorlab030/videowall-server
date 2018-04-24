@@ -40,7 +40,7 @@ public class FishTankAnimation extends BaseAnimation {
 
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Add some fade effect
 		g.noStroke();
 		g.fill(0,0,128, 30);

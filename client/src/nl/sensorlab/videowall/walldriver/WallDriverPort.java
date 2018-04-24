@@ -8,12 +8,11 @@ public class WallDriverPort {
 	
 	public final static int PANEL_IMAGE_WIDTH = 81;
 	public final static int PANEL_IMAGE_HEIGHT = 16;
-	public final static int FRAMERATE = 60;
 	private final static float GAMMA = 1.7f;
 	
-	private boolean master;
 	private Serial serialPort;
 	
+	private byte[] dataframeHeader;
 	private int[] gammaTable = new int[256];
 	
 	/**
@@ -24,14 +23,20 @@ public class WallDriverPort {
 	 * @param isMaster
 	 * @throws Exception 
 	 */
-	public WallDriverPort(PApplet applet, String portName, boolean isMaster) throws Exception {
+	public WallDriverPort(PApplet applet, String portName, int framerate, boolean isMaster) throws Exception {
 		
 		serialPort = new Serial(applet, portName);
 		if (serialPort == null) {
 			throw new Exception("Failed to open serial port " + portName);
 		}
 		
-		master = isMaster;
+		// Initialize data frame header
+		if (isMaster) {
+			int usec = (int) ((1000000.0 / framerate) * 0.75);
+			dataframeHeader = new byte[] {'*', ((byte) (usec)), ((byte) (usec >> 8))};
+		} else {
+			dataframeHeader = new byte[] { '%',	0,	0};
+		}
 		
 		// Initialize gamma table
 		for (int i = 0; i < 256; i++) {
@@ -50,16 +55,9 @@ public class WallDriverPort {
 		byte[] data = new byte[(PANEL_IMAGE_WIDTH * PANEL_IMAGE_HEIGHT * 3) + 3];
 		int offset = 0;
 		
-		// Data frame header
-		if (master) {
-			int usec = (int) ((1000000.0 / FRAMERATE) * 0.75);
-			data[offset++] = '*';
-			data[offset++] = (byte) (usec); // request the frame sync pulse
-			data[offset++] = (byte) (usec >> 8); // at 75% of the frame time
-		} else {
-			data[offset++] = '%';
-			data[offset++] = 0;
-			data[offset++] = 0;
+		// Add data frame header
+		for (int i = 0; i < dataframeHeader.length; i++) {
+			data[offset++] = dataframeHeader[i];
 		}
 		
 		// Add image data to data frame

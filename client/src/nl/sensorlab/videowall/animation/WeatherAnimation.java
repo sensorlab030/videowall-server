@@ -279,7 +279,7 @@ public class WeatherAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g) {
+	protected void drawAnimationFrame(PGraphics g, double t) {
 		g.background(0);
 		updatePixels();
 		drawPixels(g);

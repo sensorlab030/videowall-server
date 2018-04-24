@@ -3,7 +3,35 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.sensorlab.videowall.animation.*;
+import com.cleverfranke.util.PColor;
+import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.BouncyBubblesAnimation;
+import nl.sensorlab.videowall.animation.BrushAnimation;
+import nl.sensorlab.videowall.animation.ColorGridAnimation;
+import nl.sensorlab.videowall.animation.FishTankAnimation;
+import nl.sensorlab.videowall.animation.FlockingAnimation;
+import nl.sensorlab.videowall.animation.GameOfLifeAnimation;
+import nl.sensorlab.videowall.animation.GridSystemAnimation;
+import nl.sensorlab.videowall.animation.HorizontalScanAnimation;
+import nl.sensorlab.videowall.animation.LiquidColumnsAnimation;
+import nl.sensorlab.videowall.animation.PerlinNoiseAnimation;
+import nl.sensorlab.videowall.animation.PongGameAnimation;
+import nl.sensorlab.videowall.animation.ShaderAnimation;
+import nl.sensorlab.videowall.animation.SinglePixelAnimation;
+import nl.sensorlab.videowall.animation.SortingAnimation;
+import nl.sensorlab.videowall.animation.SwirlAnimation;
+import nl.sensorlab.videowall.animation.WavesAnimation;
+import nl.sensorlab.videowall.animation.WeatherAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.ComplementaryColors;
+import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.LineWaveAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
 import processing.core.PApplet;
 
 /**
@@ -25,11 +53,23 @@ public class AnimationManager {
 	 */
 	public AnimationManager(PApplet applet) {
 
+		
+		// Full black
+		ColorAnimation black = new ColorAnimation(applet);
+		black.setData(String.valueOf(PColor.color(0)));
+		addAnimation("COL: Black", black);
+		
+		// Full white
+		ColorAnimation white = new ColorAnimation(applet);
+		white.setData(String.valueOf(PColor.color(255)));
+		addAnimation("COL: White", white);
+			
 		// All Applet based animation
 		addAnimation("Beach ball", new BeachballAnimation(applet));
 		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
+
 		addAnimation("Line wave", new LineWaveAnimation(applet));
-		addAnimation("Sound animation", new SoundAnimation(applet));
+		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
@@ -69,6 +109,7 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
+
 
 		// Debug
 		// addAnimation("Debug animation", new DebugCanvasAnimation(applet));

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create-bundle" name="Build">
+
+    <!-- set global properties for this build -->
+    <property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+	
+	<!-- Clear the dist folder -->
+	<target name="clean">
+	    <delete dir="${dist}"/>
+	</target>
+		
+	<!-- Create installer bundle -->
+	<target name="create-bundle" description="Create runnable jar, bundle it with resources into dist" depends="clean">
+		
+		<!-- Make tmp dir -->
+		<mkdir dir="${dist}"/>
+		
+		<!-- Create runnable jar -->
+		<jar destfile="${dist}/videowall.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="nl.sensorlab.videowall.LedWallApplication"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ core.jar Ani.jar gstreamer-java.jar video.jar jna.jar jl1.0.1.jar jsminim.jar minim.jar mp3spi1.9.5.jar tritonus_aos.jar tritonus_share.jar jogamp-fat.jar jssc.jar serial.jar"/>
+            </manifest>
+	        <zipfileset src="jar-in-jar-loader.zip"/>
+	        <fileset dir="bin"/>
+            <zipfileset dir="lib/processing" includes="core.jar"/>
+            <zipfileset dir="lib" includes="Ani.jar"/>
+            <zipfileset dir="lib/processing" includes="gstreamer-java.jar"/>
+            <zipfileset dir="lib/processing" includes="video.jar"/>
+            <zipfileset dir="lib/processing" includes="jna.jar"/>
+            <zipfileset dir="lib/minim" includes="jl1.0.1.jar"/>
+            <zipfileset dir="lib/minim" includes="jsminim.jar"/>
+            <zipfileset dir="lib/minim" includes="minim.jar"/>
+            <zipfileset dir="lib/minim" includes="mp3spi1.9.5.jar"/>
+            <zipfileset dir="lib/minim" includes="tritonus_aos.jar"/>
+            <zipfileset dir="lib/minim" includes="tritonus_share.jar"/>
+            <zipfileset dir="lib" includes="jogamp-fat.jar"/>
+            <zipfileset dir="lib" includes="jssc.jar"/>
+            <zipfileset dir="lib" includes="serial.jar"/>
+	    </jar>
+		
+		<!-- Copy libraries-->
+		<copy todir="${dist}/lib">
+			<fileset dir="${lib}" />
+		</copy>
+			
+		<!-- Copy default settings -->
+		<copy file="settings.json" tofile="${dist}/settings.json" overwrite="true" />
+		
+		<!-- Copy bat file -->
+		<copy file="videowall.bat" tofile="${dist}/videowall.bat" overwrite="true" />
+		
+	</target>	
+	
+</project>

@@ -22,12 +22,12 @@ public class WallDriver {
 	 * @param portName1
 	 * @param portName2
 	 */
-	public WallDriver(PApplet applet, String portName1, String portName2) {
+	public WallDriver(PApplet applet, String portName1, String portName2, int framerate) {
 		
 		// Setup ports
 		try {
-			port1 = new WallDriverPort(applet, portName1, true);
-			port2 = new WallDriverPort(applet, portName2, false);
+			port1 = new WallDriverPort(applet, portName1, framerate, true);
+			port2 = new WallDriverPort(applet, portName2, framerate, false);
 			portsConnected = true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
