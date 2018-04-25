@@ -30,7 +30,6 @@ public class UDPVideoStreamClient implements Runnable {
     private Object streamImageLock = new Object(); // Lock for stream image
     
     private InetAddress expectedSender;
-    private String expectedSenderHost; // What IP to receive images from
     
     private PImage streamImage;
 
@@ -57,19 +56,12 @@ public class UDPVideoStreamClient implements Runnable {
     public void setExpectedSender(String senderHost) {
         
         // Set expected host
-        expectedSenderHost = senderHost;
         try {
             expectedSender = InetAddress.getByName(senderHost);
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        // Restart if currently running
-        if (running) {
-            stop();
-            start();
-        }
     }
 
     public void start() {
@@ -88,7 +80,7 @@ public class UDPVideoStreamClient implements Runnable {
             // Enable client
             running = true;
             System.out.println("UDP Video Stream Client / Listening to port: " + PORT_IN
-                    + ". Expecting packets from IP : " + expectedSenderHost);
+                    + ". Expecting packets from IP : " + expectedSender.getHostAddress());
 
         } catch (SocketException e) {
             e.printStackTrace();
@@ -111,7 +103,7 @@ public class UDPVideoStreamClient implements Runnable {
             
             // Confirm sender
             if (!packet.getAddress().equals(expectedSender)) {
-                throw new Exception("Invalid sender");
+                throw new Exception("Invalid sender: " + packet.getAddress().getHostAddress());
             }
             
             // Confirm expected packet size
