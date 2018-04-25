@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cleverfranke.util.PColor;
+import com.cleverfranke.util.Settings;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
@@ -16,7 +17,7 @@ import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.LineWaveAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
 import processing.core.PApplet;
 
 /**
@@ -37,7 +38,6 @@ public class AnimationManager {
 	 * @param applet
 	 */
 	public AnimationManager(PApplet applet) {
-
 		
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
@@ -57,7 +57,11 @@ public class AnimationManager {
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
-		addAnimation("Video stream", new VideoStream(applet));
+
+		// Video stream options
+		for (String host: Settings.getValue("streamingHosts", "").split(",")) {
+		    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
+		}
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
