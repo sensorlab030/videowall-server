@@ -31,7 +31,7 @@ public class WallDriverPort {
 	 * How often the keepAlive function should check for a connected cable (in
 	 * milliseconds)
 	 */
-	private final static int KEEPALIVE_INTERVAL = 1000;
+	private final static int KEEPALIVE_INTERVAL = 2000;
 
 	/**
 	 * The system name of the port (e.g. COM3, /dev/ttyS0). If this value
@@ -41,7 +41,8 @@ public class WallDriverPort {
 	private String portName;
 
 	/**
-	 * Connection to the port to read/write from and to
+	 * Connection to the port to read/write from and to, if null it means 
+	 * there's no expected port to be connected (e.g. on a development machine)
 	 */
 	private SerialPort port;
 
@@ -70,8 +71,10 @@ public class WallDriverPort {
 	 */
 	public WallDriverPort(PApplet applet, String portName, int framerate, boolean isMaster) {
 
-		this.portName = !portName.isEmpty() ? portName : null;
-		this.port = new SerialPort(portName);
+		if (!portName.isEmpty()) {
+			this.portName = portName;
+			port = new SerialPort(portName);
+		}
 
 		// Initialize data frame header
 		if (isMaster) {
@@ -94,81 +97,88 @@ public class WallDriverPort {
 	 * @param image
 	 */
 	public void writeImageData(PImage image) {
-
-		if (!port.isOpened()) {
+		
+		// Skip if no port is enabled
+		if (port == null) {
 			return;
 		}
-
-		// Create data frame
-		byte[] data = new byte[(PORT_IMAGE_WIDTH * PORT_IMAGE_HEIGHT * 3) + 3];
-		int offset = 0;
-
-		// Add data frame header
-		for (int i = 0; i < dataframeHeader.length; i++) {
-			data[offset++] = dataframeHeader[i];
-		}
-
-		// Add image data to data frame
-		int x, y, xbegin, xend, xinc, mask;
-		int linesPerPin = image.height / 8;
-		int pixel[] = new int[8];
-
-		for (y = 0; y < linesPerPin; y++) {
-			if ((y & 1) == 0) {
-				// even numbered rows are left to right
-				xbegin = 0;
-				xend = image.width;
-				xinc = 1;
-			} else {
-				// odd numbered rows are right to left
-				xbegin = image.width - 1;
-				xend = -1;
-				xinc = -1;
-			}
-			for (x = xbegin; x != xend; x += xinc) {
-				for (int i = 0; i < 8; i++) {
-					// fetch 8 pixels from the image, 1 for each pin
-					pixel[i] = image.pixels[x + (y + linesPerPin * i) * image.width];
-					pixel[i] = colorWiring(pixel[i]);
-				}
-				// convert 8 pixels to 24 bytes
-				for (mask = 0x800000; mask != 0; mask >>= 1) {
-					byte b = 0;
-					for (int i = 0; i < 8; i++) {
-						if ((pixel[i] & mask) != 0)
-							b |= (1 << i);
-					}
-					data[offset++] = b;
-				}
-			}
-		}
-
-		// Write to serial port
-		try {
-			port.writeBytes(data);
-		} catch (SerialPortException e) {
-			System.err.println("Failed to write to port " + portName + ": " + e.getMessage());
-		}
-
-		// Perform keepalive check
+		
+		// Perform keep alive check
 		long currentTime = System.currentTimeMillis();
 		if (currentTime > lastKeepAliveTime + KEEPALIVE_INTERVAL) {
 			keepAlive();
 			lastKeepAliveTime = currentTime;
 		}
 
+		// Process frame and send
+		if (port.isOpened()) {
+			
+			// Create data frame
+			byte[] data = new byte[(PORT_IMAGE_WIDTH * PORT_IMAGE_HEIGHT * 3) + 3];
+			int offset = 0;
+
+			// Add data frame header
+			for (int i = 0; i < dataframeHeader.length; i++) {
+				data[offset++] = dataframeHeader[i];
+			}
+
+			// Add image data to data frame
+			int x, y, xbegin, xend, xinc, mask;
+			int linesPerPin = image.height / 8;
+			int pixel[] = new int[8];
+
+			for (y = 0; y < linesPerPin; y++) {
+				if ((y & 1) == 0) {
+					// even numbered rows are left to right
+					xbegin = 0;
+					xend = image.width;
+					xinc = 1;
+				} else {
+					// odd numbered rows are right to left
+					xbegin = image.width - 1;
+					xend = -1;
+					xinc = -1;
+				}
+				for (x = xbegin; x != xend; x += xinc) {
+					for (int i = 0; i < 8; i++) {
+						// fetch 8 pixels from the image, 1 for each pin
+						pixel[i] = image.pixels[x + (y + linesPerPin * i) * image.width];
+						pixel[i] = colorWiring(pixel[i]);
+					}
+					// convert 8 pixels to 24 bytes
+					for (mask = 0x800000; mask != 0; mask >>= 1) {
+						byte b = 0;
+						for (int i = 0; i < 8; i++) {
+							if ((pixel[i] & mask) != 0)
+								b |= (1 << i);
+						}
+						data[offset++] = b;
+					}
+				}
+			}
+
+			// Write to serial port
+			try {
+				port.writeBytes(data);
+			} catch (SerialPortException e) {
+				System.err.println("Failed to write to port " + portName + ": " + e.getMessage());
+			}
+			
+		}
+
 	}
 
 	/**
-	 * Attempt to open the serial port for communication
+	 * Attempt to open the serial port for communication, if the port is already open, it will
+	 * be closed before opening new port
 	 * 
 	 * @return true on successfully opening the port
 	 */
 	public void openPort() {
 		
 		// Skip if no port name is supplied
-		if (portName == null) {
-			System.out.println("No port supplied, will not try to connect");
+		if (port == null) {
+			System.out.println("No serial port name supplied, will not try to connect");
 			return;
 		}
 		
@@ -176,16 +186,26 @@ public class WallDriverPort {
 
 			// Close port if flagged as open
 			if (port.isOpened()) {
-				System.out.println("Closing port " + portName);
-				port.closePort();
+				closePort();
 			}
 
 			// Open the port
-			System.out.println("Opening port " + portName);
+			System.out.println("Attempting to opening serial port " + portName);
 			port.openPort();
-
+			
 		} catch (SerialPortException e) {
-			System.err.println("Failed to connect to port " + portName + ": " + e.getMessage());
+			System.err.println("Failed to connect to serial port " + portName + ": " + e.getMessage());
+		}
+	}
+	
+	public void closePort() {
+		if (port != null && port.isOpened()) {
+			System.out.println("Closing serial port " + portName);	
+			try {
+				port.closePort();
+			} catch (SerialPortException e) {
+				System.err.println("Failed to close serial port " + portName + ": " + e.getMessage());
+			}
 		}
 	}
 
@@ -194,12 +214,18 @@ public class WallDriverPort {
 	 */
 	private void keepAlive() {
 		
-		System.out.println("Keepalive on port " + portName);
 		boolean portExists = Arrays.stream(SerialPortList.getPortNames()).anyMatch(str -> str.trim().equals(portName));
+		
+		System.out.println("Available ports:");
+		for (String n: SerialPortList.getPortNames()) {
+			System.out.println(" > " + n);
+		}
+		
 		if (!portExists) {
-			System.err.println("Cable unplugged for port " + portName);
+			System.err.println("Connection lost to serial  port " + portName);
 			openPort();
 		}
+		
 	}
 
 	/**
