@@ -7,12 +7,6 @@
 	<classpathentry kind="lib" path="lib/processing/gstreamer-java.jar"/>
 	<classpathentry kind="lib" path="lib/processing/video.jar"/>
 	<classpathentry kind="lib" path="lib/processing/jna.jar"/>
-	<classpathentry kind="lib" path="lib/minim/jl1.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/minim/jsminim.jar"/>
-	<classpathentry kind="lib" path="lib/minim/minim.jar"/>
-	<classpathentry kind="lib" path="lib/minim/mp3spi1.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/minim/tritonus_aos.jar"/>
-	<classpathentry kind="lib" path="lib/minim/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/jogamp-fat.jar"/>
 	<classpathentry kind="lib" path="lib/jssc.jar"/>
 	<classpathentry kind="lib" path="lib/serial.jar"/>
