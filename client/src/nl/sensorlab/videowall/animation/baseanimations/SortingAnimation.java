@@ -19,8 +19,6 @@ import processing.core.PGraphics;
  */
 public class SortingAnimation extends BaseAnimation {
 
-	private PApplet parent;
-
 	private ArrayList<Sort> sortingmethods;
 	private int[] sortingColors = {}; // <-- Different colors for each sorting methods (just to make it more clear)
 
@@ -30,18 +28,17 @@ public class SortingAnimation extends BaseAnimation {
 	private int amountColumns = 12;
 	
 	// Update step
-	private int updateSortingEvery = 2;
+	private int updateSortingEvery = 4;
 	private int updateCounter = 0;
 	
 	// Update sorting m	ethod
-	private int updateMethodEvery = 300; // <-- When to select the next sorting animation
+	private int updateMethodEvery = 600; // <-- When to select the next sorting animation
 	private int updateMethodCounter = 0;
 	
 	private int maxValue; // <-- Get the max value; so it's easier to map to (y)
 
 	public SortingAnimation(PApplet applet) {
 		super(applet);
-		this.parent = applet;
 
 		// Create the sorting methods list
 		this.sortingmethods = new ArrayList<Sort>();
