@@ -65,7 +65,7 @@ public class SortingAnimation extends BaseAnimation {
 		int[] data = new int[n];  
 		for (int i = 0; i < n; i++) {
 			data[i] = (int)(1 + Math.random() * (1 + n));
-			maxValue = Math.max(maxValue, data[i]);
+			maxValue = Math.max(maxValue, data[i]); // Get the max value so we can map the height
 		}
 		return data;
 	}
