@@ -77,9 +77,6 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-
-		// Start with the latest animation (in the list)
-		startAnimation(availableAnimations.size()-1);
 	}
 
 	/**
