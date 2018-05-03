@@ -1,58 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create-bundle" name="Build">
+<project name="Build template" default="create-bundle">
 
-    <!-- set global properties for this build -->
-    <property name="dist" location="dist" />
-	<property name="lib" location="lib" />
-	
-	<!-- Clear the dist folder -->
+	<!-- Name of the main class (e.g. com.example.package.Main) -->
+	<property name="class.main" value="nl.sensorlab.videowall.LedWallApplication" />
+
+	<!-- Name of the app  -->
+	<property name="target" value="VideoWall" />
+
+	<!-- Build properties you shouldn't need to change -->
+	<property name="dir.buildfile" value="." />
+	<property name="dir.dist" location="dist" />
+	<property name="dir.lib" location="lib" />
+
+	<!-- Clean / (re)create the dist folder -->
 	<target name="clean">
-	    <delete dir="${dist}"/>
+		<delete dir="${dir.dist}" />
+		<mkdir dir="${dir.dist}" />
 	</target>
-		
-	<!-- Create installer bundle -->
-	<target name="create-bundle" description="Create runnable jar, bundle it with resources into dist" depends="clean">
-		
-		<!-- Make tmp dir -->
-		<mkdir dir="${dist}"/>
-		
-		<!-- Create runnable jar -->
-		<jar destfile="${dist}/videowall.jar">
-            <manifest>
-                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="nl.sensorlab.videowall.LedWallApplication"/>
-                <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ core.jar Ani.jar gstreamer-java.jar video.jar jna.jar jl1.0.1.jar jsminim.jar minim.jar mp3spi1.9.5.jar tritonus_aos.jar tritonus_share.jar jogamp-fat.jar jssc.jar serial.jar"/>
-            </manifest>
-	        <zipfileset src="jar-in-jar-loader.zip"/>
-	        <fileset dir="bin"/>
-            <zipfileset dir="lib/processing" includes="core.jar"/>
-            <zipfileset dir="lib" includes="Ani.jar"/>
-            <zipfileset dir="lib/processing" includes="gstreamer-java.jar"/>
-            <zipfileset dir="lib/processing" includes="video.jar"/>
-            <zipfileset dir="lib/processing" includes="jna.jar"/>
-            <zipfileset dir="lib/minim" includes="jl1.0.1.jar"/>
-            <zipfileset dir="lib/minim" includes="jsminim.jar"/>
-            <zipfileset dir="lib/minim" includes="minim.jar"/>
-            <zipfileset dir="lib/minim" includes="mp3spi1.9.5.jar"/>
-            <zipfileset dir="lib/minim" includes="tritonus_aos.jar"/>
-            <zipfileset dir="lib/minim" includes="tritonus_share.jar"/>
-            <zipfileset dir="lib" includes="jogamp-fat.jar"/>
-            <zipfileset dir="lib" includes="jssc.jar"/>
-            <zipfileset dir="lib" includes="serial.jar"/>
-	    </jar>
-		
-		<!-- Copy libraries-->
-		<copy todir="${dist}/lib">
-			<fileset dir="${lib}" />
+
+	<!-- Compile the jar -->
+	<target name="compile-jar" depends="clean">
+		<jar destfile="${dir.dist}/${target}.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="${class.main}" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${dir.buildfile}/bin" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/core.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/jssc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/serial.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/gstreamer-java.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/jna.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/video.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/ani/Ani.jar" />
+		</jar>
+	</target>
+
+	<!-- Create the dist bundle -->
+	<target name="create-bundle" depends="compile-jar">
+
+		<!-- Add the native video libraries -->
+		<copy todir="${dir.dist}/lib/processing/video">
+			<fileset dir="lib/processing/video">
+				<filename name="**/*.jar*" negate="true" />
+			</fileset>
 		</copy>
-			
+
+		<!-- Add the native serial libraries (only needed for OSX) -->
+		<copy todir="${dir.dist}/lib/processing/serial">
+			<fileset dir="lib/processing/serial">
+				<filename name="**/*.jar*" negate="true" />
+			</fileset>
+		</copy>
+
+		<!-- Write run.bat -->
+		<echo file="${dir.dist}/run.bat">@echo off
+java -jar -Dgstreamer.library.path="lib\processing\video\windows64" -Dgstreamer.plugin.path="lib\processing\video/windows64\plugins ${target}.jar
+</echo>
+
+		<!-- Write run.sh -->
+		<echo file="${dir.dist}/run.sh">#!/bin/sh
+java -jar -Djava.library.path="lib/processing/serial/macosx" -Dgstreamer.library.path="lib/processing/video/macosx64" -Dgstreamer.plugin.path="lib/processing/video/macosx64/plugins" ${target}.jar
+</echo>
+		
 		<!-- Copy default settings -->
-		<copy file="settings.json" tofile="${dist}/settings.json" overwrite="true" />
-		
-		<!-- Copy bat file -->
-		<copy file="videowall.bat" tofile="${dist}/videowall.bat" overwrite="true" />
-		
-	</target>	
-	
+		<copy file="settings.json" tofile="${dir.dist}/settings.json" overwrite="true" />
+
+	</target>
+
 </project>
