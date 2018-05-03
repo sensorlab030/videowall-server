@@ -9,6 +9,7 @@ import com.cleverfranke.util.PColor;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.SortingAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ComplementaryColors;
@@ -58,6 +59,8 @@ public class AnimationManager {
 		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Sorting Animation", new SortingAnimation(applet));
+		
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
@@ -75,6 +78,8 @@ public class AnimationManager {
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
 
+		// Start with the latest animation (in the list)
+		startAnimation(availableAnimations.size()-1);
 	}
 
 	/**
