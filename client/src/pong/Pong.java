@@ -45,7 +45,7 @@ public class Pong {
 	}
 
 	private void resetGame() {
-		System.err.println("Reset Game");
+		//		System.err.println("Reset Game");
 		// Reset position
 		ball.position.x = width/2;
 		ball.position.y = height * 0.8f;
@@ -82,7 +82,7 @@ public class Pong {
 
 	private void batCollide() {
 		if (rectCollide(ball.position, ball.radius, ball.radius, bat.position, bat.width, bat.height)) {
-			System.err.println("batCollide");
+			//			System.err.println("batCollide");
 			// Determine the angle
 			float angle = parent.parent.map((ball.position.x - bat.position.x), 0, bat.width, 150, 30);
 
