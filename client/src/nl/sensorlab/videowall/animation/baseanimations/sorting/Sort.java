@@ -21,9 +21,9 @@ public abstract class Sort {
 			int x = 1 + (2 * i);
 			int h = (int) Math.ceil((_height / _maxValue) * valuesArray[i]) ;
 			
+			// Highlight the current selected (being sorted)
 			if(currentSelected == i) {
-				g.fill(255,0,0);
-			
+				g.fill(255);
 			}else {
 				g.fill(_color);
 			}

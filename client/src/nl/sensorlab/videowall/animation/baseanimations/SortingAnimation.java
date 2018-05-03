@@ -1,5 +1,8 @@
 package nl.sensorlab.videowall.animation.baseanimations;
 import java.util.ArrayList;
+
+import com.cleverfranke.util.PColor;
+
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.BozoSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.BubbleSort;
@@ -19,6 +22,8 @@ public class SortingAnimation extends BaseAnimation {
 	private PApplet parent;
 
 	private ArrayList<Sort> sortingmethods;
+	private int[] sortingColors = {}; // <-- Different colors for each sorting methods (just to make it more clear)
+
 
 	// Settings
 	private int sortingIndex = 0; // <-- Which methods to select
@@ -48,6 +53,15 @@ public class SortingAnimation extends BaseAnimation {
 		this.sortingmethods.add(new OddEvenSort(randomIntArray(amountColumns)));
 		this.sortingmethods.add(new GnomeSort(randomIntArray(amountColumns)));
 		this.sortingmethods.add(new BozoSort(randomIntArray(amountColumns)));
+		
+		// Add some colors
+		this.sortingColors = new int[sortingmethods.size()];
+		this.sortingColors[0] = PColor.color(255,20,147);
+		this.sortingColors[1] = PColor.color(255,105,180);
+		this.sortingColors[2] = PColor.color(199,21,133);
+		this.sortingColors[3] = PColor.color(153,50,204);
+		this.sortingColors[4] = PColor.color(65,105,225);
+		this.sortingColors[5] = PColor.color(135,206,250);
 	}
 
 	private int[] randomIntArray(int n) {
@@ -75,7 +89,7 @@ public class SortingAnimation extends BaseAnimation {
 		}
 		
 		// Draw the sorting
-		sortingmethods.get(sortingIndex).draw(g, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y, maxValue, 255);
+		sortingmethods.get(sortingIndex).draw(g, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y, maxValue, sortingColors[sortingIndex]);
 
 		// Update the sorting method
 		if(updateMethodCounter >= updateMethodEvery) {
