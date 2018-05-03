@@ -5,7 +5,6 @@ import nl.sensorlab.videowall.animation.baseanimations.sorting.BozoSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.BubbleSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.CocktailSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.GnomeSort;
-import nl.sensorlab.videowall.animation.baseanimations.sorting.InsertionSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.OddEvenSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.OptimizedBubbleSort;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.Sort;
@@ -29,8 +28,8 @@ public class SortingAnimation extends BaseAnimation {
 	private int updateSortingEvery = 2;
 	private int updateCounter = 0;
 	
-	// Update sorting method
-	private int updateMethodEvery = 300;
+	// Update sorting m	ethod
+	private int updateMethodEvery = 300; // <-- When to select the next sorting animation
 	private int updateMethodCounter = 0;
 	
 	private int maxValue; // <-- Get the max value; so it's easier to map to (y)
@@ -49,7 +48,6 @@ public class SortingAnimation extends BaseAnimation {
 		this.sortingmethods.add(new OddEvenSort(randomIntArray(amountColumns)));
 		this.sortingmethods.add(new GnomeSort(randomIntArray(amountColumns)));
 		this.sortingmethods.add(new BozoSort(randomIntArray(amountColumns)));
-		this.sortingmethods.add(new InsertionSort(randomIntArray(amountColumns)));
 	}
 
 	private int[] randomIntArray(int n) {

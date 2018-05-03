@@ -3,6 +3,7 @@ import processing.core.PGraphics;
 
 public abstract class Sort {
 	protected int[] valuesArray;
+	public int currentSelected = 0;
 	public int num;
 
 	public Sort(int[] _inputValuesArray) {
@@ -13,12 +14,19 @@ public abstract class Sort {
 
 	public void draw(PGraphics g, int _width, int _height, float _maxValue, int _color) {
 		g.noStroke();
-		g.fill(_color);
+	
 		for(int i = 0; i < this.valuesArray.length; i++) {
 			
 			// Skip the first row
 			int x = 1 + (2 * i);
 			int h = (int) Math.ceil((_height / _maxValue) * valuesArray[i]) ;
+			
+			if(currentSelected == i) {
+				g.fill(255,0,0);
+			
+			}else {
+				g.fill(_color);
+			}
 			
 			// Draw
 			g.rect(x, _height, 2, -h);
@@ -33,6 +41,7 @@ public abstract class Sort {
 		int tempValue = this.valuesArray[_a];
 		this.valuesArray[_a] = this.valuesArray[_b];
 		this.valuesArray[_b] = tempValue;
+		this.currentSelected = _b;
 	}
 
 }
