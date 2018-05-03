@@ -8,9 +8,9 @@ import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.SensorLabLogo;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
 import processing.core.PApplet;
@@ -45,7 +45,7 @@ public class AnimationManager {
 		addAnimation("COL: White", white);
 			
 		// All Applet based animation
-		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
+		addAnimation("Sensorlab logo", new SensorLabLogo(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 
