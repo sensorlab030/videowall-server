@@ -1,5 +1,4 @@
 package nl.sensorlab.videowall.animation.baseanimations.liquidcolumns;
-import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -10,12 +9,12 @@ public class LiquidColumn {
 	private PVector[] positions;
 	private float speed;
 
-	public LiquidColumn(LiquidColumnsAnimation _p, float _x, float _speed) {
-		this.parent = _p;
+	public LiquidColumn(LiquidColumnsAnimation p, float x, float speed) {
+		this.parent = p;
 		this.positions = new PVector[parent.PIXEL_RESOLUTION_Y];
-		this.speed = _speed;
+		this.speed = speed;
 		for(int y = 0; y < parent.PIXEL_RESOLUTION_Y; y++) {
-			this.positions[y] = new PVector(_x, y);
+			this.positions[y] = new PVector(x, y);
 		}
 	}
 

@@ -1,6 +1,4 @@
 package nl.sensorlab.videowall.animation.baseanimations.liquidcolumns;
-import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
-import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class PushObject {
@@ -11,8 +9,8 @@ public class PushObject {
 	public float speed;
 	public float radius;
 	
-	public PushObject(LiquidColumnsAnimation _p){
-		this.parent = _p;
+	public PushObject(LiquidColumnsAnimation p){
+		this.parent = p;
 		reset();
 	}
 	
@@ -24,6 +22,8 @@ public class PushObject {
 	
 	public void update() {
 		this.position.x += this.speed;
-		if(this.position.x > (parent.PIXEL_RESOLUTION_X + radius)) reset();
+		if(this.position.x > (parent.PIXEL_RESOLUTION_X + radius)) {
+			reset();
+		}
 	}
 }

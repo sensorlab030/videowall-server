@@ -1,12 +1,8 @@
-package nl.sensorlab.videowall.animation.baseanimations;
+package nl.sensorlab.videowall.animation.baseanimations.liquidcolumns;
 import java.util.ArrayList;
-
 import nl.sensorlab.videowall.animation.BaseAnimation;
-import nl.sensorlab.videowall.animation.baseanimations.liquidcolumns.LiquidColumn;
-import nl.sensorlab.videowall.animation.baseanimations.liquidcolumns.PushObject;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PVector;
 
 public class LiquidColumnsAnimation  extends BaseAnimation {
 
@@ -24,7 +20,9 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 	}
 
 	private void generateColumns() {
-		for(int i = 0; i < PIXEL_RESOLUTION_X; i++) liquidcolumns.add(new LiquidColumn(this, i, 1.75f));
+		for(int i = 0; i < PIXEL_RESOLUTION_X; i++) {
+			liquidcolumns.add(new LiquidColumn(this, i, 1.75f));
+		}
 	}
 
 	@Override
