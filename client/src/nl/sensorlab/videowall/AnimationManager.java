@@ -9,6 +9,7 @@ import com.cleverfranke.util.PColor;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+import nl.sensorlab.videowall.animation.baseanimations.bouncypixels.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
@@ -48,6 +49,7 @@ public class AnimationManager {
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
