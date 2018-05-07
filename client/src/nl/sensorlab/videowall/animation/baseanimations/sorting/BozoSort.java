@@ -3,14 +3,16 @@ package nl.sensorlab.videowall.animation.baseanimations.sorting;
 public class BozoSort extends Sort{
 	boolean isSorted;
 
-	public BozoSort(int[] arr) {
-		super(arr);
+	public BozoSort(int amountValues, int color) {
+		super(amountValues, color);
 		isSorted = false;
 		num = 6;
 	}
 
 	public void sortStep() {
-		if (isSorted) return;
+		if (isSorted) {
+			return;
+		}
 
 		int i = (int)(Math.random() * valuesArray.length-1);
 		int j = (int)(Math.random() * valuesArray.length-1);

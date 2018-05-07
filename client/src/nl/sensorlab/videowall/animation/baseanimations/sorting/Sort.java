@@ -3,45 +3,62 @@ import processing.core.PGraphics;
 
 public abstract class Sort {
 	protected int[] valuesArray;
+	
 	public int currentSelected = 0;
 	public int num;
+	
+	public int color;
+	public int selectedColor = 255;
+	public float maxValue = 0 ;
 
-	public Sort(int[] _inputValuesArray) {
-		this.valuesArray = _inputValuesArray;
+	public Sort(int amountValues, int color) {
+		this.valuesArray = randomValues(amountValues);
+		this.color = color;
 	}
 
 	public abstract void sortStep();
 
-	public void draw(PGraphics g, int _width, int _height, float _maxValue, int _color) {
+	public void draw(PGraphics g, int width, int height) {
 		g.noStroke();
 	
 		for(int i = 0; i < this.valuesArray.length; i++) {
 			
 			// Skip the first row
 			int x = 1 + (2 * i);
-			int h = (int) Math.ceil((_height / _maxValue) * valuesArray[i]) ;
+			int columnHeight = (int) Math.ceil((height / maxValue) * valuesArray[i]) ;
 			
 			// Highlight the current selected (being sorted)
 			if(currentSelected == i) {
-				g.fill(255);
+				g.fill(selectedColor);
 			}else {
-				g.fill(_color);
+				g.fill(color);
 			}
 			
 			// Draw
-			g.rect(x, _height, 2, -h);
+			g.rect(x, height, 2, -columnHeight);
 		}
 	}
 
-	public void setData(int[] _a) {
-		this.valuesArray = _a;
+	public void resetData(int amountValues) {
+		this.valuesArray = randomValues(amountValues);
+	}
+	
+	private int[] randomValues(int n) {
+		int[] data = new int[n];  
+		for (int i = 0; i < n; i++) {
+			data[i] = (int)(1 + Math.random() * (1 + n));
+			// Get the max value so we can map the height
+			this.maxValue = Math.max(this.maxValue, data[i]); 
+		}
+		return  data;
 	}
 
-	public void swapValues(int _a, int _b) {
-		int tempValue = this.valuesArray[_a];
-		this.valuesArray[_a] = this.valuesArray[_b];
-		this.valuesArray[_b] = tempValue;
-		this.currentSelected = _b;
+	public void swapValues(int a, int b) {
+		int tempValue = this.valuesArray[a];
+		this.valuesArray[a] = this.valuesArray[b];
+		this.valuesArray[b] = tempValue;
+		this.currentSelected = b;
 	}
+	
 
 }

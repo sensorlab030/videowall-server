@@ -5,8 +5,8 @@ public class OddEvenSort extends Sort {
 	protected int current;
 	private boolean even;
 
-	public OddEvenSort(int[] arr) {
-		super(arr);
+	public OddEvenSort(int amountValues, int color) {
+		super(amountValues, color);
 		current = 0;
 		num = 4;
 		even = true;
@@ -19,7 +19,9 @@ public class OddEvenSort extends Sort {
 			return;
 		}
 
-		if (valuesArray[current] > valuesArray[current+1]) swapValues(current, current+1);
+		if (valuesArray[current] > valuesArray[current+1]) {
+			swapValues(current, current+1);
+		}
 
 		current += 2;
 	}
