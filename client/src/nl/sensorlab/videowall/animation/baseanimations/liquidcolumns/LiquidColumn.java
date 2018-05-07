@@ -1,4 +1,6 @@
 package nl.sensorlab.videowall.animation.baseanimations.liquidcolumns;
+import nl.sensorlab.videowall.animation.BaseAnimation;
+import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -49,8 +51,8 @@ public class LiquidColumn {
 	public void draw(PGraphics g) {
 		g.noFill();
 		for (PVector p : positions) {
-			float colorR = parent.parent.map( p.y, 0, parent.PIXEL_RESOLUTION_Y, 0, 255);
-			float colorG = parent.parent.map(p.x, 0, parent.PIXEL_RESOLUTION_X, 0, 255);
+			float colorR = PApplet.map( p.y, 0, BaseAnimation.PIXEL_RESOLUTION_Y, 0, 255);
+			float colorG = PApplet.map(p.x, 0, BaseAnimation.PIXEL_RESOLUTION_X, 0, 255);
 			g.stroke(colorR, colorG, 128, 200);
 			g.point(p.x, p.y);
 		}
