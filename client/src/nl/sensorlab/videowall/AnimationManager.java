@@ -8,10 +8,8 @@ import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
-import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
