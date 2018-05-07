@@ -29,7 +29,7 @@ public class FlockingAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g, double t) {
+	protected void drawAnimationFrame(PGraphics g, double dt) {
 		// Add some fade effect
 		g.fill(0, 50);
 		g.noStroke();
