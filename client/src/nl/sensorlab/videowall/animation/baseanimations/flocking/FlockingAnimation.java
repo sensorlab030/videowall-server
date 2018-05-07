@@ -49,7 +49,7 @@ public class FlockingAnimation extends BaseAnimation {
 				flock.generateFlock(FLOCK_SIZE);
 			}	
 		}else {
-			addBoidCounterMillis += t;
+			addBoidCounterMillis += dt;
 		}
 	}
 }
