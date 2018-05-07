@@ -10,46 +10,46 @@ public class FlockingAnimation extends BaseAnimation {
 
 	// Example used from Daniel Shiffman which can be found in the processing examples.
 	public PApplet parent;
-
-	public int[] boidcolors = {PColor.color(245,20,147), PColor.color(69,33,124), PColor.color(7,153,242), PColor.color(255,255,255)};
-
+	
 	private Flock flock;
-	private final int FLOCK_SIZE = 12;
-
-	public int counter = 0; // <-- Add new boid every x amount of time
-	public int counterAddBoids = 120;
+	private static final int FLOCK_SIZE = 12;
+	private static final int[] BOID_COLORS = {PColor.color(7, 93, 144), PColor.color(24, 147, 196), PColor.color(108, 208, 198), PColor.color(235, 232, 225)};
+	private static final int ADD_BOID_EVERY_MILLIS = 2500;
+	private static final int MAX_AMOUNT_BOIDS = 100; // <-- When to reset
+	
+	private int addBoidCounterMillis = 0;
 
 	public FlockingAnimation(PApplet applet) {
 		super(applet);
 		this.parent = applet;
-		this.flock = new Flock(this, boidcolors);
+		this.flock = new Flock(this, BOID_COLORS);
 
-		// add boids to the flock
+		// Add boids to the flock
 		flock.generateFlock(FLOCK_SIZE);
 	}
 
 	@Override
 	protected void drawAnimationFrame(PGraphics g, double t) {
 		// Add some fade effect
-		g.fill(0, 20);
+		g.fill(0, 50);
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
-		// Draw the flock..
+		// Draw the flock
 		flock.draw(g);
 	
 		// Add boid
-		if(counter > counterAddBoids) {
-			counter = 0;
+		if(addBoidCounterMillis > ADD_BOID_EVERY_MILLIS) {
+			addBoidCounterMillis = 0;
 			flock.addBoid();
 			
 			// Reset flock
-			if(flock.boids.size() > 100) {
+			if(flock.boids.size() > MAX_AMOUNT_BOIDS) {
 				flock.clear();
-				flock.addBoid();
+				flock.generateFlock(FLOCK_SIZE);
 			}	
 		}else {
-			counter++;
+			addBoidCounterMillis += t;
 		}
 	}
 }

@@ -83,7 +83,8 @@ public class Boid {
 	public PVector seek(PVector target) {
 		PVector desired = PVector.sub(target, position);  // A vector pointing from the position to the target
 		// Scale to maximum speed
-		desired.setMag(maxSpeed);
+		desired.normalize();
+		desired.mult(maxSpeed);
 
 		// Steering = Desired minus Velocity
 		PVector steer = PVector.sub(desired, velocity);
@@ -118,7 +119,8 @@ public class Boid {
 		// As long as the vector is greater than 0
 		if (steer.mag() > 0) {
 			// Implement Reynolds: Steering = Desired - Velocity
-			steer.setMag(maxSpeed);
+			steer.normalize();
+			steer.mult(maxSpeed);
 			steer.sub(velocity);
 			steer.limit(maxForce);
 		}
@@ -161,7 +163,9 @@ public class Boid {
 		}
 		if (count > 0) {
 			sum.div((float)count);
-			sum.setMag(maxSpeed);
+			// Implement Reynolds: Steering = Desired - Velocity
+			sum.normalize();
+			sum.mult(maxSpeed);
 			PVector steer = PVector.sub(sum, velocity);
 			steer.limit(maxForce);
 			return steer;

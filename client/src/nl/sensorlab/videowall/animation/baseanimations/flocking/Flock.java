@@ -1,5 +1,7 @@
 package nl.sensorlab.videowall.animation.baseanimations.flocking;
 import java.util.ArrayList;
+
+import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PGraphics;
 
 public class Flock {
@@ -24,8 +26,9 @@ public class Flock {
 	public void addBoid() {
 		// Set random color
 		int randomColor = colors[(int)Math.floor(Math.random() * colors.length)];
+		
 		// Add the boid
-		boids.add(new Boid(parent.PIXEL_RESOLUTION_X/2, parent.PIXEL_RESOLUTION_Y/2, randomColor));
+		boids.add(new Boid(BaseAnimation.PIXEL_RESOLUTION_X/2, BaseAnimation.PIXEL_RESOLUTION_Y/2, randomColor));
 	}
 	
 	public void clear() {
