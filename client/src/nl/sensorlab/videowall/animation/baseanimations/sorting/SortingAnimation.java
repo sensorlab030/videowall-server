@@ -42,7 +42,7 @@ public class SortingAnimation extends BaseAnimation {
 	}
 
 	@Override
-	protected void drawAnimationFrame(PGraphics g, double t) {
+	protected void drawAnimationFrame(PGraphics g, double dt) {
 		// Fade background
 		g.noStroke();
 		g.fill(0, 50);
@@ -53,7 +53,7 @@ public class SortingAnimation extends BaseAnimation {
 			updateCounterMillis = 0;
 			sortingmethods.get(sortingMethodIndex).sortStep();
 		}else {
-			updateCounterMillis += t;
+			updateCounterMillis += dt;
 		}
 		
 		// Draw the sorting
@@ -71,7 +71,7 @@ public class SortingAnimation extends BaseAnimation {
 			sortingmethods.get(sortingMethodIndex).resetData(AMOUNT_COLUMNS);
 			sortingmethods.get(sortingMethodIndex).reset();
 		}else{
-			updateMethodCounterMillis += t;
+			updateMethodCounterMillis += dt;
 		}
 	}
 }
