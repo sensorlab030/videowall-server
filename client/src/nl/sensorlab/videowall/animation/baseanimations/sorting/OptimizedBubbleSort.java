@@ -6,6 +6,11 @@ public class OptimizedBubbleSort extends BubbleSort {
 
 	public OptimizedBubbleSort(int amountValues, int color) {
 		super(amountValues, color);
+		reset();
+	}
+	
+	public void reset() {
+		c = 0;
 		num = 2;
 	}
 

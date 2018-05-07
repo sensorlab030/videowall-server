@@ -6,11 +6,15 @@ public class GnomeSort extends Sort {
 
 	public GnomeSort(int amountValues, int color) {
 		super(amountValues, color);
+		reset();
+	}
+	
+	public void reset() {
 		i = 1;
 		j = 1;
 		num = 5;
 	}
-
+	
 	public void sortStep() {
 		if (i == valuesArray.length) {
 			return;

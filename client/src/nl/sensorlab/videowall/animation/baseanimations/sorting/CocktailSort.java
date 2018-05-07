@@ -8,6 +8,10 @@ public class CocktailSort extends Sort {
 
 	public CocktailSort(int amountValues, int color) {
 		super(amountValues, color);
+
+	}
+	
+	public void reset() {
 		current = 0;
 		a = 0;
 		b = 0;
@@ -29,7 +33,6 @@ public class CocktailSort extends Sort {
 			} else if (valuesArray[current] < valuesArray[current-1])
 				swapValues(current, current-1);
 		}
-
 		current += direction;
 	}
 }

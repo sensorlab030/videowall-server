@@ -5,10 +5,15 @@ public class BozoSort extends Sort{
 
 	public BozoSort(int amountValues, int color) {
 		super(amountValues, color);
-		isSorted = false;
-		num = 6;
+		reset();
 	}
-
+	
+	public void reset() {
+		isSorted = false;
+		num = 6;	
+		
+	}
+	
 	public void sortStep() {
 		if (isSorted) {
 			return;

@@ -17,6 +17,7 @@ public abstract class Sort {
 	}
 
 	public abstract void sortStep();
+	public abstract void reset();
 
 	public void draw(PGraphics g, int width, int height) {
 		g.noStroke();

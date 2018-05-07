@@ -6,6 +6,10 @@ public class BubbleSort extends Sort {
 
 	public BubbleSort(int amountValues, int color) {
 		super(amountValues, color);
+		reset();
+	}
+	
+	public void reset() {
 		current = 0;
 		num = 1;
 	}

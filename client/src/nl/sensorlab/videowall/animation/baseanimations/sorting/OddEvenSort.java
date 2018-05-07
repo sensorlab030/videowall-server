@@ -7,6 +7,10 @@ public class OddEvenSort extends Sort {
 
 	public OddEvenSort(int amountValues, int color) {
 		super(amountValues, color);
+		reset();
+	}
+	
+	public void reset() {
 		current = 0;
 		num = 4;
 		even = true;

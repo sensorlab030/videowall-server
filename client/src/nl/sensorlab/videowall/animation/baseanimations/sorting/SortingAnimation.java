@@ -69,6 +69,7 @@ public class SortingAnimation extends BaseAnimation {
 
 			// Reset the data (randomize)
 			sortingmethods.get(sortingMethodIndex).resetData(AMOUNT_COLUMNS);
+			sortingmethods.get(sortingMethodIndex).reset();
 		}else{
 			updateMethodCounterMillis += t;
 		}
