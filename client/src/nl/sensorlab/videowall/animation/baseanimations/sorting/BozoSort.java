@@ -10,8 +10,6 @@ public class BozoSort extends Sort{
 	
 	public void reset() {
 		isSorted = false;
-		num = 6;	
-		
 	}
 	
 	public void sortStep() {

@@ -16,7 +16,6 @@ public class CocktailSort extends Sort {
 		a = 0;
 		b = 0;
 		direction = 1;
-		num = 3;
 	}
 
 	public void sortStep() {

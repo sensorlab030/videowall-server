@@ -11,7 +11,6 @@ public class BubbleSort extends Sort {
 	
 	public void reset() {
 		current = 0;
-		num = 1;
 	}
 
 	public void sortStep() {

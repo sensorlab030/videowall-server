@@ -12,7 +12,6 @@ public class GnomeSort extends Sort {
 	public void reset() {
 		i = 1;
 		j = 1;
-		num = 5;
 	}
 	
 	public void sortStep() {

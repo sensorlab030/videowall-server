@@ -2,7 +2,7 @@ package nl.sensorlab.videowall.animation.baseanimations.sorting;
 
 public class OptimizedBubbleSort extends BubbleSort {
 
-	private int c = 0;
+	private int c;
 
 	public OptimizedBubbleSort(int amountValues, int color) {
 		super(amountValues, color);
@@ -11,7 +11,6 @@ public class OptimizedBubbleSort extends BubbleSort {
 	
 	public void reset() {
 		c = 0;
-		num = 2;
 	}
 
 	public void sortStep() {

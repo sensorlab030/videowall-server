@@ -5,8 +5,6 @@ public abstract class Sort {
 	protected int[] valuesArray;
 	
 	public int currentSelected = 0;
-	public int num;
-	
 	public int color;
 	public int selectedColor = 255;
 	public float maxValue = 0 ;

@@ -12,7 +12,6 @@ public class OddEvenSort extends Sort {
 	
 	public void reset() {
 		current = 0;
-		num = 4;
 		even = true;
 	}
 
