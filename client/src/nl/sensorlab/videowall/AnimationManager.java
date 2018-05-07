@@ -12,9 +12,7 @@ import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.ComplementaryColors;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.LineWaveAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
@@ -39,7 +37,6 @@ public class AnimationManager {
 	 */
 	public AnimationManager(PApplet applet) {
 
-		
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
@@ -51,12 +48,7 @@ public class AnimationManager {
 		addAnimation("COL: White", white);
 			
 		// All Applet based animation
-		addAnimation("Beach ball", new BeachballAnimation(applet));
-		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
-
-		addAnimation("Line wave", new LineWaveAnimation(applet));
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
-		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Sorting Animation", new SortingAnimation(applet));
