@@ -11,9 +11,9 @@ public class BouncyPixelSystem {
 	
 	public ArrayList<BouncyPixel> bouncypixels;
 	
-	public float spring = 0.15f;
-	public float gravity = 0.015f;
-	public float friction = -0.15f;
+	public float spring;
+	public float gravity;
+	public float friction;
 	
 	public BouncyPixelSystem(BouncyPixelsAnimation parent, float spring, float gravity, float friction) {
 		this.parent = parent;

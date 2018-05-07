@@ -83,6 +83,6 @@ public class BouncyPixel {
 	public void draw(PGraphics g) {
 		g.noStroke();
 		g.fill(color);
-		g.ellipse(position.x, position.y, diameter * 2, diameter * 2);
+		g.ellipse(position.x, position.y, diameter , diameter );
 	}
 }

@@ -18,7 +18,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 	public BouncyPixelsAnimation(PApplet applet) {
 		super(applet);
 		this.parent = applet;
-		this.bouncypixelssytem = new BouncyPixelSystem(this ,0.05f, 0.075f, -0.35f);
+		this.bouncypixelssytem = new BouncyPixelSystem(this, 0.025f, 0.025f, -0.05f);
 		
 		// Generate bouncy pixels
 		bouncypixelssytem.generateBouncyPixels(AMOUNT_BOUNCY_PIXELS);
