@@ -51,7 +51,7 @@ public class AnimationManager {
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
-		addAnimation("Sorting Animation", new SortingAnimation(applet));
+		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		
 
 		// Add videos to animation manager
