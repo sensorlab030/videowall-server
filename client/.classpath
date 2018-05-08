@@ -2,13 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/processing/core.jar"/>
-	<classpathentry kind="lib" path="lib/Ani.jar"/>
-	<classpathentry kind="lib" path="lib/processing/gstreamer-java.jar"/>
-	<classpathentry kind="lib" path="lib/processing/video.jar"/>
-	<classpathentry kind="lib" path="lib/processing/jna.jar"/>
-	<classpathentry kind="lib" path="lib/jogamp-fat.jar"/>
-	<classpathentry kind="lib" path="lib/jssc.jar"/>
-	<classpathentry kind="lib" path="lib/serial.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/core.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all.jar"/>
+	<classpathentry kind="lib" path="lib/processing/serial/jssc.jar"/>
+	<classpathentry kind="lib" path="lib/processing/serial/serial.jar"/>
+	<classpathentry kind="lib" path="lib/processing/video/gstreamer-java.jar"/>
+	<classpathentry kind="lib" path="lib/processing/video/jna.jar"/>
+	<classpathentry kind="lib" path="lib/processing/video/video.jar"/>
+	<classpathentry kind="lib" path="lib/processing/ani/Ani.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
