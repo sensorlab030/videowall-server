@@ -57,7 +57,7 @@
 
 		<!-- Write run.bat -->
 		<echo file="${dir.dist}/run.bat">@echo off
-java -jar -Djava.library.path="lib\processing\serial\windows64" -Dgstreamer.library.path="lib\processing\video\windows64" -Dgstreamer.plugin.path="lib\processing\video/windows64\plugins ${target}.jar
+java -jar -Djava.library.path="lib\processing\serial\windows64" -Dgstreamer.library.path="lib\processing\video\windows64" -Dgstreamer.plugin.path="lib\processing\video\windows64\plugins" ${target}.jar
 </echo>
 
 		<!-- Write run.sh -->
