@@ -44,6 +44,7 @@ public class BouncyPixel {
 					float angle = (float)Math.atan2(dy, dx);
 					float targetX = position.x + (float)Math.cos(angle) * minDistance;
 					float targetY = position.y + (float)Math.sin(angle) * minDistance;
+					
 					float ax = (targetX - b.position.x) * parent.spring;
 					float ay = (targetY - b.position.y) * parent.spring;
 
