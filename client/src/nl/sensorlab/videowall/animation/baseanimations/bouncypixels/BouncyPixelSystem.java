@@ -10,13 +10,15 @@ public class BouncyPixelSystem {
 	BouncyPixelsAnimation parent;
 	
 	public ArrayList<BouncyPixel> bouncypixels;
+	private int[] colors;
 	
 	public float spring;
 	public float gravity;
 	public float friction;
 	
-	public BouncyPixelSystem(BouncyPixelsAnimation parent, float spring, float gravity, float friction) {
+	public BouncyPixelSystem(BouncyPixelsAnimation parent, int[] colors, float spring, float gravity, float friction) {
 		this.parent = parent;
+		this.colors = colors;
 		this.spring = spring;
 		this.gravity = gravity;
 		this.friction = friction;
@@ -34,8 +36,12 @@ public class BouncyPixelSystem {
 		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
 		float diameter = (float)(1 + Math.random() * 3);
 		int id = bouncypixels.size() - 1;
-		int color = 255;
-		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, color));
+		int randomColor = colors[(int)Math.floor(Math.random() * colors.length)];
+		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
+	}
+	
+	public void clear() {
+		bouncypixels.clear();
 	}
 	
 	public void update() {

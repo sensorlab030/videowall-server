@@ -26,42 +26,42 @@ public class BouncyPixel {
 	}
 
 	public void collide(ArrayList<BouncyPixel> bouncypixels) {
-		for (int i = 0; i < bouncypixels.size(); i++) {
-			// Ignore self
-			if(i != id){
-				BouncyPixel b = bouncypixels.get(i);
-				float dx = b.position.x - position.x;
-				float dy = b.position.y - position.y;
-				
-				// The minimum distance
-				float minDistance = b.diameter/2 + diameter/2;
-				
-				// The actual distance
-				float distance = (float)Math.sqrt(dx*dx + dy*dy);
-				
-				// If exceeds minimum distance
-				if(distance > minDistance) {
-					float angle = (float)Math.atan2(dy, dx);
-					float targetX = position.x + (float)Math.cos(angle) * minDistance;
-					float targetY = position.y + (float)Math.sin(angle) * minDistance;
-					float ax = (targetX - b.position.x) * parent.spring;
-					float ay = (targetY - b.position.y) * parent.spring;
-					
-					// Update velocity
-					velocity.x -= ax;
-					velocity.y -= ay;
-					
-					// Update b (change direction)
-					b.velocity.x += ax;
-					b.velocity.y += ay;
-				}		
-			}
-		}
+//		for (int i = 0; i < bouncypixels.size(); i++) {
+//			// Ignore self
+//			if(i != id){
+//				BouncyPixel b = bouncypixels.get(i);
+//				float dx = b.position.x - position.x;
+//				float dy = b.position.y - position.y;
+//				
+//				// The minimum distance
+//				float minDistance = b.diameter/2 + diameter/2;
+//				
+//				// The actual distance
+//				float distance = (float)Math.sqrt(dx*dx + dy*dy);
+//					
+//				// If exceeds minimum distance
+//				if(distance > minDistance) {
+//					float angle = (float)Math.atan2(dy, dx);
+//					float targetX = position.x + (float)Math.cos(angle) * minDistance;
+//					float targetY = position.y + (float)Math.sin(angle) * minDistance;
+//					float ax = (targetX - b.position.x) * parent.spring;
+//					float ay = (targetY - b.position.y) * parent.spring;
+//					
+//					// Update velocity
+//					velocity.x -= ax;
+//					velocity.y -= ay;
+//					
+//					// Update b (change direction)
+//					b.velocity.x += ax;
+//					b.velocity.y += ay;
+//				}		
+//			}
+//		}
 	}
 
 
 	public void update() {
-		velocity.y += parent.gravity;
+//		velocity.y += parent.gravity;
 		position.x += velocity.x;
 		position.y += velocity.y;
 		if (position.x + diameter/2 > BaseAnimation.PIXEL_RESOLUTION_X) {
@@ -83,6 +83,6 @@ public class BouncyPixel {
 	public void draw(PGraphics g) {
 		g.noStroke();
 		g.fill(color);
-		g.ellipse(position.x, position.y, diameter , diameter );
+		g.ellipse(position.x, position.y, diameter, diameter);
 	}
 }
