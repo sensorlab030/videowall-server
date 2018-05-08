@@ -50,6 +50,7 @@
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/gstreamer-java.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/jna.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/video.jar" />
+			
 			<!-- Serial library -->
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/jssc.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/serial.jar" />
@@ -69,23 +70,13 @@
 			</fileset>
 		</copy>
 
-		<!-- Add the native serial libraries (only needed for OSX) -->
+		<!-- Add the native serial libraries -->
 		<copy todir="${dir.dist}/lib/processing/serial">
 			<fileset dir="lib/processing/serial">
 				<filename name="**/*.jar*" negate="true" />
 			</fileset>
 		</copy>
 
-		<!-- Write run.bat -->
-		<echo file="${dir.dist}/run.bat">@echo off
-java -jar -Djava.library.path="lib\processing\serial\windows64" -Dgstreamer.library.path="lib\processing\video\windows64" -Dgstreamer.plugin.path="lib\processing\video\windows64\plugins" ${target}.jar
-</echo>
-
-		<!-- Write run.sh -->
-		<echo file="${dir.dist}/run.sh">#!/bin/sh
-java -jar -Djava.library.path="lib/processing/serial/macosx" -Dgstreamer.library.path="lib/processing/video/macosx64" -Dgstreamer.plugin.path="lib/processing/video/macosx64/plugins" ${target}.jar
-</echo>
-		
 		<!-- Copy default settings -->
 		<copy file="settings.json" tofile="${dir.dist}/settings.json" overwrite="true" />
 

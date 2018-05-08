@@ -3,6 +3,7 @@ package nl.sensorlab.videowall;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import com.cleverfranke.util.FileSystem;
 import com.cleverfranke.util.Settings;
 
 import de.looksgood.ani.Ani;
@@ -30,6 +31,7 @@ public class LedWallApplication extends PApplet {
 	
 	@Override
 	public void settings() {
+		FileSystem.setDefaultLibraryPaths();
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
 		size(previewRect.width, previewRect.height, P3D);
 	}
