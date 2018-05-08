@@ -26,14 +26,35 @@
 				<attribute name="Class-Path" value="." />
 			</manifest>
 			<fileset dir="${dir.buildfile}/bin" />
+			
+			 <!-- Core libraries -->
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/core.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/jssc.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/serial.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-linux-aarch64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-linux-amd64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-linux-armv6hf.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-linux-i586.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-macosx-universal.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-windows-amd64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt-natives-windows-i586.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-linux-aarch64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-linux-amd64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-linux-armv6hf.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-linux-i586.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-macosx-universal.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-windows-amd64.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all-natives-windows-i586.jar" />
+			
+			<!-- Video library -->
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/gstreamer-java.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/jna.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/video/video.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/gluegen-rt.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/core/jogl-all.jar" />
+			<!-- Serial library -->
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/jssc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/serial/serial.jar" />
+			
+			<!-- Ani library -->
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/ani/Ani.jar" />
 		</jar>
 	</target>

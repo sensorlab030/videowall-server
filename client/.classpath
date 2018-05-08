@@ -11,5 +11,19 @@
 	<classpathentry kind="lib" path="lib/processing/video/jna.jar"/>
 	<classpathentry kind="lib" path="lib/processing/video/video.jar"/>
 	<classpathentry kind="lib" path="lib/processing/ani/Ani.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-linux-aarch64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-linux-armv6hf.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-linux-aarch64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-linux-armv6hf.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-windows-i586.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
