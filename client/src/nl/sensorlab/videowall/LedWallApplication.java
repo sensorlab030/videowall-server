@@ -31,7 +31,6 @@ public class LedWallApplication extends PApplet {
 	
 	@Override
 	public void settings() {
-		FileSystem.setDefaultLibraryPaths();
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
 		size(previewRect.width, previewRect.height, P3D);
 	}
@@ -151,6 +150,9 @@ public class LedWallApplication extends PApplet {
 	}
 
 	public static void main(String[] args) {
+		
+		// Set library paths
+		FileSystem.setDefaultLibraryPaths();
 
 		// Load settings (either first argument or settings.json by default)
 		String settingsFile = args.length > 0 ? args[0] : "settings.json";

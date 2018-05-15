@@ -1,6 +1,7 @@
 package com.cleverfranke.util;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 import com.cleverfranke.util.FileSystem.SystemHelper.Architecture;
@@ -78,8 +79,14 @@ public class FileSystem {
 
 			}
 			
-			// Set library paths
+			// Set java.library.path (just calling System.setProperty() will not work), @see 
+			// https://stackoverflow.com/questions/5419039/is-djava-library-path-equivalent-to-system-setpropertyjava-library-path
 			System.setProperty("java.library.path", FileSystem.getApplicationPath(javaLibraryPath));
+			Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			fieldSysPath.set(null, null);
+
+			// Set gStreamer paths
 			System.setProperty("gstreamer.library.path", FileSystem.getApplicationPath(gstreamerLibraryPath));
 			System.setProperty("gstreamer.plugin.path", FileSystem.getApplicationPath(gstreamerPluginPath));
 			
@@ -88,6 +95,17 @@ public class FileSystem {
 		}
 
 	}
+	
+	/**
+	 * Print current used library paths to System.out
+	 */
+	public static void printLibraryPaths() {
+		System.out.println("Current library paths: ");
+		System.out.println(" > java.library.path: " + System.getProperty("java.library.path"));
+		System.out.println(" > gstreamer.library.path: " + System.getProperty("gstreamer.library.path"));
+		System.out.println(" > gstreamer.plugin.path: " + System.getProperty("gstreamer.plugin.path"));
+	}
+			
 	/**
 	 * Small class that helps determining the current operating system and
 	 * JVM architecture
