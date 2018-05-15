@@ -8,10 +8,12 @@ public class BozoSort extends Sort{
 		reset();
 	}
 	
+	@Override
 	public void reset() {
 		isSorted = false;
 	}
 	
+	@Override
 	public void sortStep() {
 		if (isSorted) {
 			return;
@@ -22,12 +24,13 @@ public class BozoSort extends Sort{
 		swapValues(i, j);
 
 		int a = 0;
-		for (int x : valuesArray)
+		for (int x : valuesArray) {
 			if (x < a) {
 				isSorted = false;
 				return;
 			} else {
 				a = x;
 			}
+		}
 	}
 }

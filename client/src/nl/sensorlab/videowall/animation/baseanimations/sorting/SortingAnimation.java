@@ -49,10 +49,10 @@ public class SortingAnimation extends BaseAnimation {
 		g.rect(0, 0, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);
 
 		// Update the sorting
-		if(updateCounterMillis >= UPDATE_SORTING_EVERY_MILLIS) {
+		if (updateCounterMillis >= UPDATE_SORTING_EVERY_MILLIS) {
 			updateCounterMillis = 0;
 			sortingmethods.get(sortingMethodIndex).sortStep();
-		}else {
+		} else {
 			updateCounterMillis += dt;
 		}
 		
@@ -60,17 +60,19 @@ public class SortingAnimation extends BaseAnimation {
 		sortingmethods.get(sortingMethodIndex).draw(g, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);
 
 		// Update the sorting method
-		if(updateMethodCounterMillis >= UPDATE_METHOD_EVERY_MILLIS) {
+		if (updateMethodCounterMillis >= UPDATE_METHOD_EVERY_MILLIS) {
 			updateMethodCounterMillis = 0;
 			sortingMethodIndex++;
 
 			// Keep in bounds
-			if(sortingMethodIndex >= sortingmethods.size()) sortingMethodIndex = 0;
+			if (sortingMethodIndex >= sortingmethods.size()) {
+				sortingMethodIndex = 0;
+			}
 
 			// Reset the data (randomize)
 			sortingmethods.get(sortingMethodIndex).resetData(AMOUNT_COLUMNS);
 			sortingmethods.get(sortingMethodIndex).reset();
-		}else{
+		} else {
 			updateMethodCounterMillis += dt;
 		}
 	}

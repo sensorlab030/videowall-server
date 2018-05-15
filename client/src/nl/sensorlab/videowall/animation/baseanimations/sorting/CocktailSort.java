@@ -11,6 +11,7 @@ public class CocktailSort extends Sort {
 
 	}
 	
+	@Override
 	public void reset() {
 		current = 0;
 		a = 0;
@@ -18,19 +19,22 @@ public class CocktailSort extends Sort {
 		direction = 1;
 	}
 
+	@Override
 	public void sortStep() {
 		if (direction == 1) {
 			if (current+1 >= valuesArray.length-b) {
 				direction = -1;
 				b++;
-			} else if (valuesArray[current] > valuesArray[current+1])
+			} else if (valuesArray[current] > valuesArray[current+1]) {
 				swapValues(current, current+1);
+			}
 		} else {
 			if (current-1 < a) {
 				direction = 1;
 				a++;
-			} else if (valuesArray[current] < valuesArray[current-1])
+			} else if (valuesArray[current] < valuesArray[current-1]) {
 				swapValues(current, current-1);
+			}
 		}
 		current += direction;
 	}
