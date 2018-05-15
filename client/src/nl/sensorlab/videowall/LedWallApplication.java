@@ -3,7 +3,7 @@ package nl.sensorlab.videowall;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import com.cleverfranke.util.Settings;
+import com.cleverfranke.util.ConfigurationLoader;
 
 import de.looksgood.ani.Ani;
 import nl.sensorlab.videowall.animation.BaseAnimation;
@@ -55,8 +55,8 @@ public class LedWallApplication extends PApplet {
 
 		// Configure wall driver
 		driver = new WallDriver(this,
-				Settings.getValue("driverPort1"),
-				Settings.getValue("driverPort2"),
+				ConfigurationLoader.get().getString("driver.port1", null),
+				ConfigurationLoader.get().getString("driver.port2", null),
 				(int) frameRate);
 		
 		// Start first animation (blank)
@@ -151,8 +151,7 @@ public class LedWallApplication extends PApplet {
 	public static void main(String[] args) {
 
 		// Load settings (either first argument or settings.json by default)
-		String settingsFile = args.length > 0 ? args[0] : "settings.json";
-		if (!Settings.loadSettings(settingsFile)) {
+		if (!ConfigurationLoader.loadSettings(args.length > 0 ? args[0] : "settings.config")) {
 			System.exit(1);
 		}
 

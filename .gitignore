@@ -16,3 +16,4 @@ data
 *.idea
 *.iml
 settings-*.json
+settings-*.config

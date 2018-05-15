@@ -10,5 +10,9 @@
 	<classpathentry kind="lib" path="lib/jogamp-fat.jar"/>
 	<classpathentry kind="lib" path="lib/jssc.jar"/>
 	<classpathentry kind="lib" path="lib/serial.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-configuration2-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-beanutils-1.9.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

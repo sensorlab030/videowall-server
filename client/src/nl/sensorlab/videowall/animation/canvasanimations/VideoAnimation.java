@@ -3,7 +3,7 @@ package nl.sensorlab.videowall.animation.canvasanimations;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import com.cleverfranke.util.Settings;
+import com.cleverfranke.util.ConfigurationLoader;
 
 import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import processing.core.PApplet;
@@ -46,18 +46,21 @@ public class VideoAnimation extends BaseCanvasAnimation {
 		movie.playbin.setVolume(0);
 	}
 	
+	@Override
 	public void isStarting() {
 		if (movie != null) {
 			movie.loop();
 		}
 	}
 	
+	@Override
 	public void isStopping() {
 		if (movie != null) {
 			movie.stop();
 		}
 	}
 	
+	@Override
 	public void setData(String data) {
 		setVideoFile(data);
 	}
@@ -70,7 +73,7 @@ public class VideoAnimation extends BaseCanvasAnimation {
 	public static File[] getVideoFileList() {
 		
 		// Fetch video dir from settings
-		String videoPath = Settings.getValue("videoDir");
+		String videoPath = ConfigurationLoader.get().getString("path.video", null);
 		if (videoPath == null || videoPath.isEmpty()) {
 			return new File[0];
 		}
