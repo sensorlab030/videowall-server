@@ -60,7 +60,11 @@ public class AnimationManager {
 
 		// Video stream options
 		for (String host: Settings.getValue("streamingHosts", "").split(",")) {
-		    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
+			host = host.trim();
+			if (!host.isEmpty()) {
+				System.out.println("'" + host + "'");
+			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));	
+			}
 		}
 
 		// Add videos to animation manager
