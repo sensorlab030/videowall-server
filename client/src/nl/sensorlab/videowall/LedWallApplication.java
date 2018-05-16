@@ -26,6 +26,8 @@ public class LedWallApplication extends PApplet {
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
 	
+	public final static String VERSON_STRING = "v0.1.0"; 
+	
 	private double currentTime;						// Current time (used for keeping track of delta time)
 	
 	@Override
@@ -37,7 +39,7 @@ public class LedWallApplication extends PApplet {
 	@Override
 	public void setup() {
 		frameRate(60);
-		surface.setTitle("Preview");
+		surface.setTitle("Video Wall " + VERSON_STRING + " - Preview");
 		
 		// Init Ani library
 		Ani.init(this);
