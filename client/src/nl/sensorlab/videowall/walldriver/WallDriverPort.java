@@ -1,14 +1,13 @@
 package nl.sensorlab.videowall.walldriver;
 
-import java.util.Arrays;
-
 import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-import jssc.SerialPortList;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class WallDriverPort {
+public class WallDriverPort implements SerialPortEventListener {
 
 	/**
 	 * The width of the 'screen' this port is driving (also the with of the supplied
@@ -28,10 +27,11 @@ public class WallDriverPort {
 	private final static float GAMMA = 1.7f;
 
 	/**
-	 * How often the keepAlive function should check for a connected cable (in
-	 * milliseconds)
+	 * How many milliseconds the scheduled reconnect should be delayed after
+	 * finding a live connection or attempting to reconnect. Effectively set this
+	 * to how often (in ms) you want to attempt to reconnect
 	 */
-	private final static int KEEPALIVE_INTERVAL = 2000;
+	private final static int SCHEDULED_RECONNECT_DELAY = 2000;
 
 	/**
 	 * The system name of the port (e.g. COM3, /dev/ttyS0). If this value
@@ -52,10 +52,8 @@ public class WallDriverPort {
 	 */
 	private SerialPort port;
 	
-	
-
 	/**
-	 * 
+	 * Header of an image data frame
 	 */
 	private byte[] dataframeHeader;
 
@@ -65,10 +63,12 @@ public class WallDriverPort {
 	private int[] gammaTable = new int[256];
 
 	/**
-	 * Last time the keepAlive check was done (System milliseconds)
+	 * The time (System milliseconds) when the port should be reconnected. In normal operation
+	 * this time is always postponed by RECONNECT_SCHEDULE_INTERVAL as a live connection is detected. If we don't
+	 * detect a live connecting, we attempt to reconnect after RECONNECT_SCHEDULE_INTERVAL ms.
 	 */
-	private long lastKeepAliveTime = 0;
-
+	private long scheduledReconnectTime;
+	
 	/**
 	 * Setup port
 	 * 
@@ -113,13 +113,11 @@ public class WallDriverPort {
 			return;
 		}
 		
-		// Perform keep alive check
-		long currentTime = System.currentTimeMillis();
-		if (currentTime > lastKeepAliveTime + KEEPALIVE_INTERVAL) {
-			keepAlive();
-			lastKeepAliveTime = currentTime;
+		// Attempt to reconnect if we are past the scheduled reconnect time
+		if (System.currentTimeMillis() >= scheduledReconnectTime) {
+			reconnect();
 		}
-
+		
 		// Process frame and send
 		if (port.isOpened()) {
 			
@@ -200,45 +198,91 @@ public class WallDriverPort {
 			}
 
 			// Open the port
-			if (port.openPort()) {
-				System.out.println("Opened serial port " + portName + " as " + (isMaster ? "master" : "slave"));
-			} else {
-				System.err.println("Failed to open port " + portName + " as " + (isMaster ? "master" : "slave"));
+			try {
+				port.openPort();
+			} catch (SerialPortException e) {
+				throw new Exception("Failed to open port");
 			}
 			
-		} catch (SerialPortException e) {
-			System.err.println("Failed to connect to serial port " + portName + ": " + e.getMessage());
+			// Add event listener for events with which we can detect a live connection 
+			try {
+				port.addEventListener(this, SerialPort.MASK_RXCHAR + SerialPort.MASK_TXEMPTY);
+			} catch (SerialPortException e) {
+				throw new Exception("Failed to set event listener");
+			}
+			
+			// As we are just connected, we can postpone the reconnect attempt
+			postponeScheduledReconnect();
+			
+			System.out.println("Opened serial port " + getDisplayName());
+			
+		}catch (Exception e) {
+			System.err.println("Exception on serial port " + getDisplayName() + ": " + e.getMessage());
 		}
 	}
 	
+	/**
+	 * Attempt to close the port
+	 */
 	public void closePort() {
 		if (port != null && port.isOpened()) {
 			System.out.println("Closing serial port " + portName);	
 			try {
+				port.removeEventListener();
 				port.closePort();
 			} catch (SerialPortException e) {
 				System.err.println("Failed to close serial port " + portName + ": " + e.getMessage());
 			}
 		}
 	}
-
+	
+	
 	/**
-	 * Check for open connection; if not connected, attempt to reconnect
+	 * Attempt to reconnect the port. Warning: This does a very rough disconnect by completely destroying 
+	 * the port object and recreating it (workaround for a known bug)
 	 */
-	private void keepAlive() {
+	private void reconnect() {
 		
-		boolean portExists = Arrays.stream(SerialPortList.getPortNames()).anyMatch(str -> str.trim().equals(portName));
+		System.out.println("Port " + getDisplayName() + " appears disconnected, attempting to reconnect");
 		
-		System.out.println("Available ports:");
-		for (String n: SerialPortList.getPortNames()) {
-			System.out.println(" > " + n);
-		}
+		// Attempt to close the port graceffully
+		closePort();
 		
-		if (!portExists) {
-			System.err.println("Connection lost to serial  port " + portName);
-			openPort();
-		}
+		// Close the port the rough way (work-around as closing the port often throws unclear exceptions,
+		// see: https://github.com/scream3r/java-simple-serial-connector/issues/107)
+		port = null;
+		port = new SerialPort(portName);
 		
+		// Attempt to open the port
+		openPort();
+		
+		// Reset reconnect timer (otherwise we continuosly try to reopen the port)
+		postponeScheduledReconnect();
+		
+	}
+	
+	/**
+	 * Get the port name and whether the port is configured as master or slave (e.g. "COM7 (master)")
+	 * 
+	 * @return
+	 */
+	public String getDisplayName() {
+		return portName + " (" + (isMaster ? "master" : "slave") + ")";
+	}
+
+	@Override
+	public void serialEvent(SerialPortEvent event) {
+		
+		// We had contact with the serial port, so postpone the reconnect
+		postponeScheduledReconnect();
+	}
+	
+	/**
+	 * Postpone a reconnect attempt, because we either just detected a live connection, or just
+	 * attempted to connect
+	 */
+	private void postponeScheduledReconnect() {
+		scheduledReconnectTime = System.currentTimeMillis() + SCHEDULED_RECONNECT_DELAY;
 	}
 
 	/**
