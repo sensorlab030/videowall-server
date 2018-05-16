@@ -11,37 +11,39 @@ import processing.core.PGraphics;
  */
 public class VideoStreamAnimation extends BaseCanvasAnimation {
 
-    // Images and stream
-    private UDPVideoStreamClient udpClient;
+	// Images and stream
+	private UDPVideoStreamClient udpClient;
 
-    public VideoStreamAnimation(PApplet applet) {
-        super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
-        udpClient = new UDPVideoStreamClient();
-    }
+	public VideoStreamAnimation(PApplet applet) {
+		super(applet, DEFAULT_SCALE, CANVAS_MODE_2D);
+		udpClient = UDPVideoStreamClient.getInstance();
+	}
 
-    @Override
-    protected final void drawCanvasAnimationFrame(PGraphics g, double dt) {
-        g.image(udpClient.getImage(), 0, 0, g.width, g.height);
-    }
+	@Override
+	protected final void drawCanvasAnimationFrame(PGraphics g, double dt) {
+		g.image(udpClient.getImage(), 0, 0, g.width, g.height);
+	}
 
-    @Override
-    public void setData(String data) {
-        udpClient.setExpectedSender(data);
-    }
+	@Override
+	public void setData(String data) {
+		// Set expected sender to supplied data
+		udpClient.setExpectedSender(data);
+	}
 
-    /**
-     * Init UDP Video Stream Client
-     */
-    @Override
-    public void isStarting() {
-        udpClient.start();
-    }
+	/**
+	 * Init UDP Video Stream Client
+	 */
+	@Override
+	public void isStarting() {
+		udpClient.start();
+	}
 
-    /**
-     * Stop UDP Video Stream Client
-     */
-    @Override
-    public void isStopping() {
-        udpClient.stop();
-    }
+	/**
+	 * Stop UDP Video Stream Client
+	 */
+	@Override
+	public void isStopping() {
+		udpClient.stop();
+	}
+	
 }
