@@ -60,7 +60,7 @@ public class WallDriverPort implements SerialPortEventListener {
 	/**
 	 * Gamma adjustment table for the leds
 	 */
-	private int[] gammaTable = new int[256];
+	private static int[] gammaTable = null;
 
 	/**
 	 * The time (System milliseconds) when the port should be reconnected. In normal operation
@@ -92,11 +92,6 @@ public class WallDriverPort implements SerialPortEventListener {
 			dataframeHeader = new byte[] { '*', ((byte) (usec)), ((byte) (usec >> 8)) };
 		} else {
 			dataframeHeader = new byte[] { '%', 0, 0 };
-		}
-
-		// Initialize gamma table @TODO: make static
-		for (int i = 0; i < 256; i++) {
-			gammaTable[i] = (int) (Math.pow((float) i / 255.0, GAMMA) * 255.0 + 0.5);
 		}
 
 	}
@@ -151,7 +146,7 @@ public class WallDriverPort implements SerialPortEventListener {
 					for (int i = 0; i < 8; i++) {
 						// fetch 8 pixels from the image, 1 for each pin
 						pixel[i] = image.pixels[x + (y + linesPerPin * i) * image.width];
-						pixel[i] = colorWiring(pixel[i]);
+						pixel[i] = WallDriverPort.colorWiring(pixel[i]);
 					}
 					// convert 8 pixels to 24 bytes
 					for (mask = 0x800000; mask != 0; mask >>= 1) {
@@ -292,13 +287,25 @@ public class WallDriverPort implements SerialPortEventListener {
 	 * @param c
 	 * @return
 	 */
-	private int colorWiring(int c) {
+	private static int colorWiring(int c) {
+		
+		// Initialize gamma table 
+		if (gammaTable == null) {
+			gammaTable = new int[256];
+			for (int i = 0; i < 256; i++) {
+				gammaTable[i] = (int) (Math.pow((float) i / 255.0, GAMMA) * 255.0 + 0.5);
+			}
+		}
+		
 		int red = (c & 0xFF0000) >> 16;
 		int green = (c & 0x00FF00) >> 8;
 		int blue = (c & 0x0000FF);
+		
+		
 		red = gammaTable[red];
 		green = gammaTable[green];
 		blue = gammaTable[blue];
+		
 		return (green << 16) | (red << 8) | (blue); // GRB - most common wiring
 	}
 
