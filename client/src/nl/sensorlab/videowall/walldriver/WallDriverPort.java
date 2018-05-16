@@ -41,10 +41,18 @@ public class WallDriverPort {
 	private String portName;
 
 	/**
+	 * Whether this port is configured as master or slave (for video frame
+	 * syncing)
+	 */
+	private boolean isMaster;
+	
+	/**
 	 * Connection to the port to read/write from and to, if null it means 
 	 * there's no expected port to be connected (e.g. on a development machine)
 	 */
 	private SerialPort port;
+	
+	
 
 	/**
 	 * 
@@ -75,6 +83,8 @@ public class WallDriverPort {
 			this.portName = portName;
 			port = new SerialPort(portName);
 		}
+		
+		this.isMaster = isMaster;
 
 		// Initialize data frame header
 		if (isMaster) {
@@ -190,8 +200,11 @@ public class WallDriverPort {
 			}
 
 			// Open the port
-			System.out.println("Attempting to opening serial port " + portName);
-			port.openPort();
+			if (port.openPort()) {
+				System.out.println("Opened serial port " + portName + " as " + (isMaster ? "master" : "slave"));
+			} else {
+				System.err.println("Failed to open port " + portName + " as " + (isMaster ? "master" : "slave"));
+			}
 			
 		} catch (SerialPortException e) {
 			System.err.println("Failed to connect to serial port " + portName + ": " + e.getMessage());
