@@ -93,9 +93,9 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 				}
 
 				// Attract the PVector to the previous PVector in-line; this will keep the columns 'togehter'
-				PVector temp = PVector.sub(positions[i-1], positions[i]);
+				PVector temp = PVector.sub(positions[i-1], current);
+				// Normalize the vector to a length of 1
 				temp.normalize();
-				temp.mult(1);
 				temp = PVector.sub(positions[i-1], temp);
  
 				// Update the PVector
@@ -123,7 +123,7 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 
 		public void reset() {
 			this.radius = (float)(3 + Math.random() * 20);
-			this.speed = (float)(0.005f + Math.random() * 0.015f);
+			this.speed = (float)(0.0025f + Math.random() * 0.0075f);
 			this.position = new PVector(-this.radius, (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y));
 		}
 
