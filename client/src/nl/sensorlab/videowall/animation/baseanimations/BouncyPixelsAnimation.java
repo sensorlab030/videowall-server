@@ -33,13 +33,13 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		
 	}
 	
-	public void generateBouncyPixels(int amountBouncyPixels) {
+	private void generateBouncyPixels(int amountBouncyPixels) {
 		for(int i = 0; i < amountBouncyPixels; i++) {
 			addBouncyPixel();
 		}
 	}
 	
-	public void addBouncyPixel() { 
+	private void addBouncyPixel() { 
 		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
 		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
 		final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
@@ -48,18 +48,22 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
 	}
 	
-	public void clearBouncyPixels() {
+	private void clearBouncyPixels() {
 		bouncypixels.clear();
 	}
 	
-	public void updateBouncyPixels() {
+	private void removeBouncyPixel() {
+		
+	}
+	
+	private void updateBouncyPixels() {
 		for(BouncyPixel bp : bouncypixels) {
 			bp.collide(bouncypixels);
 			bp.update();
 		}
 	}
 	
-	public void drawBouncyPixels(PGraphics g) {
+	private void drawBouncyPixels(PGraphics g) {
 		for(BouncyPixel bp : bouncypixels) {
 			bp.draw(g);
 		}
@@ -71,6 +75,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
+		// Update and draw the pixels
 		updateBouncyPixels();
 		drawBouncyPixels(g);
 		
@@ -93,6 +98,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 		public PVector position;
 		public PVector velocity;
+		
 		public float radius;
 		public int id;
 		private int color;
@@ -106,7 +112,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			this.color = color;
 		}
 
-		public void collide(ArrayList<BouncyPixel> bouncypixels) {
+		private void collide(ArrayList<BouncyPixel> bouncypixels) {
 			for (int i = 0; i < bouncypixels.size(); i++) {
 				// Ignore self
 				if(i != id){
@@ -141,7 +147,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			}
 		}
 
-		public void update() {
+		private void update() {
 			// Only update the y velocity
 			velocity.y += parent.GRAVITY_INTENSITY;
 
@@ -166,7 +172,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			}
 		}
 
-		public void draw(PGraphics g) {
+		private void draw(PGraphics g) {
 			g.stroke(color);
 			g.point(position.x, position.y);
 		}
