@@ -9,15 +9,16 @@ import processing.core.PGraphics;
 public class FlockingAnimation extends BaseAnimation {
 
 	// Example used from Daniel Shiffman which can be found in the processing examples.
-	public PApplet parent;
+	protected PApplet parent;
 	
 	private Flock flock;
 	private static final int FLOCK_SIZE = 12;
 	protected static final int[] BOID_COLORS = {PColor.color(7, 93, 144), PColor.color(24, 147, 196), PColor.color(108, 208, 198), PColor.color(235, 232, 225)};
 	private static final int ADD_BOID_EVERY_MILLIS = 2500;
-	private static final int MAX_AMOUNT_BOIDS = 100; // <-- When to reset
-	
-	private int addBoidCounterMillis = 0;
+	private static final int MAX_AMOUNT_BOIDS = 100;
+	protected static final int MIN_LIFETIME_BOID_MILLIS = 10000;
+	protected static final int VARIATION_LIFETIME_BOID_MILLIS = 15000;
+	protected int addBoidCounterMillis = 0;
 
 	public FlockingAnimation(PApplet applet) {
 		super(applet);
@@ -35,18 +36,16 @@ public class FlockingAnimation extends BaseAnimation {
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
-		// Draw the flock
-		flock.draw(g);
+		// Draw and update the flock
+		flock.updateAndDraw(g, dt);
 	
 		// Add boid
 		if(addBoidCounterMillis > ADD_BOID_EVERY_MILLIS) {
 			addBoidCounterMillis = 0;
-			flock.addBoid();
 			
-			// Reset flock
-			if(flock.boids.size() > MAX_AMOUNT_BOIDS) {
-				flock.clear();
-				flock.generateFlock(FLOCK_SIZE);
+			// Only allow boid to be added when in bounds
+			if(flock.getFlockSize() < MAX_AMOUNT_BOIDS) {
+				flock.addBoid();
 			}	
 		}else {
 			addBoidCounterMillis += dt;

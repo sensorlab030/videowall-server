@@ -19,10 +19,14 @@ public class Boid {
 	private static float NEIGHBOUR_DISTANCE = 20;
 
 	private int color;
+	
+	public float lifeTimeBoidCounterMillis = 0;
+	public int lifetimeMillis;
 
-	public Boid(float x ,float y, int color) {
+	public Boid(float x ,float y, int lifetimeMillis, int color) {
 		this.position = new PVector(x, y);
 		this.acceleration = new PVector(0,0);
+		this.lifetimeMillis = lifetimeMillis;
 		this.color = color;
 
 		float angle = (float)(Math.random() * (Math.PI * 2));
