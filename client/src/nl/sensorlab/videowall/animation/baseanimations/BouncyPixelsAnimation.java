@@ -10,8 +10,7 @@ import processing.core.PVector;
 public class BouncyPixelsAnimation extends BaseAnimation{
 
 	public PApplet parent;
-
-	private BouncyPixelSystem  bouncypixelssytem;
+	private ArrayList<BouncyPixel> bouncypixels;
 	
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;
@@ -27,10 +26,43 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 	public BouncyPixelsAnimation(PApplet applet) {
 		super(applet);
 		this.parent = applet;
-		this.bouncypixelssytem = new BouncyPixelSystem(this, PIXEL_COLORS, SPRING_INTENSITY, GRAVITY_INTENSITY, FRICTION_INTENSITY);
+		this.bouncypixels = new ArrayList<BouncyPixel>();
 		
 		// Generate bouncy pixels
-		bouncypixelssytem.generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
+		generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
+		
+	}
+	
+	public void generateBouncyPixels(int amountBouncyPixels) {
+		for(int i = 0; i < amountBouncyPixels; i++) {
+			addBouncyPixel();
+		}
+	}
+	
+	public void addBouncyPixel() { 
+		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
+		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
+		final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
+		int id = bouncypixels.size() - 1;
+		int randomColor = PIXEL_COLORS[(int)Math.floor(Math.random() * PIXEL_COLORS.length)];
+		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
+	}
+	
+	public void clearBouncyPixels() {
+		bouncypixels.clear();
+	}
+	
+	public void updateBouncyPixels() {
+		for(BouncyPixel bp : bouncypixels) {
+			bp.collide(bouncypixels);
+			bp.update();
+		}
+	}
+	
+	public void drawBouncyPixels(PGraphics g) {
+		for(BouncyPixel bp : bouncypixels) {
+			bp.draw(g);
+		}
 	}
 
 	protected void drawAnimationFrame(PGraphics g, double dt) {
@@ -39,77 +71,25 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
-		bouncypixelssytem.update();
-		bouncypixelssytem.draw(g);
+		updateBouncyPixels();
+		drawBouncyPixels(g);
 		
 		if(addBouncyPixelCounterMillis > ADD_BOUNCY_PIXEL_EVERY_MILLIS) {
 			addBouncyPixelCounterMillis = 0;
-			bouncypixelssytem.addBouncyPixel();
-			if(bouncypixelssytem.bouncypixels.size() > MAX_AMOUNT_BOUNCY_PIXELS) {
-				bouncypixelssytem.clear();
-				bouncypixelssytem.generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
+			addBouncyPixel();
+			if(bouncypixels.size() > MAX_AMOUNT_BOUNCY_PIXELS) {
+				clearBouncyPixels();
+				generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
 			}
 		}else {
 			addBouncyPixelCounterMillis += dt;
 		}
 	}
 	
-	public class BouncyPixelSystem {
-		
-		private BouncyPixelsAnimation parent;
-		public ArrayList<BouncyPixel> bouncypixels;
-		
-		private int[] colors;
-		
-		public float spring;
-		public float gravity;
-		public float friction;
-		
-		public BouncyPixelSystem(BouncyPixelsAnimation parent, int[] colors, float spring, float gravity, float friction) {
-			this.parent = parent;
-			this.colors = colors;
-			this.spring = spring;
-			this.gravity = gravity;
-			this.friction = friction;
-			this.bouncypixels = new ArrayList<BouncyPixel>();
-		}
-		
-		public void generateBouncyPixels(int amountBouncyPixels) {
-			for(int i = 0; i < amountBouncyPixels; i++) {
-				addBouncyPixel();
-			}
-		}
-		
-		public void addBouncyPixel() { 
-			float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
-			float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
-			final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
-			int id = bouncypixels.size() - 1;
-			int randomColor = colors[(int)Math.floor(Math.random() * colors.length)];
-			bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
-		}
-		
-		public void clear() {
-			bouncypixels.clear();
-		}
-		
-		public void update() {
-			for(BouncyPixel bp : bouncypixels) {
-				bp.collide(bouncypixels);
-				bp.update();
-			}
-		}
-		
-		public void draw(PGraphics g) {
-			for(BouncyPixel bp : bouncypixels) {
-				bp.draw(g);
-			}
-		}
-	}
-	
+
 	public class BouncyPixel {
 
-		private BouncyPixelSystem parent;
+		private BouncyPixelsAnimation parent;
 
 		public PVector position;
 		public PVector velocity;
@@ -117,7 +97,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		public int id;
 		private int color;
 
-		public BouncyPixel(BouncyPixelSystem parent, float x, float y, float diameter, int id, int color) {
+		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, float diameter, int id, int color) {
 			this.parent = parent;
 			this.position = new PVector(x, y);
 			this.velocity = new PVector(0, 0);
@@ -146,8 +126,8 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 						float targetX = position.x + (float)Math.cos(angle) * minDistance;
 						float targetY = position.y + (float)Math.sin(angle) * minDistance;
 						
-						float ax = (targetX - b.position.x) * parent.spring;
-						float ay = (targetY - b.position.y) * parent.spring;
+						float ax = (targetX - b.position.x) * parent.SPRING_INTENSITY;
+						float ay = (targetY - b.position.y) * parent.SPRING_INTENSITY;
 
 						// Update velocity
 						velocity.x -= ax;
@@ -163,7 +143,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 		public void update() {
 			// Only update the y velocity
-			velocity.y += parent.gravity;
+			velocity.y += parent.GRAVITY_INTENSITY;
 
 			// Update positions
 			position.x += velocity.x;
@@ -172,17 +152,17 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			// Keep inbounds
 			if (position.x + radius > BaseAnimation.PIXEL_RESOLUTION_X) {
 				position.x = BaseAnimation.PIXEL_RESOLUTION_X - radius;
-				velocity.x *= parent.friction;
+				velocity.x *= parent.FRICTION_INTENSITY;
 			} else if (position.x -radius < 0) {
 				position.x = radius;
-				velocity.x *= parent.friction;
+				velocity.x *= parent.FRICTION_INTENSITY;
 			}
 			if (position.y + radius > BaseAnimation.PIXEL_RESOLUTION_Y) {
 				position.y = BaseAnimation.PIXEL_RESOLUTION_Y -radius;
-				velocity.y *= parent.friction;
+				velocity.y *= parent.FRICTION_INTENSITY;
 			} else if (position.y - radius < 0) {
 				position.y = radius;
-				velocity.y *= parent.friction;
+				velocity.y *= parent.FRICTION_INTENSITY;
 			}
 		}
 
