@@ -12,6 +12,7 @@ import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
 import processing.core.PApplet;
@@ -50,7 +51,7 @@ public class AnimationManager {
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
-		
+		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
