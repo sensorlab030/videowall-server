@@ -7,10 +7,9 @@ import processing.core.PVector;
 
 public class LiquidColumnsAnimation  extends BaseAnimation {
 
-	public PApplet parent;
-
-	public PushObject pushobject;
-	ArrayList<LiquidColumn> liquidcolumns;
+	private PApplet parent;
+	private PushObject pushobject;
+	private ArrayList<LiquidColumn> liquidcolumns;
 
 	public LiquidColumnsAnimation(PApplet applet) {
 		super(applet);
@@ -35,18 +34,16 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 
 		// Draw columns
 		for(LiquidColumn lc : liquidcolumns) {
-			lc.update(dt);
-			lc.draw(g);
+			lc.updateAndDraw(g, dt);
 		}
 
 		// Update pushObject
 		pushobject.update(dt);
 	}
-	
+
 	public class LiquidColumn {
 
 		private PushObject pushobject; 
-
 		private PVector[] positions;
 		private float speed;
 
@@ -59,63 +56,77 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 			}
 		}
 
-		public void update(double dt) {
-			// Ignore first node
+		public void updateAndDraw(PGraphics g, double dt) {
+			// No fill before loop.
+			g.noFill();
+
+			// Ignore first PVector which keep the other PVectors in check
 			for (int i = 1; i < positions.length; i++) {
+				// The current PVector that needs updating.
+				PVector current = positions[i];
+
 				// Update the y position
-				positions[i].y += speed * dt;
+				current.y += speed * dt;
 
 				// Get the distance
-				float distance = PVector.dist(pushobject.position, positions[i]);
+				float distance = PVector.dist(pushobject.position, current);
 
-				// Push nodes away
+				// Push nodes when collide
 				if(distance < pushobject.radius){
 					PVector temp = pushobject.position.copy();
-					temp.sub(positions[i]);
+
+					// Determine the position of the push node
+					temp.sub(current);
+
+					// Normalize the vector to a length of 1
 					temp.normalize();
+
+					// Multiply the vector by the pushobject radius 
 					temp.mult(pushobject.radius);
+
+					// Set the position based on the position of the pushobject and the offset of the radius
 					temp = PVector.sub(pushobject.position, temp);
-					positions[i] = temp.copy();
+
+					// Update the PVector
+					current.x = temp.x;
+					current.y = temp.y;
 				}
-			}
-			for (int i = 1; i < positions.length; i++) {
+
+				// Attract the PVector to the previous PVector in-line; this will keep the columns 'togehter'
 				PVector temp = PVector.sub(positions[i-1], positions[i]);
 				temp.normalize();
 				temp.mult(1);
-				positions[i] = PVector.sub(positions[i-1], temp);
-			}
-		}
-		
-		
-		public void draw(PGraphics g) {
-			g.noFill();
-			for (PVector p : positions) {
-				float colorR = PApplet.map( p.y, 0, BaseAnimation.PIXEL_RESOLUTION_Y, 0, 255);
-				float colorG = PApplet.map(p.x, 0, BaseAnimation.PIXEL_RESOLUTION_X, 0, 255);
+				temp = PVector.sub(positions[i-1], temp);
+ 
+				// Update the PVector
+				current.x = temp.x;
+				current.y = temp.y;
+
+				// Draw
+				float colorR = PApplet.map(current.y, 0, BaseAnimation.PIXEL_RESOLUTION_Y, 0, 255);
+				float colorG = PApplet.map(current.x, 0, BaseAnimation.PIXEL_RESOLUTION_X, 0, 255);
 				g.stroke(colorR, colorG, 128, 200);
-				g.point(p.x, p.y);
+				g.point(current.x, current.y);
 			}
 		}
-		
+
 	}
 
-	
 	public class PushObject {
-		
-		public PVector position;
-		public float speed;
-		public float radius;
-		
+		private PVector position;
+		private float speed;
+		private float radius;
+
 		public PushObject(){
 			reset();
 		}
-		
+
 		public void reset() {
 			this.radius = (float)(3 + Math.random() * 20);
-			this.speed = (float)(0.005f + Math.random() * 0.025f);
+			this.speed = (float)(0.005f + Math.random() * 0.015f);
 			this.position = new PVector(-this.radius, (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y));
 		}
-		
+
 		public void update(double dt) {
 			this.position.x += this.speed * dt;
 			if(this.position.x > (BaseAnimation.PIXEL_RESOLUTION_X + radius)) {
