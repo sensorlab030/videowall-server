@@ -34,6 +34,7 @@ public abstract class BaseAnimation {
 	public BaseAnimation(PApplet applet) {
 		this.applet = applet;
 		this.graphicsContext = applet.createGraphics(PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
+		setup(graphicsContext);
 	}
 	
 	/**
@@ -75,6 +76,13 @@ public abstract class BaseAnimation {
 	final public PImage getImage() {
 		return lastAnimationFrame;
 	}
+	
+	/**
+	 * Setup method that is called directly after the animation is
+	 * constructed. It can be used to setup variables that are dependents
+	 * on the graphics context
+	 */
+	public void setup(PGraphics g) {}
 	
 	/**
 	 * Method that is called just before an animation is started. THis
