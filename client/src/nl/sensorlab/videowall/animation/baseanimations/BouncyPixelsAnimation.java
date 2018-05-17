@@ -11,10 +11,14 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 	public PApplet parent;
 	private ArrayList<BouncyPixel> bouncypixels;
+	private ArrayList<Integer> bouncypixelstoremove; // <-- Store id's for pixels that exceed the lifetime
 	
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;
 	private final int MAX_AMOUNT_BOUNCY_PIXELS = 1000;
+	private final int MIN_LIFETIME_BOUNCY_PIXEL = 500;
+	private final int VARIATION_LIFETIME_BOUNCY_PIXEL = 2500;
+	
 	private int addBouncyPixelCounterMillis = 0;
 	
 	// Settings
@@ -27,6 +31,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		super(applet);
 		this.parent = applet;
 		this.bouncypixels = new ArrayList<BouncyPixel>();
+		this.bouncypixelstoremove = new ArrayList<Integer>();
 		
 		// Generate bouncy pixels
 		generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
@@ -43,23 +48,40 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
 		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
 		final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
-		int id = bouncypixels.size() - 1;
+		int id = bouncypixels.size(); // <-- The id which is actually the index
 		int randomColor = PIXEL_COLORS[(int)Math.floor(Math.random() * PIXEL_COLORS.length)];
-		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
+		int randomLifeTime = (int)(MIN_LIFETIME_BOUNCY_PIXEL + Math.random() * VARIATION_LIFETIME_BOUNCY_PIXEL); 
+		bouncypixels.add(new BouncyPixel(this, x, y, randomLifeTime, diameter, id, randomColor));
 	}
 	
 	private void clearBouncyPixels() {
 		bouncypixels.clear();
 	}
 	
-	private void removeBouncyPixel() {
-		
+	private void removeBouncyPixel(int index) {
+		bouncypixels.remove(index);
 	}
 	
 	private void updateBouncyPixels() {
+		// Reset the remove arraylist
+		bouncypixelstoremove.clear();
+		
+		// Update pixels
+		int index = 0;
 		for(BouncyPixel bp : bouncypixels) {
 			bp.collide(bouncypixels);
 			bp.update();
+			// Add the pixel id if exceeds
+			if(bp.lifetimeMillis < addBouncyPixelCounterMillis) {
+				// Add the index of the bouncy pixel to the remove arraylist
+				bouncypixelstoremove.add(index);
+			}
+			index++;
+		}
+				
+		// Remove entries in a descending order; this will remove the elements from the list without undesirable side effects
+		for(int i = bouncypixelstoremove.size() - 1; i >= 0; i--) {
+			removeBouncyPixel(bouncypixelstoremove.get(i));
 		}
 	}
 	
@@ -81,7 +103,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		
 		if(addBouncyPixelCounterMillis > ADD_BOUNCY_PIXEL_EVERY_MILLIS) {
 			addBouncyPixelCounterMillis = 0;
-			addBouncyPixel();
+			addBouncyPixel(); // <-- Add a new pixel
 			if(bouncypixels.size() > MAX_AMOUNT_BOUNCY_PIXELS) {
 				clearBouncyPixels();
 				generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
@@ -90,7 +112,6 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			addBouncyPixelCounterMillis += dt;
 		}
 	}
-	
 
 	public class BouncyPixel {
 
@@ -102,14 +123,17 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		public float radius;
 		public int id;
 		private int color;
+		
+		int lifetimeMillis;
 
-		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, float diameter, int id, int color) {
+		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, int lifetimeMillis, float diameter, int id, int color) {
 			this.parent = parent;
 			this.position = new PVector(x, y);
 			this.velocity = new PVector(0, 0);
 			this.radius = diameter/2;
 			this.id = id;
 			this.color = color;
+			this.lifetimeMillis = lifetimeMillis;
 		}
 
 		private void collide(ArrayList<BouncyPixel> bouncypixels) {
