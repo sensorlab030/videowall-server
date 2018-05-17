@@ -13,11 +13,10 @@ public class Boid {
 	private PVector velocity;
 	private PVector acceleration;
 
-
-	private static float radius = 0.5f;
-	private static float maxSpeed = 0.35f;
-	private static float maxForce = 0.355f;
-	private static float neighbourDistance = 20;
+	private static float RADIUS = 0.5f;
+	private static float MAX_SPEED = 0.15f;
+	private static float MAX_FORCE = 0.01f;
+	private static float NEIGHBOUR_DISTANCE = 20;
 
 	private int color;
 
@@ -37,19 +36,18 @@ public class Boid {
 		velocity.add(acceleration);
 
 		// Limit speed
-		velocity.limit(maxSpeed);
+		velocity.limit(MAX_SPEED);
 		position.add(velocity);
 
-		// Reset accelertion to 0 each cycle
+		// Reset acceleration to 0 each cycle
 		acceleration.mult(0);
 
 		// Keep the boid within the window
 		keepInBounds();
 	}
 
-
 	private void updateFlock(ArrayList<Boid> boids) {
-		float desiredseparation = neighbourDistance * 0.5f;
+		float desiredseparation = NEIGHBOUR_DISTANCE * 0.5f;
 
 		PVector separation = new PVector(0,0);
 		PVector cohesion = new PVector(0,0);
@@ -82,9 +80,7 @@ public class Boid {
 			}
 		}
 
-		
 		if (count > 0) {
-			// ...
 			cohesion = seek(cohesion.div((float)count));
 			
 			// Average -- divide by how many
@@ -93,9 +89,9 @@ public class Boid {
 			// Implement Reynolds: Steering = Desired - Velocity
 			alignment.div((float)count);
 			alignment.normalize();
-			alignment.mult(maxSpeed);
+			alignment.mult(MAX_SPEED);
 			alignment = PVector.sub(alignment, velocity);
-			alignment.limit(maxForce);
+			alignment.limit(MAX_FORCE);
 			
 		}else {
 			alignment = new PVector(0,0);
@@ -106,11 +102,12 @@ public class Boid {
 		if (separation.mag() > 0) {
 			// Implement Reynolds: Steering = Desired - Velocity
 			separation.normalize();
-			separation.mult(maxSpeed);
+			separation.mult(MAX_SPEED);
 			separation.sub(velocity);
-			separation.limit(maxForce);
+			separation.limit(MAX_FORCE);
 		}
 		
+	    // Arbitrarily weight these forces
 		separation.mult(1.5f);
 		alignment.mult(1.0f);
 		cohesion.mult(1.0f);
@@ -121,18 +118,16 @@ public class Boid {
 		acceleration.add(cohesion);
 	}
 
-
-
 	public void keepInBounds() {
-		if (position.x < - radius) {
-			position.x = BaseAnimation.PIXEL_RESOLUTION_X+radius;
-		}else if (position.x > BaseAnimation.PIXEL_RESOLUTION_X+radius) {
-			position.x = -radius;
+		if (position.x < - RADIUS) {
+			position.x = BaseAnimation.PIXEL_RESOLUTION_X+RADIUS;
+		}else if (position.x > BaseAnimation.PIXEL_RESOLUTION_X+RADIUS) {
+			position.x = -RADIUS;
 		}
-		if (position.y < - radius) {
-			position.y = BaseAnimation.PIXEL_RESOLUTION_Y+radius;
-		}else if (position.y > BaseAnimation.PIXEL_RESOLUTION_Y+radius) {
-			position.y = -radius;
+		if (position.y < - RADIUS) {
+			position.y = BaseAnimation.PIXEL_RESOLUTION_Y+RADIUS;
+		}else if (position.y > BaseAnimation.PIXEL_RESOLUTION_Y+RADIUS) {
+			position.y = -RADIUS;
 		}
 	}
 
@@ -142,11 +137,11 @@ public class Boid {
 		PVector desired = PVector.sub(target, position);  // A vector pointing from the position to the target
 		// Scale to maximum speed
 		desired.normalize();
-		desired.mult(maxSpeed);
+		desired.mult(MAX_SPEED);
 
 		// Steering = Desired minus Velocity
 		PVector steer = PVector.sub(desired, velocity);
-		steer.limit(maxForce);  // Limit to maximum steering force
+		steer.limit(MAX_FORCE);  // Limit to maximum steering force
 		return steer;
 	}
 
@@ -159,7 +154,7 @@ public class Boid {
 		g.pushMatrix();
 		g.translate(position.x, position.y);
 		g.rotate(theta);
-		g.rect(0, 0, 1 + radius, 1);
+		g.rect(0, 0, 1 + RADIUS, 1);
 		g.popMatrix();
 	}
 }
