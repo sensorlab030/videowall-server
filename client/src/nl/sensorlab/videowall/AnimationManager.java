@@ -9,7 +9,11 @@ import com.cleverfranke.util.PColor;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+<<<<<<< HEAD
 import nl.sensorlab.videowall.animation.baseanimations.bouncypixels.BouncyPixelsAnimation;
+=======
+import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
+>>>>>>> develop
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
@@ -50,7 +54,8 @@ public class AnimationManager {
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
-
+		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
@@ -66,7 +71,6 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-
 	}
 
 	/**
