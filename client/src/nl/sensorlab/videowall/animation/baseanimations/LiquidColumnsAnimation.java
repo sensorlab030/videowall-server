@@ -22,7 +22,7 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 
 	private void generateColumns() {
 		for(int i = 0; i < PIXEL_RESOLUTION_X; i++) {
-			liquidcolumns.add(new LiquidColumn(this, i, 1.75f));
+			liquidcolumns.add(new LiquidColumn(pushobject, i, .0175f));
 		}
 	}
 
@@ -35,46 +35,46 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 
 		// Draw columns
 		for(LiquidColumn lc : liquidcolumns) {
-			lc.update();
+			lc.update(dt);
 			lc.draw(g);
 		}
 
 		// Update pushObject
-		pushobject.update();
+		pushobject.update(dt);
 	}
 	
 	public class LiquidColumn {
 
-		private LiquidColumnsAnimation parent; 
+		private PushObject pushobject; 
 
 		private PVector[] positions;
 		private float speed;
 
-		public LiquidColumn(LiquidColumnsAnimation p, float x, float speed) {
-			this.parent = p;
-			this.positions = new PVector[parent.PIXEL_RESOLUTION_Y];
+		public LiquidColumn(PushObject pushobject, float x, float speed) {
+			this.pushobject = pushobject;
+			this.positions = new PVector[BaseAnimation.PIXEL_RESOLUTION_Y];
 			this.speed = speed;
-			for(int y = 0; y < parent.PIXEL_RESOLUTION_Y; y++) {
+			for(int y = 0; y < BaseAnimation.PIXEL_RESOLUTION_Y; y++) {
 				this.positions[y] = new PVector(x, y);
 			}
 		}
 
-		public void update() {
+		public void update(double dt) {
 			// Ignore first node
 			for (int i = 1; i < positions.length; i++) {
 				// Update the y position
-				positions[i].y += speed;
+				positions[i].y += speed * dt;
 
 				// Get the distance
-				float distance = PVector.dist(parent.pushobject.position, positions[i]);
+				float distance = PVector.dist(pushobject.position, positions[i]);
 
 				// Push nodes away
-				if(distance < parent.pushobject.radius){
-					PVector temp = parent.pushobject.position.copy();
+				if(distance < pushobject.radius){
+					PVector temp = pushobject.position.copy();
 					temp.sub(positions[i]);
 					temp.normalize();
-					temp.mult(parent.pushobject.radius);
-					temp = PVector.sub(parent.pushobject.position, temp);
+					temp.mult(pushobject.radius);
+					temp = PVector.sub(pushobject.position, temp);
 					positions[i] = temp.copy();
 				}
 			}
@@ -112,12 +112,12 @@ public class LiquidColumnsAnimation  extends BaseAnimation {
 		
 		public void reset() {
 			this.radius = (float)(3 + Math.random() * 20);
-			this.speed = (float)(0.005f + Math.random() * 0.35f);
+			this.speed = (float)(0.005f + Math.random() * 0.025f);
 			this.position = new PVector(-this.radius, (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y));
 		}
 		
-		public void update() {
-			this.position.x += this.speed;
+		public void update(double dt) {
+			this.position.x += this.speed * dt;
 			if(this.position.x > (BaseAnimation.PIXEL_RESOLUTION_X + radius)) {
 				reset();
 			}
