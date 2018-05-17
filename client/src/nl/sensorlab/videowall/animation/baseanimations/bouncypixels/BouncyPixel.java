@@ -16,11 +16,11 @@ public class BouncyPixel {
 	public int id;
 	private int color;
 
-	public BouncyPixel(BouncyPixelSystem parent, float x, float y, float d, int id, int color) {
+	public BouncyPixel(BouncyPixelSystem parent, float x, float y, float diameter, int id, int color) {
 		this.parent = parent;
 		this.position = new PVector(x, y);
 		this.velocity = new PVector(0, 0);
-		this.radius = d/2;
+		this.radius = diameter/2;
 		this.id = id;
 		this.color = color;
 	}

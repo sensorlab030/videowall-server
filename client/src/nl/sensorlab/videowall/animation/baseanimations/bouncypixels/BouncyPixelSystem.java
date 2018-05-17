@@ -34,7 +34,7 @@ public class BouncyPixelSystem {
 	public void addBouncyPixel() { 
 		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
 		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
-		float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
+		final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
 		int id = bouncypixels.size() - 1;
 		int randomColor = colors[(int)Math.floor(Math.random() * colors.length)];
 		bouncypixels.add(new BouncyPixel(this, x, y, diameter, id, randomColor));
