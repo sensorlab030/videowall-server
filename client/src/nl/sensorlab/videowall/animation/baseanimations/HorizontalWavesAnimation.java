@@ -55,22 +55,21 @@ public class HorizontalWavesAnimation extends BaseAnimation {
 		drawWaves(g);
 	}
 	
-	
 	public class HorizontalWave {
 		
 		HorizontalWavesAnimation parent;
 
 		private float offsetIntensity = 0; // How much can the line deviate vertically
 		private float offsetIntensityIncrements;
-		private float offsetSpeed = 0; // How quickly the wave moves vertically
-		private float offsetSpeedIncrements;
+		private float offsetVariation = 0; // How quickly the wave moves vertically
+		private float offsetVariationIncrements;
 
 		private int color;
 
-		public HorizontalWave(HorizontalWavesAnimation parent, float offsetIntensityIncrements, float offsetSpeedIncrements, int color) {
+		public HorizontalWave(HorizontalWavesAnimation parent, float offsetIntensityIncrements, float offsetVariationIncrements, int color) {
 			this.parent = parent;
 			this.offsetIntensityIncrements = offsetIntensityIncrements;
-			this.offsetSpeedIncrements = offsetSpeedIncrements;
+			this.offsetVariationIncrements = offsetVariationIncrements;
 			this.color = color;
 		}
 
@@ -84,12 +83,12 @@ public class HorizontalWavesAnimation extends BaseAnimation {
 			
 			// Start the shape
 			g.beginShape();
-			for(int x = 0; x <= parent.PIXEL_RESOLUTION_X; x++) {
+			for(int x = 0; x <= BaseAnimation.PIXEL_RESOLUTION_X; x++) {
 				// Returns the Perlin noise value at specified coordinates. 
 				// Perlin noise is a random sequence generator producing a more natural, harmonic succession of numbers than that of the standard random() function. 
 				// It was developed by Ken Perlin in the 1980s and has been used in graphical applications to generate procedural textures, shapes, terrains, and other seemingly organic forms.
-				float perlinNoise = parent.parent.noise(offsetIntensity, offsetSpeed);
-				float y = parent.parent.map(perlinNoise, 0, 1, 0, parent.PIXEL_RESOLUTION_Y);
+				float perlinNoise = parent.parent.noise(offsetIntensity, offsetVariation);
+				float y = parent.parent.map(perlinNoise, 0, 1, 0, BaseAnimation.PIXEL_RESOLUTION_Y);
 				
 				// Set the vertex
 				g.vertex(x, y);
@@ -101,7 +100,7 @@ public class HorizontalWavesAnimation extends BaseAnimation {
 			g.endShape();
 			
 			// Increase the offset so it creates a wave
-			offsetSpeed += offsetSpeedIncrements;
+			offsetVariation += offsetVariationIncrements;
 		}
 	}
 
