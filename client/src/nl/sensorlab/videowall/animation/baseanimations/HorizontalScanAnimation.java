@@ -6,9 +6,9 @@ import processing.core.PGraphics;
 
 public class HorizontalScanAnimation extends BaseAnimation {
 
-	private float x = 0;
-	private float speed = 0.0075f;
-	private int direction = 1;
+	private float barX = 0;
+	private float barSpeed = 0.0035f;
+	private int barDirection = 1;
 	
 	public HorizontalScanAnimation(PApplet applet) {
 		super(applet);
@@ -22,21 +22,21 @@ public class HorizontalScanAnimation extends BaseAnimation {
 		g.rect(0, 0, PIXEL_RESOLUTION_X,  PIXEL_RESOLUTION_Y);
 		
 		// Update the x position
-		x += (speed * dt) * direction;
+		barX += (barSpeed * dt) * barDirection;
 		
 		// Toggle direction
-		if(x > PIXEL_RESOLUTION_X ) {
-			direction = -1;
-		}else if(x < 0) {
-			direction  = 1;
+		if(barX > PIXEL_RESOLUTION_X ) {
+			barDirection = -1;
+		}else if(barX < 0) {
+			barDirection  = 1;
 		}
 		
 		// Map color
-		float c = PApplet.map(x, 0, PIXEL_RESOLUTION_X, 0, 255);
+		float colorBar = PApplet.map(barX, 0, PIXEL_RESOLUTION_X, 0, 255);
 		
 		g.strokeWeight(2);
-		g.stroke(c, 200, 150, 128);
-		g.line(x, 0, x, PIXEL_RESOLUTION_Y);
+		g.stroke(colorBar, 200, 150, 128);
+		g.line(barX, 0, barX, PIXEL_RESOLUTION_Y);
 
 	}
 	
