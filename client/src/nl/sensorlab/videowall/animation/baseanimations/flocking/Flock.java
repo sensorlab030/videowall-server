@@ -9,12 +9,10 @@ public class Flock {
 	FlockingAnimation parent;
 	
 	public  ArrayList<Boid> boids;
-	public int[] colors;
 
 	public Flock(FlockingAnimation p, int[] colors) {
 		this.parent = p;
 		this.boids = new ArrayList<Boid>();
-		this.colors = colors;
 	}
 	
 	public void generateFlock(int amountBoids) {
@@ -25,7 +23,7 @@ public class Flock {
 	
 	public void addBoid() {
 		// Set random color
-		int randomColor = colors[(int)Math.floor(Math.random() * colors.length)];
+		int randomColor = parent.BOID_COLORS[(int)Math.floor(Math.random() * parent.BOID_COLORS.length)];
 		
 		// Add the boid
 		boids.add(new Boid(BaseAnimation.PIXEL_RESOLUTION_X/2, BaseAnimation.PIXEL_RESOLUTION_Y/2, randomColor));

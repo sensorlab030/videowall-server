@@ -13,7 +13,7 @@ public class FlockingAnimation extends BaseAnimation {
 	
 	private Flock flock;
 	private static final int FLOCK_SIZE = 12;
-	private static final int[] BOID_COLORS = {PColor.color(7, 93, 144), PColor.color(24, 147, 196), PColor.color(108, 208, 198), PColor.color(235, 232, 225)};
+	protected static final int[] BOID_COLORS = {PColor.color(7, 93, 144), PColor.color(24, 147, 196), PColor.color(108, 208, 198), PColor.color(235, 232, 225)};
 	private static final int ADD_BOID_EVERY_MILLIS = 2500;
 	private static final int MAX_AMOUNT_BOIDS = 100; // <-- When to reset
 	
