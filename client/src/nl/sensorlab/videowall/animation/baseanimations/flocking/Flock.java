@@ -35,8 +35,7 @@ public class Flock {
 		int randomColor = FlockingAnimation.BOID_COLORS[(int)Math.floor(Math.random() * FlockingAnimation.BOID_COLORS.length)];
 
 		// Add the boid
-		int randomLifeTime = (int)(FlockingAnimation.MIN_LIFETIME_BOID_MILLIS + (Math.random() * FlockingAnimation.VARIATION_LIFETIME_BOID_MILLIS));
-		
+		int randomLifeTime = (int)(FlockingAnimation.MIN_LIFETIME_BOID_MILLIS + (Math.random() * FlockingAnimation.VARIATION_LIFETIME_BOID_MILLIS));	
 		boids.add(new Boid(BaseAnimation.PIXEL_RESOLUTION_X/2, BaseAnimation.PIXEL_RESOLUTION_Y/2, randomLifeTime, randomColor));
 	}
 
