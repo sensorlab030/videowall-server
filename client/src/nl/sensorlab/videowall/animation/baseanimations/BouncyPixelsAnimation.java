@@ -16,8 +16,8 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;
 	private final int MAX_AMOUNT_BOUNCY_PIXELS = 1000;
-	private final int MIN_LIFETIME_BOUNCY_PIXEL = 500;
-	private final int VARIATION_LIFETIME_BOUNCY_PIXEL = 2500;
+	private final int MIN_LIFETIME_BOUNCY_PIXEL = 10000;
+	private final int VARIATION_LIFETIME_BOUNCY_PIXEL = 15000;
 	
 	private int addBouncyPixelCounterMillis = 0;
 	
@@ -62,7 +62,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		bouncypixels.remove(index);
 	}
 	
-	private void updateBouncyPixels() {
+	private void updateBouncyPixels(double dt) {
 		// Reset the remove arraylist
 		bouncypixelstoremove.clear();
 		
@@ -72,9 +72,11 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			bp.collide(bouncypixels);
 			bp.update();
 			// Add the pixel id if exceeds
-			if(bp.lifetimeMillis < addBouncyPixelCounterMillis) {
+			if(bp.lifetimeMillis < bp.lifeTimeCounterMillis) {
 				// Add the index of the bouncy pixel to the remove arraylist
 				bouncypixelstoremove.add(index);
+			}else {
+				bp.lifeTimeCounterMillis += dt;
 			}
 			index++;
 		}
@@ -98,15 +100,13 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
 		// Update and draw the pixels
-		updateBouncyPixels();
+		updateBouncyPixels(dt);
 		drawBouncyPixels(g);
 		
 		if(addBouncyPixelCounterMillis > ADD_BOUNCY_PIXEL_EVERY_MILLIS) {
 			addBouncyPixelCounterMillis = 0;
-			addBouncyPixel(); // <-- Add a new pixel
-			if(bouncypixels.size() > MAX_AMOUNT_BOUNCY_PIXELS) {
-				clearBouncyPixels();
-				generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
+			if(bouncypixels.size() < MAX_AMOUNT_BOUNCY_PIXELS) {
+				addBouncyPixel(); // <-- Add a new pixel
 			}
 		}else {
 			addBouncyPixelCounterMillis += dt;
@@ -124,7 +124,8 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		public int id;
 		private int color;
 		
-		int lifetimeMillis;
+		public float lifeTimeCounterMillis = 0;
+		public int lifetimeMillis;
 
 		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, int lifetimeMillis, float diameter, int id, int color) {
 			this.parent = parent;
