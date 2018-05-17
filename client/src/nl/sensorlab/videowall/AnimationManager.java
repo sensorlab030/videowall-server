@@ -8,6 +8,7 @@ import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.HorizontalScanAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
@@ -50,7 +51,7 @@ public class AnimationManager {
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
-		
+		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
