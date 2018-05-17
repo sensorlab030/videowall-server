@@ -12,15 +12,15 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 	public PApplet parent;
 	private ArrayList<BouncyPixel> bouncypixels;
 	private ArrayList<Integer> bouncypixelstoremove; // <-- Store id's for pixels that exceed the lifetime
-	
+
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;
 	private final int MAX_AMOUNT_BOUNCY_PIXELS = 1000;
-	private final int MIN_LIFETIME_BOUNCY_PIXEL = 10000;
+	private final int MIN_LIFETIME_BOUNCY_PIXEL = 15000;
 	private final int VARIATION_LIFETIME_BOUNCY_PIXEL = 15000;
-	
+
 	private int addBouncyPixelCounterMillis = 0;
-	
+
 	// Settings
 	private final float SPRING_INTENSITY = 0.05f;
 	private final float GRAVITY_INTENSITY = 0.015f;
@@ -32,18 +32,17 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		this.parent = applet;
 		this.bouncypixels = new ArrayList<BouncyPixel>();
 		this.bouncypixelstoremove = new ArrayList<Integer>();
-		
+
 		// Generate bouncy pixels
 		generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
-		
 	}
-	
+
 	private void generateBouncyPixels(int amountBouncyPixels) {
 		for(int i = 0; i < amountBouncyPixels; i++) {
 			addBouncyPixel();
 		}
 	}
-	
+
 	private void addBouncyPixel() { 
 		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
 		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
@@ -53,19 +52,19 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		int randomLifeTime = (int)(MIN_LIFETIME_BOUNCY_PIXEL + Math.random() * VARIATION_LIFETIME_BOUNCY_PIXEL); 
 		bouncypixels.add(new BouncyPixel(this, x, y, randomLifeTime, diameter, id, randomColor));
 	}
-	
+
 	private void clearBouncyPixels() {
 		bouncypixels.clear();
 	}
-	
+
 	private void removeBouncyPixel(int index) {
 		bouncypixels.remove(index);
 	}
-	
+
 	private void updateBouncyPixels(double dt) {
 		// Reset the remove arraylist
 		bouncypixelstoremove.clear();
-		
+
 		// Update pixels
 		int index = 0;
 		for(BouncyPixel bp : bouncypixels) {
@@ -80,13 +79,13 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			}
 			index++;
 		}
-				
+
 		// Remove entries in a descending order; this will remove the elements from the list without undesirable side effects
 		for(int i = bouncypixelstoremove.size() - 1; i >= 0; i--) {
 			removeBouncyPixel(bouncypixelstoremove.get(i));
 		}
 	}
-	
+
 	private void drawBouncyPixels(PGraphics g) {
 		for(BouncyPixel bp : bouncypixels) {
 			bp.draw(g);
@@ -98,11 +97,11 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		g.fill(0, 30);
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
-		
+
 		// Update and draw the pixels
 		updateBouncyPixels(dt);
 		drawBouncyPixels(g);
-		
+
 		if(addBouncyPixelCounterMillis > ADD_BOUNCY_PIXEL_EVERY_MILLIS) {
 			addBouncyPixelCounterMillis = 0;
 			if(bouncypixels.size() < MAX_AMOUNT_BOUNCY_PIXELS) {
@@ -119,11 +118,11 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 		public PVector position;
 		public PVector velocity;
-		
+
 		public float radius;
 		public int id;
 		private int color;
-		
+
 		public float lifeTimeCounterMillis = 0;
 		public int lifetimeMillis;
 
@@ -156,7 +155,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 						float angle = (float)Math.atan2(dy, dx);
 						float targetX = position.x + (float)Math.cos(angle) * minDistance;
 						float targetY = position.y + (float)Math.sin(angle) * minDistance;
-						
+
 						float ax = (targetX - b.position.x) * parent.SPRING_INTENSITY;
 						float ay = (targetY - b.position.y) * parent.SPRING_INTENSITY;
 
