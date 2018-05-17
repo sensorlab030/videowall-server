@@ -20,7 +20,7 @@ public class Boid {
 
 	private int color;
 	
-	public float lifeTimeBoidCounterMillis = 0;
+	public float lifeTimeCounterMillis = 0;
 	public int lifetimeMillis;
 
 	public Boid(float x ,float y, int lifetimeMillis, int color) {

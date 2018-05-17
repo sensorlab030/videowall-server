@@ -58,11 +58,11 @@ public class Flock {
 			boid.draw(g);
 			
 			// Add the boid index if exceeds the lifetime
-			if(boid.lifetimeMillis < boid.lifeTimeBoidCounterMillis) {
+			if(boid.lifetimeMillis < boid.lifeTimeCounterMillis) {
 				// Add the index of the bouncy pixel to the remove arraylist
 				boidstoremove.add(index);
 			}else {
-				boid.lifeTimeBoidCounterMillis += dt;
+				boid.lifeTimeCounterMillis += dt;
 			}
 			index++;
 		}
