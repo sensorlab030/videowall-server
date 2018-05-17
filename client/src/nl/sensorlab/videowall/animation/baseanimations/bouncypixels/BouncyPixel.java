@@ -12,7 +12,7 @@ public class BouncyPixel {
 
 	public PVector position;
 	public PVector velocity;
-	public float diameter;
+	public float radius;
 	public int id;
 	private int color;
 
@@ -20,7 +20,7 @@ public class BouncyPixel {
 		this.parent = parent;
 		this.position = new PVector(x, y);
 		this.velocity = new PVector(0, 0);
-		this.diameter = d;
+		this.radius = d/2;
 		this.id = id;
 		this.color = color;
 	}
@@ -34,7 +34,7 @@ public class BouncyPixel {
 				float dy = b.position.y - position.y;
 
 				// The minimum distance
-				float minDistance = b.diameter/2 + diameter/2;
+				float minDistance = b.radius + radius;
 
 				// The actual distance
 				float distance = (float)Math.sqrt(dx*dx + dy*dy);
@@ -69,18 +69,18 @@ public class BouncyPixel {
 		position.y += velocity.y;
 
 		// Keep inbounds
-		if (position.x + diameter/2 > BaseAnimation.PIXEL_RESOLUTION_X) {
-			position.x = BaseAnimation.PIXEL_RESOLUTION_X - diameter/2;
+		if (position.x + radius > BaseAnimation.PIXEL_RESOLUTION_X) {
+			position.x = BaseAnimation.PIXEL_RESOLUTION_X - radius;
 			velocity.x *= parent.friction;
-		} else if (position.x - diameter/2 < 0) {
-			position.x = diameter/2;
+		} else if (position.x -radius < 0) {
+			position.x = radius;
 			velocity.x *= parent.friction;
 		}
-		if (position.y + diameter/2 > BaseAnimation.PIXEL_RESOLUTION_Y) {
-			position.y = BaseAnimation.PIXEL_RESOLUTION_Y - diameter/2;
+		if (position.y + radius > BaseAnimation.PIXEL_RESOLUTION_Y) {
+			position.y = BaseAnimation.PIXEL_RESOLUTION_Y -radius;
 			velocity.y *= parent.friction;
-		} else if (position.y - diameter/2 < 0) {
-			position.y = diameter/2;
+		} else if (position.y - radius < 0) {
+			position.y = radius;
 			velocity.y *= parent.friction;
 		}
 	}
