@@ -7,9 +7,9 @@ import java.util.List;
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
-import nl.sensorlab.videowall.animation.baseanimations.bouncypixels.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
