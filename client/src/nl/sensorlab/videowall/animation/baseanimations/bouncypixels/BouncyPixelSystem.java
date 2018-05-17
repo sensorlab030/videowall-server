@@ -7,7 +7,7 @@ import processing.core.PGraphics;
 
 public class BouncyPixelSystem {
 	
-	BouncyPixelsAnimation parent;
+	private BouncyPixelsAnimation parent;
 	
 	public ArrayList<BouncyPixel> bouncypixels;
 	private int[] colors;

@@ -10,7 +10,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 	public PApplet parent;
 
-	BouncyPixelSystem  bouncypixelssytem;
+	private BouncyPixelSystem  bouncypixelssytem;
 	
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;

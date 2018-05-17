@@ -8,7 +8,7 @@ import processing.core.PVector;
 
 public class BouncyPixel {
 
-	BouncyPixelSystem parent;
+	private BouncyPixelSystem parent;
 
 	public PVector position;
 	public PVector velocity;
