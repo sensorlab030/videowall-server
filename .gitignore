@@ -17,3 +17,4 @@ data
 *.iml
 settings-*.json
 settings-*.config
+.DS_Store
