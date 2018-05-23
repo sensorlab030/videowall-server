@@ -1,5 +1,7 @@
 package nl.sensorlab.videowall.animation.baseanimations;
 
+import com.cleverfranke.util.PColor;
+
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -10,12 +12,13 @@ public class SwirlAnimation extends BaseAnimation {
 	private final static int AMOUNT_PARTICLES = 40;
 
 	private PVector[] particles;
-	private int[] particleColors;
+	private int[] colors;
+	private int baseColor = 0;
 
 	public SwirlAnimation(PApplet applet) {
 		super(applet);
 		this.particles =  new PVector[AMOUNT_PARTICLES];
-		this.particleColors =  new int[AMOUNT_PARTICLES];
+		this.colors =  new int[AMOUNT_PARTICLES];
 		
 		// Generate the particles
 		generateParticles(AMOUNT_PARTICLES);
@@ -26,6 +29,7 @@ public class SwirlAnimation extends BaseAnimation {
 			float x = (float)(Math.random() * PIXEL_RESOLUTION_X);
 			float y = (float)(Math.random() * PIXEL_RESOLUTION_Y);
 			particles[i] = new PVector(x, y);
+			colors[i] = PColor.color((int)(((50 + (Math.random() * 30)) + baseColor) % 255), (int)(100 + (Math.random() * 155)), 255, 150);
 		}
 	}
 
@@ -34,6 +38,7 @@ public class SwirlAnimation extends BaseAnimation {
 			
 			// Update the position(s)
 			PVector position = particles[p]; // Get the current PVector
+			int color = colors[p];
 			
 			// Shift; create the swirl effect; how does it work exactly? 
 			PVector shift =  new PVector();
@@ -57,9 +62,16 @@ public class SwirlAnimation extends BaseAnimation {
 			// Draw
 			g.noFill();
 			g.strokeWeight(2);
-			g.stroke(255,0,0);
+			g.stroke(color);
 			g.point(position.x, position.y);
+			
+			// Update the color
+			colors[p] = PColor.color((int)(((50 + (Math.random() * 30)) + baseColor) % 255), (int)(100 + (Math.random() * 155)), 255, 120);
 		}
+		
+		//
+		baseColor += 0.5f;
+//		if(baseColor > 1020) baseColor = 0;
 	}
 
 	protected final void drawAnimationFrame(PGraphics g, double dt) {
