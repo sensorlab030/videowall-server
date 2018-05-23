@@ -25,5 +25,9 @@
 	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-macosx-universal.jar"/>
 	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-windows-amd64.jar"/>
 	<classpathentry kind="lib" path="lib/processing/core/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-configuration2-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache/commons-beanutils-1.9.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
