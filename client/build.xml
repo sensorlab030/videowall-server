@@ -57,6 +57,12 @@
 			
 			<!-- Ani library -->
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/processing/ani/Ani.jar" />
+			
+			<!-- Commons library -->
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-configuration2-2.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-lang3-3.3.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-logging-1.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-beanutils-1.9.3.jar" />
 		</jar>
 	</target>
 
@@ -78,7 +84,7 @@
 		</copy>
 
 		<!-- Copy default settings -->
-		<copy file="settings.json" tofile="${dir.dist}/settings.json" overwrite="true" />
+		<copy file="settings.config" tofile="${dir.dist}/settings.config" overwrite="true" />
 
 	</target>
 
