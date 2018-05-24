@@ -1,9 +1,0 @@
-{
-	"driverPort1": "COM5",
-	"driverPort2": "COM4", 
-	"videoDir": "",
-	"imageDir": "",
-	"phrase": "abcdefghijklmnopqrstuvwxyz0123456789?!<>+-=_#%/.;:()",
-	"phraseColor": "#ff6c6c",
-	"streamingHosts": "127.0.0.1,192.168.1.10"
-}

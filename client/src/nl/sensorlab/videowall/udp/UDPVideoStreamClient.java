@@ -8,18 +8,19 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-
+import com.cleverfranke.util.ConfigurationLoader;
 import processing.core.PConstants;
 import processing.core.PImage;
 
 public class UDPVideoStreamClient implements Runnable {
-	
+
 	private static UDPVideoStreamClient instance;
 
 	// Misc constants
 	private static final int PORT_IN = 10233; // Network in port
 	private static final int STREAM_IMAGE_WIDTH = 280; // Expected height of the video stream image
 	private static final int STREAM_IMAGE_HEIGHT = 76; // Expected width of the video stream image
+
 
 	/**
 	 * Length of the data buffer calculated as number of pixels * 3 (3 bytes for 3
@@ -52,7 +53,7 @@ public class UDPVideoStreamClient implements Runnable {
 	 * Thread handle
 	 */
 	private Thread t;
-	
+
 	public static UDPVideoStreamClient getInstance() {
 		if (instance == null) {
 			instance = new UDPVideoStreamClient();
@@ -79,7 +80,7 @@ public class UDPVideoStreamClient implements Runnable {
 
 	/**
 	 * Set expected sender host
-	 * 
+	 *
 	 * @param senderHost
 	 */
 	public void setExpectedSender(String senderHost) {
@@ -97,7 +98,7 @@ public class UDPVideoStreamClient implements Runnable {
 	public void start() {
 
 		try {
-			
+
 			// Check for valid expected sender
 			if (expectedSender == null) {
 				throw new Exception("No valid expected sender set");
@@ -125,7 +126,7 @@ public class UDPVideoStreamClient implements Runnable {
 
 	/**
 	 * Get the last received stream image
-	 * 
+	 *
 	 * @return
 	 */
 	public PImage getImage() {
@@ -146,7 +147,7 @@ public class UDPVideoStreamClient implements Runnable {
 				// Receive packet on socket
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 				inSocket.receive(packet);
-				
+
 				// Confirm sender
 				if (!packet.getAddress().equals(expectedSender)) {
 					throw new Exception("Invalid sender: " + packet.getAddress().getHostAddress());

@@ -4,17 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
-import com.cleverfranke.util.Settings;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
-import nl.sensorlab.videowall.animation.baseanimations.ExampleBaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
-import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.ComplementaryColors;
+import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.LineWaveAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
@@ -38,32 +35,30 @@ public class AnimationManager {
 	 * @param applet
 	 */
 	public AnimationManager(PApplet applet) {
-		
+
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
 		addAnimation("COL: Black", black);
-		
+
 		// Full white
 		ColorAnimation white = new ColorAnimation(applet);
 		white.setData(String.valueOf(PColor.color(255)));
 		addAnimation("COL: White", white);
-			
-		// All Applet based animation
-		addAnimation("Beach ball", new BeachballAnimation(applet));
-		addAnimation("Example Base Animation", new ExampleBaseAnimation(applet));
 
-		addAnimation("Line wave", new LineWaveAnimation(applet));
+		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
-		addAnimation("Complementary colors", new ComplementaryColors(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 
+//		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+
 		// Video stream options
-		for (String host: Settings.getValue("streamingHosts", "").split(",")) {
+		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
 			host = host.trim();
 			if (!host.isEmpty()) {
 				System.out.println("'" + host + "'");
-			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));	
+			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
 			}
 		}
 
@@ -82,7 +77,6 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-
 	}
 
 	/**
