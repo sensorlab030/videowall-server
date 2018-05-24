@@ -11,10 +11,8 @@ import processing.core.PVector;
 
 public class SwirlAnimation extends BaseAnimation {
 
-	// Todo:
-	// Add a color scale: HSB so the particles will update within a color range (tint)
-	// Example: https://www.openprocessing.org/sketch/418124
-
+	// Todo: maybe use something more logical: https://www.openprocessing.org/sketch/122600
+	
 	private final static int AMOUNT_PARTICLES = 50;
 
 	private PVector[] particles;
@@ -41,8 +39,8 @@ public class SwirlAnimation extends BaseAnimation {
 			particles[i] = new PVector(x, y);
 
 			// Set the color with a random offset
-			int red = colorGlobalRed; // Update the global red color int the update function
-			int green = (int)(100 + (Math.random() * 75));
+			int red = colorGlobalRed; // Update the global red color in the update function
+			int green = (int)(100 + (Math.random() * 100));
 			int blue = 255;
 			
 			colors[i] = PColor.color(red, green, blue);
@@ -57,7 +55,7 @@ public class SwirlAnimation extends BaseAnimation {
 			PVector position = particles[p]; // Get the current PVector
 			int color = colors[p];
 
-			// Shift; create the swirl effect
+			// Shift; create the swirl effect: not sure how this works?
 			PVector shift =  new PVector();
 			shift.x = position.y - PIXEL_RESOLUTION_Y/2;
 			shift.y = (float)Math.sin((position.x * (Math.PI * 2)) / PIXEL_RESOLUTION_X) * PIXEL_RESOLUTION_Y/8f;
@@ -103,5 +101,4 @@ public class SwirlAnimation extends BaseAnimation {
 		// Update and draw the particles
 		updateAndDraw(g, dt);
 	}
-
 }
