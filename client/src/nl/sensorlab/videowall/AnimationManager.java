@@ -51,7 +51,7 @@ public class AnimationManager {
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
-		addAnimation("Swirl round center", new SwirlAnimation(applet));
+		addAnimation("Swirl Around Center (changing colors while orbiting)", new SwirlAnimation(applet));
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
