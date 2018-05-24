@@ -8,7 +8,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import com.cleverfranke.util.ConfigurationLoader;
 import processing.core.PConstants;
 import processing.core.PImage;
 
@@ -84,7 +83,6 @@ public class UDPVideoStreamClient implements Runnable {
 	 * @param senderHost
 	 */
 	public void setExpectedSender(String senderHost) {
-
 		// Set expected host
 		try {
 			expectedSender = InetAddress.getByName(senderHost);
