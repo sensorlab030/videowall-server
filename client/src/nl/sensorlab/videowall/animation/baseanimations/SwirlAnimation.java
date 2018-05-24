@@ -8,12 +8,15 @@ import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class SwirlAnimation extends BaseAnimation {
+	
+	// Todo:
+	// Add a color scale: HSB so the particles will update within a color range (tint)
+	// Example: https://www.openprocessing.org/sketch/418124
 
-	private final static int AMOUNT_PARTICLES = 40;
+	private final static int AMOUNT_PARTICLES = 50;
 
 	private PVector[] particles;
 	private int[] colors;
-	private int baseColor = 0;
 
 	public SwirlAnimation(PApplet applet) {
 		super(applet);
@@ -28,12 +31,22 @@ public class SwirlAnimation extends BaseAnimation {
 		for(int i = 0; i < amountParticles; i++) {
 			float x = (float)(Math.random() * PIXEL_RESOLUTION_X);
 			float y = (float)(Math.random() * PIXEL_RESOLUTION_Y);
+			
+			// Set the particle
 			particles[i] = new PVector(x, y);
-			colors[i] = PColor.color((int)(((50 + (Math.random() * 30)) + baseColor) % 255), (int)(100 + (Math.random() * 155)), 255, 150);
+			
+			// Set the color with a random offset
+			int red = (int)(50 + (Math.random() * 30));
+			int green = (int)(100 + (Math.random() * 155));
+			int blue = 255;
+			int alpha = 255;
+			
+			colors[i] = PColor.color(red, green, blue, alpha);
 		}
 	}
 
 	private void updateAndDraw(PGraphics g, double dt) {
+		// Update the particles -> PVectors
 		for(int p = 0; p < particles.length; p++) {
 			
 			// Update the position(s)
@@ -47,7 +60,7 @@ public class SwirlAnimation extends BaseAnimation {
 			 
 			// Normalize the vector to a length of 1
 			shift.normalize();
-			shift.mult((float)dt * 10);
+			shift.mult((float)(dt * 0.0035));
 			
 			// Add the shift vector to the position
 			position.add(shift);
@@ -64,15 +77,11 @@ public class SwirlAnimation extends BaseAnimation {
 			g.strokeWeight(2);
 			g.stroke(color);
 			g.point(position.x, position.y);
-			
-			// Update the color
-			colors[p] = PColor.color((int)(((50 + (Math.random() * 30)) + baseColor) % 255), (int)(100 + (Math.random() * 155)), 255, 120);
 		}
-		
-		//
-		baseColor += 0.5f;
-//		if(baseColor > 1020) baseColor = 0;
+
 	}
+	
+	
 
 	protected final void drawAnimationFrame(PGraphics g, double dt) {
 		// Add some fade effect
@@ -81,7 +90,7 @@ public class SwirlAnimation extends BaseAnimation {
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
 		// Update and draw the particles
-		updateAndDraw(g, dt * 0.0005);
+		updateAndDraw(g, dt);
 	}
 
 }
