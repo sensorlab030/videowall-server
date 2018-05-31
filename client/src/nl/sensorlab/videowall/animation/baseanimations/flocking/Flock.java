@@ -6,16 +6,13 @@ import processing.core.PGraphics;
 
 public class Flock {
 
-	private FlockingAnimation parent;
-
 	private ArrayList<Boid> boids;
 	private ArrayList<Integer> boidstoremove;
 	
 	protected int lifeTimeBoidCounterMillis = 0;
 
 
-	public Flock(FlockingAnimation p, int[] colors) {
-		this.parent = p;
+	public Flock(int[] colors) {
 		this.boids = new ArrayList<Boid>();
 		this.boidstoremove = new ArrayList<Integer>();
 	}
@@ -52,7 +49,7 @@ public class Flock {
 		boidstoremove.clear();
 
 		int index = 0;
-		for(Boid boid : boids) {
+		for (Boid boid : boids) {
 			boid.update(boids);
 			boid.draw(g);
 			
@@ -67,7 +64,7 @@ public class Flock {
 		}
 
 		// Remove entries in a descending order; this will remove the elements from the list without undesirable side effects
-		for(int i = boidstoremove.size() - 1; i >= 0; i--) {
+		for (int i = boidstoremove.size() - 1; i >= 0; i--) {
 			removeBoid(boidstoremove.get(i));
 		}
 	}
