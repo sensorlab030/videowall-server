@@ -2,8 +2,8 @@ package nl.sensorlab.videowall;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-
-import com.cleverfranke.util.Settings;
+import com.cleverfranke.util.FileSystem;
+import com.cleverfranke.util.ConfigurationLoader;
 
 import de.looksgood.ani.Ani;
 import nl.sensorlab.videowall.animation.BaseAnimation;
@@ -25,9 +25,11 @@ public class LedWallApplication extends PApplet {
 	private boolean ledPreviewEnabled = true;
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
-	
+
+	public final static String VERSON_STRING = "v0.1.0";
+
 	private double currentTime;						// Current time (used for keeping track of delta time)
-	
+
 	@Override
 	public void settings() {
 		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
@@ -37,8 +39,8 @@ public class LedWallApplication extends PApplet {
 	@Override
 	public void setup() {
 		frameRate(60);
-		surface.setTitle("Preview");
-		
+		surface.setTitle("Video Wall " + VERSON_STRING + " - Preview");
+
 		// Init Ani library
 		Ani.init(this);
 		Ani.noAutostart();
@@ -55,10 +57,10 @@ public class LedWallApplication extends PApplet {
 
 		// Configure wall driver
 		driver = new WallDriver(this,
-				Settings.getValue("driverPort1"),
-				Settings.getValue("driverPort2"),
+				ConfigurationLoader.get().getString("driver.port1", null),
+				ConfigurationLoader.get().getString("driver.port2", null),
 				(int) frameRate);
-		
+
 		// Start first animation (blank)
 		AnimationManager.getInstance().startAnimation(0);
 
@@ -66,24 +68,24 @@ public class LedWallApplication extends PApplet {
 
 	@Override
 	public void draw() {
-		
+
 		// Capture current and delta time
 		double t = System.currentTimeMillis();
 		double dt = t - currentTime;
 		currentTime = t;
-		
+
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			return;
 		}
-		
+
 		// Draw animation frame with delta time
 		animation.draw(dt);
-		
+
 		// Send image to driver
 		driver.displayImage(animation.getImage());
-		
+
 		// Display previews
 		background(0);
 		if (ledPreviewEnabled) {
@@ -102,7 +104,7 @@ public class LedWallApplication extends PApplet {
 		}
 
 	}
-	
+
 	/**
 	 * Handle movie events (used by VideoAnimation class), read
 	 * a new frame from the movie
@@ -150,9 +152,11 @@ public class LedWallApplication extends PApplet {
 
 	public static void main(String[] args) {
 
+		// Set library paths
+		FileSystem.setDefaultLibraryPaths();
+
 		// Load settings (either first argument or settings.json by default)
-		String settingsFile = args.length > 0 ? args[0] : "settings.json";
-		if (!Settings.loadSettings(settingsFile)) {
+		if (!ConfigurationLoader.loadSettings(args.length > 0 ? args[0] : "settings.config")) {
 			System.exit(1);
 		}
 
