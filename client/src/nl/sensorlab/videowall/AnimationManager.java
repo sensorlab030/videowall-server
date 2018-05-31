@@ -53,13 +53,11 @@ public class AnimationManager {
 		addAnimation("Video stream", new VideoStreamAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
-		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 
 		// Video stream options
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
 			host = host.trim();
 			if (!host.isEmpty()) {
-				System.out.println("'" + host + "'");
 			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
 			}
 		}
