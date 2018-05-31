@@ -14,7 +14,7 @@ public class Boid {
 	private PVector acceleration;
 
 	private static float RADIUS = 0.5f;
-	private static float MAX_SPEED = 0.15f;
+	private static float MAX_SPEED = 0.55f;
 	private static float MAX_FORCE = 0.01f;
 	private static float NEIGHBOUR_DISTANCE = 20;
 
@@ -33,9 +33,12 @@ public class Boid {
 		this.velocity = new PVector((float)Math.cos(angle), (float)Math.sin(angle)); 
 	}
 
-	public void update(ArrayList<Boid> boids) {
+	public void update(ArrayList<Boid> boids, double dt) {
 		updateFlock(boids);
 
+		// Change acceleration with time
+		acceleration.mult((float) dt);
+		
 		// Update velocity
 		velocity.add(acceleration);
 

@@ -50,7 +50,7 @@ public class Flock {
 
 		int index = 0;
 		for (Boid boid : boids) {
-			boid.update(boids);
+			boid.update(boids, dt);
 			boid.draw(g);
 			
 			// Add the boid index if exceeds the lifetime
