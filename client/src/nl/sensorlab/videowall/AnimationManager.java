@@ -9,6 +9,7 @@ import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
@@ -49,8 +50,9 @@ public class AnimationManager {
 		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
-
-//		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Video stream", new VideoStreamAnimation(applet));
+		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
+		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 
 		// Video stream options
