@@ -1,5 +1,6 @@
 package nl.sensorlab.videowall.animation.baseanimations.flocking;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PGraphics;
@@ -7,14 +8,12 @@ import processing.core.PGraphics;
 public class Flock {
 
 	private ArrayList<Boid> boids;
-	private ArrayList<Integer> boidstoremove;
-	
+
 	protected int lifeTimeBoidCounterMillis = 0;
 
 
 	public Flock(int[] colors) {
 		this.boids = new ArrayList<Boid>();
-		this.boidstoremove = new ArrayList<Integer>();
 	}
 
 	public void generateFlock(int amountBoids) {
@@ -45,27 +44,20 @@ public class Flock {
 	}
 
 	public void updateAndDraw(PGraphics g, double dt) {
-		// Reset the remove arraylist
-		boidstoremove.clear();
 
-		int index = 0;
-		for (Boid boid : boids) {
+		Iterator<Boid> it = boids.iterator();
+		while (it.hasNext()) {
+			Boid boid = it.next();
 			boid.update(boids, dt);
 			boid.draw(g);
 			
-			// Add the boid index if exceeds the lifetime
-			if(boid.lifetimeMillis < boid.lifeTimeCounterMillis) {
-				// Add the index of the bouncy pixel to the remove arraylist
-				boidstoremove.add(index);
-			}else {
+			// Remove the boid if exceeds the lifetime
+			if (boid.lifeTimeCounterMillis > boid.lifetimeMillis) {
+				it.remove();
+			} else {
 				boid.lifeTimeCounterMillis += dt;
 			}
-			index++;
 		}
-
-		// Remove entries in a descending order; this will remove the elements from the list without undesirable side effects
-		for (int i = boidstoremove.size() - 1; i >= 0; i--) {
-			removeBoid(boidstoremove.get(i));
-		}
+		
 	}
 }
