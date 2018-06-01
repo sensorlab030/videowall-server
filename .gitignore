@@ -15,6 +15,5 @@ data
 *.ucls
 *.idea
 *.iml
-settings-*.json
 settings-*.config
 .DS_Store
