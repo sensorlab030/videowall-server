@@ -8,6 +8,7 @@ import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.HorizontalWavesAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
@@ -55,6 +56,7 @@ public class AnimationManager {
 		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));
 		addAnimation("Video stream", new VideoStreamAnimation(applet));
 		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
+		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 
