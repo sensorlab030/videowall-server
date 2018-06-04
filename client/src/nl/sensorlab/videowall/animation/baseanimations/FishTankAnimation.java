@@ -50,8 +50,6 @@ public class FishTankAnimation extends BaseAnimation{
 		g.fill(0, 0, 30, 30);
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		
-		System.err.println( parent.frameCount + " " + dt);
-		
 		// Display the fish shapes
 		for(Fish f: fishes) {
 			f.updateAndDraw(g, parent.frameCount);
