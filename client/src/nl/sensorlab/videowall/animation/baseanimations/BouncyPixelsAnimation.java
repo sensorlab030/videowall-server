@@ -1,7 +1,10 @@
 package nl.sensorlab.videowall.animation.baseanimations;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.cleverfranke.util.PColor;
+
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -9,9 +12,7 @@ import processing.core.PVector;
 
 public class BouncyPixelsAnimation extends BaseAnimation{
 
-	public PApplet parent;
 	private ArrayList<BouncyPixel> bouncypixels;
-	private ArrayList<Integer> bouncypixelstoremove; // <-- Store id's for pixels that exceed the lifetime
 
 	private final int INIT_AMOUNT_BOUNCY_PIXELS = 100;
 	private final int ADD_BOUNCY_PIXEL_EVERY_MILLIS = 500;
@@ -29,9 +30,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 	public BouncyPixelsAnimation(PApplet applet) {
 		super(applet);
-		this.parent = applet;
 		this.bouncypixels = new ArrayList<BouncyPixel>();
-		this.bouncypixelstoremove = new ArrayList<Integer>();
 
 		// Generate bouncy pixels
 		generateBouncyPixels(INIT_AMOUNT_BOUNCY_PIXELS);
@@ -53,37 +52,23 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		bouncypixels.add(new BouncyPixel(this, x, y, randomLifeTime, diameter, id, randomColor));
 	}
 
-	private void clearBouncyPixels() {
-		bouncypixels.clear();
-	}
-
-	private void removeBouncyPixel(int index) {
-		bouncypixels.remove(index);
-	}
-
 	private void updateBouncyPixels(double dt) {
-		// Reset the remove arraylist
-		bouncypixelstoremove.clear();
-
+		
 		// Update pixels
-		int index = 0;
-		for(BouncyPixel bp : bouncypixels) {
-			bp.collide(bouncypixels);
-			bp.update();
-			// Add the pixel id if exceeds
-			if(bp.lifetimeMillis < bp.lifeTimeCounterMillis) {
-				// Add the index of the bouncy pixel to the remove arraylist
-				bouncypixelstoremove.add(index);
-			}else {
+		Iterator<BouncyPixel> it = bouncypixels.iterator();
+		while (it.hasNext()) {
+			BouncyPixel bp = it.next();
+			
+			if (bp.lifeTimeCounterMillis > bp.lifetimeMillis) {
+				it.remove();
+			} else {
 				bp.lifeTimeCounterMillis += dt;
+				bp.collide(bouncypixels);
+				bp.update();
 			}
-			index++;
+			
 		}
 
-		// Remove entries in a descending order; this will remove the elements from the list without undesirable side effects
-		for(int i = bouncypixelstoremove.size() - 1; i >= 0; i--) {
-			removeBouncyPixel(bouncypixelstoremove.get(i));
-		}
 	}
 
 	private void drawBouncyPixels(PGraphics g) {
@@ -92,6 +77,7 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		}
 	}
 
+	@Override
 	protected void drawAnimationFrame(PGraphics g, double dt) {
 		// Add some fade effect
 		g.fill(0, 30);
