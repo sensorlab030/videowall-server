@@ -37,7 +37,6 @@ public class HorizontalScanAnimation extends BaseAnimation {
 		g.strokeWeight(2);
 		g.stroke(colorBar, 200, 150, 128);
 		g.line(barX, 0, barX, PIXEL_RESOLUTION_Y);
-
 	}
 	
 }

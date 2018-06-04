@@ -1,7 +1,7 @@
 package nl.sensorlab.videowall.animation.baseanimations.alphabet;
 
+import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
-import com.cleverfranke.util.Settings;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
@@ -24,7 +24,7 @@ public class Alphabet extends BaseAnimation {
 	private int offset = WallGeometry.getInstance().getPanelCount() * 2;	// Offset value to position the left edge of the phrase (is set to right edge of the pixel grid)
 	private int totalOffset = 0;											// Count the total amount of offset operated
 	private long tStart = -1;												// Timer start
-	private int color = PColor.color(0, 255, 0);							// Default phrase color
+	private int color;														// Default phrase color
 
 
 	/**
@@ -37,12 +37,10 @@ public class Alphabet extends BaseAnimation {
 		super(applet);
 
 		// Create Phrase
-		phrase = new Phrase(Settings.getValue("phrase"));
-
-		// Set color if provided
-		if (Settings.getValue("phraseColor").length() != 0) {
-			color = PColor.color(Settings.getValue("phraseColor"));
-		}
+		phrase = new Phrase(ConfigurationLoader.get().getString("alphabet.string", ""));
+		
+		// Set color
+		color = PColor.color(ConfigurationLoader.get().getString("alphabet.color", "#00ff00"));
 
 	}
 
