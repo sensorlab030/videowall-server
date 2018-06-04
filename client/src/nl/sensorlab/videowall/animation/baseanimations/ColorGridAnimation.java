@@ -46,7 +46,7 @@ public class ColorGridAnimation extends BaseAnimation {
 			this.position = new PVector(BaseAnimation.PIXEL_RESOLUTION_X/2, BaseAnimation.PIXEL_RESOLUTION_Y/2);
 		}
 
-		void updateAndDraw(PGraphics g, double dt) {
+		void updateAndDraw(PGraphics g) {
 			// Keep the squares within the bounding-box
 			if((position.x < 0 || position.x + SQUARE_DIMENSIONS > BaseAnimation.PIXEL_RESOLUTION_X) || (position.y < 0 || position.y + SQUARE_DIMENSIONS > BaseAnimation.PIXEL_RESOLUTION_Y)) {
 				// Reset the position to the center
