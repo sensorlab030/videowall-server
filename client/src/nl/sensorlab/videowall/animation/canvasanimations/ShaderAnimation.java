@@ -10,13 +10,11 @@ import processing.opengl.PShader;
 
 public class ShaderAnimation extends BaseCanvasAnimation {
 
-	PApplet parent;
 	private PShader currentShader;
 	private float speed;
 
 	public ShaderAnimation(PApplet applet, String shaderName, float speed) {
 		super(applet, DEFAULT_SCALE, CANVAS_MODE_3D);	
-		this.parent = applet;
 		this.speed = speed;
 		
 		// Load the Shader
@@ -32,7 +30,7 @@ public class ShaderAnimation extends BaseCanvasAnimation {
 	@Override
 	protected void drawCanvasAnimationFrame(PGraphics g, double dt) {
 		// Update the shader
-		currentShader.set("time", (float) (parent.millis() / speed));
+		currentShader.set("time", (float) applet.millis() / speed);
 
 		// Draw the shader
 		g.shader(currentShader);
