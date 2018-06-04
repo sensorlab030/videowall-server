@@ -44,12 +44,10 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 
 	private void addBouncyPixel() { 
 		float x = (float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_X);
-		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y);// Start outside window height
-		final float diameter = 1; // <-- Because it are pixels we want this to be set to 1; we set the radius of the pixel diameter/2; When using the radius for an ellipse we should do radius * 2 (this is not applicable for now because we are using pixels (point) instead). 
-		int id = bouncyPixels.size(); // <-- The id which is actually the index
+		float y = -(float)(Math.random() * BaseAnimation.PIXEL_RESOLUTION_Y); // Start outside window height
 		int randomColor = PIXEL_COLORS[(int)Math.floor(Math.random() * PIXEL_COLORS.length)];
 		int randomLifeTime = (int)(MIN_LIFETIME_BOUNCY_PIXEL + Math.random() * VARIATION_LIFETIME_BOUNCY_PIXEL); 
-		bouncyPixels.add(new BouncyPixel(this, x, y, randomLifeTime, diameter, id, randomColor));
+		bouncyPixels.add(new BouncyPixel(this, x, y, randomLifeTime, randomColor));
 	}
 
 	@Override
@@ -93,39 +91,39 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 		public PVector position;
 		public PVector velocity;
 
-		public float radius;
-		public int id;
+		public static final float RADIUS = 0.5f;
 		private int color;
 
 		public float lifeTimeCounterMillis = 0;
 		public int lifetimeMillis;
 
-		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, int lifetimeMillis, float diameter, int id, int color) {
+		public BouncyPixel(BouncyPixelsAnimation parent, float x, float y, int lifetimeMillis, int color) {
 			this.parent = parent;
 			this.position = new PVector(x, y);
 			this.velocity = new PVector(0, 0);
-			this.radius = diameter/2;
-			this.id = id;
 			this.color = color;
 			this.lifetimeMillis = lifetimeMillis;
 		}
 
 		private void collide(ArrayList<BouncyPixel> bouncypixels) {
+			
 			for (int i = 0; i < bouncypixels.size(); i++) {
+				BouncyPixel b = bouncypixels.get(i);
+				
 				// Ignore self
-				if(i != id){
-					BouncyPixel b = bouncypixels.get(i);
+				if (b != this){
+					
 					float dx = b.position.x - position.x;
 					float dy = b.position.y - position.y;
 
 					// The minimum distance
-					float minDistance = b.radius + radius;
+					float minDistance = RADIUS * 2;
 
 					// The actual distance
 					float distance = (float)Math.sqrt(dx*dx + dy*dy);
 
 					// If exceeds minimum distance
-					if(distance < minDistance) {
+					if (distance < minDistance) {
 						float angle = (float)Math.atan2(dy, dx);
 						float targetX = position.x + (float)Math.cos(angle) * minDistance;
 						float targetY = position.y + (float)Math.sin(angle) * minDistance;
@@ -154,18 +152,18 @@ public class BouncyPixelsAnimation extends BaseAnimation{
 			position.y += velocity.y * dt;
 
 			// Keep inbounds
-			if (position.x + radius > BaseAnimation.PIXEL_RESOLUTION_X) {
-				position.x = BaseAnimation.PIXEL_RESOLUTION_X - radius;
+			if (position.x + RADIUS > BaseAnimation.PIXEL_RESOLUTION_X) {
+				position.x = BaseAnimation.PIXEL_RESOLUTION_X - RADIUS;
 				velocity.x *= parent.FRICTION_INTENSITY;
-			} else if (position.x -radius < 0) {
-				position.x = radius;
+			} else if (position.x -RADIUS < 0) {
+				position.x = RADIUS;
 				velocity.x *= parent.FRICTION_INTENSITY;
 			}
-			if (position.y + radius > BaseAnimation.PIXEL_RESOLUTION_Y) {
-				position.y = BaseAnimation.PIXEL_RESOLUTION_Y -radius;
+			if (position.y + RADIUS > BaseAnimation.PIXEL_RESOLUTION_Y) {
+				position.y = BaseAnimation.PIXEL_RESOLUTION_Y -RADIUS;
 				velocity.y *= parent.FRICTION_INTENSITY;
-			} else if (position.y - radius < 0) {
-				position.y = radius;
+			} else if (position.y - RADIUS < 0) {
+				position.y = RADIUS;
 				velocity.y *= parent.FRICTION_INTENSITY;
 			}
 		}
