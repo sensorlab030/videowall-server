@@ -10,6 +10,7 @@ import com.cleverfranke.util.PColor;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.HorizontalScanAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.HorizontalWavesAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
@@ -61,6 +62,7 @@ public class AnimationManager {
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
+		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
 
 		// Video stream options
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
