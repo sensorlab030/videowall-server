@@ -45,7 +45,7 @@ public class PerlinNoiseAnimation extends BaseAnimation{
 			int color = PARTICLE_COLORS[PApplet.floor(parent.random(PARTICLE_COLORS.length))];
 			
 			// Set random speed
-			float randomSpeed = (float)(0.0025f + Math.random() * 0.0025);
+			float randomSpeed = (float)(0.0035f + Math.random() * 0.0045);
 			
 			// Create the new particle
 			particles.add(new PerlinParticle(this, x, y, randomSpeed, color, alpha, strokeWeight));

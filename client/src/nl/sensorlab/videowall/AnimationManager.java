@@ -4,17 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.PerlinNoiseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
 import processing.core.PApplet;
 
 /**
@@ -40,18 +43,28 @@ public class AnimationManager {
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
 		addAnimation("COL: Black", black);
-		
+
 		// Full white
 		ColorAnimation white = new ColorAnimation(applet);
 		white.setData(String.valueOf(PColor.color(255)));
 		addAnimation("COL: White", white);
-			
+
 		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
-		addAnimation("Video stream", new VideoStream(applet));
 		addAnimation("Swirl (Perlin Noise)", new PerlinNoiseAnimation(applet));
+		addAnimation("Video stream", new VideoStreamAnimation(applet));
+		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
+		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+
+		// Video stream options
+		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
+			host = host.trim();
+			if (!host.isEmpty()) {
+			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
+			}
+		}
 
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
