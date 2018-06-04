@@ -1,19 +1,18 @@
 package nl.sensorlab.videowall.animation.baseanimations;
 import java.util.ArrayList;
+
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
-public class LiquidColumnsAnimation  extends BaseAnimation {
+public class LiquidColumnsAnimation extends BaseAnimation {
 
-	private PApplet parent;
 	private PushObject pushobject;
 	private ArrayList<LiquidColumn> liquidcolumns;
 
 	public LiquidColumnsAnimation(PApplet applet) {
 		super(applet);
-		this.parent = applet;
 		this.pushobject = new PushObject();
 		this.liquidcolumns = new ArrayList<LiquidColumn>();
 		generateColumns();
