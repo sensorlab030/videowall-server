@@ -9,6 +9,7 @@ import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.FishTankAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimation;
@@ -55,6 +56,7 @@ public class AnimationManager {
 		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+		addAnimation("Fish Tank (swirling)", new FishTankAnimation(applet));
 
 		// Video stream options
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
