@@ -4,15 +4,25 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.HorizontalScanAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.HorizontalWavesAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.PerlinNoiseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.SensorLabLogo;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
+import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
-import nl.sensorlab.videowall.animation.canvasanimations.VideoStream;
+import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
 import processing.core.PApplet;
 
 /**
@@ -38,17 +48,34 @@ public class AnimationManager {
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
 		addAnimation("COL: Black", black);
-		
+
 		// Full white
 		ColorAnimation white = new ColorAnimation(applet);
 		white.setData(String.valueOf(PColor.color(255)));
 		addAnimation("COL: White", white);
-			
+
 		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorLabLogo(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
-		addAnimation("Video stream", new VideoStream(applet));
+		addAnimation("Swirl (Perlin Noise)", new PerlinNoiseAnimation(applet));
+		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));
+		addAnimation("Video stream", new VideoStreamAnimation(applet));
+		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
+		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
+		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
+		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
+		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
+		addAnimation("Beach Ball", new BeachballAnimation(applet));
 
+		// Video stream options
+		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
+			host = host.trim();
+			if (!host.isEmpty()) {
+			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
+			}
+		}
+		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
@@ -64,7 +91,6 @@ public class AnimationManager {
 			filename = filename.substring(0, filename.lastIndexOf('.'));
 			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
-
 	}
 
 	/**
