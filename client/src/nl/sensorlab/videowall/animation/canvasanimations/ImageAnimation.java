@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import com.cleverfranke.util.Settings;
+import com.cleverfranke.util.ConfigurationLoader;
 
 import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import processing.core.PApplet;
@@ -35,6 +35,7 @@ public class ImageAnimation extends BaseCanvasAnimation {
 		
 	}
 	
+	@Override
 	public void setData(String data) {
 		image = applet.loadImage(data);
 		
@@ -55,7 +56,7 @@ public class ImageAnimation extends BaseCanvasAnimation {
 	public static File[] getImageFileList() {
 		
 		// Fetch image dir from settings
-		String imagePath = Settings.getValue("imageDir");
+		String imagePath = ConfigurationLoader.get().getString("path.image", null);
 		if (imagePath == null || imagePath.isEmpty()) {
 			return new File[0];
 		}
