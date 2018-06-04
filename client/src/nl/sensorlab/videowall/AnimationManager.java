@@ -57,7 +57,6 @@ public class AnimationManager {
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Swirl (Perlin Noise)", new PerlinNoiseAnimation(applet));
 		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));
-		addAnimation("Video stream", new VideoStreamAnimation(applet));
 		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
 		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
