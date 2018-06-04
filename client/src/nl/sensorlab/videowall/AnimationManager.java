@@ -17,6 +17,7 @@ import nl.sensorlab.videowall.animation.baseanimations.PerlinNoiseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
@@ -65,6 +66,7 @@ public class AnimationManager {
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
+		addAnimation("Beach Ball", new BeachballAnimation(applet));
 
 		// Video stream options
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
