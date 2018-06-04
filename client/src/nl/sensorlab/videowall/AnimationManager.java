@@ -67,7 +67,7 @@ public class AnimationManager {
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
-		addAnimation("Color Grid", new ColorGridAnimation(applet));
+		addAnimation("Color Grid (fill the canvas with a gradient)", new ColorGridAnimation(applet));
 		addAnimation("Beach Ball", new BeachballAnimation(applet));
 
 		// Video stream options
