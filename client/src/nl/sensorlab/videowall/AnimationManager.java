@@ -18,6 +18,7 @@ import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimatio
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
 import processing.core.PApplet;
@@ -60,6 +61,7 @@ public class AnimationManager {
 		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
+		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
 
 		// Video stream options
