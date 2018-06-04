@@ -20,6 +20,7 @@ import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimatio
 import nl.sensorlab.videowall.animation.baseanimations.sorting.SortingAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.BeachballAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
+import nl.sensorlab.videowall.animation.canvasanimations.SensorlabLogoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
@@ -56,6 +57,7 @@ public class AnimationManager {
 
 		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorLabLogo(applet));
+		addAnimation("Sensorlab logo - old", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
 		addAnimation("Swirl (Perlin Noise)", new PerlinNoiseAnimation(applet));
 		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));

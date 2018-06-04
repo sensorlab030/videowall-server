@@ -13,7 +13,7 @@ public final class PColor {
 	 * @return
 	 */
 	public static int color(float grey) {
-		return color(grey * 255f);
+		return color((int) (grey * 255f));
 	}
 
 	/**
