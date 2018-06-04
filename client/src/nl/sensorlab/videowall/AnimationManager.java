@@ -8,8 +8,10 @@ import com.cleverfranke.util.ConfigurationLoader;
 import com.cleverfranke.util.PColor;
 
 import nl.sensorlab.videowall.animation.BaseAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.HorizontalScanAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.HorizontalWavesAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.alphabet.Alphabet;
 import nl.sensorlab.videowall.animation.baseanimations.flocking.FlockingAnimation;
@@ -52,8 +54,10 @@ public class AnimationManager {
 		// All Applet based animation
 		addAnimation("Sensorlab logo", new SensorlabLogoAnimation(applet));
 		addAnimation("Alphabet", new Alphabet(applet));
+		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));
 		addAnimation("Video stream", new VideoStreamAnimation(applet));
 		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
+		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
 		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
@@ -65,7 +69,7 @@ public class AnimationManager {
 			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
 			}
 		}
-
+		
 		// Add videos to animation manager
 		VideoAnimation videoAnimation = new VideoAnimation(applet);
 		for (File f : VideoAnimation.getVideoFileList()) {
