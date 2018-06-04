@@ -9,10 +9,9 @@ import processing.core.PVector;
 
 public class ColorGridAnimation extends BaseAnimation {
 
-	private static final int AMOUNT_SQUARES = 4;
+	private static final int AMOUNT_SQUARES = 16;
 	private static final int SQUARE_DIMENSIONS = 4;
 	private 	ArrayList<Square> squares;
-
 
 	public ColorGridAnimation(PApplet applet) {
 		super(applet);
@@ -30,9 +29,9 @@ public class ColorGridAnimation extends BaseAnimation {
 	protected void drawAnimationFrame(PGraphics g, double dt) {
 		// Add some fade effect;
 		g.noStroke();
-		g.fill(0, 10);
+		g.fill(0, 1);
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
-
+		
 		// Update and draw the squares
 		for(Square sq : squares) {
 			sq.updateAndDraw(g, dt);
@@ -55,8 +54,8 @@ public class ColorGridAnimation extends BaseAnimation {
 				position.y = BaseAnimation.PIXEL_RESOLUTION_Y/2;
 			}else {
 				// Move into a random position by adding a random offset
-				position.x += -SQUARE_DIMENSIONS + (Math.random() * SQUARE_DIMENSIONS * 2);
-				position.y += -SQUARE_DIMENSIONS + (Math.random() * SQUARE_DIMENSIONS * 2);
+				position.x += Math.round(-SQUARE_DIMENSIONS + (Math.random() * SQUARE_DIMENSIONS * 2));
+				position.y += Math.round(-SQUARE_DIMENSIONS + (Math.random() * SQUARE_DIMENSIONS * 2));
 			}
 
 			// Set the color based on the position of the square
@@ -68,9 +67,8 @@ public class ColorGridAnimation extends BaseAnimation {
 
 			// Draw
 			g.noStroke();
-			g.fill(color);
+			g.fill(color, 75);
 			g.rect(position.x,  position.y,  SQUARE_DIMENSIONS, SQUARE_DIMENSIONS);
-
 		}
 	}
 }
