@@ -10,6 +10,7 @@ import com.cleverfranke.util.PColor;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.BouncyPixelsAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.ColorAnimation;
+import nl.sensorlab.videowall.animation.baseanimations.ColorGridAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.HorizontalScanAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.HorizontalWavesAnimation;
 import nl.sensorlab.videowall.animation.baseanimations.LiquidColumnsAnimation;
@@ -65,6 +66,7 @@ public class AnimationManager {
 		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
 		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
 		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
+		addAnimation("Color Grid (fill the canvas with a gradient)", new ColorGridAnimation(applet));
 		addAnimation("Beach Ball", new BeachballAnimation(applet));
 
 		// Video stream options
