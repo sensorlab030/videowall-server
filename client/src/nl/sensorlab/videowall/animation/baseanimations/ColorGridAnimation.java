@@ -31,11 +31,12 @@ public class ColorGridAnimation extends BaseAnimation {
 		g.noStroke();
 		g.fill(0, 1);
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
-		
+
 		// Update and draw the squares
 		for(Square sq : squares) {
-			sq.updateAndDraw(g, dt);
+			sq.updateAndDraw(g);
 		}
+		
 	}
 
 	public class Square {
@@ -67,7 +68,7 @@ public class ColorGridAnimation extends BaseAnimation {
 
 			// Draw
 			g.noStroke();
-			g.fill(color, 75);
+			g.fill(color, 60);
 			g.rect(position.x,  position.y,  SQUARE_DIMENSIONS, SQUARE_DIMENSIONS);
 		}
 	}
