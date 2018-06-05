@@ -118,8 +118,19 @@ public abstract class BaseAnimation {
 	 * @return
 	 */
 	public String getResource(String relativePath) {
+		
 		URL url = getClass().getClassLoader().getResource("nl/sensorlab/videowall/resources/" + relativePath);
-		return (url != null) ? url.getFile().toString() : null;
+		if (url == null) {
+			return null;
+		} else if (url.toString().startsWith("jar:")) {
+			// Run from jar: Return path in jar
+			return url.toString();
+		} else {
+			// Return file path
+			return url.getFile().toString();
+		}
+		
 	}
+	
 
 }
