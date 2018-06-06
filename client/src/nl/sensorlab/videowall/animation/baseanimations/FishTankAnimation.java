@@ -64,8 +64,10 @@ public class FishTankAnimation extends BaseAnimation{
 
 		private float scale;
 		private float angle;
-
+		
 		private final static float VELOCITY_OFFSET = 0.075f;
+		// How many pixels can the fish go outside of the canvas before it resets it's position.
+		private final static int OFFSET_BOUNDING_BOX = 20; 
 
 		public Fish(float x, float y, int color) {
 			this.position = new PVector(x, y);
@@ -73,10 +75,10 @@ public class FishTankAnimation extends BaseAnimation{
 			this.velocity = new PVector(-VELOCITY_OFFSET + (float)Math.random() * (VELOCITY_OFFSET * 2), -VELOCITY_OFFSET + (float)Math.random() * (VELOCITY_OFFSET * 2));
 			
 			// Randomize the scale so fishes have different sizes
-			this.scale = 0.015f + (float)Math.random() * 0.02f;
+			this.scale = 0.015f + (float)Math.random() * 0.025f;
 			
 			// Randomize the angle
-			this.angle = -90f + (float)Math.random() * 180;
+			this.angle = 0;//-90f + (float)Math.random() * 180;
 		}
 
 		public void updateAndDraw(PGraphics g, int frameCount) {
@@ -91,24 +93,24 @@ public class FishTankAnimation extends BaseAnimation{
 			g.pushMatrix();
 			g.translate(position.x, position.y);
 			g.scale(scale);
-			//	Calculate the angle of rotation for this vector
+			//	Calculate the angle of rotation and subtract 90 degrees to make the shape point in the correct direction
 			g.rotate(velocity.heading() - PApplet.radians(90));
 
 			// Start drawing the vertex which will make up the fish shape
 			g.beginShape();
 
 			// Create the right side of the fish shape
-			for(int i = 0; i < 180; i+=20) {
-				float x = (float)Math.sin(PApplet.radians(i)) * i/3; // Increase the offset a bit (shapes appear wider)
-				float a = (float)Math.sin(PApplet.radians((float)(i + angle + frameCount * 3))) * 50;
-				g.vertex(x - a, i * 2);
+			for(int y = 0; y < 180; y+=20) {
+				float x = (float)Math.sin(PApplet.radians(y)) * y/3; // Increase the offset a bit (shapes appear wider)
+				float a = (float)Math.sin(PApplet.radians((float)(y + angle + frameCount * 3))) * 50;
+				g.vertex(x + a, y);
 			}
 
 			// Create the left side of the fish shape
-			for (int i = 180; i >= 0; i-=20) {
-				float x = (float)Math.sin(PApplet.radians(i)) * i/3; // Increase the offset a bit (shapes appear wider)
-				float a = (float)Math.sin(PApplet.radians((float)(i + angle +  frameCount * 3))) * 50;
-				g.vertex(- (x - a), i * 2);
+			for (int y = 180; y >= 0; y-=20) {
+				float x = (float)Math.sin(PApplet.radians(y)) * y/3; // Increase the offset a bit (shapes appear wider)
+				float a = (float)Math.sin(PApplet.radians((float)(y + angle +  frameCount * 3))) * 50;
+				g.vertex(- (x - a), y);
 			}
 			
 			// End the fish shape
@@ -116,15 +118,15 @@ public class FishTankAnimation extends BaseAnimation{
 			g.popMatrix();
 
 			// Make sure the shapes (center position) are kept within the bounding-box.
-			if(position.x > BaseAnimation.PIXEL_RESOLUTION_X) {
-				position.x = 0;
-			}else if(position.x < 0) {
-				position.x =  BaseAnimation.PIXEL_RESOLUTION_X;
+			if(position.x > BaseAnimation.PIXEL_RESOLUTION_X + OFFSET_BOUNDING_BOX) {
+				position.x = -OFFSET_BOUNDING_BOX;
+			}else if(position.x < -OFFSET_BOUNDING_BOX) {
+				position.x =  BaseAnimation.PIXEL_RESOLUTION_X + OFFSET_BOUNDING_BOX;
 			}
-			if(position.y > BaseAnimation.PIXEL_RESOLUTION_Y) {
-				position.y = 0;
-			}else if(position.y < 0) {
-				position.y =  BaseAnimation.PIXEL_RESOLUTION_Y;
+			if(position.y > BaseAnimation.PIXEL_RESOLUTION_Y + OFFSET_BOUNDING_BOX) {
+				position.y = -OFFSET_BOUNDING_BOX;
+			}else if(position.y < -OFFSET_BOUNDING_BOX) {
+				position.y =  BaseAnimation.PIXEL_RESOLUTION_Y + OFFSET_BOUNDING_BOX;
 			}
 		}
 	}
