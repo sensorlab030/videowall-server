@@ -58,6 +58,11 @@ public class PerlinNoiseAnimation extends BaseAnimation{
 		if(init) {
 			init = false;
 			g.background(0);
+		}else {
+			// Add some fade effect
+			g.fill(0, 1);
+			g.noStroke();
+			g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 		}
 		
 		// Draw and update the perlin noise particles
