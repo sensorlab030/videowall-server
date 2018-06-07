@@ -8,7 +8,7 @@ import processing.core.PGraphics;
 
 public class FlockingAnimation extends BaseAnimation {
 
-	private static final int FLOCK_SIZE = 12;
+	private static final int FLOCK_SIZE = 24;
 	protected static final int[] BOID_COLORS = {PColor.color(7, 93, 144), PColor.color(24, 147, 196), PColor.color(108, 208, 198), PColor.color(235, 232, 225)};
 	private static final int ADD_BOID_EVERY_MILLIS = 2500;
 	private static final int MAX_AMOUNT_BOIDS = 100;
@@ -31,7 +31,7 @@ public class FlockingAnimation extends BaseAnimation {
 	protected void drawAnimationFrame(PGraphics g, double dt) {
 		
 		// Add some fade effect
-		g.fill(0, 50);
+		g.fill(0, 30);
 		g.noStroke();
 		g.rect(0, 0, PIXEL_RESOLUTION_X, PIXEL_RESOLUTION_Y);
 
