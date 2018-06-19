@@ -16,7 +16,7 @@ public class SortingAnimation extends BaseAnimation {
 
 	// Settings
 	private int sortingMethodIndex = 0; // <-- Which methods to select
-	private final static int AMOUNT_COLUMNS = 12;
+	private final static int AMOUNT_COLUMNS = 13;
 
 	// Update step
 	private static final int UPDATE_SORTING_EVERY_MILLIS = 100;

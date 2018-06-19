@@ -20,10 +20,10 @@ public abstract class Sort {
 	public void draw(PGraphics g, int width, int height) {
 		g.noStroke();
 	
-		for(int i = 0; i < this.valuesArray.length; i++) {
+		for (int i = 0; i < this.valuesArray.length; i++) {
 			
 			// Skip the first row
-			int x = 1 + (2 * i);
+			int x = (2 * i);
 			int columnHeight = (int) Math.ceil((height / maxValue) * valuesArray[i]) ;
 			
 			// Highlight the current selected (being sorted)
