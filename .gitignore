@@ -2,6 +2,7 @@ bin
 tmp
 output
 data
+dist
 *.tmp
 *.bak
 *.swp
