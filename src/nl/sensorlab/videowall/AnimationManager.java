@@ -33,7 +33,7 @@ public class AnimationManager {
 
 	private static AnimationManager instance = null; 						// Singleton instance
 	private BaseAnimation currentAnimation;									// Current animation
-	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animation
+	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animations, index of an item is the same as the entry id
 
 	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
 
@@ -123,14 +123,31 @@ public class AnimationManager {
 		return currentAnimation;
 	}
 
+	/**
+	 * Add an animation to the list of animations
+	 * 
+	 * @param label
+	 * @param data
+	 * @param animation
+	 * @return the id of the animation entry
+	 */
 	public int addAnimation(String label, String data, BaseAnimation animation) {
-		if (availableAnimations.add(new AnimationEntry(label, data, animation))) {
-			return availableAnimations.size() - 1;
+		AnimationEntry entry = new AnimationEntry(label, data, animation);
+		if (availableAnimations.add(entry)) {
+			entry.id = availableAnimations.size() - 1;
+			return entry.id;
 		} else {
 			return -1;
 		}
 	}
 
+	/**
+	  * Add an animation to the list of animations
+	 * 
+	 * @param label
+	 * @param animation
+	 * @return the id of the animation entry
+	 */
 	public int addAnimation(String label, BaseAnimation animation) {
 		return addAnimation(label, null, animation);
 	}
@@ -143,8 +160,13 @@ public class AnimationManager {
 		return availableAnimations.size();
 	}
 
-	public void startAnimation(int index) {
-		if (index > availableAnimations.size() - 1) {
+	/**
+	 * Start the animation with the given animation entry id
+	 * 
+	 * @param animationEntryId
+	 */
+	public void startAnimation(int animationEntryId) {
+		if (animationEntryId > availableAnimations.size() - 1) {
 			System.err.println("Cannot start animation: Invalid animation index");
 			return;
 		}
@@ -155,7 +177,7 @@ public class AnimationManager {
 		}
 
 		// Set current animation to animation with given index
-		AnimationEntry entry = availableAnimations.get(index);
+		AnimationEntry entry = availableAnimations.get(animationEntryId);
 		currentAnimation = entry.getAnimation();
 		if (currentAnimation == null) {
 			return;
@@ -171,7 +193,7 @@ public class AnimationManager {
 
 		// Send change event
 		for (AnimationEventListener listener : eventListeners) {
-			listener.onCurrentAnimationChanged(index);
+			listener.onCurrentAnimationChanged(animationEntryId);
 		}
 
 	}
@@ -181,6 +203,7 @@ public class AnimationManager {
 	}
 
 	public class AnimationEntry {
+		private int id;
 		private String label;
 		private String data;
 		private BaseAnimation animation;
@@ -190,6 +213,10 @@ public class AnimationManager {
 			this.data = data;
 			this.animation = animation;
 		}
+		
+		protected void setId(int id) {
+			this.id = id;
+		}
 
 		public AnimationEntry createAnimationEntry(String label, BaseAnimation animation) {
 			return new AnimationEntry( label, null, animation);
@@ -197,6 +224,10 @@ public class AnimationManager {
 
 		public AnimationEntry createAnimationEntry(String label, String data, BaseAnimation animation) {
 			return new AnimationEntry( label, data, animation);
+		}
+		
+		public int getId() {
+			return id;
 		}
 
 		public String getLabel() {

@@ -2,8 +2,9 @@ package nl.sensorlab.videowall;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import com.cleverfranke.util.FileSystem;
+
 import com.cleverfranke.util.ConfigurationLoader;
+import com.cleverfranke.util.FileSystem;
 
 import de.looksgood.ani.Ani;
 import nl.sensorlab.videowall.animation.BaseAnimation;
@@ -12,6 +13,7 @@ import nl.sensorlab.videowall.animation.Preview;
 import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
+import nl.sensorlab.videowall.websocket.WebSocketServer;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.video.Movie;
@@ -40,7 +42,10 @@ public class LedWallApplication extends PApplet {
 	public void setup() {
 		frameRate(60);
 		surface.setTitle("Video Wall " + VERSON_STRING + " - Preview");
-
+		
+		// Start server
+		WebSocketServer.start(ConfigurationLoader.get().getInt("server.port", 9003));
+		
 		// Init Ani library
 		Ani.init(this);
 		Ani.noAutostart();
