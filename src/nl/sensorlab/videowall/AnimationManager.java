@@ -272,7 +272,7 @@ public class AnimationManager implements PropertyValueListener {
 	public void onPropertyChange(Property property) {
 		if (property == activeAnimationId) {
 			int animationId = ((IntProperty) property).getValue();
-			if (animationId > availableAnimations.size() - 1) {
+			if (animationId <= availableAnimations.size() - 1) {
 				startAnimation(animationId);
 			}
 		}
