@@ -1,11 +1,14 @@
 package nl.sensorlab.videowall.walldriver;
 
+import nl.sensorlab.videowall.property.IntProperty;
+import nl.sensorlab.videowall.property.Property;
+import nl.sensorlab.videowall.property.Property.PropertyValueListener;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
-public class WallDriver {
+public class WallDriver implements PropertyValueListener {
 
 	private WallDriverPort port1, port2; // Wall ports
 	private PGraphics imageBufferContext; // Buffer context used to rotate the incoming image
@@ -13,6 +16,8 @@ public class WallDriver {
 	private PImage port1Image, port2Image; // Separate images to be sent to the two UC's driving the wall
 	private boolean blackoutEnabled = false; // Flag to enable/disable blackout
 	private int dimming = 0; // Dimming [0, 255] 0 = full brightness
+	
+	private IntProperty brightness;
 
 	/**
 	 * Initialize wall driver
@@ -22,6 +27,11 @@ public class WallDriver {
 	 * @param portName2
 	 */
 	public WallDriver(PApplet applet, String portName1, String portName2, int framerate) {
+		
+		// Setup properties
+		brightness = IntProperty.wallProperty("brightness");
+		brightness.setValue(255);
+		brightness.addValueListener(this);
 
 		// Setup ports
 		port1 = new WallDriverPort(applet, portName1, framerate, true);
@@ -144,6 +154,13 @@ public class WallDriver {
 	 */
 	public PImage getPort2Image() {
 		return port2Image;
+	}
+
+	@Override
+	public void onPropertyChange(Property property) {
+		if (property == brightness) {
+			setBrightness(brightness.getValue());
+		}
 	}
 
 }
