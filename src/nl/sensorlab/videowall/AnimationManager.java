@@ -24,18 +24,23 @@ import nl.sensorlab.videowall.animation.canvasanimations.ImageAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.ShaderAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoAnimation;
 import nl.sensorlab.videowall.animation.canvasanimations.VideoStreamAnimation;
+import nl.sensorlab.videowall.property.IntProperty;
+import nl.sensorlab.videowall.property.Property;
+import nl.sensorlab.videowall.property.Property.PropertyValueListener;
 import processing.core.PApplet;
 
 /**
  * Class that handles the animation queue and transitions between them.
  */
-public class AnimationManager {
+public class AnimationManager implements PropertyValueListener {
 
 	private static AnimationManager instance = null; 						// Singleton instance
 	private BaseAnimation currentAnimation;									// Current animation
 	private List<AnimationEntry> availableAnimations = new ArrayList<>();	// All available animations, index of an item is the same as the entry id
 
 	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
+	
+	IntProperty	activeAnimationId;
 
 	/**
 	 * Instantiate AnimationManager; add animations to the available
@@ -44,7 +49,10 @@ public class AnimationManager {
 	 * @param applet
 	 */
 	public AnimationManager(PApplet applet) {
-
+		
+		activeAnimationId = IntProperty.wallProperty("activeAnimationId");
+		activeAnimationId.addValueListener(this);
+		
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
@@ -190,6 +198,8 @@ public class AnimationManager {
 
 		// Send starting signal
 		currentAnimation.isStarting();
+		
+		activeAnimationId.setValue(animationEntryId);
 
 		// Send change event
 		for (AnimationEventListener listener : eventListeners) {
@@ -256,6 +266,16 @@ public class AnimationManager {
 		 * @param index
 		 */
 		void onCurrentAnimationChanged(int index);
+	}
+
+	@Override
+	public void onPropertyChange(Property property) {
+		if (property == activeAnimationId) {
+			int animationId = ((IntProperty) property).getValue();
+			if (animationId > availableAnimations.size() - 1) {
+				startAnimation(animationId);
+			}
+		}
 	}
 
 }

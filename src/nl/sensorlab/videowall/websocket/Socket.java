@@ -1,20 +1,27 @@
 package nl.sensorlab.videowall.websocket;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import nl.sensorlab.videowall.AnimationManager;
 import nl.sensorlab.videowall.AnimationManager.AnimationEntry;
-import nl.sensorlab.videowall.AnimationManager.AnimationEventListener;
 import nl.sensorlab.videowall.LedWallApplication;
+import nl.sensorlab.videowall.property.Property;
+import nl.sensorlab.videowall.property.Property.PropertyListener;
+import nl.sensorlab.videowall.property.Property.PropertyValueListener;
+import nl.sensorlab.videowall.property.Property.Scope;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
-public class Socket extends WebSocketAdapter implements AnimationEventListener {
+@WebSocket(maxIdleTime=3)
+public class Socket extends WebSocketAdapter implements PropertyValueListener, PropertyListener {
 	
 	private final static HashMap<String, Socket> clientSockets = new HashMap<>();
 	private Session session;
@@ -27,31 +34,81 @@ public class Socket extends WebSocketAdapter implements AnimationEventListener {
 		// Store/setup session
 		this.session = sess;
 		this.uuid = UUID.randomUUID().toString();
-		
-		// Add to clients
 		clientSockets.put(uuid, this);
-		
-		// Connect to events
-		AnimationManager.getInstance().addListener(this);
-		
-		System.out.println("Socket Connected: " + sess + " " + uuid);
 		
 		// Send the current configuration
 		sendWallConfiguration();
+		
+		// Connect client to all property changes
+		for (Property p: Property.getApplicationProperties()) {
+			p.addValueListener(this);
+		}
 		
 	}
 
 	@Override
 	public void onWebSocketText(String message) {
 		super.onWebSocketText(message);
-		System.out.println("Received TEXT message: " + message);
+
+		JSONObject msg = JSONObject.parse(message);
+		if (msg.getString("msg").equals("props")) {
+			JSONArray props = msg.getJSONArray("data");
+			for (int i = 0; i < props.size(); i++) {
+				JSONObject property = props.getJSONObject(i);
+
+				try {
+
+					// Parse property
+					String scopeVal = property.getString("scope", null);
+					if (scopeVal == null) {
+						throw new Exception("invalid 'scope' property");
+					}
+					Scope scope = (scopeVal.equals("wall")) ? Scope.Wall : Scope.Animation;
+					
+					Integer animationId = null;
+					if (scope == Scope.Animation) {
+						animationId = property.getInt("animationId", -1);
+						if (animationId == -1) {
+							throw new Exception("invalid 'animationId' property");
+						}
+					}
+					
+					String name = property.getString("name", null);
+					if (name == null) {
+						throw new Exception("invalid 'name' property");
+					}
+					
+					Object value = property.get("value");
+					if (value == null) {
+						throw new Exception("invalid 'value' property");
+					}
+					
+					// Fetch property
+					String propertyId = Property.createId(scope, animationId, name);
+					Property p = Property.findProperty(propertyId);
+					
+					// Apply the value
+					p.applyValue(value);
+
+				} catch (Exception e) {
+					System.err.println("Failed to parse property: " + e.getMessage());
+				}
+			}
+		}
+
 	}
 
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
 		super.onWebSocketClose(statusCode, reason);
-		System.out.println("Socket Closed: [" + statusCode + "] " + reason);
+		
+		// Disconnect from listeners
+		for (Property p: Property.getApplicationProperties()) {
+			p.removeValueListener(this);
+		}
+		
 		clientSockets.remove(uuid);
+		
 	}
 
 	@Override
@@ -60,16 +117,6 @@ public class Socket extends WebSocketAdapter implements AnimationEventListener {
 		cause.printStackTrace(System.err);
 	}
 
-	@Override
-	public void onCurrentAnimationChanged(int index) {
-		try {
-			System.out.println("SOCKET SEND EVENT CHNG");
-			session.getRemote().sendString("YOLO : " + index);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Send the static configuration of the wall to the client
 	 */
@@ -97,6 +144,20 @@ public class Socket extends WebSocketAdapter implements AnimationEventListener {
 
 	}
 	
+	public void sendProperty(Property p) {
+		ArrayList<Property> properties = new ArrayList<>();
+		properties.add(p);
+		sendProperties(properties);
+	}
+	
+	public void sendProperties(List<Property> properties) {
+		JSONArray data = new JSONArray();
+		for (Property property : properties) {
+			data.append(property.toJson());
+		}
+		sendJsonData("props", data);
+	}
+	
 	private void sendJsonData(String message, JSONObject data) {
 		
 		try {
@@ -104,7 +165,18 @@ public class Socket extends WebSocketAdapter implements AnimationEventListener {
 			JSONObject msg = new JSONObject();
 			msg.setString("msg", message);
 			msg.setJSONObject("data", data);
-			System.out.println("SENDING" + msg.toString());
+			session.getRemote().sendString(msg.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void sendJsonData(String message, JSONArray data) {
+		try {
+			JSONObject msg = new JSONObject();
+			msg.setString("msg", message);
+			msg.setJSONArray("data", data);
 			session.getRemote().sendString(msg.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -120,6 +192,16 @@ public class Socket extends WebSocketAdapter implements AnimationEventListener {
 		for (Socket s: clientSockets.values()) {
 			s.disconnect();
 		}
+	}
+
+	@Override
+	public void onPropertyAdded(Property property) {
+		sendProperty(property);
+	}
+
+	@Override
+	public void onPropertyChange(Property property) {
+		sendProperty(property);
 	}
 
 }
