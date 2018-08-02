@@ -63,6 +63,28 @@
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-lang3-3.3.2.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-logging-1.2.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/org.apache/commons-beanutils-1.9.3.jar" />
+			
+			<!-- Jetty -->
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/javax-websocket-client-impl-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/javax-websocket-server-impl-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/javax.servlet-api-3.1.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-annotations-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-http-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-io-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-jmx-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-jndi-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-plus-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-security-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-server-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-servlet-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-util-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-webapp-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/jetty-xml-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/websocket-api-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/websocket-client-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/websocket-common-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/websocket-server-9.2.7.v20150116.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/jetty/websocket-servlet-9.2.7.v20150116.jar" />
 		</jar>
 	</target>
 
