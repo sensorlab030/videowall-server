@@ -10,6 +10,7 @@ import de.looksgood.ani.Ani;
 import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.animation.Preview;
+import nl.sensorlab.videowall.property.IntProperty;
 import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
@@ -31,6 +32,8 @@ public class LedWallApplication extends PApplet {
 	public final static String VERSON_STRING = "v0.1.0";
 
 	private double currentTime;						// Current time (used for keeping track of delta time)
+	
+	private IntProperty	playMode;
 
 	@Override
 	public void settings() {
@@ -42,6 +45,10 @@ public class LedWallApplication extends PApplet {
 	public void setup() {
 		frameRate(60);
 		surface.setTitle("Video Wall " + VERSON_STRING + " - Preview");
+		
+		// Setup properties
+		playMode = IntProperty.wallProperty("playMode");
+		playMode.setValue(1); // Set to playing
 		
 		// Start server
 		WebSocketServer.start(ConfigurationLoader.get().getInt("server.port", 9003));
@@ -74,16 +81,20 @@ public class LedWallApplication extends PApplet {
 	@Override
 	public void draw() {
 
-		// Capture current and delta time
-		double t = System.currentTimeMillis();
-		double dt = t - currentTime;
-		currentTime = t;
-
+		// Calculate animation time
+		double dt = 0;
+		if (playMode.getValue() == 1) {
+			double t = System.currentTimeMillis();
+			dt = t - currentTime;
+			currentTime = t;
+		} 
+		
 		// Fetch current animation
 		BaseAnimation animation =  AnimationManager.getInstance().getCurrentAnimation();
 		if (animation == null) {
 			return;
 		}
+		
 
 		// Draw animation frame with delta time
 		animation.draw(dt);

@@ -40,7 +40,7 @@ public class AnimationManager implements PropertyValueListener {
 
 	private List<AnimationEventListener> eventListeners = new ArrayList<AnimationEventListener>();
 	
-	IntProperty	activeAnimationId;
+	private IntProperty	activeAnimationId;
 
 	/**
 	 * Instantiate AnimationManager; add animations to the available
