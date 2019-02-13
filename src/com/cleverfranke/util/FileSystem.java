@@ -1,6 +1,9 @@
 package com.cleverfranke.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
@@ -45,12 +48,13 @@ public class FileSystem {
 
 			// Fetch system configuration
 			SystemHelper.OperatingSystem os = SystemHelper.getOperatingSystem();
-			SystemHelper.Architecture arch = SystemHelper.getArchitecture();
+			SystemHelper.Architecture arch = SystemHelper.getArchitecture(os);
 			
 			// Determine the correct default library paths
 			String javaLibraryPath = "";
 			String gstreamerLibraryPath = "";
 			String gstreamerPluginPath = "";
+
 			switch (os) {
 			case Windows:
 				if (arch == Architecture.X64) {
@@ -75,12 +79,14 @@ public class FileSystem {
 				}
 				break;
 			case Linux:
-				if (arch == Architecture.X32) {
+				if (arch == Architecture.Raspbian) {
+					javaLibraryPath = "lib/processing/serial/linux-armv6hf";
+				} else if (arch == Architecture.X32) {
 					javaLibraryPath = "lib/processing/serial/linux32";
 				} else if (arch == Architecture.X64) {
 					javaLibraryPath = "lib/processing/serial/linux64";
 				} else {
-					throw new Exception("Only x32 and x64 are supported on Linux");
+					throw new Exception("Only armv6hf, x32 and x64 are supported on Linux");
 				}
 				break;
 			default:
@@ -132,7 +138,7 @@ public class FileSystem {
 		 * Architecture types
 		 */
 		public enum Architecture {
-			X32, X64, Other
+			X32, X64, Raspbian, Other
 		};
 
 		/**
@@ -169,21 +175,55 @@ public class FileSystem {
 		
 		/**
 		 * Detect the JVM architecture from the sun.arch.data.model property and cache
-		 * the result
+		 * the result. Defaults to Raspbian setting if it's detected.
 		 * 
 		 * @return The JVM architecture
 		 */
-		public static Architecture getArchitecture() {
+		public static Architecture getArchitecture(OperatingSystem os) {
 			if (detectedArchitecture == null) {
-				if (System.getProperty("sun.arch.data.model").equals("64")) {
-					detectedArchitecture = Architecture.X64;
-				} else if (System.getProperty("sun.arch.data.model").equals("32")) {
-					detectedArchitecture = Architecture.X32;
+				if (isRaspbian(os)) {
+					detectedArchitecture = Architecture.Raspbian;
 				} else {
-					detectedArchitecture = Architecture.Other;
+					if (System.getProperty("sun.arch.data.model").equals("64")) {
+						detectedArchitecture = Architecture.X64;
+					} else if (System.getProperty("sun.arch.data.model").equals("32")) {
+						detectedArchitecture = Architecture.X32;
+					} else {
+						detectedArchitecture = Architecture.Other;
+					}
 				}
 			}
 			return detectedArchitecture;
+		}
+		
+		/**
+		 * The arc.data.model of a raspberry pi can return 32. 
+		 * This method helps differentiating a Linux 32 from a Linux armv, by detecting the
+		 * presence of Raspbian in the os-release file for a Linux OS. 
+		 * Source: https://stackoverflow.com/questions/37053271/the-ideal-way-to-detect-a-raspberry-pi-from-java-jar
+		 * @param os OperatingSystem detected
+		 * @return true or false
+		 */
+		public static Boolean isRaspbian(OperatingSystem os) {
+			Boolean result = false;
+			if (os == OperatingSystem.Linux) {
+		        final File file = new File("/etc", "os-release");
+		        try (FileInputStream fis = new FileInputStream(file);
+		            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis))) {
+		            String string;
+		            while ((string = bufferedReader.readLine()) != null) {
+		                if (string.toLowerCase().contains("raspbian")) {
+		                    if (string.toLowerCase().contains("name")) {
+		                        result = true;
+		                        break;
+		                    }
+		                }
+		            }
+		        } catch (final Exception e) {
+		            e.printStackTrace();
+		        }
+		    } 
+			return result;
 		}
 		
 	}
