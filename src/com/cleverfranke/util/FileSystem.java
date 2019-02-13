@@ -46,7 +46,7 @@ public class FileSystem {
 			// Fetch system configuration
 			SystemHelper.OperatingSystem os = SystemHelper.getOperatingSystem();
 			SystemHelper.Architecture arch = SystemHelper.getArchitecture();
-
+			
 			// Determine the correct default library paths
 			String javaLibraryPath = "";
 			String gstreamerLibraryPath = "";
@@ -74,8 +74,17 @@ public class FileSystem {
 					throw new Exception("Only x64 is supported on OSX/macOS");
 				}
 				break;
+			case Linux:
+				if (arch == Architecture.X32) {
+					javaLibraryPath = "lib/processing/serial/linux32";
+				} else if (arch == Architecture.X64) {
+					javaLibraryPath = "lib/processing/serial/linux64";
+				} else {
+					throw new Exception("Only x32 and x64 are supported on Linux");
+				}
+				break;
 			default:
-				throw new Exception("Only Windows and OSX/macOS platforms are currently supported");
+				throw new Exception("Only Windows, Linux and OSX/macOS platforms are currently supported. Current OS: " + os + ", current archictecture: " + arch);
 
 			}
 			
