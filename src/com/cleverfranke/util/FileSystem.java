@@ -47,9 +47,6 @@ public class FileSystem {
 			SystemHelper.OperatingSystem os = SystemHelper.getOperatingSystem();
 			SystemHelper.Architecture arch = SystemHelper.getArchitecture();
 			
-			System.out.println("OS: " + os);
-			System.out.println("ARCH: " + arch);
-			
 			// Determine the correct default library paths
 			String javaLibraryPath = "";
 			String gstreamerLibraryPath = "";
