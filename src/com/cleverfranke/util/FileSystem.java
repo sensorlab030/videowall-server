@@ -1,9 +1,6 @@
 package com.cleverfranke.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
@@ -48,7 +45,10 @@ public class FileSystem {
 
 			// Fetch system configuration
 			SystemHelper.OperatingSystem os = SystemHelper.getOperatingSystem();
-			SystemHelper.Architecture arch = SystemHelper.getArchitecture(os);
+			SystemHelper.Architecture arch = SystemHelper.getArchitecture();
+			
+			System.out.println("OS: " + os);
+			System.out.println("ARCH: " + arch);
 			
 			// Determine the correct default library paths
 			String javaLibraryPath = "";
@@ -79,14 +79,16 @@ public class FileSystem {
 				}
 				break;
 			case Linux:
-				if (arch == Architecture.Raspbian) {
+				if (arch == Architecture.ARM32) {
 					javaLibraryPath = "lib/processing/serial/linux-armv6hf";
+				} else if (arch == Architecture.ARM64) {
+					javaLibraryPath = "lib/processing/serial/linux-arm64";
 				} else if (arch == Architecture.X32) {
 					javaLibraryPath = "lib/processing/serial/linux32";
 				} else if (arch == Architecture.X64) {
 					javaLibraryPath = "lib/processing/serial/linux64";
 				} else {
-					throw new Exception("Only armv6hf, x32 and x64 are supported on Linux");
+					throw new Exception("Only armv6hf, arm64, x32 and x64 are supported on Linux");
 				}
 				break;
 			default:
@@ -120,7 +122,9 @@ public class FileSystem {
 		System.out.println(" > gstreamer.library.path: " + System.getProperty("gstreamer.library.path"));
 		System.out.println(" > gstreamer.plugin.path: " + System.getProperty("gstreamer.plugin.path"));
 	}
-			
+		
+	
+	
 	/**
 	 * Small class that helps determining the current operating system and
 	 * JVM architecture
@@ -138,7 +142,7 @@ public class FileSystem {
 		 * Architecture types
 		 */
 		public enum Architecture {
-			X32, X64, Raspbian, Other
+			X32, X64, ARM32, ARM64, Other
 		};
 
 		/**
@@ -174,56 +178,37 @@ public class FileSystem {
 		}
 		
 		/**
-		 * Detect the JVM architecture from the sun.arch.data.model property and cache
-		 * the result. Defaults to Raspbian setting if it's detected.
+		 * Detect the JVM architecture from the sun.arch.data.model and os.arch property and cache
+		 * the result. 
 		 * 
 		 * @return The JVM architecture
 		 */
-		public static Architecture getArchitecture(OperatingSystem os) {
+		public static Architecture getArchitecture() {
+			
 			if (detectedArchitecture == null) {
-				if (isRaspbian(os)) {
-					detectedArchitecture = Architecture.Raspbian;
+			
+				boolean arm = System.getProperty("os.arch").toLowerCase().equals("arm");
+			
+				String archBits = System.getProperty("sun.arch.data.model");
+				boolean is64bits = archBits.equals("64");
+				boolean is32bits = archBits.equals("32");
+				
+				if (arm && is64bits) {
+					detectedArchitecture = Architecture.ARM64;
+				} else if (arm && is32bits) {
+					detectedArchitecture =  Architecture.ARM32;
+				} else if (!arm && is64bits) {
+					detectedArchitecture =  Architecture.X64;
+				} else if (!arm && is32bits) {
+					detectedArchitecture =  Architecture.X32;
 				} else {
-					if (System.getProperty("sun.arch.data.model").equals("64")) {
-						detectedArchitecture = Architecture.X64;
-					} else if (System.getProperty("sun.arch.data.model").equals("32")) {
-						detectedArchitecture = Architecture.X32;
-					} else {
-						detectedArchitecture = Architecture.Other;
-					}
-				}
-			}
+					detectedArchitecture =  Architecture.Other;
+				} 
+				
+			} 
+				
 			return detectedArchitecture;
-		}
-		
-		/**
-		 * The arc.data.model of a raspberry pi can return 32. 
-		 * This method helps differentiating a Linux 32 from a Linux armv, by detecting the
-		 * presence of Raspbian in the os-release file for a Linux OS. 
-		 * Source: https://stackoverflow.com/questions/37053271/the-ideal-way-to-detect-a-raspberry-pi-from-java-jar
-		 * @param os OperatingSystem detected
-		 * @return true or false
-		 */
-		public static Boolean isRaspbian(OperatingSystem os) {
-			Boolean result = false;
-			if (os == OperatingSystem.Linux) {
-		        final File file = new File("/etc", "os-release");
-		        try (FileInputStream fis = new FileInputStream(file);
-		            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis))) {
-		            String string;
-		            while ((string = bufferedReader.readLine()) != null) {
-		                if (string.toLowerCase().contains("raspbian")) {
-		                    if (string.toLowerCase().contains("name")) {
-		                        result = true;
-		                        break;
-		                    }
-		                }
-		            }
-		        } catch (final Exception e) {
-		            e.printStackTrace();
-		        }
-		    } 
-			return result;
+			
 		}
 		
 	}
