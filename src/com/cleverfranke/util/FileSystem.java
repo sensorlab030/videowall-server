@@ -46,11 +46,12 @@ public class FileSystem {
 			// Fetch system configuration
 			SystemHelper.OperatingSystem os = SystemHelper.getOperatingSystem();
 			SystemHelper.Architecture arch = SystemHelper.getArchitecture();
-
+			
 			// Determine the correct default library paths
 			String javaLibraryPath = "";
 			String gstreamerLibraryPath = "";
 			String gstreamerPluginPath = "";
+
 			switch (os) {
 			case Windows:
 				if (arch == Architecture.X64) {
@@ -74,8 +75,21 @@ public class FileSystem {
 					throw new Exception("Only x64 is supported on OSX/macOS");
 				}
 				break;
+			case Linux:
+				if (arch == Architecture.ARM32) {
+					javaLibraryPath = "lib/processing/serial/linux-armv6hf";
+				} else if (arch == Architecture.ARM64) {
+					javaLibraryPath = "lib/processing/serial/linux-arm64";
+				} else if (arch == Architecture.X32) {
+					javaLibraryPath = "lib/processing/serial/linux32";
+				} else if (arch == Architecture.X64) {
+					javaLibraryPath = "lib/processing/serial/linux64";
+				} else {
+					throw new Exception("Only armv6hf, arm64, x32 and x64 are supported on Linux");
+				}
+				break;
 			default:
-				throw new Exception("Only Windows and OSX/macOS platforms are currently supported");
+				throw new Exception("Only Windows, Linux and OSX/macOS platforms are currently supported. Current OS: " + os + ", current archictecture: " + arch);
 
 			}
 			
@@ -105,7 +119,9 @@ public class FileSystem {
 		System.out.println(" > gstreamer.library.path: " + System.getProperty("gstreamer.library.path"));
 		System.out.println(" > gstreamer.plugin.path: " + System.getProperty("gstreamer.plugin.path"));
 	}
-			
+		
+	
+	
 	/**
 	 * Small class that helps determining the current operating system and
 	 * JVM architecture
@@ -123,7 +139,7 @@ public class FileSystem {
 		 * Architecture types
 		 */
 		public enum Architecture {
-			X32, X64, Other
+			X32, X64, ARM32, ARM64, Other
 		};
 
 		/**
@@ -159,22 +175,37 @@ public class FileSystem {
 		}
 		
 		/**
-		 * Detect the JVM architecture from the sun.arch.data.model property and cache
-		 * the result
+		 * Detect the JVM architecture from the sun.arch.data.model and os.arch property and cache
+		 * the result. 
 		 * 
 		 * @return The JVM architecture
 		 */
 		public static Architecture getArchitecture() {
+			
 			if (detectedArchitecture == null) {
-				if (System.getProperty("sun.arch.data.model").equals("64")) {
-					detectedArchitecture = Architecture.X64;
-				} else if (System.getProperty("sun.arch.data.model").equals("32")) {
-					detectedArchitecture = Architecture.X32;
+			
+				boolean arm = System.getProperty("os.arch").toLowerCase().equals("arm");
+			
+				String archBits = System.getProperty("sun.arch.data.model");
+				boolean is64bits = archBits.equals("64");
+				boolean is32bits = archBits.equals("32");
+				
+				if (arm && is64bits) {
+					detectedArchitecture = Architecture.ARM64;
+				} else if (arm && is32bits) {
+					detectedArchitecture =  Architecture.ARM32;
+				} else if (!arm && is64bits) {
+					detectedArchitecture =  Architecture.X64;
+				} else if (!arm && is32bits) {
+					detectedArchitecture =  Architecture.X32;
 				} else {
-					detectedArchitecture = Architecture.Other;
-				}
-			}
+					detectedArchitecture =  Architecture.Other;
+				} 
+				
+			} 
+				
 			return detectedArchitecture;
+			
 		}
 		
 	}
