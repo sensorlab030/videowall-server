@@ -21,8 +21,9 @@ public class LedWallApplication extends PApplet {
 	private WallDriver driver;
 	private Preview preview;
 	private MainWindow mainWindow;
-
-	private boolean ledPreviewEnabled = true;
+	private Rectangle previewRect;
+	
+	private boolean ledPreviewEnabled = false;
 	private boolean sourcePreviewEnabled;
 	private boolean blackOutEnabled;
 
@@ -32,7 +33,7 @@ public class LedWallApplication extends PApplet {
 
 	@Override
 	public void settings() {
-		Rectangle previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
+		previewRect = WallGeometry.scaleRectangleRounded(WallGeometry.getInstance().getWallGeometry(), Preview.SCALE);
 		size(previewRect.width, previewRect.height, P3D);
 	}
 
@@ -90,7 +91,12 @@ public class LedWallApplication extends PApplet {
 		background(0);
 		if (ledPreviewEnabled) {
 			image(preview.renderPreview(animation.getImage()), 0, 0);
+		} else {
+			textAlign(CENTER);
+			textSize(16);
+			text("Press W to preview the animation.", previewRect.width/2, previewRect.height/2);
 		}
+		
 		if (sourcePreviewEnabled && BaseCanvasAnimation.class.isAssignableFrom(animation.getClass())) {
 			image(((BaseCanvasAnimation) animation).getCanvasImage(), 0, 0);
 		} else if (sourcePreviewEnabled) {
