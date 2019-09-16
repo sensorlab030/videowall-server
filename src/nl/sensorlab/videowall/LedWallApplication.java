@@ -11,6 +11,8 @@ import nl.sensorlab.videowall.animation.BaseAnimation;
 import nl.sensorlab.videowall.animation.BaseCanvasAnimation;
 import nl.sensorlab.videowall.animation.Preview;
 import nl.sensorlab.videowall.property.IntProperty;
+import nl.sensorlab.videowall.property.Property;
+import nl.sensorlab.videowall.property.Property.PropertyValueListener;
 import nl.sensorlab.videowall.ui.MainWindow;
 import nl.sensorlab.videowall.walldriver.WallDriver;
 import nl.sensorlab.videowall.walldriver.WallGeometry;
@@ -19,7 +21,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.video.Movie;
 
-public class LedWallApplication extends PApplet {
+public class LedWallApplication extends PApplet implements PropertyValueListener {
 
 	private WallDriver driver;
 	private Preview preview;
@@ -35,6 +37,7 @@ public class LedWallApplication extends PApplet {
 	private double currentTime;						// Current time (used for keeping track of delta time)
 	
 	private IntProperty	playMode;
+	private IntProperty brightness;
 
 	@Override
 	public void settings() {
@@ -46,13 +49,6 @@ public class LedWallApplication extends PApplet {
 	public void setup() {
 		frameRate(60);
 		surface.setTitle("Video Wall " + VERSON_STRING + " - Preview");
-		
-		// Setup properties
-		playMode = IntProperty.wallProperty("playMode");
-		playMode.setValue(1); // Set to playing
-		
-		// Start server
-		WebSocketServer.start(ConfigurationLoader.get().getInt("server.port", 9003));
 		
 		// Init Ani library
 		Ani.init(this);
@@ -76,6 +72,18 @@ public class LedWallApplication extends PApplet {
 
 		// Start first animation (blank)
 		AnimationManager.getInstance().startAnimation(0);
+		
+		// Setup properties
+		playMode = IntProperty.wallProperty("playMode");
+		playMode.setValue(1); // Set to playing
+		playMode.addValueListener(this);
+		
+		brightness = IntProperty.wallProperty("brightness");
+		brightness.setValue(255);
+		brightness.addValueListener(this);
+		
+		// Start server
+		WebSocketServer.start(ConfigurationLoader.get().getInt("server.port", 9003));
 
 	}
 
@@ -96,9 +104,10 @@ public class LedWallApplication extends PApplet {
 			return;
 		}
 		
-
 		// Draw animation frame with delta time
-		animation.draw(dt);
+		if (playMode.getValue() == 1) {
+			animation.draw(dt);
+		}
 
 		// Send image to driver
 		driver.displayImage(animation.getImage());
@@ -155,12 +164,31 @@ public class LedWallApplication extends PApplet {
 				System.out.println("Source preview enabled: " + sourcePreviewEnabled);
 				break;
 			case KeyEvent.VK_SPACE:
+				togglePlayMode();
+				break;
+			case KeyEvent.VK_BACK_SPACE:
 				blackOutEnabled = !blackOutEnabled;
 				driver.setBlackOutEnabled(blackOutEnabled);
 				System.out.println("Black out enabled: " + blackOutEnabled);
 				break;
 		}
 
+	}
+	
+	@Override
+	public void onPropertyChange(Property property) {
+		//if (property == playMode) {
+			//int value = ((IntProperty) property).getValue();
+		//} else 
+		if (property == brightness) {
+			int value = ((IntProperty) property).getValue();
+			value = Math.min(Math.max(0, value), 255);
+			setWallBrightness(value);
+		}
+	}
+	
+	public void togglePlayMode() {
+		playMode.setValue(playMode.getValue() == 1 ? 0 : 1);
 	}
 
 	/**

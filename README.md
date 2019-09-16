@@ -66,4 +66,5 @@ Keyboard shortcuts of the Preview window:
 - Q : toggles the Menu window
 - W : toggles the LED layout preview
 - E : toggles the source preview (it shows you the original image you created)
-- SPACE : toggles a black out
+- SPACE : toggle play/pause
+- BACKSPACE: toggle blackout
