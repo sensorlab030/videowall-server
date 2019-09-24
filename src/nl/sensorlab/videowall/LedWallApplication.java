@@ -83,7 +83,7 @@ public class LedWallApplication extends PApplet implements PropertyValueListener
 		brightness.addValueListener(this);
 		
 		// Start server
-		WebSocketServer.start(ConfigurationLoader.get().getInt("server.port", 9003));
+		WebSocketServer.start(ConfigurationLoader.get().getInt("websocket.port", 9003));
 
 	}
 
