@@ -56,12 +56,12 @@ public class AnimationManager implements PropertyValueListener {
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
-		addAnimation("COL: Black", "Plain black", black);
+		addAnimation("Black", "Plain black", black);
 
 		// Full white
 		ColorAnimation white = new ColorAnimation(applet);
 		white.setData(String.valueOf(PColor.color(255)));
-		addAnimation("COL: White", "Plain white", white);
+		addAnimation("White", "Plain white", white);
 
 		// All Applet based animation
 		addAnimation("Sensorlab logo", "Triangles logo (static)", new SensorLabLogo(applet));
@@ -78,10 +78,11 @@ public class AnimationManager implements PropertyValueListener {
 		addAnimation("Beach Ball", "Technical difficulties", new BeachballAnimation(applet));
 
 		// Video stream options
+		int i = 1;
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
 			host = host.trim();
 			if (!host.isEmpty()) {
-			    addAnimation("STR: " + host, host, new VideoStreamAnimation(applet));
+				addAnimation("Video Stream  " + (i++), "IP Stream from " + host, new VideoStreamAnimation(applet));
 			}
 		}
 		
@@ -90,7 +91,7 @@ public class AnimationManager implements PropertyValueListener {
 		for (File f : VideoAnimation.getVideoFileList()) {
 			String filename = f.getName();
 			filename = filename.substring(0, filename.lastIndexOf('.'));
-			addAnimation("VID: " + filename, f.getAbsolutePath(), videoAnimation);
+			addAnimation("Video: " + filename, f.getAbsolutePath(), videoAnimation);
 		}
 
 		// Add images to animation manager
@@ -98,7 +99,7 @@ public class AnimationManager implements PropertyValueListener {
 		for (File f : ImageAnimation.getImageFileList()) {
 			String filename = f.getName();
 			filename = filename.substring(0, filename.lastIndexOf('.'));
-			addAnimation("IMG: " + filename, f.getAbsolutePath(), imageAnimation);
+			addAnimation("Image: " + filename, f.getAbsolutePath(), imageAnimation);
 		}
 	}
 
