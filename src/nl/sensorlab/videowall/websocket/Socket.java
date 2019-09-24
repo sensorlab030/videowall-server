@@ -135,7 +135,7 @@ public class Socket extends WebSocketAdapter implements PropertyValueListener, P
 			JSONObject animationObject = new JSONObject();
 			animationObject.setInt("id", entry.getId());
 			animationObject.setString("name", entry.getLabel());
-			animationObject.setString("description", "Lorem ipsum for " + entry.getLabel());
+			animationObject.setString("description", entry.getDescription());
 			animationList.append(animationObject);
 		}
 		data.put("animations", animationList);

@@ -56,26 +56,26 @@ public class AnimationManager implements PropertyValueListener {
 		// Full black
 		ColorAnimation black = new ColorAnimation(applet);
 		black.setData(String.valueOf(PColor.color(0)));
-		addAnimation("COL: Black", black);
+		addAnimation("COL: Black", "Plain black", black);
 
 		// Full white
 		ColorAnimation white = new ColorAnimation(applet);
 		white.setData(String.valueOf(PColor.color(255)));
-		addAnimation("COL: White", white);
+		addAnimation("COL: White", "Plain white", white);
 
 		// All Applet based animation
-		addAnimation("Sensorlab logo", new SensorLabLogo(applet));
-		addAnimation("Alphabet", new Alphabet(applet));
-		addAnimation("Swirl (Perlin Noise)", new PerlinNoiseAnimation(applet));
-		addAnimation("Horizontal Waves", new HorizontalWavesAnimation(applet));
-		addAnimation("Swarm Animation (flocking)", new FlockingAnimation(applet));
-		addAnimation("Bouncy Pixels Animation", new BouncyPixelsAnimation(applet));
-		addAnimation("Dark Shadow (Liquid Columns)", new LiquidColumnsAnimation(applet));
-		addAnimation("Bar Sorting (visualizing sorting methods)", new SortingAnimation(applet));
-		addAnimation("Swirl Void (Shader animation: monjori)", new ShaderAnimation(applet, "monjori", 1500));
-		addAnimation("Horizontal Scan", new HorizontalScanAnimation(applet));
-		addAnimation("Color Grid (fill the canvas with a gradient)", new ColorGridAnimation(applet));
-		addAnimation("Beach Ball", new BeachballAnimation(applet));
+		addAnimation("Sensorlab logo", "Triangles logo (static)", new SensorLabLogo(applet));
+		addAnimation("Alphabet", "Scrolling text", new Alphabet(applet));
+		addAnimation("Swirl", " Perlin Noise", new PerlinNoiseAnimation(applet));
+		addAnimation("Horizontal Waves", "?", new HorizontalWavesAnimation(applet));
+		addAnimation("Swarm Animation", "Flocking particles", new FlockingAnimation(applet));
+		addAnimation("Bouncy Pixels Animation", "Pixel rain", new BouncyPixelsAnimation(applet));
+		addAnimation("Dark Shadow", " Liquid Columns", new LiquidColumnsAnimation(applet));
+		addAnimation("Sorting Algorithm", "Visualizing sorting methods", new SortingAnimation(applet));
+		addAnimation("Swirl Void", " Monjori shader animation", new ShaderAnimation(applet, "monjori", 1500));
+		addAnimation("Horizontal Scan", "Knight rider", new HorizontalScanAnimation(applet));
+		addAnimation("Color Grid", "Fill the canvas with a gradient", new ColorGridAnimation(applet));
+		addAnimation("Beach Ball", "Technical difficulties", new BeachballAnimation(applet));
 
 		// Video stream options
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
@@ -139,8 +139,8 @@ public class AnimationManager implements PropertyValueListener {
 	 * @param animation
 	 * @return the id of the animation entry
 	 */
-	public int addAnimation(String label, String data, BaseAnimation animation) {
-		AnimationEntry entry = new AnimationEntry(label, data, animation);
+	public int addAnimation(String label, String description, String data, BaseAnimation animation) {
+		AnimationEntry entry = new AnimationEntry(label, description, data, animation);
 		if (availableAnimations.add(entry)) {
 			entry.id = availableAnimations.size() - 1;
 			return entry.id;
@@ -156,8 +156,8 @@ public class AnimationManager implements PropertyValueListener {
 	 * @param animation
 	 * @return the id of the animation entry
 	 */
-	public int addAnimation(String label, BaseAnimation animation) {
-		return addAnimation(label, null, animation);
+	public int addAnimation(String label, String description, BaseAnimation animation) {
+		return addAnimation(label, description, null, animation);
 	}
 
 	public List<AnimationEntry> getAvailableAnimations() {
@@ -215,11 +215,13 @@ public class AnimationManager implements PropertyValueListener {
 	public class AnimationEntry {
 		private int id;
 		private String label;
+		private String description;
 		private String data;
 		private BaseAnimation animation;
 
-		private AnimationEntry(String label, String data, BaseAnimation animation) {
+		private AnimationEntry(String label, String description, String data, BaseAnimation animation) {
 			this.label = label;
+			this.description = description;
 			this.data = data;
 			this.animation = animation;
 		}
@@ -228,12 +230,12 @@ public class AnimationManager implements PropertyValueListener {
 			this.id = id;
 		}
 
-		public AnimationEntry createAnimationEntry(String label, BaseAnimation animation) {
-			return new AnimationEntry( label, null, animation);
+		public AnimationEntry createAnimationEntry(String label, String description, BaseAnimation animation) {
+			return new AnimationEntry( label, description, null, animation);
 		}
 
-		public AnimationEntry createAnimationEntry(String label, String data, BaseAnimation animation) {
-			return new AnimationEntry( label, data, animation);
+		public AnimationEntry createAnimationEntry(String label, String description, String data, BaseAnimation animation) {
+			return new AnimationEntry( label, description, data, animation);
 		}
 		
 		public int getId() {
@@ -242,6 +244,10 @@ public class AnimationManager implements PropertyValueListener {
 
 		public String getLabel() {
 			return label;
+		}
+		
+		public String getDescription() {
+			return description;
 		}
 
 		public String getData() {
