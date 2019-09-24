@@ -49,13 +49,15 @@ public class Preview {
 		previewContext.beginDraw();
 		previewContext.background(0);
 		
-		// Draw pixels
-		for (int i = 0; i < pixelMapping.length; i++) {
-			int color = pixelImage.pixels[i];
-			Point coord = pixelMapping[i];
-			
-			previewContext.stroke(color);
-			previewContext.line(coord.x, coord.y, coord.x + ((i % 2 == 0) ? pixelLength : -pixelLength), coord.y);
+		if (pixelImage != null) {
+			// Draw pixels
+			for (int i = 0; i < pixelMapping.length; i++) {
+				int color = pixelImage.pixels[i];
+				Point coord = pixelMapping[i];
+				
+				previewContext.stroke(color);
+				previewContext.line(coord.x, coord.y, coord.x + ((i % 2 == 0) ? pixelLength : -pixelLength), coord.y);
+			}
 		}
 		
 		// Draw beams
