@@ -53,6 +53,10 @@ public class WebSocketServer {
 		
 	}
 	
+	public void onWebSocketError(Throwable e) {
+        System.out.println("SOCKET ERRRRR ERROR");
+    }
+	
 	@SuppressWarnings("serial")
 	public static class Servlet extends WebSocketServlet {
 
@@ -60,6 +64,6 @@ public class WebSocketServer {
 		public void configure(WebSocketServletFactory factory) {
 			factory.register(Socket.class);
 		}
-
+		
 	}
 }

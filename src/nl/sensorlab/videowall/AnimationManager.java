@@ -64,10 +64,10 @@ public class AnimationManager implements PropertyValueListener {
 		addAnimation("White", "Plain white", white);
 
 		// All Applet based animation
-		addAnimation("Sensorlab logo", "Triangles logo (static)", new SensorLabLogo(applet));
-		addAnimation("Alphabet", "Scrolling text", new Alphabet(applet));
+		addAnimation("Sensorlab logo", "Moving triangles logo", new SensorLabLogo(applet));
+		addAnimation("Marquee text", "Scrolling text", new Alphabet(applet));
 		addAnimation("Swirl", " Perlin Noise", new PerlinNoiseAnimation(applet));
-		addAnimation("Horizontal Waves", "?", new HorizontalWavesAnimation(applet));
+		addAnimation("Horizontal Waves", "Overlapping lines", new HorizontalWavesAnimation(applet));
 		addAnimation("Swarm Animation", "Flocking particles", new FlockingAnimation(applet));
 		addAnimation("Bouncy Pixels Animation", "Pixel rain", new BouncyPixelsAnimation(applet));
 		addAnimation("Dark Shadow", " Liquid Columns", new LiquidColumnsAnimation(applet));
@@ -78,11 +78,18 @@ public class AnimationManager implements PropertyValueListener {
 		addAnimation("Beach Ball", "Technical difficulties", new BeachballAnimation(applet));
 
 		// Video stream options
-		int i = 1;
 		for (String host: ConfigurationLoader.get().getString("streaming.hosts", "").split(",")) {
-			host = host.trim();
-			if (!host.isEmpty()) {
-				addAnimation("Video Stream  " + (i++), "IP Stream from " + host, new VideoStreamAnimation(applet));
+			
+			String[] streamParts = host.split(":");
+			if (streamParts.length < 1 || streamParts.length > 2) {
+				continue;
+			}
+			
+			String hostIp = streamParts[0].trim();
+			String streamName = (streamParts.length == 2) ? streamParts[1].trim() : "Video Stream from " + hostIp;
+
+			if (!hostIp.isEmpty()) {
+				addAnimation(streamName, "IP Stream from " + hostIp, new VideoStreamAnimation(applet));
 			}
 		}
 		
