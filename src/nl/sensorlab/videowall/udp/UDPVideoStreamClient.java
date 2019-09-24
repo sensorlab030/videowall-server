@@ -71,7 +71,9 @@ public class UDPVideoStreamClient implements Runnable {
 	public void stop() {
 		running = false;
 		try {
-			t.join();
+			if (t != null) {
+				t.join();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
