@@ -4,6 +4,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 public class WebSocketServer {
 	
@@ -34,6 +36,7 @@ public class WebSocketServer {
 		try {
 			server.start();
 		} catch (Throwable t) {
+			System.out.println("T");
 			t.printStackTrace(System.err);
 		}
 	}
@@ -48,5 +51,15 @@ public class WebSocketServer {
 			}
 		}
 		
+	}
+	
+	@SuppressWarnings("serial")
+	public static class Servlet extends WebSocketServlet {
+
+		@Override
+		public void configure(WebSocketServletFactory factory) {
+			factory.register(Socket.class);
+		}
+
 	}
 }
