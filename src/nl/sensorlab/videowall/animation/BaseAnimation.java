@@ -1,7 +1,10 @@
 package nl.sensorlab.videowall.animation;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import nl.sensorlab.videowall.property.Property;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -132,5 +135,8 @@ public abstract class BaseAnimation {
 		
 	}
 	
+	public List<Property> getProperties() {
+		return new ArrayList<Property>();
+	}
 
 }

@@ -103,6 +103,13 @@ public abstract class Property {
 		return obj;
 	}
 	
+	final public JSONObject toJsonDescription() {
+		JSONObject obj = new JSONObject();
+		obj.setInt("animationId", animationId);
+		obj.setString("name", name);
+		return obj;
+	}
+	
 	/**
 	 * Get the unique id for this property
 	 * @return

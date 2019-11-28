@@ -136,9 +136,21 @@ public class Socket extends WebSocketAdapter implements PropertyValueListener, P
 			animationObject.setInt("id", entry.getId());
 			animationObject.setString("name", entry.getLabel());
 			animationObject.setString("description", entry.getDescription());
+			
+			JSONArray properties = new JSONArray();			
+			for (Property p: entry.getAnimation().getProperties()) {
+				JSONObject obj = p.toJsonDescription();
+				properties.append(obj);
+			}
+			animationObject.setJSONArray("properties", properties);
+			
+			
 			animationList.append(animationObject);
 		}
 		data.put("animations", animationList);
+		
+		
+		System.out.println(data.toString());
 		
 		sendJsonData("config", data);
 
